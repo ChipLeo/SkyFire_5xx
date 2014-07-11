@@ -33,6 +33,7 @@
 #include "Cryptography/BigNumber.h"
 #include "Opcodes.h"
 #include "AccountMgr.h"
+#include "Object.h"
 
 class Creature;
 class GameObject;
@@ -975,6 +976,14 @@ class WorldSession
         // Compact Unit Frames (4.x)
         void HandleSaveCUFProfiles(WorldPacket& recvPacket);
         void SendLoadCUFProfiles();
+
+        // Battle Pets
+        void HandleBattlePetDelete(WorldPacket& recvData);
+        void HandleBattlePetModifyName(WorldPacket& recvData);
+        void HandleBattlePetQueryName(WorldPacket& recvData);
+        void HandleBattlePetSetBattleSlot(WorldPacket& recvData);
+        void HandleBattlePetSetFlags(WorldPacket& recvData);
+        void HandleBattlePetSummonCompanion(WorldPacket& recvData);
 
     private:
         void InitializeQueryCallbackParameters();
