@@ -121,7 +121,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;shared.lib;libmysql.lib;libeay32MDd.lib;ace.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\shared__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>
@@ -171,7 +171,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;shared.lib;libmysql.lib;libeay32MDd.lib;ace.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\shared__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>
@@ -221,7 +221,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;shared.lib;libmysql.lib;libeay32MDd.lib;ace.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\shared__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>
@@ -270,7 +270,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;shared.lib;libmysql.lib;libeay32MDd.lib;ace.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\shared__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>

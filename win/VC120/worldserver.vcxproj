@@ -120,7 +120,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 /debug %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;game.lib;shared.lib;scripts.lib;collision.lib;g3dlib.lib;gsoap.lib;Detour.lib;ace.lib;libmysql.lib;libeay32MD.lib;ssleay32MDd.lib;libeay32MDd.lib;zlib.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>
@@ -169,7 +169,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;game.lib;shared.lib;scripts.lib;collision.lib;g3dlib.lib;gsoap.lib;Detour.lib;ace.lib;libmysql.lib;libeay32MD.lib;ssleay32MDd.lib;libeay32MDd.lib;zlib.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>
@@ -218,7 +218,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;game.lib;shared.lib;scripts.lib;collision.lib;g3dlib.lib;gsoap.lib;Detour.lib;ace.lib;libmysql.lib;libeay32MD.lib;ssleay32MDd.lib;libeay32MDd.lib;zlib.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>
@@ -266,7 +266,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 /debug %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;game.lib;shared.lib;scripts.lib;collision.lib;g3dlib.lib;gsoap.lib;Detour.lib;ace.lib;libmysql.lib;libeay32MD.lib;ssleay32MDd.lib;libeay32MDd.lib;zlib.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>
