@@ -2242,6 +2242,10 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
                 UnsummonPetTemporaryIfAny();
         }
 
+        if (TempSummon* tempSummon = GetBattlePetMgr()->GetCurrentSummon())
+            if (!tempSummon->IsWithinDist3d(x, y, z, GetMap()->GetVisibilityRange()))
+                GetBattlePetMgr()->UnSummonCurrentBattlePet(true);
+
         if (!(options & TELE_TO_NOT_LEAVE_COMBAT))
             CombatStop();
 
@@ -2324,6 +2328,8 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
             // remove pet on map change
             if (pet)
                 UnsummonPetTemporaryIfAny();
+
+            GetBattlePetMgr()->UnSummonCurrentBattlePet(true);
 
             // remove all dyn objects
             RemoveAllDynObjects();
@@ -2490,7 +2496,9 @@ void Player::RemoveFromWorld()
         ///- Release charmed creatures, unsummon totems and remove pets/guardians
         StopCastingCharm();
         StopCastingBindSight();
+        GetBattlePetMgr()->UnSummonCurrentBattlePet(true);
         UnsummonPetTemporaryIfAny();
+
         sOutdoorPvPMgr->HandlePlayerLeaveZone(this, m_zoneUpdateId);
         sBattlefieldMgr->HandlePlayerLeaveZone(this, m_zoneUpdateId);
     }
@@ -17256,7 +17264,7 @@ void Player::SendQuestUpdateAddCreatureOrGo(Quest const* quest, uint64 guid, uin
     data << uint32(entry);
 
     data.WriteBit(oGuid[0]);
-    data.WriteBit(oGuid[1]);
+    data.WriteBit(oGuid[4]);
     data.WriteBit(oGuid[2]);
     data.WriteBit(oGuid[6]);
     data.WriteBit(oGuid[1]);
@@ -17270,7 +17278,7 @@ void Player::SendQuestUpdateAddCreatureOrGo(Quest const* quest, uint64 guid, uin
     data.WriteByteSeq(oGuid[0]);
     data.WriteByteSeq(oGuid[4]);
     data.WriteByteSeq(oGuid[5]);
-    data.WriteByteSeq(oGuid[2]);
+    data.WriteByteSeq(oGuid[1]);
     data.WriteByteSeq(oGuid[6]);
 
     GetSession()->SendPacket(&data);
