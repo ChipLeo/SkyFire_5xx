@@ -589,6 +589,15 @@
     <ClCompile Include="..\..\src\server\game\PrecompiledHeaders\gamePCH.cpp">
       <Filter>PrecompiledHeaders</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\server\game\BattlePet\BattlePet.cpp">
+      <Filter>BattlePet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\server\game\BattlePet\BattlePetMgr.cpp">
+      <Filter>BattlePet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\server\game\Handlers\BattlePetHandler.cpp">
+      <Filter>Handlers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\server\game\Accounts\AccountMgr.h">
@@ -1191,6 +1200,12 @@
     <ClInclude Include="..\..\src\server\game\World\World.h">
       <Filter>World</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\server\game\BattlePet\BattlePet.h">
+      <Filter>BattlePet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\server\game\BattlePet\BattlePetMgr.h">
+      <Filter>BattlePet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Accounts">
@@ -1315,6 +1330,9 @@
     </Filter>
     <Filter Include="World">
       <UniqueIdentifier>{24495131-0D35-4F97-B498-B33B0842A12D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BattlePet">
+      <UniqueIdentifier>{327f6cfc-018f-4d1a-9751-24adc5333b45}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
