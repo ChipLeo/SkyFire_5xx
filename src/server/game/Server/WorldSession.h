@@ -472,6 +472,7 @@ class WorldSession
         void HandleGMResponseResolve(WorldPacket& recvPacket);
 
         void HandleTogglePvP(WorldPacket& recvPacket);
+        void HandleSetPvP(WorldPacket& recvPacket);
 
         void HandleZoneUpdateOpcode(WorldPacket& recvPacket);
         void HandleSetSelectionOpcode(WorldPacket& recvPacket);
@@ -944,6 +945,14 @@ class WorldSession
         // Reforge
         void HandleReforgeItemOpcode(WorldPacket& recvData);
         void SendReforgeResult(bool success);
+
+        // BlackMarket
+        void HandleBlackMarketHelloOpcode(WorldPacket& recvData);
+        void SendBlackMarketHello(uint64 guid);
+        void HandleBlackMarketRequestItemOpcode(WorldPacket& recvData);
+        void SendBlackMarketRequestItemsResult();
+        void HandleBlackMarketBidOpcode(WorldPacket& recvData);
+        void SendBlackMarketBidResult();
 
         // Miscellaneous
         void HandleSpellClick(WorldPacket& recvData);
