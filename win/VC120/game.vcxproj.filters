@@ -598,6 +598,12 @@
     <ClCompile Include="..\..\src\server\game\Handlers\BattlePetHandler.cpp">
       <Filter>Handlers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\server\game\BlackMarket\BlackMarketMgr.cpp">
+      <Filter>BlackMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\server\game\Handlers\BlackMarketHandler.cpp">
+      <Filter>Handlers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\server\game\Accounts\AccountMgr.h">
@@ -1206,6 +1212,9 @@
     <ClInclude Include="..\..\src\server\game\BattlePet\BattlePetMgr.h">
       <Filter>BattlePet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\server\game\BlackMarket\BlackMarketMgr.h">
+      <Filter>BlackMarket</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Accounts">
@@ -1333,6 +1342,9 @@
     </Filter>
     <Filter Include="BattlePet">
       <UniqueIdentifier>{327f6cfc-018f-4d1a-9751-24adc5333b45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BlackMarket">
+      <UniqueIdentifier>{2057ae34-c065-495f-8efb-bd7017c12a1f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

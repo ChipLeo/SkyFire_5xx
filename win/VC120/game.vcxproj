@@ -263,6 +263,7 @@
     <ClInclude Include="..\..\src\server\game\Battlegrounds\Zones\BattlegroundWS.h" />
     <ClInclude Include="..\..\src\server\game\BattlePet\BattlePet.h" />
     <ClInclude Include="..\..\src\server\game\BattlePet\BattlePetMgr.h" />
+    <ClInclude Include="..\..\src\server\game\BlackMarket\BlackMarketMgr.h" />
     <ClInclude Include="..\..\src\server\game\Calendar\CalendarMgr.h" />
     <ClInclude Include="..\..\src\server\game\Chat\Channels\Channel.h" />
     <ClInclude Include="..\..\src\server\game\Chat\Channels\ChannelMgr.h" />
@@ -462,6 +463,7 @@
     <ClCompile Include="..\..\src\server\game\Battlegrounds\Zones\BattlegroundWS.cpp" />
     <ClCompile Include="..\..\src\server\game\BattlePet\BattlePet.cpp" />
     <ClCompile Include="..\..\src\server\game\BattlePet\BattlePetMgr.cpp" />
+    <ClCompile Include="..\..\src\server\game\BlackMarket\BlackMarketMgr.cpp" />
     <ClCompile Include="..\..\src\server\game\Calendar\CalendarMgr.cpp" />
     <ClCompile Include="..\..\src\server\game\Chat\Channels\Channel.cpp" />
     <ClCompile Include="..\..\src\server\game\Chat\Channels\ChannelMgr.cpp" />
@@ -522,6 +524,7 @@
     <ClCompile Include="..\..\src\server\game\Handlers\BattlefieldHandler.cpp" />
     <ClCompile Include="..\..\src\server\game\Handlers\BattleGroundHandler.cpp" />
     <ClCompile Include="..\..\src\server\game\Handlers\BattlePetHandler.cpp" />
+    <ClCompile Include="..\..\src\server\game\Handlers\BlackMarketHandler.cpp" />
     <ClCompile Include="..\..\src\server\game\Handlers\CalendarHandler.cpp" />
     <ClCompile Include="..\..\src\server\game\Handlers\ChannelHandler.cpp" />
     <ClCompile Include="..\..\src\server\game\Handlers\CharacterHandler.cpp" />
