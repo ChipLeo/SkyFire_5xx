@@ -630,25 +630,27 @@ void WorldSession::HandleQuestPOIQuery(WorldPacket& recvData)
             }
             else
             {
+                data.WriteBits(0, 18);
+                data.FlushBits();
+
                 poiData << uint32(questId);
                 poiData << uint32(0);
-
-                data.WriteBits(0, 18);
             }
         }
         else
         {
+            data.WriteBits(0, 18);
+            data.FlushBits();
+
             poiData << uint32(questId);
             poiData << uint32(0);
-
-            data.WriteBits(0, 18);
         }
     }
 
-    poiData << uint32(count);
-
     data.FlushBits();
     data.append(poiData);
+
+    poiData << uint32(count);
 
     SendPacket(&data);
 }
