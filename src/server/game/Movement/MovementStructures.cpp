@@ -4346,49 +4346,49 @@ MovementStatusElements const MoveSetRunSpeed[] = // 5.4.8 18414
     MSEEnd,
 };
 
-MovementStatusElements const MoveSetRunBackSpeed[] =
+MovementStatusElements const MoveSetRunBackSpeed[] = // 5.4.8 18414
 {
-    MSEHasGuidByte0,
-    MSEHasGuidByte6,
-    MSEHasGuidByte2,
-    MSEHasGuidByte1,
-    MSEHasGuidByte3,
-    MSEHasGuidByte4,
-    MSEHasGuidByte5,
     MSEHasGuidByte7,
-    MSEGuidByte5,
+    MSEHasGuidByte1,
+    MSEHasGuidByte0,
+    MSEHasGuidByte2,
+    MSEHasGuidByte4,
+    MSEHasGuidByte3,
+    MSEHasGuidByte6,
+    MSEHasGuidByte5,
     MSECounter,
-    MSEExtraElement,
     MSEGuidByte0,
-    MSEGuidByte4,
-    MSEGuidByte7,
     MSEGuidByte3,
-    MSEGuidByte1,
+    MSEGuidByte7,
+    MSEGuidByte5,
     MSEGuidByte2,
+    MSEGuidByte4,
+    MSEGuidByte1,
+    MSEExtraElement,
     MSEGuidByte6,
     MSEEnd,
 };
 
-MovementStatusElements const MoveSetSwimSpeed[] = // 5.4.7 18019
+MovementStatusElements const MoveSetSwimSpeed[] = // 5.4.8 18414
 {
-    MSEExtraElement,
-    MSECounter,
-    MSEHasGuidByte4,
-    MSEHasGuidByte7,
+    MSEHasGuidByte5,
+    MSEHasGuidByte0,
     MSEHasGuidByte6,
     MSEHasGuidByte3,
-    MSEHasGuidByte5,
+    MSEHasGuidByte7,
     MSEHasGuidByte2,
-    MSEHasGuidByte0,
+    MSEHasGuidByte4,
     MSEHasGuidByte1,
+    MSECounter,
     MSEGuidByte1,
+    MSEGuidByte3,
+    MSEExtraElement,
     MSEGuidByte6,
+    MSEGuidByte7,
+    MSEGuidByte0,
     MSEGuidByte5,
     MSEGuidByte2,
-    MSEGuidByte0,
-    MSEGuidByte3,
     MSEGuidByte4,
-    MSEGuidByte7,
     MSEEnd,
 };
 
@@ -5510,10 +5510,10 @@ MovementStatusElements const* GetMovementStatusElementsSequence(Opcodes opcode)
         //    return MoveSetWalkSpeed;
         case SMSG_MOVE_SET_RUN_SPEED:
             return MoveSetRunSpeed;
-        //case SMSG_MOVE_SET_RUN_BACK_SPEED:
-        //    return MoveSetRunBackSpeed;
-        //case SMSG_MOVE_SET_SWIM_SPEED:
-        //    return MoveSetSwimSpeed;
+        case SMSG_MOVE_SET_RUN_BACK_SPEED:
+            return MoveSetRunBackSpeed;
+        case SMSG_MOVE_SET_SWIM_SPEED:
+            return MoveSetSwimSpeed;
         //case SMSG_MOVE_SET_SWIM_BACK_SPEED:
         //    return MoveSetSwimBackSpeed;
         //case SMSG_MOVE_SET_TURN_RATE:

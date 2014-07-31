@@ -1260,12 +1260,12 @@ void Player::SendMirrorTimer(MirrorTimerType Type, uint32 MaxValue, uint32 Curre
         return;
     }
     WorldPacket data(SMSG_START_MIRROR_TIMER, (21));
-    data << (uint32)Type;
-    data << CurrentValue;
     data << MaxValue;
-    data << Regen;
-    data << (uint8)0;
     data << (uint32)0;                                      // spell id
+    data << (uint32)Type;
+    data << Regen;
+    data << CurrentValue;
+    data << (uint8)0;
     GetSession()->SendPacket(&data);
 }
 
@@ -21481,10 +21481,11 @@ void Player::AddSpellMod(SpellModifier* mod, bool apply)
     flag128 _mask = 0;
     uint32 modTypeCount = 0; // count of mods per one mod->op
     WorldPacket data(opcode);
-    data << uint32(1);  // count of different mod->op's in packet
-    size_t writePos = data.wpos();
-    data << uint32(modTypeCount);
-    data << uint8(mod->op);
+    data.WriteBits(1, 22);  // count of different mod->op's in packet
+    size_t writePos = data.bitwpos();
+    data.WriteBits(modTypeCount, 21);
+    if (mod->type == SPELLMOD_FLAT)
+        data << uint8(mod->op);
     for (int eff = 0; eff < 128; ++eff)
     {
         if (eff != 0 && (eff % 32) == 0)
@@ -21499,12 +21500,14 @@ void Player::AddSpellMod(SpellModifier* mod, bool apply)
                     val += (*itr)->value;
             val += apply ? mod->value : -(mod->value);
 
-            data << uint8(eff);
             data << float(val);
+            data << uint8(eff);
             ++modTypeCount;
         }
     }
-    data.put<uint32>(writePos, modTypeCount);
+    if (mod->type != SPELLMOD_FLAT)
+        data << uint8(mod->op);
+    data.PutBits(writePos, modTypeCount, 21);
     SendDirectMessage(&data);
     if (apply)
         m_spellMods[mod->op].push_back(mod);
