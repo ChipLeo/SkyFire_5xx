@@ -498,6 +498,7 @@ class Spell
         void CleanupTargetList();
 
         void SetSpellValue(SpellValueMod mod, int32 value);
+        void SetSpellContainer(Spell** countainer);
     protected:
         bool HasGlobalCooldown() const;
         void TriggerGlobalCooldown();

@@ -2180,7 +2180,7 @@ void Unit::SendMeleeAttackStop(Unit* victim)
     WorldPacket data(SMSG_ATTACKSTOP, 8 + 8);
 
     ObjectGuid attackerGuid = GetGUID();
-    ObjectGuid victimGuid = victim ? victim->GetGUID() : NULL;
+    ObjectGuid victimGuid = victim ? victim->GetGUID() : 0;
 
     data.WriteBit(victimGuid[5]);
     data.WriteBit(victimGuid[6]);
@@ -2900,7 +2900,7 @@ void Unit::SetCurrentCastedSpell(Spell* pSpell)
     m_currentSpells[CSpellType] = pSpell;
     pSpell->SetReferencedFromCurrent(true);
 
-    pSpell->m_selfContainer = &(m_currentSpells[pSpell->GetCurrentContainer()]);
+    pSpell->SetSpellContainer(&(m_currentSpells[pSpell->GetCurrentContainer()]));
 }
 
 void Unit::InterruptSpell(CurrentSpellTypes spellType, bool withDelayed, bool withInstant)

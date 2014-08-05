@@ -8016,6 +8016,11 @@ void Spell::CancelGlobalCooldown()
         m_caster->ToPlayer()->GetGlobalCooldownMgr().CancelGlobalCooldown(m_spellInfo);
 }
 
+void Spell::SetSpellContainer(Spell** countainer)
+{
+    m_selfContainer = countainer;
+}
+
 namespace Trinity
 {
 

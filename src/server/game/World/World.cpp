@@ -2780,7 +2780,7 @@ void World::SendAutoBroadcast()
     else if (abcenter == 1)
     {
         WorldPacket data(SMSG_NOTIFICATION, 2 + msg.length());
-        data.WriteBits(msg.length(), 13);
+        data.WriteBits(msg.length(), 12);
         data.FlushBits();
         data.WriteString(msg);
         sWorld->SendGlobalMessage(&data);
@@ -2790,7 +2790,7 @@ void World::SendAutoBroadcast()
         sWorld->SendWorldText(LANG_AUTO_BROADCAST, msg.c_str());
 
         WorldPacket data(SMSG_NOTIFICATION, 2 + msg.length());
-        data.WriteBits(msg.length(), 13);
+        data.WriteBits(msg.length(), 12);
         data.FlushBits();
         data.WriteString(msg);
         sWorld->SendGlobalMessage(&data);

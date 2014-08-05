@@ -1259,7 +1259,7 @@ void Player::SendMirrorTimer(MirrorTimerType Type, uint32 MaxValue, uint32 Curre
             StopMirrorTimer(Type);
         return;
     }
-    WorldPacket data(SMSG_START_MIRROR_TIMER, (21));
+    WorldPacket data(SMSG_START_MIRROR_TIMER, 21);
     data << MaxValue;
     data << (uint32)0;                                      // spell id
     data << (uint32)Type;
@@ -2067,8 +2067,8 @@ bool Player::BuildEnumData(PreparedQueryResult result, ByteBuffer* dataBuffer, B
         ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemId);
         if (!proto)
         {
-            *dataBuffer << uint8(0);
             *dataBuffer << uint32(0);
+            *dataBuffer << uint8(0);
             *dataBuffer << uint32(0);
             continue;
         }
@@ -2129,9 +2129,10 @@ bool Player::BuildEnumData(PreparedQueryResult result, ByteBuffer* dataBuffer, B
 
     *dataBuffer << uint32(charFlags);                           // Character flags
 
+    *dataBuffer << uint32(zone);                                // Zone id
+
     dataBuffer->WriteByteSeq(guildGuid[7]);
 
-    *dataBuffer << uint32(zone);                                // Zone id
     *dataBuffer << float(z);                                    // Z
 
     return true;
@@ -8112,8 +8113,9 @@ void Player::DuelComplete(DuelCompleteType type)
 
     TC_LOG_DEBUG("entities.unit", "Duel Complete %s %s", GetName().c_str(), duel->opponent->GetName().c_str());
 
-    WorldPacket data(SMSG_DUEL_COMPLETE, (1));
-    data << (uint8)((type != DUEL_INTERRUPTED) ? 1 : 0);
+    WorldPacket data(SMSG_DUEL_COMPLETE, 1);
+    data.WriteBit(type != DUEL_INTERRUPTED);
+    data.FlushBits();
     GetSession()->SendPacket(&data);
 
     if (duel->opponent->GetSession())
@@ -8121,10 +8123,14 @@ void Player::DuelComplete(DuelCompleteType type)
 
     if (type != DUEL_INTERRUPTED)
     {
-        data.Initialize(SMSG_DUEL_WINNER, (1+20));          // we guess size
-        data << uint8(type == DUEL_WON ? 0 : 1);            // 0 = just won; 1 = fled
-        data << duel->opponent->GetName();
-        data << GetName();
+        data.Initialize(SMSG_DUEL_WINNER, 1 + 20);          // we guess size
+        data.WriteBit(type != DUEL_WON);                    // 0 = just won; 1 = fled
+        data.WriteBits(duel->opponent->GetName().length(), 6);
+        data.WriteBits(GetName().length(), 6);
+        data << uint32(realmID);
+        data.WriteString(duel->opponent->GetName());
+        data << uint32(realmID);
+        data.WriteString(GetName());
         SendMessageToSet(&data, true);
     }
 
@@ -14824,7 +14830,7 @@ void Player::SendNewItem(Item* item, uint32 count, bool received, bool created, 
     data.WriteByteSeq(itemGuid[2]);
     data.WriteByteSeq(playerGuid[0]);
     data << uint32(count);                                  // count of items
-    data.WriteByteSeq(playerGuid[5]);
+    data.WriteByteSeq(playerGuid[7]);
     data.WriteByteSeq(itemGuid[5]);
     data.WriteByteSeq(playerGuid[4]);
     data << uint8(item->GetBagSlot());                      // bag slot
@@ -23589,26 +23595,26 @@ void Player::SendComboPoints()
             data.Initialize(SMSG_UPDATE_COMBO_POINTS, combotarget->GetPackGUID().size()+1);
 
         ObjectGuid guid = combotarget->GetGUID();
+        data.WriteBit(guid[0]);
         data.WriteBit(guid[5]);
         data.WriteBit(guid[6]);
+        data.WriteBit(guid[3]);
+        data.WriteBit(guid[7]);
         data.WriteBit(guid[4]);
         data.WriteBit(guid[1]);
-        data.WriteBit(guid[3]);
         data.WriteBit(guid[2]);
-        data.WriteBit(guid[7]);
-        data.WriteBit(guid[0]);
 
         data.FlushBits();
 
-        data.WriteByteSeq(guid[1]);
+        data.WriteByteSeq(guid[5]);
+        data.WriteByteSeq(guid[6]);
+        data.WriteByteSeq(guid[4]);
         data.WriteByteSeq(guid[7]);
         data.WriteByteSeq(guid[3]);
-        data << uint8(m_comboPoints);
-        data.WriteByteSeq(guid[6]);
         data.WriteByteSeq(guid[0]);
-        data.WriteByteSeq(guid[4]);
+        data << uint8(m_comboPoints);
         data.WriteByteSeq(guid[2]);
-        data.WriteByteSeq(guid[5]);
+        data.WriteByteSeq(guid[1]);
 
         GetSession()->SendPacket(&data);
     }
