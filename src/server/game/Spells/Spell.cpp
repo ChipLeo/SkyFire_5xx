@@ -4186,8 +4186,8 @@ void Spell::SendSpellStart()
             data << uint8(powerType);
         }*/
 
-        data << uint8(m_spellInfo->PowerType);
-        data << int32(m_caster->GetPower((Powers)m_spellInfo->PowerType));
+        data << uint32(m_spellInfo->PowerType);
+        data << uint32(m_caster->GetPower((Powers)m_spellInfo->PowerType));
     }
 
     data << uint32(castFlags);

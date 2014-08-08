@@ -15872,7 +15872,13 @@ void Unit::WriteMovementInfo(WorldPacket& data, Movement::ExtraMovementStatusEle
             data.WriteBit(1);
             break;
         case MSEExtraElement:
+            if (extras)
             extras->WriteNextElement(data);
+            else
+            {
+                data << uint32(0);
+                TC_LOG_ERROR("network", "Unit::WriteMovementInfo: No Extra Elemet found for opcode %s", GetOpcodeNameForLogging(data.GetOpcode(), true).c_str());
+            }
             break;
         case MSEUintCount:
             data << uint32(0);

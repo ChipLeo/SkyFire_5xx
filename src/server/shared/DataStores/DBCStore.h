@@ -227,9 +227,9 @@ class DBCStorage
                             }
                         }
 
-                        if (sqlColumnNumber != (result->GetFieldCount() - 1))
+                        if (sqlColumnNumber != (result->GetFieldCount()))
                         {
-                            TC_LOG_ERROR("server.loading", "SQL and DBC format strings are not matching for table: '%s'", sql->sqlTableName.c_str());
+                            TC_LOG_ERROR("server.loading", "SQL and DBC format strings are not matching for table: '%s' {%i - %i}", sql->sqlTableName.c_str(), sqlColumnNumber, result->GetFieldCount());
                             return false;
                         }
 
