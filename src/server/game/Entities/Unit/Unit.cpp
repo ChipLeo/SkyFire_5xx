@@ -15720,6 +15720,7 @@ void Unit::WriteMovementInfo(WorldPacket& data, Movement::ExtraMovementStatusEle
     bool hasMovementFlags = GetUnitMovementFlags() != 0;
     bool hasMovementFlags2 = GetExtraUnitMovementFlags() != 0;
     bool hasTimestamp = true;
+    bool hasUnkTime = false;
     bool hasOrientation = !G3D::fuzzyEq(GetOrientation(), 0.0f);
     bool hasTransportData = GetTransGUID() != 0;
     bool hasSpline = IsSplineEnabled();
@@ -15789,8 +15790,8 @@ void Unit::WriteMovementInfo(WorldPacket& data, Movement::ExtraMovementStatusEle
             if (hasTransportData)
                 data.WriteByteSeq(tguid[element - MSETransportGuidByte0]);
             break;
-        case MSEHasCounter:
-            data.WriteBit(!m_movementCounter);
+        case MSEHasUnkTime:
+            data.WriteBit(!hasUnkTime);
             break;
         case MSEHasMovementFlags:
             data.WriteBit(!hasMovementFlags);
@@ -15920,9 +15921,12 @@ void Unit::WriteMovementInfo(WorldPacket& data, Movement::ExtraMovementStatusEle
             data.WriteBits(0, 22);
             break;
         case MSECounter:
-            if (m_movementCounter)
-                data << m_movementCounter;
+            data << m_movementCounter;
             m_movementCounter++;
+            break;
+        case MSEUnkTime:
+            if (hasUnkTime)
+                data << uint32(0);
             break;
         case MSEZeroBit:
             data.WriteBit(0);
@@ -15938,9 +15942,6 @@ void Unit::WriteMovementInfo(WorldPacket& data, Movement::ExtraMovementStatusEle
                 data << uint32(0);
                 TC_LOG_ERROR("network", "Unit::WriteMovementInfo: No Extra Elemet found for opcode %s", GetOpcodeNameForLogging(data.GetOpcode(), true).c_str());
             }
-            break;
-        case MSEUintCount:
-            data << uint32(0);
             break;
         default:
             ASSERT(Movement::PrintInvalidSequenceElement(element, __FUNCTION__));
