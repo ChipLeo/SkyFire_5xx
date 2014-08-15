@@ -1154,6 +1154,8 @@ void WorldSession::HandleUpdateAccountData(WorldPacket& recvData)
     if (decompressedSize == 0)                               // erase
     {
         type = recvData.ReadBits(3);
+        recvData.rfinish();
+
         SetAccountData(AccountDataType(type), 0, "");
 
         WorldPacket data(SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 4+4);
