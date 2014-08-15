@@ -15929,6 +15929,9 @@ void Unit::WriteMovementInfo(WorldPacket& data, Movement::ExtraMovementStatusEle
                 data << uint32(0);
             break;
         case MSEZeroBit:
+        case MSEbit148:
+        case MSEbit149:
+        case MSEbit172:
             data.WriteBit(0);
             break;
         case MSEOneBit:

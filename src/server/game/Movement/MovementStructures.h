@@ -107,6 +107,11 @@ enum MovementStatusElements
     MSEEnd,             // marks end of parsing
     MSEExtraElement,    // Used to signalize reading into ExtraMovementStatusElement, element sequence inside it is declared as separate array
                         // Allowed internal elements are: GUID markers (not transport), MSEExtraFloat, MSEExtraInt8
+
+    MSEbit148,          // writes bit value 0 or skips read bit
+    MSEbit149,          // writes bit value 0 or skips read bit
+    MSEbit172,          // writes bit value 0 or skips read bit
+
     MSEExtraFloat,
     MSEExtraInt8,
 };

@@ -28081,10 +28081,15 @@ void Player::ReadMovementInfo(WorldPacket& data, MovementInfo* mi, Movement::Ext
                 break;
             case MSEZeroBit:
             case MSEOneBit:
+            case MSEbit148:
+            case MSEbit149:
+            case MSEbit172:
                 data.ReadBit();
                 break;
             case MSEExtraElement:
-                extras->ReadNextElement(data);
+                if (extras)
+                    extras->ReadNextElement(data);
+                else TC_LOG_ERROR("network", "Player::ReadMovementInfo: No Extra Elemet found for opcode %s", GetOpcodeNameForLogging(data.GetOpcode(), true).c_str());
                 break;
             default:
                 ASSERT(Movement::PrintInvalidSequenceElement(element, __FUNCTION__));
