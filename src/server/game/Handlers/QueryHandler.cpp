@@ -648,9 +648,10 @@ void WorldSession::HandleQuestPOIQuery(WorldPacket& recvData)
     }
 
     data.FlushBits();
-    data.append(poiData);
 
     poiData << uint32(count);
+
+    data.append(poiData);
 
     SendPacket(&data);
 }
