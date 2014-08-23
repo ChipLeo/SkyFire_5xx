@@ -365,7 +365,7 @@ void OpcodeTable::InitializeClientTable()
     DEFINE_OPCODE_HANDLER(CMSG_MESSAGECHAT_OFFICER,                0x0ABF, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleMessagechatOpcode            ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_MESSAGECHAT_PARTY,                  0x109A, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleMessagechatOpcode            ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_MESSAGECHAT_RAID,                   0x083E, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleMessagechatOpcode            ); // 5.4.8 18414
-    DEFINE_OPCODE_HANDLER(CMSG_MESSAGECHAT_RAID_WARNING,           0x109A, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleMessagechatOpcode            ); // 5.4.8 18414
+    DEFINE_OPCODE_HANDLER(CMSG_MESSAGECHAT_RAID_WARNING,           0x16AB, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleMessagechatOpcode            ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_MESSAGECHAT_SAY,                    0x0A9A, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleMessagechatOpcode            ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_MESSAGECHAT_WHISPER,                0x123E, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleMessagechatOpcode            ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_MESSAGECHAT_YELL,                   0x04AA, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleMessagechatOpcode            ); // 5.4.8 18414
@@ -393,7 +393,7 @@ void OpcodeTable::InitializeClientTable()
     DEFINE_OPCODE_HANDLER(CMSG_MOVE_SET_CAN_FLY_ACK,               0x1052, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleMoveSetCanFlyAckOpcode       ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_MOVE_SET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY_ACK, 0x11DB, STATUS_LOGGEDIN,  PROCESS_INPLACE,      &WorldSession::Handle_NULL          ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_MOVE_SET_COLLISION_HEIGHT_ACK,      0x0000, STATUS_UNHANDLED, PROCESS_THREADSAFE,   &WorldSession::HandleSetCollisionHeightAck        );
-    DEFINE_OPCODE_HANDLER(CMSG_MOVE_SPLINE_DONE,                   0x0000, STATUS_UNHANDLED, PROCESS_THREADSAFE,   &WorldSession::HandleMoveSplineDoneOpcode         );
+    DEFINE_OPCODE_HANDLER(CMSG_MOVE_SPLINE_DONE,                   0x11D9, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleMoveSplineDoneOpcode         ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_MOVE_TELEPORT_ACK,                  0x0078, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleMoveTeleportAck              ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_MOVE_TIME_SKIPPED,                  0x0150, STATUS_LOGGEDIN,  PROCESS_INPLACE,      &WorldSession::HandleMoveTimeSkippedOpcode        ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_MOVE_WATER_WALK_ACK,                0x10F2, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleMoveWaterWalkAck             ); // 5.4.8 18414
@@ -502,7 +502,7 @@ void OpcodeTable::InitializeClientTable()
     DEFINE_OPCODE_HANDLER(CMSG_SETSHEATHED,                        0x0249, STATUS_LOGGEDIN,  PROCESS_INPLACE,      &WorldSession::HandleSetSheathedOpcode            ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_SET_ACTIONBAR_TOGGLES,              0x0672, STATUS_AUTHED,    PROCESS_THREADUNSAFE, &WorldSession::HandleSetActionBarToggles          ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_SET_ACTION_BUTTON,                  0x1F8C, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleSetActionButtonOpcode        ); // 5.4.8 18414
-    DEFINE_OPCODE_HANDLER(CMSG_SET_ACTIVE_MOVER,                   0x0000, STATUS_UNHANDLED, PROCESS_THREADUNSAFE, &WorldSession::HandleSetActiveMoverOpcode         );
+    DEFINE_OPCODE_HANDLER(CMSG_SET_ACTIVE_MOVER,                   0x09F0, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleSetActiveMoverOpcode         ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_SET_ACTIVE_VOICE_CHANNEL,           0x0000, STATUS_UNHANDLED, PROCESS_THREADUNSAFE, &WorldSession::HandleSetActiveVoiceChannel        );
     DEFINE_OPCODE_HANDLER(CMSG_SET_ALLOW_LOW_LEVEL_RAID1,          0x0000, STATUS_UNHANDLED, PROCESS_INPLACE,      &WorldSession::Handle_NULL                        );
     DEFINE_OPCODE_HANDLER(CMSG_SET_ALLOW_LOW_LEVEL_RAID2,          0x0000, STATUS_UNHANDLED, PROCESS_INPLACE,      &WorldSession::Handle_NULL                        );
@@ -545,7 +545,7 @@ void OpcodeTable::InitializeClientTable()
     DEFINE_OPCODE_HANDLER(CMSG_SWAP_INV_ITEM,                      0x03DF, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleSwapInvItemOpcode            ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_SWAP_ITEM,                          0x035D, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleSwapItem                     ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_SYNC_DANCE,                         0x0000, STATUS_UNHANDLED, PROCESS_INPLACE,      &WorldSession::Handle_NULL                        );
-    DEFINE_OPCODE_HANDLER(CMSG_TAXINODE_STATUS_QUERY,              0x0000, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleTaxiNodeStatusQueryOpcode    );
+    DEFINE_OPCODE_HANDLER(CMSG_TAXINODE_STATUS_QUERY,              0x02E1, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleTaxiNodeStatusQueryOpcode    ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_TAXIQUERYAVAILABLENODES,            0x02E3, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleTaxiQueryAvailableNodes      ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_TELEPORT_TO_UNIT,                   0x0000, STATUS_UNHANDLED, PROCESS_INPLACE,      &WorldSession::Handle_NULL                        );
     DEFINE_OPCODE_HANDLER(CMSG_TEXT_EMOTE,                         0x07E9, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleTextEmoteOpcode              );
@@ -1284,7 +1284,7 @@ void OpcodeTable::InitializeServerTable()
     DEFINE_OPCODE_HANDLER(SMSG_TALENTS_ERROR,                      0x0000, STATUS_UNHANDLED);
     DEFINE_OPCODE_HANDLER(SMSG_TALENTS_INFO,                       0x0A9B, STATUS_NEVER    ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(SMSG_TALENTS_INVOLUNTARILY_RESET,        0x0000, STATUS_UNHANDLED);
-    DEFINE_OPCODE_HANDLER(SMSG_TAXINODE_STATUS,                    0x0000, STATUS_UNHANDLED);
+    DEFINE_OPCODE_HANDLER(SMSG_TAXINODE_STATUS,                    0x169E, STATUS_NEVER    ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(SMSG_TEST_DROP_RATE_RESULT,              0x0000, STATUS_UNHANDLED);
     DEFINE_OPCODE_HANDLER(SMSG_TEXT_EMOTE,                         0x002E, STATUS_NEVER    ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(SMSG_THREAT_CLEAR,                       0x0000, STATUS_UNHANDLED);
