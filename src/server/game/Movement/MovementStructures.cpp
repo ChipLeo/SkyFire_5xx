@@ -5088,68 +5088,68 @@ MovementStatusElements const MoveWaterWalk[] = // 5.4.8 18414
     MSEEnd,
 };
 
-MovementStatusElements const MoveLandWalk[] =
+MovementStatusElements const MoveLandWalk[] = // 5.4.8 18414
 {
-    MSEHasGuidByte5,
-    MSEHasGuidByte1,
-    MSEHasGuidByte6,
-    MSEHasGuidByte2,
-    MSEHasGuidByte3,
-    MSEHasGuidByte4,
     MSEHasGuidByte0,
     MSEHasGuidByte7,
-    MSEGuidByte6,
-    MSEGuidByte1,
+    MSEHasGuidByte3,
+    MSEHasGuidByte1,
+    MSEHasGuidByte6,
+    MSEHasGuidByte5,
+    MSEHasGuidByte2,
+    MSEHasGuidByte4,
     MSEGuidByte7,
-    MSEGuidByte5,
+    MSEGuidByte6,
     MSEGuidByte4,
-    MSEGuidByte0,
     MSEGuidByte3,
     MSEGuidByte2,
+    MSEGuidByte0,
+    MSEGuidByte1,
     MSECounter,
+    MSEGuidByte5,
     MSEEnd,
 };
 
-MovementStatusElements const MoveFeatherFall[] =
+MovementStatusElements const MoveFeatherFall[] = // 5.4.8 18414
 {
-    MSEHasGuidByte3,
+    MSEHasGuidByte4,
     MSEHasGuidByte1,
     MSEHasGuidByte7,
+    MSEHasGuidByte3,
     MSEHasGuidByte0,
-    MSEHasGuidByte4,
-    MSEHasGuidByte2,
     MSEHasGuidByte5,
+    MSEHasGuidByte2,
     MSEHasGuidByte6,
-    MSEGuidByte5,
-    MSEGuidByte7,
-    MSEGuidByte2,
     MSECounter,
-    MSEGuidByte0,
-    MSEGuidByte3,
-    MSEGuidByte4,
     MSEGuidByte1,
+    MSEGuidByte0,
+    MSEGuidByte5,
+    MSEGuidByte4,
     MSEGuidByte6,
+    MSEGuidByte3,
+    MSEGuidByte2,
+    MSEGuidByte7,
     MSEEnd,
 };
 
-MovementStatusElements const MoveNormalFall[] =
+MovementStatusElements const MoveNormalFall[] = // 5.4.8 18414
 {
-    MSECounter,
     MSEHasGuidByte3,
-    MSEHasGuidByte0,
     MSEHasGuidByte1,
-    MSEHasGuidByte5,
-    MSEHasGuidByte7,
-    MSEHasGuidByte4,
     MSEHasGuidByte6,
+    MSEHasGuidByte0,
+    MSEHasGuidByte4,
+    MSEHasGuidByte7,
     MSEHasGuidByte2,
-    MSEGuidByte2,
-    MSEGuidByte7,
-    MSEGuidByte1,
-    MSEGuidByte4,
-    MSEGuidByte5,
-    MSEGuidByte0,
+    MSEHasGuidByte5,
     MSEGuidByte3,
+    MSEGuidByte2,
+    MSECounter,
+    MSEGuidByte1,
+    MSEGuidByte5,
+    MSEGuidByte4,
+    MSEGuidByte7,
+    MSEGuidByte0,
     MSEGuidByte6,
     MSEEnd,
 };
@@ -5680,12 +5680,12 @@ MovementStatusElements const* GetMovementStatusElementsSequence(Opcodes opcode)
         //    return MoveUnsetHover;
         case SMSG_MOVE_WATER_WALK:
             return MoveWaterWalk;
-        //case SMSG_MOVE_LAND_WALK:
-        //    return MoveLandWalk;
-        //case SMSG_MOVE_FEATHER_FALL:
-        //    return MoveFeatherFall;
-        //case SMSG_MOVE_NORMAL_FALL:
-        //    return MoveNormalFall;
+        case SMSG_MOVE_LAND_WALK:
+            return MoveLandWalk;
+        case SMSG_MOVE_FEATHER_FALL:
+            return MoveFeatherFall;
+        case SMSG_MOVE_NORMAL_FALL:
+            return MoveNormalFall;
         case SMSG_MOVE_ROOT:
             return MoveRoot;
         case SMSG_MOVE_UNROOT:
