@@ -1401,48 +1401,10 @@ void Unit::DealMeleeDamage(CalcDamageInfo* damageInfo, bool durabilityLoss)
 
 void Unit::HandleEmoteCommand(uint32 anim_id)
 {
-    WorldPacket data(SMSG_EMOTE, 1 + 1 + 8 + 4 + 8 + 4);
-
-    ObjectGuid Caster = this->GetGUID();
-    ObjectGuid Target = this->GetTarget();
-
-    data.WriteBit(Caster[1]);
-    data.WriteBit(Target[7]);
-    data.WriteBit(Caster[6]);
-    data.WriteBit(Target[5]);
-    data.WriteBit(Caster[3]);
-    data.WriteBit(Target[6]);
-    data.WriteBit(Target[2]);
-    data.WriteBit(Caster[7]);
-    data.WriteBit(Target[0]);
-    data.WriteBit(Target[1]);
-    data.WriteBit(Caster[4]);
-    data.WriteBit(Caster[2]);
-    data.WriteBit(Target[3]);
-    data.WriteBit(Target[4]);
-    data.WriteBit(Caster[0]);
-    data.WriteBit(Caster[5]);
-
-    data.WriteByteSeq(Target[2]);
-    data.WriteByteSeq(Target[1]);
-    data.WriteByteSeq(Caster[7]);
-    data.WriteByteSeq(Caster[4]);
-    data.WriteByteSeq(Target[7]);
-    data.WriteByteSeq(Caster[5]);
-    data.WriteByteSeq(Caster[2]);
+    WorldPacket data(SMSG_EMOTE, 4 + 8);
 
     data << uint32(anim_id);
-    data.WriteByteSeq(Caster[6]);
-    data.WriteByteSeq(Target[0]);
-    data.WriteByteSeq(Caster[3]);
-    data.WriteByteSeq(Caster[1]);
-    data.WriteByteSeq(Target[6]);
-    data.WriteByteSeq(Caster[0]);
-    data.WriteByteSeq(Target[3]);
-    data.WriteByteSeq(Target[5]);
-    data.WriteByteSeq(Target[4]);
-
-    data << uint32(-1);
+    data << uint64(GetGUID());
 
     SendMessageToSet(&data, true);
 }
