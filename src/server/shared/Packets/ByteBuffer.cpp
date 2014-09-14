@@ -90,7 +90,7 @@ void ByteBuffer::hexlike() const
     uint32 j = 1, k = 1;
 
     std::ostringstream o;
-    o << "STORAGE_SIZE: " << size();
+    o << "STORAGE_SIZE: " << size() << "\n";
 
     for (uint32 i = 0; i < size(); ++i)
     {
