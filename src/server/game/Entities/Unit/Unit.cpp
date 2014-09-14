@@ -5035,8 +5035,8 @@ void Unit::SendAttackStateUpdate(CalcDamageInfo* damageInfo)
     // Needs to be flushed because data.wpos() wouldnt return the correct placeholder
     data.FlushBits();
 
-    data << uint32(0); // Placeholder
     size_t size = data.wpos();
+    data << uint32(0); // Placeholder
 
     data << uint32(damageInfo->HitInfo);
     data.append(damageInfo->attacker->GetPackGUID());
@@ -5095,7 +5095,7 @@ void Unit::SendAttackStateUpdate(CalcDamageInfo* damageInfo)
     if (damageInfo->HitInfo & (HITINFO_BLOCK | HITINFO_UNK12))
         data << float(0);
 
-    data.put(size, data.wpos() - size);
+    data.put(size, data.wpos() - size - 4); // Blizz - Weird and Lazy people....
     SendMessageToSet(&data, true);
 }
 

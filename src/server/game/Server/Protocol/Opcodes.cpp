@@ -226,8 +226,8 @@ void OpcodeTable::InitializeClientTable()
     DEFINE_OPCODE_HANDLER(CMSG_EQUIPMENT_SET_SAVE,                 0x0000, STATUS_UNHANDLED, PROCESS_THREADUNSAFE, &WorldSession::HandleEquipmentSetSave             );
     DEFINE_OPCODE_HANDLER(CMSG_EQUIPMENT_SET_USE,                  0x0000, STATUS_UNHANDLED, PROCESS_THREADUNSAFE, &WorldSession::HandleEquipmentSetUse              );
     DEFINE_OPCODE_HANDLER(CMSG_FAR_SIGHT,                          0x0000, STATUS_UNHANDLED, PROCESS_THREADUNSAFE, &WorldSession::HandleFarSightOpcode               );
-    DEFINE_OPCODE_HANDLER(CMSG_FORCE_MOVE_ROOT_ACK,                0x0000, STATUS_UNHANDLED, PROCESS_THREADSAFE,   &WorldSession::HandleMoveRootAck                  );
-    DEFINE_OPCODE_HANDLER(CMSG_FORCE_MOVE_UNROOT_ACK,              0x0000, STATUS_UNHANDLED, PROCESS_THREADSAFE,   &WorldSession::HandleMoveUnRootAck                );
+    DEFINE_OPCODE_HANDLER(CMSG_FORCE_MOVE_ROOT_ACK,                0x107A, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes              ); // 5.4.8 18414
+    DEFINE_OPCODE_HANDLER(CMSG_FORCE_MOVE_UNROOT_ACK,              0x1051, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes              ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_GAMEOBJECT_QUERY,                   0x1461, STATUS_LOGGEDIN,  PROCESS_INPLACE,      &WorldSession::HandleGameObjectQueryOpcode        ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_GAMEOBJ_REPORT_USE,                 0x06D9, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleGameobjectReportUse          ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_GAMEOBJ_USE,                        0x06D8, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleGameObjectUseOpcode          ); // 5.4.8 18414
@@ -597,7 +597,7 @@ void OpcodeTable::InitializeClientTable()
     DEFINE_OPCODE_HANDLER(MSG_MOVE_FALL_LAND,                      0x08FA, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes              ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(MSG_MOVE_HEARTBEAT,                      0x01F2, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes              ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(MSG_MOVE_JUMP,                           0x1153, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes              ); // 5.4.8 18414
-    DEFINE_OPCODE_HANDLER(MSG_MOVE_ROOT,                           0x107A, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes              ); // 5.4.8 18414
+    DEFINE_OPCODE_HANDLER(MSG_MOVE_ROOT,                           0x0000, STATUS_UNHANDLED, PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes              );
     DEFINE_OPCODE_HANDLER(MSG_MOVE_SET_FACING,                     0x1050, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes              ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(MSG_MOVE_SET_PITCH,                      0x017A, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes              ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(MSG_MOVE_SET_RUN_MODE,                   0x0979, STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes              ); // 5.4.8 18414
