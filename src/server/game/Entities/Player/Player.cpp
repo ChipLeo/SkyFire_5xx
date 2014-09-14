@@ -24617,11 +24617,11 @@ bool Player::HasQuestForGO(int32 GOId) const
         QuestStatusData const& qs = qs_itr->second;
         if (qs.Status == QUEST_STATUS_INCOMPLETE)
         {
-            Quest const* qinfo = sObjectMgr->GetQuestTemplate(questid);
-            if (!qinfo)
+            Quest const* qInfo = sObjectMgr->GetQuestTemplate(questid);
+            if (!qInfo)
                 continue;
 
-            if (GetGroup() && GetGroup()->isRaidGroup() && !qinfo->IsAllowedInRaid(GetMap()->GetDifficulty()))
+            if (GetGroup() && GetGroup()->isRaidGroup() && !qInfo->IsAllowedInRaid(GetMap()->GetDifficulty()))
                 continue;
 
             if (!qInfo->GetQuestObjectiveCountType(QUEST_OBJECTIVE_TYPE_GO))
@@ -24629,7 +24629,7 @@ bool Player::HasQuestForGO(int32 GOId) const
 
             for (QuestObjectiveSet::const_iterator citr = qInfo->m_questObjectives.begin(); citr != qInfo->m_questObjectives.end(); citr++)
                 if ((*citr)->Type == QUEST_OBJECTIVE_TYPE_GO)
-                    if (goId == (*citr)->ObjectId && GetQuestObjectiveCounter((*citr)->Id) < uint32((*citr)->Amount))
+                    if (GOId == (*citr)->ObjectId && GetQuestObjectiveCounter((*citr)->Id) < uint32((*citr)->Amount))
                         return true;
         }
     }
