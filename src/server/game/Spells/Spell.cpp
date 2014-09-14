@@ -4714,34 +4714,34 @@ void Spell::SendLogExecute()
 
     // TODO: Finish me
     WorldPacket data(SMSG_SPELLLOGEXECUTE, (8+4+4+4+4+8));
-    /*
-    data.WriteBit(0);
-    data.WriteBit(guid[6]);
-    data.WriteBits(0, 19); // Count
-    data.WriteBit(guid[1]);
-    data.WriteBit(guid[4]);
-    data.WriteBit(guid[7]);
-    data.WriteBit(guid[5]);
+
     data.WriteBit(guid[0]);
+    data.WriteBit(guid[6]);
+    data.WriteBit(guid[5]);
+    data.WriteBit(guid[7]);
     data.WriteBit(guid[2]);
+    data.WriteBits(0, 19); // Count
+    data.WriteBit(guid[4]);
+
+    data.WriteBit(guid[1]);
     data.WriteBit(guid[3]);
 
+    data.WriteBit(0);
+
+    data.FlushBits();
+
+    data << uint32(m_spellInfo->Id);
+
     data.WriteByteSeq(guid[5]);
-    data.WriteByteSeq(guid[2]);
-    data.WriteByteSeq(guid[1]);
-    data.WriteByteSeq(guid[3]);
-    data.WriteByteSeq(guid[0]);
     data.WriteByteSeq(guid[7]);
-    data << uint32(m_spellInfo->Id);
+    data.WriteByteSeq(guid[1]);
     data.WriteByteSeq(guid[6]);
+    data.WriteByteSeq(guid[2]);
+    data.WriteByteSeq(guid[0]);
     data.WriteByteSeq(guid[4]);
-    */
+    data.WriteByteSeq(guid[3]);
 
-    data.append(m_caster->GetPackGUID());
-
-    data << uint32(m_spellInfo->Id);
-
-    uint8 effCount = 0;
+/*    uint8 effCount = 0;
     for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
     {
         if (m_effectExecuteData[i])
