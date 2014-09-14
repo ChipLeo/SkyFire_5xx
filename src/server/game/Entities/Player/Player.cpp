@@ -396,9 +396,9 @@ void TradeData::SetAccepted(bool state, bool crosssend /*= false*/)
     if (!state)
     {
         if (crosssend)
-            m_trader->GetSession()->SendTradeStatus(TRADE_STATUS_BACK_TO_TRADE);
+            m_trader->GetSession()->SendTradeStatus(TRADE_STATUS_UNACCEPTED);
         else
-            m_player->GetSession()->SendTradeStatus(TRADE_STATUS_BACK_TO_TRADE);
+            m_player->GetSession()->SendTradeStatus(TRADE_STATUS_UNACCEPTED);
     }
 }
 
@@ -13918,6 +13918,22 @@ bool Player::IsTwoHandUsed() const
 {
     Item* mainItem = GetItemByPos(INVENTORY_SLOT_BAG_0, EQUIPMENT_SLOT_MAINHAND);
     return mainItem && mainItem->GetTemplate()->InventoryType == INVTYPE_2HWEAPON && !CanTitanGrip();
+}
+
+void Player::IgnoreTrade()
+{
+    if (m_trade)
+    {
+        Player* trader = m_trade->GetTrader();
+
+        trader->GetSession()->SendTradeStatus(TRADE_STATUS_FAILED);
+
+        // cleanup
+        delete m_trade;
+        m_trade = NULL;
+        delete trader->m_trade;
+        trader->m_trade = NULL;
+    }
 }
 
 void Player::TradeCancel(bool sendback)
