@@ -4751,15 +4751,15 @@ void Spell::SendLogExecute()
     if (!effCount)
         return;
 
-    data << uint32(effCount);
+    data << uint32(effCount);*/
     for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
     {
         if (!m_effectExecuteData[i])
             continue;
 
-        data << uint32(m_spellInfo->Effects[i].Effect);             // spell effect
+        //data << uint32(m_spellInfo->Effects[i].Effect);             // spell effect
 
-        data.append(*m_effectExecuteData[i]);
+        //data.append(*m_effectExecuteData[i]);
 
         delete m_effectExecuteData[i];
         m_effectExecuteData[i] = NULL;
