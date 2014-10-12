@@ -16162,15 +16162,78 @@ void Unit::SendChangeCurrentVictimOpcode(HostileReference* pHostileReference)
 
         TC_LOG_DEBUG("entities.unit", "WORLD: Send SMSG_HIGHEST_THREAT_UPDATE Message");
         WorldPacket data(SMSG_HIGHEST_THREAT_UPDATE, 8 + 8 + count * 8);
-        data.append(GetPackGUID());
-        data.appendPackGUID(pHostileReference->getUnitGuid());
-        data << uint32(count);
+
+        ObjectGuid guid = GetGUID();
+        ObjectGuid hostile = pHostileReference->getUnitGuid();
+
+        ByteBuffer buf;
+
+        data.WriteBit(guid[3]);
+        data.WriteBit(guid[0]);
+        data.WriteBit(hostile[3]);
+        data.WriteBit(hostile[6]);
+        data.WriteBit(hostile[1]);
+        data.WriteBit(guid[5]);
+        data.WriteBit(guid[1]);
+        data.WriteBit(guid[6]);
+        data.WriteBit(hostile[2]);
+        data.WriteBit(hostile[5]);
+        data.WriteBit(guid[7]);
+        data.WriteBit(guid[4]);
+        data.WriteBit(hostile[4]);
+
+        data.WriteBits(count, 21);
+
         ThreatContainer::StorageType const &tlist = getThreatManager().getThreatList();
         for (ThreatContainer::StorageType::const_iterator itr = tlist.begin(); itr != tlist.end(); ++itr)
         {
-            data.appendPackGUID((*itr)->getUnitGuid());
-            data << uint32((*itr)->getThreat());
+            ObjectGuid target = (*itr)->getUnitGuid();
+            data.WriteBit(target[6]);
+            data.WriteBit(target[1]);
+            data.WriteBit(target[0]);
+            data.WriteBit(target[2]);
+            data.WriteBit(target[7]);
+            data.WriteBit(target[4]);
+            data.WriteBit(target[3]);
+            data.WriteBit(target[5]);
+
+            buf.WriteByteSeq(target[6]);
+            buf << uint32((*itr)->getThreat());
+            buf.WriteByteSeq(target[4]);
+            buf.WriteByteSeq(target[0]);
+            buf.WriteByteSeq(target[3]);
+            buf.WriteByteSeq(target[5]);
+            buf.WriteByteSeq(target[2]);
+            buf.WriteByteSeq(target[1]);
+            buf.WriteByteSeq(target[7]);
         }
+
+        data.WriteBit(hostile[7]);
+        data.WriteBit(hostile[0]);
+        data.WriteBit(guid[2]);
+
+        data.FlushBits();
+
+        data.WriteByteSeq(hostile[4]);
+
+        data.append(buf);
+
+        data.WriteByteSeq(guid[3]);
+        data.WriteByteSeq(hostile[5]);
+        data.WriteByteSeq(guid[2]);
+        data.WriteByteSeq(hostile[1]);
+        data.WriteByteSeq(hostile[0]);
+        data.WriteByteSeq(hostile[2]);
+        data.WriteByteSeq(guid[6]);
+        data.WriteByteSeq(guid[1]);
+        data.WriteByteSeq(hostile[7]);
+        data.WriteByteSeq(guid[0]);
+        data.WriteByteSeq(guid[4]);
+        data.WriteByteSeq(guid[7]);
+        data.WriteByteSeq(hostile[3]);
+        data.WriteByteSeq(hostile[6]);
+        data.WriteByteSeq(guid[5]);
+
         SendMessageToSet(&data, false);
     }
 }
