@@ -28200,6 +28200,9 @@ void Player::ReadMovementInfo(WorldPacket& data, MovementInfo* mi, Movement::Ext
                     extras->ReadNextElement(data);
                 else TC_LOG_ERROR("network", "Player::ReadMovementInfo: No Extra Elemet found for opcode %s", GetOpcodeNameForLogging(data.GetOpcode(), true).c_str());
                 break;
+            case MSEExtra2Bits:
+                data.ReadBits(2);
+                break;
             default:
                 ASSERT(Movement::PrintInvalidSequenceElement(element, __FUNCTION__));
                 break;

@@ -114,6 +114,7 @@ enum MovementStatusElements
 
     MSEExtraFloat,
     MSEExtraInt8,
+    MSEExtra2Bits,
 };
 
 namespace Movement
