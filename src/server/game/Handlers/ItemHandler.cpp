@@ -1779,7 +1779,7 @@ void WorldSession::HandleReforgeItemOpcode(WorldPacket& recvData)
     uint32 bag;
     Player* player = GetPlayer();
 
-    recvData >> slot >> reforgeEntry >> bag;
+    recvData >> reforgeEntry >> bag >> slot;
 
     guid[1] = recvData.ReadBit();
     guid[0] = recvData.ReadBit();
