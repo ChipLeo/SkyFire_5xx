@@ -23823,6 +23823,49 @@ void Player::SendInitialPacketsBeforeAddToMap()
 
     SendTalentsInfoData();
 
+    SendInitialSpells();
+
+    data.Initialize(SMSG_SEND_UNLEARN_SPELLS, 3);
+    data.WriteBits(0, 22); // Count
+    data.FlushBits();
+    GetSession()->SendPacket(&data);
+
+    SendInitialActionButtons();
+    // SMSG_CORPSE_RECLAIM_DELAY
+    // SMSG_INIT_WORLD_STATES
+    // SMSG_LEARNED_SPELL
+    m_achievementMgr->SendAllAchievementData(this); // SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT
+    m_reputationMgr->SendInitialReputations();
+
+    // SMSG_WEATHER
+
+    SendCurrencies();
+
+    // SMSG_SET_VIGNETTE
+
+    SendEquipmentSetList();
+
+    // SMSG_ALL_ACHIEVEMENT_DATA_PLAYER
+    // SMSG_LOGIN_VERIFY_WORLD
+
+    data.Initialize(SMSG_LOGIN_SETTIMESPEED, 20);
+    data << uint32(0);
+    data.AppendPackedTime(sWorld->GetGameTime());
+    data << uint32(0);
+    data.AppendPackedTime(sWorld->GetGameTime());
+    data << float(0.01666667f);                             // game speed
+    GetSession()->SendPacket(&data);
+
+    GetReputationMgr().SendForceReactions();                // SMSG_SET_FORCED_REACTIONS
+
+    // -SMSG_TALENTS_INFO x 2 for pet (unspent points and talents in separate packets...)
+    // -SMSG_PET_GUIDS
+
+    // SMSG_UNK_188F
+    // SMSG_UPDATE_WORLD_STATE
+    // SMSG_SET_PHASE_SHIFT
+    // SMSG_UNK_00F9
+
     data.Initialize(SMSG_WORLD_SERVER_INFO, 4 + 4 + 1 + 1);
     // Bitfields have wrong order
     data.WriteBit(0);                                               // IneligibleForLoot
@@ -23845,35 +23888,9 @@ void Player::SendInitialPacketsBeforeAddToMap()
     //    data << uint32(100000);                                   // RestrictedMoney (starter accounts)
     GetSession()->SendPacket(&data);
 
-    SendInitialSpells();
-
-    data.Initialize(SMSG_SEND_UNLEARN_SPELLS, 4);
-    data.WriteBits(0, 22); // Count
-    data.FlushBits();
-    GetSession()->SendPacket(&data);
-
-    SendInitialActionButtons();
-    m_reputationMgr->SendInitialReputations();
-    m_achievementMgr->SendAllAchievementData(this);
-
-    SendEquipmentSetList();
-
-    data.Initialize(SMSG_LOGIN_SETTIMESPEED, 20);
-    data << uint32(0);
-    data.AppendPackedTime(sWorld->GetGameTime());
-    data << uint32(0);
-    data.AppendPackedTime(sWorld->GetGameTime());
-    data << float(0.01666667f);                             // game speed
-    GetSession()->SendPacket(&data);
-
-    GetReputationMgr().SendForceReactions();                // SMSG_SET_FORCED_REACTIONS
-
-    // SMSG_TALENTS_INFO x 2 for pet (unspent points and talents in separate packets...)
-    // SMSG_PET_GUIDS
-    // SMSG_UPDATE_WORLD_STATE
+    // SMSG_UNK_0A8B
     // SMSG_POWER_UPDATE
-
-    SendCurrencies();
+    // SMSG_CRITERIA_UPDATE_ACCOUNT
     SetMover(this);
 }
 

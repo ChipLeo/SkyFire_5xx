@@ -2005,7 +2005,7 @@ void AchievementMgr<T>::SendAllAchievementData(Player* /*receiver*/) const
     ObjectGuid guid = GetOwner()->GetGUID();
     ObjectGuid counter;
 
-    WorldPacket data(SMSG_ALL_ACHIEVEMENT_DATA, 5 + numAchievements * (1 + 4 + 4 + 4 + 4 + 8) + numCriteria * (1 + 4 + 4 + 4 + 4 + 8 + 8));
+    WorldPacket data(SMSG_ALL_ACHIEVEMENT_DATA_PLAYER, 5 + numAchievements * (1 + 4 + 4 + 4 + 4 + 8) + numCriteria * (1 + 4 + 4 + 4 + 4 + 8 + 8));
     data.WriteBits(numCriteria, 19);
 
     for (CriteriaProgressMap::const_iterator itr = m_criteriaProgress.begin(); itr != m_criteriaProgress.end(); ++itr)
