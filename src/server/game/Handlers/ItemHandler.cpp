@@ -1064,12 +1064,49 @@ void WorldSession::SendEnchantmentLog(uint64 target, uint64 caster, uint32 itemI
 
 void WorldSession::SendItemEnchantTimeUpdate(uint64 Playerguid, uint64 Itemguid, uint32 slot, uint32 Duration)
 {
-                                                            // last check 2.0.10
     WorldPacket data(SMSG_ITEM_ENCHANT_TIME_UPDATE, (8+4+4+8));
-    data << uint64(Itemguid);
+
+    ObjectGuid itemGuid = Itemguid;
+    ObjectGuid playerGuid = Playerguid;
+
+    data.WriteBit(itemGuid[4]);
+    data.WriteBit(itemGuid[0]);
+    data.WriteBit(playerGuid[3]);
+    data.WriteBit(itemGuid[3]);
+    data.WriteBit(playerGuid[2]);
+    data.WriteBit(playerGuid[6]);
+    data.WriteBit(playerGuid[7]);
+    data.WriteBit(itemGuid[1]);
+    data.WriteBit(playerGuid[4]);
+    data.WriteBit(itemGuid[6]);
+    data.WriteBit(itemGuid[5]);
+    data.WriteBit(playerGuid[0]);
+    data.WriteBit(itemGuid[2]);
+    data.WriteBit(playerGuid[5]);
+    data.WriteBit(playerGuid[1]);
+    data.WriteBit(itemGuid[7]);
+
     data << uint32(slot);
+
+    data.WriteByteSeq(playerGuid[4]);
+    data.WriteByteSeq(playerGuid[2]);
+    data.WriteByteSeq(itemGuid[5]);
+    data.WriteByteSeq(itemGuid[4]);
+    data.WriteByteSeq(playerGuid[6]);
+    data.WriteByteSeq(itemGuid[1]);
+    data.WriteByteSeq(playerGuid[0]);
+    data.WriteByteSeq(playerGuid[1]);
+    data.WriteByteSeq(itemGuid[6]);
+    data.WriteByteSeq(itemGuid[2]);
+    data.WriteByteSeq(playerGuid[7]);
+    data.WriteByteSeq(itemGuid[0]);
+    data.WriteByteSeq(itemGuid[3]);
+    data.WriteByteSeq(itemGuid[7]);
+    data.WriteByteSeq(playerGuid[3]);
+    data.WriteByteSeq(playerGuid[5]);
+
     data << uint32(Duration);
-    data << uint64(Playerguid);
+
     SendPacket(&data);
 }
 
@@ -1492,8 +1529,25 @@ void WorldSession::HandleItemRefundInfoRequest(WorldPacket& recvData)
 {
     TC_LOG_DEBUG("network", "WORLD: CMSG_ITEM_REFUND_INFO");
 
-    uint64 guid;
-    recvData >> guid;                                      // item guid
+    ObjectGuid guid;
+
+    guid[1] = recvData.ReadBit();
+    guid[0] = recvData.ReadBit();
+    guid[3] = recvData.ReadBit();
+    guid[2] = recvData.ReadBit();
+    guid[7] = recvData.ReadBit();
+    guid[4] = recvData.ReadBit();
+    guid[5] = recvData.ReadBit();
+    guid[6] = recvData.ReadBit();
+
+    recvData.ReadByteSeq(guid[3]);
+    recvData.ReadByteSeq(guid[7]);
+    recvData.ReadByteSeq(guid[5]);
+    recvData.ReadByteSeq(guid[1]);
+    recvData.ReadByteSeq(guid[0]);
+    recvData.ReadByteSeq(guid[6]);
+    recvData.ReadByteSeq(guid[4]);
+    recvData.ReadByteSeq(guid[2]);
 
     Item* item = _player->GetItemByGuid(guid);
     if (!item)

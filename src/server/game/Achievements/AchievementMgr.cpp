@@ -2177,7 +2177,7 @@ void AchievementMgr<Player>::SendAchievementInfo(Player* receiver, uint32 /*achi
         if (!isVisible(*itr))
             continue;
 
-        ObjectGuid guid3 = *(itr->second.guids.begin());
+        ObjectGuid guid3 = *itr->second.guids.begin();
         data.WriteBit(guid3[0]);
         data.WriteBit(guid3[2]);
         data.WriteBit(guid3[5]);

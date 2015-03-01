@@ -17268,7 +17268,9 @@ void Player::SendQuestTimerFailed(uint32 quest_id)
 
 void Player::SendCanTakeQuestResponse(QuestFailedReason msg) const
 {
-    WorldPacket data(SMSG_QUESTGIVER_QUEST_INVALID, 4);
+    WorldPacket data(SMSG_QUESTGIVER_QUEST_INVALID, 5);
+    data.WriteBit(1);
+    data.FlushBits();
     data << uint32(msg);
     GetSession()->SendPacket(&data);
     TC_LOG_DEBUG("network", "WORLD: Sent SMSG_QUESTGIVER_QUEST_INVALID");
@@ -20910,7 +20912,26 @@ void Player::SendAttackSwingBadFacingAttack()
 void Player::SendAutoRepeatCancel(Unit* target)
 {
     WorldPacket data(SMSG_CANCEL_AUTO_REPEAT, target->GetPackGUID().size());
-    data.append(target->GetPackGUID());                     // may be it's target guid
+
+    ObjectGuid guid = target->GetGUID();
+
+    data.WriteBit(guid[1]);
+    data.WriteBit(guid[3]);
+    data.WriteBit(guid[0]);
+    data.WriteBit(guid[4]);
+    data.WriteBit(guid[6]);
+    data.WriteBit(guid[7]);
+    data.WriteBit(guid[5]);
+    data.WriteBit(guid[2]);
+    data.WriteByteSeq(guid[7]);
+    data.WriteByteSeq(guid[6]);
+    data.WriteByteSeq(guid[2]);
+    data.WriteByteSeq(guid[5]);
+    data.WriteByteSeq(guid[0]);
+    data.WriteByteSeq(guid[4]);
+    data.WriteByteSeq(guid[1]);
+    data.WriteByteSeq(guid[3]);
+
     GetSession()->SendPacket(&data);
 }
 
@@ -25103,6 +25124,7 @@ void Player::SetClientControl(Unit* target, uint8 allowMove)
     ObjectGuid guid = target->GetGUID();
 
     WorldPacket data(SMSG_CLIENT_CONTROL_UPDATE, 9 + 1);
+
     data.WriteBit(guid[2]);
     data.WriteBit(guid[7]);
     data.WriteBit(allowMove);
@@ -25112,7 +25134,7 @@ void Player::SetClientControl(Unit* target, uint8 allowMove)
     data.WriteBit(guid[5]);
     data.WriteBit(guid[1]);
     data.WriteBit(guid[4]);
-
+    data.FlushBits();
     data.WriteByteSeq(guid[1]);
     data.WriteByteSeq(guid[5]);
     data.WriteByteSeq(guid[7]);
@@ -25121,6 +25143,7 @@ void Player::SetClientControl(Unit* target, uint8 allowMove)
     data.WriteByteSeq(guid[6]);
     data.WriteByteSeq(guid[3]);
     data.WriteByteSeq(guid[0]);
+
     GetSession()->SendPacket(&data);
 
     if (target == this && allowMove == 1)
