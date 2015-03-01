@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -114,6 +114,19 @@ bool Player::UpdateStats(Stats stat)
                 ApplyRatingMod(CombatRating(rating), 0, true);
     }
     return true;
+}
+
+void Player::UpdatePvpPower()
+{
+    float precision = 100.0f;
+    float value = GetRatingBonusValue(CR_PVP_POWER);
+    value += GetTotalAuraModifier(SPELL_AURA_MOD_RATING);
+
+    float pvpHealing = value / precision;
+    float pvpDamage = value / precision;
+
+    SetFloatValue(PLAYER_FIELD_PVP_POWER_HEALING, pvpHealing);
+    SetFloatValue(PLAYER_FIELD_PVP_POWER_DAMAGE, pvpDamage);
 }
 
 void Player::ApplySpellPowerBonus(int32 amount, bool apply)

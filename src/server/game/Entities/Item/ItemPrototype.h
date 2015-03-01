@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _ITEMPROTOTYPE_H
-#define _ITEMPROTOTYPE_H
+#ifndef SF_ITEMPROTOTYPE_H
+#define SF_ITEMPROTOTYPE_H
 
 #include "Common.h"
 #include "SharedDefines.h"
@@ -74,9 +74,10 @@ enum ItemModType
     ITEM_MOD_SHADOW_RESISTANCE        = 54,
     ITEM_MOD_NATURE_RESISTANCE        = 55,
     ITEM_MOD_ARCANE_RESISTANCE        = 56,
+    ITEM_MOD_PVP_POWER                = 57
 };
 
-#define MAX_ITEM_MOD                    57
+#define MAX_ITEM_MOD                    58
 
 enum ItemSpelltriggerType
 {
@@ -778,6 +779,12 @@ struct ItemTemplate
                SubClass == ITEM_SUBCLASS_WEAPON_BOW ||
                SubClass == ITEM_SUBCLASS_WEAPON_GUN ||
                SubClass == ITEM_SUBCLASS_WEAPON_CROSSBOW;
+    }
+    bool IsRangedInventoryType() const
+    {
+        return InventoryType == INVTYPE_RANGED ||
+               InventoryType == INVTYPE_THROWN ||
+               InventoryType == INVTYPE_RANGEDRIGHT;
     }
 };
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,8 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _WORLDSTATE_BUILDER_
-#define _WORLDSTATE_BUILDER_
+#ifndef SF_WORLDSTATE_BUILDER_H
+#define SF_WORLDSTATE_BUILDER_H
 
 #include "WorldPacket.h"
 #include "WorldSession.h"

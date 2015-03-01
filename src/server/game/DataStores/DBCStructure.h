@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -1496,16 +1496,6 @@ struct GtOCTClassCombatRatingScalarEntry
     float    ratio;
 };
 
-struct GtOCTRegenHPEntry
-{
-    float    ratio;
-};
-
-struct GtOCTRegenMPEntry
-{
-    float    ratio;
-};
-
 struct gtOCTHpPerStaminaEntry
 {
     float    ratio;
@@ -2082,12 +2072,12 @@ struct SpellEffectEntry
     uint32    Id;                                           // 0         m_ID
     uint32    EffectDifficulty;                             // 1         m_effectDifficulty
     uint32    Effect;                                       // 2         m_effect
-    float     EffectValueMultiplier;                        // 3         m_effectAmplitude
+    float     EffectValueMultiplier;                        // 3         m_effectValueMultiplier
     uint32    EffectApplyAuraName;                          // 4         m_effectAura
-    uint32    EffectAmplitude;                              // 5         m_effectAuraPeriod
+    uint32    EffectAuraTickCount;                          // 5         m_effectAuraTickCount
     int32     EffectBasePoints;                             // 6         m_effectBasePoints (don't must be used in spell/auras explicitly, must be used cached Spell::m_currentBasePoints)
-    float     EffectBonusMultiplier;                        // 7         m_effectBonus
-    float     EffectDamageMultiplier;                       // 8         m_effectChainAmplitude
+    float     EffectBonusMultiplier;                        // 7         m_effectBonusMultiplier
+    float     EffectDamageMultiplier;                       // 8         m_effectDamageMultiplier
     uint32    EffectChainTarget;                            // 9         m_effectChainTargets
     int32     EffectDieSides;                               // 10         m_effectDieSides
     uint32    EffectItemType;                               // 11        m_effectItemType
@@ -2489,12 +2479,6 @@ struct SpellItemEnchantmentConditionEntry
     //uint8   Logic[5]                                      // 25-30    m_logic[5]
 };
 
-struct StableSlotPricesEntry
-{
-    uint32 Slot;
-    uint32 Price;
-};
-
 struct SummonPropertiesEntry
 {
     uint32  Id;                                             // 0
@@ -2705,9 +2689,11 @@ struct VehicleSeatEntry
 
     bool CanEnterOrExit() const { return m_flags & VEHICLE_SEAT_FLAG_CAN_ENTER_OR_EXIT; }
     bool CanSwitchFromSeat() const { return m_flags & VEHICLE_SEAT_FLAG_CAN_SWITCH; }
-    bool IsUsableByOverride() const { return (m_flags & (VEHICLE_SEAT_FLAG_UNCONTROLLED | VEHICLE_SEAT_FLAG_UNK18)
-                                    || (m_flagsB & (VEHICLE_SEAT_FLAG_B_USABLE_FORCED | VEHICLE_SEAT_FLAG_B_USABLE_FORCED_2 |
-                                        VEHICLE_SEAT_FLAG_B_USABLE_FORCED_3 | VEHICLE_SEAT_FLAG_B_USABLE_FORCED_4))); }
+    bool IsUsableByOverride() const
+    {
+        return (m_flags & (VEHICLE_SEAT_FLAG_UNCONTROLLED | VEHICLE_SEAT_FLAG_UNK18) ||
+            (m_flagsB & (VEHICLE_SEAT_FLAG_B_USABLE_FORCED | VEHICLE_SEAT_FLAG_B_USABLE_FORCED_2 | VEHICLE_SEAT_FLAG_B_USABLE_FORCED_3 | VEHICLE_SEAT_FLAG_B_USABLE_FORCED_4)));
+    }
     bool IsEjectable() const { return m_flagsB & VEHICLE_SEAT_FLAG_B_EJECTABLE; }
 };
 
@@ -2872,6 +2858,6 @@ struct TaxiPathNodePtr
 typedef Path<TaxiPathNodePtr, TaxiPathNodeEntry const> TaxiPathNodeList;
 typedef std::vector<TaxiPathNodeList> TaxiPathNodesByPath;
 
-#define TaxiMaskSize 114
+#define TaxiMaskSize 162
 typedef uint8 TaxiMask[TaxiMaskSize];
 #endif

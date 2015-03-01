@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -50,7 +50,7 @@ public:
         m_power(power), m_speed(speed), m_quality(quality), m_breed(breedId), m_flags(flags), m_dbState(BATTLE_PET_DB_STATE_NONE) { }
 
     BattlePet(uint64 id, uint16 speciesId, uint8 level, uint8 quality, uint8 breedId)
-        : m_id(id), m_species(speciesId), m_breed(breedId), m_nickname(""), m_timestamp(0),m_level(level), m_xp(0), m_curHealth(0),
+        : m_id(id), m_species(speciesId), m_breed(breedId), m_nickname(""), m_timestamp(0), m_level(level), m_xp(0), m_curHealth(0),
         m_maxHealth(0), m_power(0), m_speed(0), m_quality(quality), m_flags(0), m_dbState(BATTLE_PET_DB_STATE_NONE)
     {
         CalculateStats(true);

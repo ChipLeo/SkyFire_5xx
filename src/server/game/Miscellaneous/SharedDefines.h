@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -24,7 +24,8 @@
 #include "Define.h"
 #include <cassert>
 
-#define MAX_CREATURE_BASE_HP 5
+#define MAX_CREATURE_BASE_HP 2
+#define CURRENT_CONTENT_EXP 4
 
 enum SpellEffIndex
 {
@@ -74,6 +75,16 @@ enum LootModes
     LOOT_MODE_HARD_MODE_2              = 0x4,
     LOOT_MODE_HARD_MODE_3              = 0x8,
     LOOT_MODE_HARD_MODE_4              = 0x10
+};
+
+enum Expansions
+{
+    EXPANSION_CLASSIC = 0,
+    EXPANSION_THE_BURNING_CRUSADE = 1,
+    EXPANSION_WRATH_OF_THE_LICH_KING = 2,
+    EXPANSION_CATACLYSM = 3,
+    EXPANSION_MISTS_OF_PANDARIA = 4,
+    MAX_EXPANSIONS = 5
 };
 
 enum Gender
@@ -3962,7 +3973,9 @@ enum SpellFamilyNames
     SPELLFAMILY_DEATHKNIGHT = 15,
     // 16 - unused
     SPELLFAMILY_PET         = 17,
-    SPELLFAMILY_UNK3        = 50,
+    SPELLFAMILY_TOTEMS      = 50,
+    SPELLFAMILY_MONK        = 53,
+    SPELLFAMILY_WARLOCK_PET = 57
 };
 
 enum TradeStatus
@@ -3978,14 +3991,14 @@ enum TradeStatus
     TRADE_STATUS_STATE_CHANGED         = 9,
     TRADE_STATUS_WRONG_FACTION         = 10,
     TRADE_STATUS_ALREADY_TRADING       = 11,
-    TRADE_STATUS_RESTRICTED_ACCOUNT    = 13, // not implemented
+    TRADE_STATUS_RESTRICTED_ACCOUNT    = 13,
     TRADE_STATUS_COMPLETE              = 14,
     TRADE_STATUS_LOGGING_OUT           = 15,
-    TRADE_STATUS_PLAYER_IGNORED        = 16, // not implemented
+    TRADE_STATUS_PLAYER_IGNORED        = 16,
     TRADE_STATUS_TARGET_LOGGING_OUT    = 17,
-    TRADE_STATUS_PETITION              = 18, // not implemented
+    TRADE_STATUS_PETITION              = 18,
     TRADE_STATUS_STUNNED               = 20,
-    TRADE_STATUS_PLAYER_BUSY           = 21, // not implemented
+    TRADE_STATUS_PLAYER_BUSY           = 21,
     TRADE_STATUS_WRONG_REALM           = 22,
     TRADE_STATUS_NOT_ENOUGH_CURRENCY   = 23,
     TRADE_STATUS_PROPOSED              = 24,

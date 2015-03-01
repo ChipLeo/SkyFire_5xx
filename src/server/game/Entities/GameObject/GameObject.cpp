@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -1780,6 +1780,15 @@ void GameObject::SendCustomAnim(uint32 anim)
     data.FlushBits();
     if (anim)
         data << uint32(anim);
+
+    data.WriteByteSeq(guid[5]);
+    data.WriteByteSeq(guid[6]);
+    data.WriteByteSeq(guid[7]);
+    data.WriteByteSeq(guid[3]);
+    data.WriteByteSeq(guid[4]);
+    data.WriteByteSeq(guid[0]);
+    data.WriteByteSeq(guid[2]);
+    data.WriteByteSeq(guid[1]);
 
     SendMessageToSet(&data, true);
 }

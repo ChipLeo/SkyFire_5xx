@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -738,7 +738,7 @@ struct SmartAction
         } summonGO;
 
         struct
-         {
+        {
             uint32 state;
         } active;
 
@@ -1292,9 +1292,8 @@ enum SmartCastFlags
 // one line in DB is one event
 struct SmartScriptHolder
 {
-    SmartScriptHolder() : entryOrGuid(0), source_type(SMART_SCRIPT_TYPE_CREATURE)
-        , event_id(0), link(0), event(), action(), target(), timer(0), active(false), runOnce(false)
-        , enableTimed(false) { }
+    SmartScriptHolder() : entryOrGuid(0), source_type(SMART_SCRIPT_TYPE_CREATURE),
+        event_id(0), link(0), event(), action(), target(), timer(0), active(false), runOnce(false), enableTimed(false) { }
 
     int32 entryOrGuid;
     SmartScriptType source_type;

@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -676,6 +676,7 @@ void AddSC_boss_ordos();
 //void AddSC_townlong_steppes();
 //void AddSC_vale_of_eternal_blossoms();
 //void AddSC_valley_of_the_four_winds();
+void AddSC_zone_wandering_island();
 
 // Pets
 void AddSC_deathknight_pet_scripts();
@@ -1414,6 +1415,7 @@ void AddPandariaScripts()
     //AddSC_townlong_steppes();
     //AddSC_vale_of_eternal_blossoms();
     //AddSC_valley_of_the_four_winds();
+    AddSC_zone_wandering_island();
 #endif
 }
 

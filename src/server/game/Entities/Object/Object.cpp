@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -126,8 +126,8 @@ Object::~Object()
 
     for (size_t i = 0; i < m_dynamicTab.size(); ++i)
     {
-        delete[] m_dynamicTab[i];
-        delete[] m_dynamicChange[i];
+        delete [] m_dynamicTab[i];
+        delete [] m_dynamicChange[i];
     }
 }
 
@@ -2376,26 +2376,26 @@ void WorldObject::SendMessageToSet(WorldPacket* data, Player const* skipped_rcvr
 
 void WorldObject::SendObjectDeSpawnAnim(uint64 guID)
 {
+    ObjectGuid Guid = guID;
     WorldPacket data(SMSG_GAMEOBJECT_DESPAWN_ANIM, 8);
 
-    ObjectGuid guid = guID;
+    data.WriteBit(Guid[0]);
+    data.WriteBit(Guid[2]);
+    data.WriteBit(Guid[4]);
+    data.WriteBit(Guid[1]);
+    data.WriteBit(Guid[7]);
+    data.WriteBit(Guid[3]);
+    data.WriteBit(Guid[6]);
+    data.WriteBit(Guid[5]);
 
-    data.WriteBit(guid[0]);
-    data.WriteBit(guid[2]);
-    data.WriteBit(guid[4]);
-    data.WriteBit(guid[1]);
-    data.WriteBit(guid[7]);
-    data.WriteBit(guid[3]);
-    data.WriteBit(guid[6]);
-    data.WriteBit(guid[5]);
-    data.WriteByteSeq(guid[0]);
-    data.WriteByteSeq(guid[2]);
-    data.WriteByteSeq(guid[4]);
-    data.WriteByteSeq(guid[5]);
-    data.WriteByteSeq(guid[7]);
-    data.WriteByteSeq(guid[3]);
-    data.WriteByteSeq(guid[1]);
-    data.WriteByteSeq(guid[6]);
+    data.WriteByteSeq(Guid[0]);
+    data.WriteByteSeq(Guid[2]);
+    data.WriteByteSeq(Guid[4]);
+    data.WriteByteSeq(Guid[5]);
+    data.WriteByteSeq(Guid[7]);
+    data.WriteByteSeq(Guid[3]);
+    data.WriteByteSeq(Guid[1]);
+    data.WriteByteSeq(Guid[6]);
 
     SendMessageToSet(&data, true);
 }

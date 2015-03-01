@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -35,7 +35,7 @@ Warden::Warden() : _inputCrypto(16), _outputCrypto(16), _checkTimer(10000/*10 se
 
 Warden::~Warden()
 {
-    delete[] _module->CompressedData;
+    delete [] _module->CompressedData;
     delete _module;
     _module = NULL;
     _initialized = false;
@@ -206,7 +206,7 @@ std::string Warden::Penalty(WardenCheck* check /*= NULL*/)
             if (check)
                 banReason << ": " << check->Comment << " (CheckId: " << check->CheckId << ")";
 
-            sWorld->BanAccount(BAN_ACCOUNT, accountName, duration.str(), banReason.str(),"Server");
+            sWorld->BanAccount(BAN_ACCOUNT, accountName, duration.str(), banReason.str(), "Server");
 
             return "Ban";
         }

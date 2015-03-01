@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -110,8 +110,7 @@ void Guild::SendCommandResult(WorldSession* session, GuildCommandType type, Guil
 
     session->SendPacket(&data);
 
-    TC_LOG_DEBUG("guild", "SMSG_GUILD_COMMAND_RESULT [%s]: Type: %u, code: %u, param: %s"
-         , session->GetPlayerInfo().c_str(), type, errCode, param.c_str());
+    TC_LOG_DEBUG("guild", "SMSG_GUILD_COMMAND_RESULT [%s]: Type: %u, code: %u, param: %s", session->GetPlayerInfo().c_str(), type, errCode, param.c_str());
 }
 
 void Guild::SendSaveEmblemResult(WorldSession* session, GuildEmblemError errCode)
@@ -623,8 +622,7 @@ void Guild::BankTab::SendText(Guild const* guild, WorldSession* session) const
 
     if (session)
     {
-        TC_LOG_DEBUG("guild", "SMSG_GUILD_BANK_QUERY_TEXT_RESULT [%s]: Tabid: %u, Text: %s"
-            , session->GetPlayerInfo().c_str(), m_tabId, m_text.c_str());
+        TC_LOG_DEBUG("guild", "SMSG_GUILD_BANK_QUERY_TEXT_RESULT [%s]: Tabid: %u, Text: %s", session->GetPlayerInfo().c_str(), m_tabId, m_text.c_str());
         session->SendPacket(&data);
     }
     else
@@ -1727,7 +1725,42 @@ void Guild::HandleSetMemberNote(WorldSession* session, std::string const& note, 
         else
             member->SetOfficerNote(note);
 
-        HandleRoster(session); // FIXME - We should send SMSG_GUILD_MEMBER_UPDATE_NOTE
+        ObjectGuid memberGuid = member->GetGUID();
+
+        WorldPacket data(SMSG_GUILD_MEMBER_UPDATE_NOTE, 1 + 1 + 1 + 8 + note.length());
+
+        data.WriteBit(memberGuid[2]);
+        data.WriteBits(note.length(), 8);
+        data.WriteBit(isPublic);
+        data.WriteBit(memberGuid[5]);
+        data.WriteBit(memberGuid[0]);
+        data.WriteBit(memberGuid[4]);
+        data.WriteBit(memberGuid[3]);
+        data.WriteBit(memberGuid[1]);
+        data.WriteBit(memberGuid[6]);
+        data.WriteBit(memberGuid[7]);
+        data.FlushBits();
+
+        data.WriteByteSeq(memberGuid[7]);
+        data.WriteByteSeq(memberGuid[5]);
+        data.WriteByteSeq(memberGuid[0]);
+        data.WriteByteSeq(memberGuid[1]);
+        data.WriteString(note);
+        data.WriteByteSeq(memberGuid[3]);
+        data.WriteByteSeq(memberGuid[6]);
+        data.WriteByteSeq(memberGuid[4]);
+        data.WriteByteSeq(memberGuid[2]);
+
+        if (session)
+        {
+            TC_LOG_DEBUG("guild", "SMSG_GUILD_MEMBER_UPDATE_NOTE [%s]", session->GetPlayerInfo().c_str());
+            session->SendPacket(&data);
+        }
+        else
+        {
+            TC_LOG_DEBUG("guild", "SMSG_GUILD_MEMBER_UPDATE_NOTE [Broadcast]");
+            BroadcastPacket(&data);
+        }
     }
 }
 
@@ -2204,11 +2237,11 @@ void Guild::HandleGuildPartyRequest(WorldSession* session)
         return;
 
     WorldPacket data(SMSG_GUILD_PARTY_STATE_RESPONSE, 13);
-    data.WriteBit(player->GetMap()->GetOwnerGuildId(player->GetTeam()) == GetId()); // Is guild group
-    data.FlushBits();
+
+    data << uint32(0);                                                              // Needed guild members
     data << float(0.f);                                                             // Guild XP multiplier
     data << uint32(0);                                                              // Current guild members
-    data << uint32(0);                                                              // Needed guild members
+    data.WriteBit(player->GetMap()->GetOwnerGuildId(player->GetTeam()) == GetId()); // Is guild group
 
     session->SendPacket(&data);
     TC_LOG_DEBUG("guild", "SMSG_GUILD_PARTY_STATE_RESPONSE [%s]", session->GetPlayerInfo().c_str());
@@ -2307,16 +2340,18 @@ void Guild::SendPermissions(WorldSession* session) const
     uint8 rankId = member->GetRankId();
 
     WorldPacket data(SMSG_GUILD_PERMISSIONS_QUERY_RESULTS, 4 * 15 + 1);
-    data << uint32(_GetMemberRemainingMoney(member));
+    data << uint32(rankId);
+    data << uint32(_GetRankBankMoneyPerDay(rankId));
     data << uint32(_GetPurchasedTabsSize());
     data << uint32(_GetRankRights(rankId));
-    data << uint32(rankId);
-    data.WriteBits(GUILD_BANK_MAX_TABS, 23);
+
+    data.WriteBits(GUILD_BANK_MAX_TABS, 21);
+    data.FlushBits();
 
     for (uint8 tabId = 0; tabId < GUILD_BANK_MAX_TABS; ++tabId)
     {
-        data << uint32(_GetRankBankTabRights(rankId, tabId));
         data << uint32(_GetMemberRemainingSlots(member, tabId));
+        data << uint32(_GetRankBankTabRights(rankId, tabId));
     }
 
     session->SendPacket(&data);

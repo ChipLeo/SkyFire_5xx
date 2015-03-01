@@ -17,6 +17,7 @@ git:
 branches:
   only:
     - master
+    - scan
 
 compiler:
   - clang

@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SPELLINFO_H
-#define _SPELLINFO_H
+#ifndef SF_SPELLINFO_H
+#define SF_SPELLINFO_H
 
 #include "SharedDefines.h"
 #include "Util.h"
@@ -236,7 +236,7 @@ class SpellEffectInfo
 public:
     uint32    Effect;
     uint32    ApplyAuraName;
-    uint32    Amplitude;
+    uint32    ApplyAuraTickCount;
     int32     DieSides;
     float     RealPointsPerLevel;
     int32     BasePoints;
@@ -276,6 +276,7 @@ public:
 
     int32 CalcValue(Unit const* caster = NULL, int32 const* basePoints = NULL, Unit const* target = NULL) const;
     int32 CalcBaseValue(int32 value) const;
+    float CalcBonusMultiplier(Unit* caster, Spell* spell = NULL) const;
     float CalcValueMultiplier(Unit* caster, Spell* spell = NULL) const;
     float CalcDamageMultiplier(Unit* caster, Spell* spell = NULL) const;
 

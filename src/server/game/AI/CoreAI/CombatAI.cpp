@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -331,7 +331,7 @@ void VehicleAI::CheckConditions(const uint32 diff)
     {
         if (!conditions.empty())
         {
-            if( Vehicle* vehicleKit = me->GetVehicleKit())
+            if (Vehicle* vehicleKit = me->GetVehicleKit())
                 for (SeatMap::iterator itr = vehicleKit->Seats.begin(); itr != vehicleKit->Seats.end(); ++itr)
                     if (Unit* passenger = ObjectAccessor::GetUnit(*me, itr->second.Passenger.Guid))
                     {

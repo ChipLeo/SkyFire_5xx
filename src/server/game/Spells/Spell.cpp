@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -510,8 +510,8 @@ SpellValue::SpellValue(SpellInfo const* proto)
 
 Spell::Spell(Unit* caster, SpellInfo const* info, TriggerCastFlags triggerFlags, uint64 originalCasterGUID, bool skipCheck) :
 m_spellInfo(sSpellMgr->GetSpellForDifficultyFromSpell(info, caster)),
-m_caster((info->AttributesEx6 & SPELL_ATTR6_CAST_BY_CHARMER && caster->GetCharmerOrOwner()) ? caster->GetCharmerOrOwner() : caster)
-, m_spellValue(new SpellValue(m_spellInfo)), m_preGeneratedPath(PathGenerator(m_caster))
+m_caster((info->AttributesEx6 & SPELL_ATTR6_CAST_BY_CHARMER && caster->GetCharmerOrOwner()) ? caster->GetCharmerOrOwner() : caster),
+m_spellValue(new SpellValue(m_spellInfo)), m_preGeneratedPath(PathGenerator(m_caster))
 {
     m_customError = SPELL_CUSTOM_ERROR_NONE;
     m_skipCheck = skipCheck;
@@ -1608,8 +1608,8 @@ void Spell::SelectImplicitChainTargets(SpellEffIndex effIndex, SpellImplicitTarg
         m_applyMultiplierMask |= effMask;
 
         std::list<WorldObject*> targets;
-        SearchChainTargets(targets, maxTargets - 1, target, targetType.GetObjectType(), targetType.GetCheckType()
-            , m_spellInfo->Effects[effIndex].ImplicitTargetConditions, targetType.GetTarget() == TARGET_UNIT_TARGET_CHAINHEAL_ALLY);
+        SearchChainTargets(targets, maxTargets - 1, target, targetType.GetObjectType(), targetType.GetCheckType(),
+            m_spellInfo->Effects[effIndex].ImplicitTargetConditions, targetType.GetTarget() == TARGET_UNIT_TARGET_CHAINHEAL_ALLY);
 
         // Chain primary target is added earlier
         CallScriptObjectAreaTargetSelectHandlers(targets, effIndex);
@@ -3427,8 +3427,8 @@ void Spell::handle_immediate()
     TakeCastItem();
 
     // handle ammo consumption for thrown weapons
-    if (m_spellInfo->IsRangedWeaponSpell() && m_spellInfo->IsChanneled())
-        TakeAmmo();
+    //if (m_spellInfo->IsRangedWeaponSpell() && m_spellInfo->IsChanneled())
+    //   TakeAmmo();
 
     if (m_spellState != SPELL_STATE_CASTING)
         finish(true);                                       // successfully finish spell cast (not last in case autorepeat or channel spell)
@@ -4789,41 +4789,41 @@ void Spell::ExecuteLogEffectInterruptCast(uint8 /*effIndex*/, Unit* victim, uint
     ObjectGuid targetGuid = victim->GetGUID();
 
     WorldPacket data(SMSG_SPELLINTERRUPTLOG, 8 + 8 + 4 + 4);
-    data.WriteBit(targetGuid[4]);
-    data.WriteBit(casterGuid[5]);
-    data.WriteBit(casterGuid[6]);
-    data.WriteBit(casterGuid[1]);
-    data.WriteBit(casterGuid[3]);
-    data.WriteBit(casterGuid[0]);
-    data.WriteBit(targetGuid[3]);
-    data.WriteBit(targetGuid[5]);
-    data.WriteBit(targetGuid[1]);
-    data.WriteBit(casterGuid[4]);
-    data.WriteBit(casterGuid[7]);
     data.WriteBit(targetGuid[7]);
-    data.WriteBit(targetGuid[6]);
     data.WriteBit(targetGuid[2]);
+    data.WriteBit(targetGuid[4]);
+    data.WriteBit(targetGuid[6]);
+    data.WriteBit(casterGuid[0]);
     data.WriteBit(casterGuid[2]);
+    data.WriteBit(casterGuid[5]);
+    data.WriteBit(casterGuid[1]);
+    data.WriteBit(casterGuid[4]);
     data.WriteBit(targetGuid[0]);
+    data.WriteBit(targetGuid[3]);
+    data.WriteBit(casterGuid[7]);
+    data.WriteBit(casterGuid[6]);
+    data.WriteBit(targetGuid[1]);
+    data.WriteBit(casterGuid[3]);
+    data.WriteBit(targetGuid[5]);
 
-    data.WriteByteSeq(casterGuid[7]);
-    data.WriteByteSeq(casterGuid[6]);
-    data.WriteByteSeq(casterGuid[3]);
-    data.WriteByteSeq(casterGuid[2]);
-    data.WriteByteSeq(targetGuid[3]);
-    data.WriteByteSeq(targetGuid[6]);
-    data.WriteByteSeq(targetGuid[2]);
-    data.WriteByteSeq(targetGuid[4]);
-    data.WriteByteSeq(targetGuid[7]);
     data.WriteByteSeq(targetGuid[0]);
-    data.WriteByteSeq(casterGuid[4]);
-    data << uint32(m_spellInfo->Id);
-    data.WriteByteSeq(targetGuid[1]);
-    data.WriteByteSeq(casterGuid[0]);
-    data.WriteByteSeq(casterGuid[5]);
-    data.WriteByteSeq(casterGuid[1]);
+    data.WriteByteSeq(casterGuid[2]);
     data << uint32(spellId);
+    data.WriteByteSeq(casterGuid[1]);
+    data.WriteByteSeq(targetGuid[2]);
+    data.WriteByteSeq(casterGuid[3]);
+    data << uint32(m_spellInfo->Id);
+    data.WriteByteSeq(targetGuid[4]);
+    data.WriteByteSeq(casterGuid[4]);
+    data.WriteByteSeq(targetGuid[3]);
+    data.WriteByteSeq(targetGuid[1]);
+    data.WriteByteSeq(casterGuid[5]);
+    data.WriteByteSeq(casterGuid[6]);
+    data.WriteByteSeq(casterGuid[7]);
     data.WriteByteSeq(targetGuid[5]);
+    data.WriteByteSeq(targetGuid[6]);
+    data.WriteByteSeq(casterGuid[0]);
+    data.WriteByteSeq(targetGuid[7]);
 
     m_caster->SendMessageToSet(&data, true);
 }
@@ -5134,7 +5134,7 @@ void Spell::TakePower()
         m_caster->ModifyPower(powerType, -irand(0, m_powerCost/4));
 }
 
-void Spell::TakeAmmo()
+/*void Spell::TakeAmmo()
 {
     if (m_attackType == RANGED_ATTACK && m_caster->GetTypeId() == TYPEID_PLAYER)
     {
@@ -5159,7 +5159,7 @@ void Spell::TakeAmmo()
             }
         }
     }
-}
+}*/
 
 SpellCastResult Spell::CheckRuneCost(uint32 runeCostID)
 {
@@ -7162,13 +7162,13 @@ void Spell::UpdatePointers()
 CurrentSpellTypes Spell::GetCurrentContainer() const
 {
     if (IsNextMeleeSwingSpell())
-        return(CURRENT_MELEE_SPELL);
+        return (CURRENT_MELEE_SPELL);
     else if (IsAutoRepeat())
-        return(CURRENT_AUTOREPEAT_SPELL);
+        return (CURRENT_AUTOREPEAT_SPELL);
     else if (m_spellInfo->IsChanneled())
-        return(CURRENT_CHANNELED_SPELL);
+        return (CURRENT_CHANNELED_SPELL);
     else
-        return(CURRENT_GENERIC_SPELL);
+        return (CURRENT_GENERIC_SPELL);
 }
 
 bool Spell::CheckEffectTarget(Unit const* target, uint32 eff) const
@@ -7445,7 +7445,7 @@ void Spell::HandleLaunchPhase()
                     case SPELL_EFFECT_NORMALIZED_WEAPON_DMG:
                     case SPELL_EFFECT_WEAPON_PERCENT_DAMAGE:
                     ammoTaken=true;
-                    TakeAmmo();
+                    //TakeAmmo();
                 }
                 if (ammoTaken)
                     break;

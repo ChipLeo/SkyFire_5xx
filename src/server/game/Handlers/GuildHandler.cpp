@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -261,32 +261,32 @@ void WorldSession::HandleGuildSetNoteOpcode(WorldPacket& recvPacket)
 {
     ObjectGuid playerGuid;
 
-    playerGuid[1] = recvPacket.ReadBit();
-    playerGuid[4] = recvPacket.ReadBit();
-    playerGuid[5] = recvPacket.ReadBit();
-    playerGuid[3] = recvPacket.ReadBit();
-    playerGuid[0] = recvPacket.ReadBit();
-    playerGuid[7] = recvPacket.ReadBit();
-    bool ispublic = recvPacket.ReadBit();      // 0 == Officer, 1 == Public
-    playerGuid[6] = recvPacket.ReadBit();
-    uint32 noteLength = recvPacket.ReadBits(8);
-    playerGuid[2] = recvPacket.ReadBit();
+    playerGuid[1]     = recvPacket.ReadBit();
+    uint32 notelength = recvPacket.ReadBits(8);            // note size
+    playerGuid[4]     = recvPacket.ReadBit();
+    playerGuid[2]     = recvPacket.ReadBit();
+    bool isPublic     = recvPacket.ReadBit();              // 0 == Officer, 1 == Public
+    playerGuid[3]     = recvPacket.ReadBit();
+    playerGuid[5]     = recvPacket.ReadBit();
+    playerGuid[0]     = recvPacket.ReadBit();
+    playerGuid[6]     = recvPacket.ReadBit();
+    playerGuid[7]     = recvPacket.ReadBit();
 
-    recvPacket.ReadByteSeq(playerGuid[4]);
     recvPacket.ReadByteSeq(playerGuid[5]);
-    recvPacket.ReadByteSeq(playerGuid[0]);
-    recvPacket.ReadByteSeq(playerGuid[3]);
     recvPacket.ReadByteSeq(playerGuid[1]);
     recvPacket.ReadByteSeq(playerGuid[6]);
+    std::string note = recvPacket.ReadString(notelength);  // note
+    recvPacket.ReadByteSeq(playerGuid[0]);
     recvPacket.ReadByteSeq(playerGuid[7]);
-    std::string note = recvPacket.ReadString(noteLength);
+    recvPacket.ReadByteSeq(playerGuid[4]);
+    recvPacket.ReadByteSeq(playerGuid[3]);
     recvPacket.ReadByteSeq(playerGuid[2]);
 
     TC_LOG_DEBUG("guild", "CMSG_GUILD_SET_NOTE [%s]: Target: %u, Note: %s, Public: %u",
-        GetPlayerInfo().c_str(), GUID_LOPART(playerGuid), note.c_str(), ispublic);
+        GetPlayerInfo().c_str(), GUID_LOPART(playerGuid), note.c_str(), isPublic);
 
     if (Guild* guild = GetPlayer()->GetGuild())
-        guild->HandleSetMemberNote(this, note, playerGuid, ispublic);
+        guild->HandleSetMemberNote(this, note, playerGuid, isPublic);
 }
 
 void WorldSession::HandleGuildQueryRanksOpcode(WorldPacket& recvPacket)
@@ -363,11 +363,9 @@ void WorldSession::HandleSaveGuildEmblemOpcode(WorldPacket& recvPacket)
     EmblemInfo emblemInfo;
     emblemInfo.ReadPacket(recvPacket);
 
-    TC_LOG_DEBUG("guild", "MSG_SAVE_GUILD_EMBLEM [%s]: Guid: [" UI64FMTD
-        "] Style: %d, Color: %d, BorderStyle: %d, BorderColor: %d, BackgroundColor: %d"
-        , GetPlayerInfo().c_str(), vendorGuid, emblemInfo.GetStyle()
-        , emblemInfo.GetColor(), emblemInfo.GetBorderStyle()
-        , emblemInfo.GetBorderColor(), emblemInfo.GetBackgroundColor());
+    TC_LOG_DEBUG("guild", "MSG_SAVE_GUILD_EMBLEM [%s]: Guid: [" UI64FMTD"] Style: %d, Color: %d, BorderStyle: %d, BorderColor: %d, BackgroundColor: %d",
+        GetPlayerInfo().c_str(), vendorGuid, emblemInfo.GetStyle(), emblemInfo.GetColor(), emblemInfo.GetBorderStyle(),
+        emblemInfo.GetBorderColor(), emblemInfo.GetBackgroundColor());
 
     if (GetPlayer()->GetNPCIfCanInteractWith(vendorGuid, UNIT_NPC_FLAG_TABARDDESIGNER))
     {
@@ -402,6 +400,7 @@ void WorldSession::HandleGuildBankMoneyWithdrawn(WorldPacket& /* recvPacket */)
 
 void WorldSession::HandleGuildPermissions(WorldPacket& /* recvPacket */)
 {
+    // Null Packet
     TC_LOG_DEBUG("guild", "CMSG_GUILD_PERMISSIONS [%s]", GetPlayerInfo().c_str());
 
     if (Guild* guild = GetPlayer()->GetGuild())
@@ -433,8 +432,7 @@ void WorldSession::HandleGuildBankerActivate(WorldPacket& recvPacket)
     recvPacket.ReadByteSeq(guid[5]);
     recvPacket.ReadByteSeq(guid[3]);
 
-    TC_LOG_DEBUG("guild", "CMSG_GUILD_BANKER_ACTIVATE [%s]: Go: [" UI64FMTD "] AllSlots: %u"
-        , GetPlayerInfo().c_str(), (uint64)guid, sendAllSlots);
+    TC_LOG_DEBUG("guild", "CMSG_GUILD_BANKER_ACTIVATE [%s]: Go: [" UI64FMTD "] AllSlots: %u", GetPlayerInfo().c_str(), (uint64)guid, sendAllSlots);
 
     GameObject const* const go = GetPlayer()->GetGameObjectIfCanInteractWith(guid, GAMEOBJECT_TYPE_GUILD_BANK);
     if (!go)
@@ -478,8 +476,7 @@ void WorldSession::HandleGuildBankQueryTab(WorldPacket& recvPacket)
     recvPacket.ReadByteSeq(guid[0]);
     recvPacket.ReadByteSeq(guid[1]);
 
-    TC_LOG_DEBUG("guild", "CMSG_GUILD_BANK_QUERY_TAB [%s]: Go: [" UI64FMTD "], TabId: %u, AllSlots: %u"
-        , GetPlayerInfo().c_str(), (uint64)guid, tabId, sendAllSlots);
+    TC_LOG_DEBUG("guild", "CMSG_GUILD_BANK_QUERY_TAB [%s]: Go: [" UI64FMTD "], TabId: %u, AllSlots: %u", GetPlayerInfo().c_str(), (uint64)guid, tabId, sendAllSlots);
 
     if (GetPlayer()->GetGameObjectIfCanInteractWith(guid, GAMEOBJECT_TYPE_GUILD_BANK))
         if (Guild* guild = GetPlayer()->GetGuild())
@@ -521,12 +518,30 @@ void WorldSession::HandleGuildBankDepositMoney(WorldPacket& recvPacket)
 
 void WorldSession::HandleGuildBankWithdrawMoney(WorldPacket& recvPacket)
 {
-    uint64 guid;
+    ObjectGuid guid;
     uint64 money;
-    recvPacket >> guid >> money;
+    recvPacket >> money;
+
+    guid[1] = recvPacket.ReadBit();
+    guid[3] = recvPacket.ReadBit();
+    guid[7] = recvPacket.ReadBit();
+    guid[6] = recvPacket.ReadBit();
+    guid[5] = recvPacket.ReadBit();
+    guid[0] = recvPacket.ReadBit();
+    guid[4] = recvPacket.ReadBit();
+    guid[2] = recvPacket.ReadBit();
+
+    recvPacket.ReadByteSeq(guid[0]);
+    recvPacket.ReadByteSeq(guid[7]);
+    recvPacket.ReadByteSeq(guid[4]);
+    recvPacket.ReadByteSeq(guid[2]);
+    recvPacket.ReadByteSeq(guid[1]);
+    recvPacket.ReadByteSeq(guid[6]);
+    recvPacket.ReadByteSeq(guid[3]);
+    recvPacket.ReadByteSeq(guid[5]);
 
     TC_LOG_DEBUG("guild", "CMSG_GUILD_BANK_WITHDRAW_MONEY [%s]: Go: [" UI64FMTD "], money: " UI64FMTD,
-        GetPlayerInfo().c_str(), guid, money);
+        GetPlayerInfo().c_str(), (uint64)guid, money);
 
     if (money && GetPlayer()->GetGameObjectIfCanInteractWith(guid, GAMEOBJECT_TYPE_GUILD_BANK))
         if (Guild* guild = GetPlayer()->GetGuild())
@@ -683,8 +698,9 @@ void WorldSession::HandleGuildBankUpdateTab(WorldPacket& recvPacket)
     recvPacket.ReadByteSeq(guid[3]);
     recvPacket.ReadByteSeq(guid[6]);
 
-    TC_LOG_DEBUG("guild", "CMSG_GUILD_BANK_UPDATE_TAB [%s]: Go: [" UI64FMTD "], TabId: %u, Name: %s, Icon: %s"
-        , GetPlayerInfo().c_str(), (uint64)guid, tabId, name.c_str(), icon.c_str());
+    TC_LOG_DEBUG("guild", "CMSG_GUILD_BANK_UPDATE_TAB [%s]: Go: [" UI64FMTD "], TabId: %u, Name: %s, Icon: %s",
+        GetPlayerInfo().c_str(), (uint64)guid, tabId, name.c_str(), icon.c_str());
+
     if (!name.empty() && !icon.empty())
         if (GetPlayer()->GetGameObjectIfCanInteractWith(guid, GAMEOBJECT_TYPE_GUILD_BANK))
             if (Guild* guild = GetPlayer()->GetGuild())

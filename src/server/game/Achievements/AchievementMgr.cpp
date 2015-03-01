@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -1091,13 +1091,13 @@ void AchievementMgr<T>::UpdateAchievementCriteria(AchievementCriteriaTypes type,
     // disable for gamemasters with GM-mode enabled
     if (referencePlayer->IsGameMaster())
     {
-        TC_LOG_DEBUG("achievement", "UpdateAchievementCriteria: [Player %s GM mode on] %s, %s (%u), " UI64FMTD ", " UI64FMTD ", " UI64FMTD
-            , referencePlayer->GetName().c_str(), GetLogNameForGuid(GetOwner()->GetGUID()), AchievementGlobalMgr::GetCriteriaTypeString(type), type, miscValue1, miscValue2, miscValue3);
+        TC_LOG_DEBUG("achievement", "UpdateAchievementCriteria: [Player %s GM mode on] %s, %s (%u), " UI64FMTD ", " UI64FMTD ", " UI64FMTD,
+            referencePlayer->GetName().c_str(), GetLogNameForGuid(GetOwner()->GetGUID()), AchievementGlobalMgr::GetCriteriaTypeString(type), type, miscValue1, miscValue2, miscValue3);
         return;
     }
 
-    TC_LOG_DEBUG("achievement", "UpdateAchievementCriteria: %s, %s (%u), " UI64FMTD ", " UI64FMTD ", " UI64FMTD
-        , GetLogNameForGuid(GetOwner()->GetGUID()), AchievementGlobalMgr::GetCriteriaTypeString(type), type, miscValue1, miscValue2, miscValue3);
+    TC_LOG_DEBUG("achievement", "UpdateAchievementCriteria: %s, %s (%u), " UI64FMTD ", " UI64FMTD ", " UI64FMTD,
+        GetLogNameForGuid(GetOwner()->GetGUID()), AchievementGlobalMgr::GetCriteriaTypeString(type), type, miscValue1, miscValue2, miscValue3);
 
     // Lua_GetGuildLevelEnabled() is checked in achievement UI to display guild tab
     if (IsGuild<T>() && !sWorld->getBoolConfig(CONFIG_GUILD_LEVELING_ENABLED))
@@ -2005,7 +2005,7 @@ void AchievementMgr<T>::SendAllAchievementData(Player* /*receiver*/) const
     ObjectGuid guid = GetOwner()->GetGUID();
     ObjectGuid counter;
 
-    WorldPacket data(SMSG_ALL_ACHIEVEMENT_DATA_PLAYER, 5 + numAchievements * (1 + 4 + 4 + 4 + 4 + 8) + numCriteria * (1 + 4 + 4 + 4 + 4 + 8 + 8));
+    WorldPacket data(SMSG_ALL_ACHIEVEMENT_DATA, 5 + numAchievements * (1 + 4 + 4 + 4 + 4 + 8) + numCriteria * (1 + 4 + 4 + 4 + 4 + 8 + 8));
     data.WriteBits(numCriteria, 19);
 
     for (CriteriaProgressMap::const_iterator itr = m_criteriaProgress.begin(); itr != m_criteriaProgress.end(); ++itr)
@@ -2119,12 +2119,14 @@ void AchievementMgr<Player>::SendAchievementInfo(Player* receiver, uint32 /*achi
     ByteBuffer achievementsData(numAchievements * 24);
 
     WorldPacket data(SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 1 + 8 + 3 + 3 + numAchievements * (4 + 4) + numCriteria * (0));
+
     data.WriteBit(guid[3]);
     data.WriteBit(guid[6]);
     data.WriteBit(guid[0]);
     data.WriteBit(guid[2]);
     data.WriteBits(numAchievements, 20);
     data.WriteBits(numCriteria, 19);
+
     for (CriteriaProgressMap::const_iterator itr = m_criteriaProgress.begin(); itr != m_criteriaProgress.end(); ++itr)
     {
         counter = itr->second.counter;
@@ -2149,7 +2151,7 @@ void AchievementMgr<Player>::SendAchievementInfo(Player* receiver, uint32 /*achi
         data.WriteBit(guid2[3]);
 
         criteriaData.WriteByteSeq(counter[4]);
-        criteriaData << uint32(0);      // timer 1
+        criteriaData << uint32(0);             // timer 1
         criteriaData.WriteByteSeq(counter[1]);
         criteriaData.WriteByteSeq(guid2[1]);
         criteriaData.WriteByteSeq(counter[7]);
@@ -2161,7 +2163,7 @@ void AchievementMgr<Player>::SendAchievementInfo(Player* receiver, uint32 /*achi
         criteriaData.WriteByteSeq(guid2[4]);
         criteriaData.WriteByteSeq(counter[0]);
         criteriaData.WriteByteSeq(guid2[0]);
-        criteriaData << uint32(0);      // timer 2
+        criteriaData << uint32(0);             // timer 2
         criteriaData.WriteByteSeq(guid2[7]);
         criteriaData.AppendPackedTime(itr->second.date);
         criteriaData.WriteByteSeq(counter[6]);
@@ -2178,6 +2180,7 @@ void AchievementMgr<Player>::SendAchievementInfo(Player* receiver, uint32 /*achi
             continue;
 
         ObjectGuid guid3 = *itr->second.guids.begin();
+
         data.WriteBit(guid3[0]);
         data.WriteBit(guid3[2]);
         data.WriteBit(guid3[5]);
@@ -2190,7 +2193,7 @@ void AchievementMgr<Player>::SendAchievementInfo(Player* receiver, uint32 /*achi
         achievementsData.WriteByteSeq(guid3[1]);
         achievementsData.WriteByteSeq(guid3[0]);
         achievementsData.AppendPackedTime(itr->second.date);
-        achievementsData << uint32(0); // RealmID
+        achievementsData << uint32(0);           //RealmID
         achievementsData << uint32(itr->first);
         achievementsData.WriteByteSeq(guid3[7]);
         achievementsData.WriteByteSeq(guid3[4]);
@@ -2198,18 +2201,18 @@ void AchievementMgr<Player>::SendAchievementInfo(Player* receiver, uint32 /*achi
         achievementsData.WriteByteSeq(guid3[2]);
         achievementsData.WriteByteSeq(guid3[3]);
         achievementsData.WriteByteSeq(guid3[5]);
-        achievementsData << uint32(0); // RealmID
+        achievementsData << uint32(0);           //RealmID
     }
 
     data.WriteBit(guid[4]);
     data.WriteBit(guid[7]);
     data.WriteBit(guid[1]);
+
     data.FlushBits();
 
     data.WriteByteSeq(guid[5]);
 
     data.append(achievementsData);
-
     data.append(criteriaData);
 
     data.WriteByteSeq(guid[0]);

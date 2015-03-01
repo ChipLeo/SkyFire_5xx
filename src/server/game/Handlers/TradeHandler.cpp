@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -134,8 +134,8 @@ void WorldSession::SendUpdateTrade(bool trader_data /*= true*/)
 
             itemData.WriteByteSeq(creatorGuid[3]);
 
-            itemData << uint32(item->GetUInt32Value(ITEM_FIELD_MAX_DURABILITY));  // ok
-            itemData << uint32(0); // unk7
+            itemData << uint32(item->GetUInt32Value(ITEM_FIELD_MAX_DURABILITY));
+            itemData << uint32(0);
             itemData << uint32(item->GetDynamicUInt32Value(ITEM_DYNAMIC_MODIFIERS, 0));
 
             itemData.WriteByteSeq(creatorGuid[1]);
@@ -149,12 +149,12 @@ void WorldSession::SendUpdateTrade(bool trader_data /*= true*/)
 
             itemData.WriteByteSeq(creatorGuid[2]);
 
-            for (uint32 enchant_slot = SOCK_ENCHANTMENT_SLOT; enchant_slot < SOCK_ENCHANTMENT_SLOT+MAX_GEM_SOCKETS /*3*/; ++enchant_slot)
+            for (uint32 enchant_slot = SOCK_ENCHANTMENT_SLOT; enchant_slot < SOCK_ENCHANTMENT_SLOT + MAX_GEM_SOCKETS /*3*/; ++enchant_slot)
                 itemData << uint32(item->GetEnchantmentId(EnchantmentSlot(enchant_slot)));
 
-            itemData << uint32(item->GetItemRandomPropertyId()); // ok
-            itemData << uint32(item->GetSpellCharges()); // ok
-            itemData << uint32(item->GetItemSuffixFactor()); // ok
+            itemData << uint32(item->GetItemRandomPropertyId());
+            itemData << uint32(item->GetSpellCharges());
+            itemData << uint32(item->GetItemSuffixFactor());
 
             itemData.WriteByteSeq(creatorGuid[4]);
         }

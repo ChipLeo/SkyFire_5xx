@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -453,7 +453,7 @@ void WardenWin::HandleData(ByteBuffer &buff)
                     memcpy(str, buff.contents() + buff.rpos(), luaStrLen);
                     str[luaStrLen] = '\0'; // null terminator
                     TC_LOG_DEBUG("warden", "Lua string: %s", str);
-                    delete[] str;
+                    delete [] str;
                 }
                 buff.rpos(buff.rpos() + luaStrLen);         // Skip string
                 TC_LOG_DEBUG("warden", "RESULT LUA_STR_CHECK passed, CheckId %u account Id %u", *itr, _session->GetAccountId());

@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __UPDATEMASK_H
-#define __UPDATEMASK_H
+#ifndef SF_UPDATEMASK_H
+#define SF_UPDATEMASK_H
 
 #include "UpdateFields.h"
 #include "Errors.h"
@@ -43,7 +43,7 @@ class UpdateMask
             memcpy(_bits, right._bits, sizeof(uint8) * _blockCount * 32);
         }
 
-        ~UpdateMask() { delete[] _bits; }
+        ~UpdateMask() { delete [] _bits; }
 
         void SetBit(uint32 index) { _bits[index] = 1; }
         void UnsetBit(uint32 index) { _bits[index] = 0; }
@@ -67,7 +67,7 @@ class UpdateMask
 
         void SetCount(uint32 valuesCount)
         {
-            delete[] _bits;
+            delete [] _bits;
 
             _fieldCount = valuesCount;
             _blockCount = (valuesCount + CLIENT_UPDATE_MASK_BITS - 1) / CLIENT_UPDATE_MASK_BITS;
@@ -124,4 +124,3 @@ class UpdateMask
 };
 
 #endif
-

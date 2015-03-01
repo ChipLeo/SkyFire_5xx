@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -825,7 +825,7 @@ void Creature::InitializeReactState()
     else
         SetReactState(REACT_AGGRESSIVE);
     /*else if (IsCivilian())
-    SetReactState(REACT_DEFENSIVE);*/;
+    SetReactState(REACT_DEFENSIVE);*/
 }
 
 bool Creature::isCanInteractWithBattleMaster(Player* player, bool msg) const
@@ -2176,7 +2176,7 @@ bool Creature::HasCategoryCooldown(uint32 spell_id) const
         return false;
 
     CreatureSpellCooldowns::const_iterator itr = m_CreatureCategoryCooldowns.find(spellInfo->GetCategory());
-    return(itr != m_CreatureCategoryCooldowns.end() && time_t(itr->second + (spellInfo->CategoryRecoveryTime / IN_MILLISECONDS)) > time(NULL));
+    return (itr != m_CreatureCategoryCooldowns.end() && time_t(itr->second + (spellInfo->CategoryRecoveryTime / IN_MILLISECONDS)) > time(NULL));
 }
 
 uint32 Creature::GetCreatureSpellCooldownDelay(uint32 spellId) const
@@ -2610,4 +2610,3 @@ void Creature::ReleaseFocus(Spell const* focusSpell)
     if (focusSpell->GetSpellInfo()->AttributesEx5 & SPELL_ATTR5_DONT_TURN_DURING_CAST)
         ClearUnitState(UNIT_STATE_ROTATING);
 }
-

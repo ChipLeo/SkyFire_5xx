@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2014 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -49,10 +49,9 @@
 #include "WardenWin.h"
 #include "WardenMac.h"
 
-namespace {
-
-std::string const DefaultPlayerName = "<none>";
-
+namespace
+{
+    std::string const DefaultPlayerName = "<none>";
 } // namespace
 
 bool MapSessionFilter::Process(WorldPacket* packet)
@@ -395,12 +394,12 @@ bool WorldSession::Update(uint32 diff, PacketFilter& updater)
                     LogUnprocessedTail(packet);
                     break;
                 case STATUS_NEVER:
-                        TC_LOG_ERROR("network.opcode", "Received not allowed opcode %s from %s", GetOpcodeNameForLogging(packet->GetOpcode(), false).c_str()
-                            , GetPlayerInfo().c_str());
+                        TC_LOG_ERROR("network.opcode", "Received not allowed opcode %s from %s", GetOpcodeNameForLogging(packet->GetOpcode(), false).c_str(),
+                            GetPlayerInfo().c_str());
                     break;
                 case STATUS_UNHANDLED:
-                        TC_LOG_ERROR("network.opcode", "Received not handled opcode %s from %s", GetOpcodeNameForLogging(packet->GetOpcode(), false).c_str()
-                            , GetPlayerInfo().c_str());
+                        TC_LOG_ERROR("network.opcode", "Received not handled opcode %s from %s", GetOpcodeNameForLogging(packet->GetOpcode(), false).c_str(),
+                            GetPlayerInfo().c_str());
                     break;
             }
         }
@@ -682,20 +681,20 @@ const char *WorldSession::GetTrinityString(int32 entry) const
 
 void WorldSession::Handle_NULL(WorldPacket& recvPacket)
 {
-    TC_LOG_ERROR("network.opcode", "Received unhandled opcode %s from %s"
-        , GetOpcodeNameForLogging(recvPacket.GetOpcode(), false).c_str(), GetPlayerInfo().c_str());
+    TC_LOG_ERROR("network.opcode", "Received unhandled opcode %s from %s",
+        GetOpcodeNameForLogging(recvPacket.GetOpcode(), false).c_str(), GetPlayerInfo().c_str());
 }
 
 void WorldSession::Handle_EarlyProccess(WorldPacket& recvPacket)
 {
-    TC_LOG_ERROR("network.opcode", "Received opcode %s that must be processed in WorldSocket::OnRead from %s"
-        , GetOpcodeNameForLogging(recvPacket.GetOpcode(), false).c_str(), GetPlayerInfo().c_str());
+    TC_LOG_ERROR("network.opcode", "Received opcode %s that must be processed in WorldSocket::OnRead from %s",
+        GetOpcodeNameForLogging(recvPacket.GetOpcode(), false).c_str(), GetPlayerInfo().c_str());
 }
 
 void WorldSession::Handle_Deprecated(WorldPacket& recvPacket)
 {
-    TC_LOG_ERROR("network.opcode", "Received deprecated opcode %s from %s"
-        , GetOpcodeNameForLogging(recvPacket.GetOpcode(), false).c_str(), GetPlayerInfo().c_str());
+    TC_LOG_ERROR("network.opcode", "Received deprecated opcode %s from %s",
+        GetOpcodeNameForLogging(recvPacket.GetOpcode(), false).c_str(), GetPlayerInfo().c_str());
 }
 
 void WorldSession::SendAuthWaitQue(uint32 position)
