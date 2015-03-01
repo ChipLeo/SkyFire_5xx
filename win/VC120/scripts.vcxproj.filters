@@ -1885,6 +1885,9 @@
     <ClCompile Include="..\..\src\server\scripts\PrecompiledHeaders\ScriptPCH.cpp">
       <Filter>PrecompiledHeaders</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\server\scripts\Pandaria\zone_wandering_island.cpp">
+      <Filter>Pandaria</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\server\scripts\OutdoorPvP\OutdoorPvPSI.h">
