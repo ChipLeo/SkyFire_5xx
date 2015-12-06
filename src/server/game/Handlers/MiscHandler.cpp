@@ -669,6 +669,8 @@ void WorldSession::HandleRequestCemeteryList(WorldPacket& /*recvPacket*/)
     data.WriteBits(GraveyardIds.size(), 22);
     data << IsGossipTriggered;
 
+    data.FlushBits();
+
     for (uint32 i = 0; i < GraveyardIds.size(); ++i)
         data << uint32(GraveyardIds[i]);
 
