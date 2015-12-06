@@ -58,6 +58,7 @@ EndContentData */
 #include "CellImpl.h"
 #include "SpellAuras.h"
 #include "Pet.h"
+#include "BlackMarketMgr.h"
 
 /*########
 # npc_air_force_bots
@@ -1249,6 +1250,7 @@ public:
 #define GOSSIP_HELLO_ROGUE1 "I wish to unlearn my talents"
 #define GOSSIP_HELLO_ROGUE2 "<Take the letter>"
 #define GOSSIP_HELLO_ROGUE3 "Purchase a Dual Talent Specialization."
+#define GOSSIP_HELLO_ROGUE4 "I wish to unlearn my specialization"
 
 class npc_rogue_trainer : public CreatureScript
 {
@@ -1265,6 +1267,9 @@ public:
 
         if (player->getClass() == CLASS_ROGUE)
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TRAINER, GOSSIP_HELLO_ROGUE1, GOSSIP_SENDER_MAIN, GOSSIP_OPTION_UNLEARNTALENTS);
+
+        if (player->getClass() == CLASS_ROGUE)
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TRAINER, GOSSIP_HELLO_ROGUE4, GOSSIP_SENDER_MAIN, GOSSIP_OPTION_UNLEARN_SPEC);
 
         if (player->GetSpecsCount() == 1 && player->getLevel() >= sWorld->getIntConfig(CONFIG_MIN_DUALSPEC_LEVEL))
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TRAINER, GOSSIP_HELLO_ROGUE3, GOSSIP_SENDER_MAIN, GOSSIP_OPTION_LEARNDUALSPEC);
@@ -1293,7 +1298,11 @@ public:
                 break;
             case GOSSIP_OPTION_UNLEARNTALENTS:
                 player->CLOSE_GOSSIP_MENU();
-                player->SendTalentWipeConfirm(creature->GetGUID());
+                player->SendTalentWipeConfirm(creature->GetGUID(), false);
+                break;
+            case GOSSIP_OPTION_UNLEARN_SPEC:
+                player->CLOSE_GOSSIP_MENU();
+                player->SendTalentWipeConfirm(creature->GetGUID(), true);
                 break;
             case GOSSIP_OPTION_LEARNDUALSPEC:
                 if (player->GetSpecsCount() == 1 && !(player->getLevel() < sWorld->getIntConfig(CONFIG_MIN_DUALSPEC_LEVEL)))
@@ -2469,6 +2478,18 @@ public:
     }
 };
 
+class npc_madam_goya : public CreatureScript
+{
+public:
+    npc_madam_goya() : CreatureScript("npc_madam_goya") { }
+
+    bool OnGossipHello(Player* player, Creature* creature)
+    {
+        player->GetSession()->SendBlackMarketHello(creature->GetGUID(), sBlackMarketMgr->isBlackMarketOpen());
+        return true;
+    }
+};
+
 void AddSC_npcs_special()
 {
     new npc_air_force_bots();
@@ -2493,4 +2514,5 @@ void AddSC_npcs_special()
     new npc_firework();
     new npc_Spirit_of_Master_Shang_Xi();
     new npc_spring_rabbit();
+    new npc_madam_goya();
 }

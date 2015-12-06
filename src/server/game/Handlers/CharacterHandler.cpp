@@ -819,7 +819,7 @@ void WorldSession::HandleCharDeleteOpcode(WorldPacket& recvData)
     Player::DeleteFromDB(guid, accountId);
 
     WorldPacket data(SMSG_CHAR_DELETE, 1);
-    data << uint8(CHAR_DELETE_SUCCESS + 1);         // value different! Looks like all values have been offset by 1, needs more investigation.
+    data << uint8(CHAR_DELETE_SUCCESS);
     SendPacket(&data);
 }
 
@@ -923,7 +923,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
     LoadAccountData(holder->GetPreparedResult(PLAYER_LOGIN_QUERY_LOAD_ACCOUNT_DATA), PER_CHARACTER_CACHE_MASK);
     SendAccountDataTimes(PER_CHARACTER_CACHE_MASK);
 
-    bool feedbackSystem = true;
+    bool feedbackSystem = sWorld->getBoolConfig(CONFIG_TICKETS_FEEDBACK_SYSTEM_ENABLED);
     bool excessiveWarning = false;
 
     data.Initialize(SMSG_FEATURE_SYSTEM_STATUS, 4 + 4 + 4 + 1 + 4 + 2 + 4 + 4 + 4 + 4 + 4 + 4 + 4);
@@ -933,12 +933,12 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
     data << uint8(2);
     data << uint32(0);
 
-    data.WriteBit(1);
+    data.WriteBit(0);
     data.WriteBit(1);                   // ingame shop status (0 - "The Shop is temporarily unavailable.")
-    data.WriteBit(1);
+    data.WriteBit(0);
     data.WriteBit(0);                   // Recruit a Friend button
     data.WriteBit(0);                   // server supports voice chat
-    data.WriteBit(1);                   // show ingame shop icon
+    data.WriteBit(1 );                  // show ingame shop icon
     data.WriteBit(0);                   // Scroll of Resurrection button
     data.WriteBit(excessiveWarning);    // excessive play time warning
     data.WriteBit(0);                   // ingame shop parental control (1 - "Feature has been disabled by Parental Controls.")
@@ -1240,13 +1240,22 @@ void WorldSession::HandleSetFactionAtWar(WorldPacket& recvData)
 {
     TC_LOG_DEBUG("network", "WORLD: Received CMSG_SET_FACTION_ATWAR");
 
-    uint32 repListID;
-    uint8  flag;
+    uint8 FactionIndexID;
 
-    recvData >> repListID;
-    recvData >> flag;
+    recvData >> FactionIndexID;
 
-    GetPlayer()->GetReputationMgr().SetAtWar(repListID, flag);
+    GetPlayer()->GetReputationMgr().SetAtWar(FactionIndexID);
+}
+
+void WorldSession::HandleSetFactionNotAtWar(WorldPacket& recvData)
+{
+    TC_LOG_DEBUG("network", "WORLD: Received CMSG_SET_FACTION_NOTATWAR");
+
+    uint8 FactionIndexID;
+
+    recvData >> FactionIndexID;
+
+    GetPlayer()->GetReputationMgr().SetNotAtWar(FactionIndexID);
 }
 
 //I think this function is never used :/ I dunno, but i guess this opcode not exists
@@ -1295,11 +1304,11 @@ void WorldSession::HandleSetWatchedFactionOpcode(WorldPacket& recvData)
 void WorldSession::HandleSetFactionInactiveOpcode(WorldPacket& recvData)
 {
     TC_LOG_DEBUG("network", "WORLD: Received CMSG_SET_FACTION_INACTIVE");
-    uint32 replistid;
-    uint8 inactive;
-    recvData >> replistid >> inactive;
+    uint32 FactionIndex;
+    uint8 Status;
+    recvData >> FactionIndex >> Status;
 
-    _player->GetReputationMgr().SetInactive(replistid, inactive);
+    _player->GetReputationMgr().SetInactive(FactionIndex, Status);
 }
 
 void WorldSession::HandleShowingHelmOpcode(WorldPacket& recvData)
@@ -1836,34 +1845,63 @@ void WorldSession::HandleEquipmentSetSave(WorldPacket& recvData)
 {
     TC_LOG_DEBUG("network", "CMSG_EQUIPMENT_SET_SAVE");
 
-    uint64 setGuid;
-    recvData.readPackGUID(setGuid);
-
+    ObjectGuid setGuid;
+    ObjectGuid itemGuid[EQUIPMENT_SLOT_END];
     uint32 index;
+    EquipmentSet eqSet;
+    uint8 iconNameLen, setNameLen;
+
     recvData >> index;
+
     if (index >= MAX_EQUIPMENT_SET_INDEX)                    // client set slots amount
         return;
 
-    std::string name;
-    recvData >> name;
+    for (uint32 i = 0; i < EQUIPMENT_SLOT_END; ++i)
+    {
+        itemGuid[i][5] = recvData.ReadBit();
+        itemGuid[i][0] = recvData.ReadBit();
+        itemGuid[i][1] = recvData.ReadBit();
+        itemGuid[i][4] = recvData.ReadBit();
+        itemGuid[i][6] = recvData.ReadBit();
+        itemGuid[i][3] = recvData.ReadBit();
+        itemGuid[i][7] = recvData.ReadBit();
+        itemGuid[i][2] = recvData.ReadBit();
+    }
 
-    std::string iconName;
-    recvData >> iconName;
+    setGuid[7] = recvData.ReadBit();
+    setGuid[1] = recvData.ReadBit();
+    setGuid[5] = recvData.ReadBit();
+    setGuid[2] = recvData.ReadBit();
+    setGuid[3] = recvData.ReadBit();
+    setGuid[0] = recvData.ReadBit();
 
-    EquipmentSet eqSet;
+    setNameLen = recvData.ReadBits(8);
+    setGuid[6] = recvData.ReadBit();
+    iconNameLen = recvData.ReadBits(8);
 
-    eqSet.Guid      = setGuid;
-    eqSet.Name      = name;
-    eqSet.IconName  = iconName;
-    eqSet.state     = EQUIPMENT_SET_NEW;
+    setGuid[4] = recvData.ReadBit();
+
+    bool pair = recvData.ReadBit();
+
+    if (pair)
+        iconNameLen++;
+
+    recvData.ReadByteSeq(setGuid[4]);
+    recvData.ReadByteSeq(setGuid[0]);
 
     for (uint32 i = 0; i < EQUIPMENT_SLOT_END; ++i)
     {
-        uint64 itemGuid;
-        recvData.readPackGUID(itemGuid);
+        recvData.ReadByteSeq(itemGuid[i][1]);
+        recvData.ReadByteSeq(itemGuid[i][0]);
+        recvData.ReadByteSeq(itemGuid[i][7]);
+        recvData.ReadByteSeq(itemGuid[i][3]);
+        recvData.ReadByteSeq(itemGuid[i][6]);
+        recvData.ReadByteSeq(itemGuid[i][2]);
+        recvData.ReadByteSeq(itemGuid[i][4]);
+        recvData.ReadByteSeq(itemGuid[i][5]);
 
         // equipment manager sends "1" (as raw GUID) for slots set to "ignore" (don't touch slot at equip set)
-        if (itemGuid == 1)
+        if (itemGuid[i] == 1)
         {
             // ignored slots saved as bit mask because we have no free special values for Items[i]
             eqSet.IgnoreMask |= 1 << i;
@@ -1872,14 +1910,31 @@ void WorldSession::HandleEquipmentSetSave(WorldPacket& recvData)
 
         Item* item = _player->GetItemByPos(INVENTORY_SLOT_BAG_0, i);
 
-        if (!item && itemGuid)                               // cheating check 1
+        if (!item && itemGuid[i])                               // cheating check 1
             return;
 
-        if (item && item->GetGUID() != itemGuid)             // cheating check 2
+        if (item && item->GetGUID() != itemGuid[i])             // cheating check 2
             return;
 
-        eqSet.Items[i] = GUID_LOPART(itemGuid);
+        eqSet.Items[i] = GUID_LOPART(itemGuid[i]);
     }
+
+    std::string iconName = recvData.ReadString(iconNameLen);
+
+    recvData.ReadByteSeq(setGuid[7]);
+    recvData.ReadByteSeq(setGuid[2]);
+
+    std::string name = recvData.ReadString(setNameLen);
+
+    recvData.ReadByteSeq(setGuid[6]);
+    recvData.ReadByteSeq(setGuid[1]);
+    recvData.ReadByteSeq(setGuid[5]);
+    recvData.ReadByteSeq(setGuid[3]);
+
+    eqSet.Guid = setGuid;
+    eqSet.Name = name;
+    eqSet.IconName = iconName;
+    eqSet.state = EQUIPMENT_SET_NEW;
 
     _player->SetEquipmentSet(index, eqSet);
 }
@@ -1888,34 +1943,82 @@ void WorldSession::HandleEquipmentSetDelete(WorldPacket &recvData)
 {
     TC_LOG_DEBUG("network", "CMSG_EQUIPMENT_SET_DELETE");
 
-    uint64 setGuid;
-    recvData.readPackGUID(setGuid);
+    ObjectGuid setGuid;
+
+    setGuid[4] = recvData.ReadBit();
+    setGuid[2] = recvData.ReadBit();
+    setGuid[6] = recvData.ReadBit();
+    setGuid[0] = recvData.ReadBit();
+    setGuid[5] = recvData.ReadBit();
+    setGuid[1] = recvData.ReadBit();
+    setGuid[7] = recvData.ReadBit();
+    setGuid[3] = recvData.ReadBit();
+
+    recvData.ReadByteSeq(setGuid[2]);
+    recvData.ReadByteSeq(setGuid[0]);
+    recvData.ReadByteSeq(setGuid[1]);
+    recvData.ReadByteSeq(setGuid[6]);
+    recvData.ReadByteSeq(setGuid[3]);
+    recvData.ReadByteSeq(setGuid[4]);
+    recvData.ReadByteSeq(setGuid[5]);
+    recvData.ReadByteSeq(setGuid[7]);
 
     _player->DeleteEquipmentSet(setGuid);
 }
 
 void WorldSession::HandleEquipmentSetUse(WorldPacket& recvData)
 {
-    if (_player->IsInCombat())
-        return;
-
     TC_LOG_DEBUG("network", "CMSG_EQUIPMENT_SET_USE");
+
+    uint8 srcbag[EQUIPMENT_SLOT_END];
+    uint8 srcslot[EQUIPMENT_SLOT_END];
+
+    ObjectGuid itemGuid[EQUIPMENT_SLOT_END];
+
+    EquipmentSlots startSlot = _player->IsInCombat() ? EQUIPMENT_SLOT_MAINHAND : EQUIPMENT_SLOT_START;
+
+    for (uint8 i = 0; i < EQUIPMENT_SLOT_END; ++i)
+        recvData >> srcbag[i] >> srcslot[i];
 
     for (uint32 i = 0; i < EQUIPMENT_SLOT_END; ++i)
     {
-        uint64 itemGuid;
-        recvData.readPackGUID(itemGuid);
+        itemGuid[i][2] = recvData.ReadBit();
+        itemGuid[i][0] = recvData.ReadBit();
+        itemGuid[i][6] = recvData.ReadBit();
+        itemGuid[i][3] = recvData.ReadBit();
+        itemGuid[i][4] = recvData.ReadBit();
+        itemGuid[i][5] = recvData.ReadBit();
+        itemGuid[i][7] = recvData.ReadBit();
+        itemGuid[i][1] = recvData.ReadBit();
+    }
 
-        uint8 srcbag, srcslot;
-        recvData >> srcbag >> srcslot;
+    uint8 InvItemCounter = recvData.ReadBits(2);
 
-        TC_LOG_DEBUG("entities.player.items", "Item " UI64FMTD ": srcbag %u, srcslot %u", itemGuid, srcbag, srcslot);
+    for (uint8 i = 0; i < InvItemCounter; i++)
+    {
+        recvData.ReadBit(); // Container Slot
+        recvData.ReadBit(); // Slot
+    }
 
-        // check if item slot is set to "ignored" (raw value == 1), must not be unequipped then
-        if (itemGuid == 1)
+    for (uint32 i = 0; i < EQUIPMENT_SLOT_END; ++i)
+    {
+        recvData.ReadByteSeq(itemGuid[i][3]);
+        recvData.ReadByteSeq(itemGuid[i][0]);
+        recvData.ReadByteSeq(itemGuid[i][7]);
+        recvData.ReadByteSeq(itemGuid[i][4]);
+        recvData.ReadByteSeq(itemGuid[i][5]);
+        recvData.ReadByteSeq(itemGuid[i][2]);
+        recvData.ReadByteSeq(itemGuid[i][6]);
+        recvData.ReadByteSeq(itemGuid[i][1]);
+
+        if (i < uint32(startSlot))
             continue;
 
-        Item* item = _player->GetItemByGuid(itemGuid);
+        // check if item slot is set to "ignored" (raw value == 1), must not be unequipped then
+        if (itemGuid[i] == 1)
+            continue;
+
+        Item* item = _player->GetItemByGuid(itemGuid[i]);
 
         uint16 dstpos = i | (INVENTORY_SLOT_BAG_0 << 8);
 
@@ -1944,8 +2047,10 @@ void WorldSession::HandleEquipmentSetUse(WorldPacket& recvData)
         _player->SwapItem(item->GetPos(), dstpos);
     }
 
-    WorldPacket data(SMSG_EQUIPMENT_SET_USE_RESULT, 1);
-    data << uint8(0);                                       // 4 - equipment swap failed - inventory is full
+    uint8 Reason = 0;
+    WorldPacket data(SMSG_USE_EQUIPMENT_SET_RESULT, 1);
+    data << uint8(Reason);                                   // 4 - equipment swap failed - inventory is full
+
     SendPacket(&data);
 }
 

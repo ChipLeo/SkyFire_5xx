@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -29,25 +29,25 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -121,7 +121,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;shared.lib;libmysql.lib;libeay32MDd.lib;ace.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;C:\Program Files\MySQL\MySQL Server 5.5\lib\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>
@@ -171,7 +171,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;shared.lib;libmysql.lib;libeay32MDd.lib;ace.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;C:\Program Files\MySQL\MySQL Server 5.5\lib\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>
@@ -221,7 +221,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;shared.lib;libmysql.lib;libeay32MDd.lib;ace.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;C:\Program Files\MySQL\MySQL Server 5.5\lib\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>
@@ -270,7 +270,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;shared.lib;libmysql.lib;libeay32MDd.lib;ace.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;C:\Program Files\MySQL\MySQL Server 5.5\lib\;C:\OpenSSL-Win64\lib\VC\;.\ace__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>
@@ -313,9 +313,6 @@
   <ItemGroup>
     <ProjectReference Include="ace.vcxproj">
       <Project>45867821-5E5F-4810-88ED-F6E107233E0A</Project>
-    </ProjectReference>
-    <ProjectReference Include="libmysql.vcxproj">
-      <Project>8B82300D-DE54-49A9-85AC-DF6735CE62A7</Project>
     </ProjectReference>
     <ProjectReference Include="shared.vcxproj">
       <Project>57D666F7-2F45-4ECB-B75A-D41F5C133B48</Project>

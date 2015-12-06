@@ -604,6 +604,9 @@
     <ClCompile Include="..\..\src\server\game\Handlers\BlackMarketHandler.cpp">
       <Filter>Handlers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\server\game\Tickets\TicketInfo.cpp">
+      <Filter>Tickets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\server\game\Accounts\AccountMgr.h">
@@ -1214,6 +1217,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\server\game\BlackMarket\BlackMarketMgr.h">
       <Filter>BlackMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\server\game\Tickets\TicketInfo.h">
+      <Filter>Tickets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

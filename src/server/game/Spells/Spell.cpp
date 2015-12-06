@@ -4940,10 +4940,28 @@ void Spell::SendChannelUpdate(uint32 time)
         m_caster->SetUInt32Value(UNIT_FIELD_CHANNEL_SPELL, 0);
     }
 
-    WorldPacket data(MSG_CHANNEL_UPDATE, 8+4);
-    data.append(m_caster->GetPackGUID());
-    data << uint32(time);
+    ObjectGuid CasterGUID = m_caster->GetGUID();
 
+    WorldPacket data(SMSG_SPELL_CHANNEL_UPDATE, 8+4);
+
+    data.WriteBit(CasterGUID[0]);
+    data.WriteBit(CasterGUID[3]);
+    data.WriteBit(CasterGUID[4]);
+    data.WriteBit(CasterGUID[1]);
+    data.WriteBit(CasterGUID[5]);
+    data.WriteBit(CasterGUID[2]);
+    data.WriteBit(CasterGUID[6]);
+    data.WriteBit(CasterGUID[7]);
+
+    data.WriteByteSeq(CasterGUID[4]);
+    data.WriteByteSeq(CasterGUID[7]);
+    data.WriteByteSeq(CasterGUID[1]);
+    data.WriteByteSeq(CasterGUID[2]);
+    data.WriteByteSeq(CasterGUID[6]);
+    data.WriteByteSeq(CasterGUID[5]);
+    data << uint32(time);
+    data.WriteByteSeq(CasterGUID[0]);
+    data.WriteByteSeq(CasterGUID[3]);
     m_caster->SendMessageToSet(&data, true);
 }
 
@@ -4954,29 +4972,57 @@ void Spell::SendChannelStart(uint32 duration)
         if (m_UniqueTargetInfo.size() + m_UniqueGOTargetInfo.size() == 1)   // this is for TARGET_SELECT_CATEGORY_NEARBY
             channelTarget = !m_UniqueTargetInfo.empty() ? m_UniqueTargetInfo.front().targetGUID : m_UniqueGOTargetInfo.front().targetGUID;
 
-    WorldPacket data(MSG_CHANNEL_START, (8+4+4));
-    data.append(m_caster->GetPackGUID());
-    data << uint32(m_spellInfo->Id);
-    data << uint32(duration);
-    data << uint8(0);                           // immunity (castflag & 0x04000000)
-    /*
-    if (immunity)
-    {
-        data << uint32();                       // CastSchoolImmunities
-        data << uint32();                       // CastImmunities
-    }
-    */
-    data << uint8(0);                           // healPrediction (castflag & 0x40000000)
+    uint32 SchoolImmunityMask = m_caster->GetSchoolImmunityMask();
+    uint32 MechanicImmunityMask = m_caster->GetMechanicImmunityMask();
+    ObjectGuid CasterGUID = m_caster->GetGUID();
+
+    WorldPacket data(SMSG_SPELL_CHANNEL_START, (8+4+4/*+8+4+1+8*/));
+
+    data.WriteBit(CasterGUID[7]);
+    data.WriteBit(CasterGUID[5]);
+    data.WriteBit(CasterGUID[4]);
+    data.WriteBit(CasterGUID[1]);
+
+    data.WriteBit(0); // healPrediction
+
+    data.WriteBit(CasterGUID[3]);
+    data.WriteBit(CasterGUID[2]);
+    data.WriteBit(CasterGUID[0]);
+    data.WriteBit(CasterGUID[6]);
+
+    if (SchoolImmunityMask || MechanicImmunityMask)
+        data.WriteBit(1);
+    else
+        data.WriteBit(0);
+
     /*
     if (healPrediction)
     {
-        data.appendPackGUID(channelTarget);     // target packguid
-        data << uint32();                       // spellid
-        data << uint8(0);                       // unk3
-        if (unk3 == 2)
-            data.append();                      // unk packed guid (unused ?)
+    data.appendPackGUID(channelTarget);     // target packguid
+    data << uint32();                       // spellid
+    data << uint8(0);                       // unk3
+    if (unk3 == 2)
+    data.append();                      // unk packed guid (unused ?)
     }
     */
+
+    if (SchoolImmunityMask || MechanicImmunityMask)
+    {
+        data << uint32(SchoolImmunityMask);                       // SchoolImmunityMask
+        data << uint32(MechanicImmunityMask);                     // MechanicImmunityMask
+    }
+
+    data.WriteByteSeq(CasterGUID[6]);
+    data.WriteByteSeq(CasterGUID[7]);
+    data.WriteByteSeq(CasterGUID[3]);
+    data.WriteByteSeq(CasterGUID[1]);
+    data.WriteByteSeq(CasterGUID[0]);
+    data << uint32(duration);
+    data.WriteByteSeq(CasterGUID[5]);
+    data.WriteByteSeq(CasterGUID[4]);
+    data.WriteByteSeq(CasterGUID[2]);
+    data << uint32(m_spellInfo->Id);
+
     m_caster->SendMessageToSet(&data, true);
 
     m_timer = duration;
@@ -4994,17 +5040,34 @@ void Spell::SendResurrectRequest(Player* target)
                                ? ""
                                : m_caster->GetNameForLocaleIdx(target->GetSession()->GetSessionDbLocaleIndex()));
 
-    WorldPacket data(SMSG_RESURRECT_REQUEST, (8+4+sentName.size()+1+1+1+4));
-    data << uint64(m_caster->GetGUID());
+    ObjectGuid guid = m_caster->GetGUID();
+    WorldPacket data(SMSG_RESURRECT_REQUEST, (8 + 4 + sentName.size() + 1 + 1 + 1 + 4));
     data << uint32(sentName.size() + 1);
-
-    data << sentName;
-    data << uint8(0); // null terminator
-
-    data << uint8(m_caster->GetTypeId() == TYPEID_PLAYER ? 0 : 1); // "you'll be afflicted with resurrection sickness"
-    // override delay sent with SMSG_CORPSE_RECLAIM_DELAY, set instant resurrection for spells with this attribute
-    // 4.2.2 edit : id of the spell used to resurect. (used client-side for Mass Resurect)
     data << uint32(m_spellInfo->Id);
+    data << uint32(0);
+
+    data.WriteBit(guid[3]);
+    data.WriteBit(m_caster->GetTypeId() == TYPEID_PLAYER ? 0 : 1);
+    data.WriteBit(false);
+    data.WriteBit(guid[1]);
+    data.WriteBit(guid[5]);
+    data.WriteBit(guid[2]);
+    data.WriteBit(guid[6]);
+    data.WriteBit(guid[0]);
+    data.WriteBit(guid[4]);
+    data.WriteBit(guid[7]);
+    data.WriteBits(sentName.size(), 6);
+
+    data.WriteByteSeq(guid[7]);
+    data.WriteByteSeq(guid[3]);
+    data.WriteByteSeq(guid[5]);
+    data.WriteString(sentName);
+    data.WriteByteSeq(guid[2]);
+    data.WriteByteSeq(guid[4]);
+    data.WriteByteSeq(guid[1]);
+    data.WriteByteSeq(guid[6]);
+    data.WriteByteSeq(guid[0]);
+
     target->GetSession()->SendPacket(&data);
 }
 

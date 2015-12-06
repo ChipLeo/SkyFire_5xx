@@ -149,10 +149,27 @@ void WorldSession::HandlePetAction(WorldPacket& recvData) //  sub_68C8FD [5.4.8 
 
 void WorldSession::HandlePetStopAttack(WorldPacket &recvData)
 {
-    uint64 guid;
-    recvData >> guid;
+    ObjectGuid guid;
 
-    TC_LOG_DEBUG("network", "WORLD: Received CMSG_PET_STOP_ATTACK for GUID " UI64FMTD "", guid);
+    guid[7] = recvData.ReadBit();
+    guid[5] = recvData.ReadBit();
+    guid[1] = recvData.ReadBit();
+    guid[6] = recvData.ReadBit();
+    guid[0] = recvData.ReadBit();
+    guid[2] = recvData.ReadBit();
+    guid[4] = recvData.ReadBit();
+    guid[3] = recvData.ReadBit();
+
+    recvData.ReadByteSeq(guid[2]);
+    recvData.ReadByteSeq(guid[5]);
+    recvData.ReadByteSeq(guid[0]);
+    recvData.ReadByteSeq(guid[4]);
+    recvData.ReadByteSeq(guid[1]);
+    recvData.ReadByteSeq(guid[7]);
+    recvData.ReadByteSeq(guid[6]);
+    recvData.ReadByteSeq(guid[3]);
+
+    TC_LOG_DEBUG("network", "WORLD: Received CMSG_PET_STOP_ATTACK for GUID " UI64FMTD "", (uint64)guid);
 
     Unit* pet = ObjectAccessor::GetCreatureOrPetOrVehicle(*_player, guid);
 
@@ -759,8 +776,26 @@ void WorldSession::HandlePetRename(WorldPacket& recvData)
 
 void WorldSession::HandlePetAbandon(WorldPacket& recvData)
 {
-    uint64 guid;
-    recvData >> guid;                                      //pet guid
+    ObjectGuid guid;
+
+    guid[7] = recvData.ReadBit();
+    guid[3] = recvData.ReadBit();
+    guid[4] = recvData.ReadBit();
+    guid[2] = recvData.ReadBit();
+    guid[5] = recvData.ReadBit();
+    guid[6] = recvData.ReadBit();
+    guid[1] = recvData.ReadBit();
+    guid[0] = recvData.ReadBit();
+
+    recvData.ReadByteSeq(guid[0]);
+    recvData.ReadByteSeq(guid[2]);
+    recvData.ReadByteSeq(guid[5]);
+    recvData.ReadByteSeq(guid[6]);
+    recvData.ReadByteSeq(guid[7]);
+    recvData.ReadByteSeq(guid[1]);
+    recvData.ReadByteSeq(guid[4]);
+    recvData.ReadByteSeq(guid[3]);
+
     TC_LOG_INFO("network", "HandlePetAbandon. CMSG_PET_ABANDON pet guid is %u", GUID_LOPART(guid));
 
     if (!_player->IsInWorld())
@@ -782,29 +817,27 @@ void WorldSession::HandlePetSpellAutocastOpcode(WorldPacket& recvPacket)
     TC_LOG_INFO("network", "CMSG_PET_SPELL_AUTOCAST");
     ObjectGuid PetGUID;
     uint32 SpellID;
-    bool AutocastEnabled;
+    uint32 State;
 
-    recvPacket >> SpellID;
+    recvPacket >> State >> SpellID;
 
-    PetGUID[0] = recvPacket.ReadBit();
-    PetGUID[4] = recvPacket.ReadBit();
-    PetGUID[2] = recvPacket.ReadBit();
-    PetGUID[6] = recvPacket.ReadBit();
     PetGUID[1] = recvPacket.ReadBit();
+    PetGUID[0] = recvPacket.ReadBit();
     PetGUID[5] = recvPacket.ReadBit();
     PetGUID[3] = recvPacket.ReadBit();
+    PetGUID[2] = recvPacket.ReadBit();
     PetGUID[7] = recvPacket.ReadBit();
-
-    AutocastEnabled = recvPacket.ReadBit();
+    PetGUID[6] = recvPacket.ReadBit();
+    PetGUID[4] = recvPacket.ReadBit();
 
     recvPacket.ReadByteSeq(PetGUID[5]);
-    recvPacket.ReadByteSeq(PetGUID[0]);
-    recvPacket.ReadByteSeq(PetGUID[4]);
-    recvPacket.ReadByteSeq(PetGUID[1]);
-    recvPacket.ReadByteSeq(PetGUID[7]);
-    recvPacket.ReadByteSeq(PetGUID[2]);
-    recvPacket.ReadByteSeq(PetGUID[3]);
     recvPacket.ReadByteSeq(PetGUID[6]);
+    recvPacket.ReadByteSeq(PetGUID[7]);
+    recvPacket.ReadByteSeq(PetGUID[3]);
+    recvPacket.ReadByteSeq(PetGUID[2]);
+    recvPacket.ReadByteSeq(PetGUID[1]);
+    recvPacket.ReadByteSeq(PetGUID[4]);
+    recvPacket.ReadByteSeq(PetGUID[0]);
 
     if (!_player->GetGuardianPet() && !_player->GetCharm())
         return;
@@ -833,11 +866,11 @@ void WorldSession::HandlePetSpellAutocastOpcode(WorldPacket& recvPacket)
     }
 
     if (pet->IsPet())
-        ((Pet*)pet)->ToggleAutocast(spellInfo, AutocastEnabled);
+        ((Pet*)pet)->ToggleAutocast(spellInfo, State);
     else
-        pet->GetCharmInfo()->ToggleCreatureAutocast(spellInfo, AutocastEnabled);
+        pet->GetCharmInfo()->ToggleCreatureAutocast(spellInfo, State);
 
-    charmInfo->SetSpellAutocast(spellInfo, AutocastEnabled);
+    charmInfo->SetSpellAutocast(spellInfo, State);
 }
 
 void WorldSession::HandlePetCastSpellOpcode(WorldPacket& recvPacket)

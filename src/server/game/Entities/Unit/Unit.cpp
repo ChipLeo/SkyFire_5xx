@@ -4674,7 +4674,7 @@ GameObject* Unit::GetGameObject(uint32 spellId) const
 
 void Unit::AddGameObject(GameObject* gameObj)
 {
-    if (!gameObj || !gameObj->GetOwnerGUID() == 0)
+    if (!gameObj || !(gameObj->GetOwnerGUID() == 0))
         return;
 
     m_gameObj.push_back(gameObj);
@@ -4854,74 +4854,74 @@ void Unit::SendPeriodicAuraLog(SpellPeriodicAuraLogInfo* pInfo)
 {
     AuraEffect const* aura = pInfo->auraEff;
     ObjectGuid casterGuid = aura->GetCasterGUID();
-    ObjectGuid victimGuid = GetGUID();
+    ObjectGuid targetGuid = GetGUID();
 
-    WorldPacket data(SMSG_PERIODICAURALOG, 30);
-    data.WriteBit(victimGuid[5]);
-    data.WriteBit(victimGuid[6]);
-    data.WriteBit(casterGuid[6]);
-    data.WriteBit(casterGuid[1]);
-    data.WriteBit(victimGuid[3]);
-    data.WriteBit(victimGuid[0]);
-    data.WriteBit(casterGuid[3]);
-    data.WriteBit(victimGuid[2]);
+    WorldPacket data(SMSG_SPELL_PERIODIC_AURA_LOG, 30);
+
+    data.WriteBit(targetGuid[7]);
+    data.WriteBit(casterGuid[0]);
     data.WriteBit(casterGuid[7]);
-    data.WriteBit(casterGuid[4]);
-    data.WriteBit(casterGuid[5]);
-    data.WriteBit(victimGuid[4]);
+    data.WriteBit(targetGuid[1]);
     data.WriteBits(1, 21); // Count
 
     // Count loop here
     data.WriteBit(pInfo->critical);
     size_t pos = data.bitwpos();
 
+    data.WriteBit(targetGuid[0]);
+    
     // All sent for now, will mess with it l8 ^^
     switch (aura->GetAuraType())
     {
 
         case SPELL_AURA_PERIODIC_DAMAGE:
         case SPELL_AURA_PERIODIC_DAMAGE_PERCENT:
+            data.WriteBit(0); // Int 2 -- OverKill
             data.WriteBit(0); // Int 4 -- Absorb
             data.WriteBit(0); // Int 3 -- SchoolMask
-            data.WriteBit(0); // Int 2 -- OverKill
             data.WriteBit(0); // Int 5 -- Resist
             break;
         case SPELL_AURA_PERIODIC_HEAL:
         case SPELL_AURA_OBS_MOD_HEALTH:
+            data.WriteBit(0); // Int 2 -- OverHeal
             data.WriteBit(0); // Int 4 -- Absorb
             data.WriteBit(0); // Int 3 -- SchoolMask
-            data.WriteBit(0); // Int 2 -- OverHeal
             data.WriteBit(1); // Int 5
             break;
         case SPELL_AURA_OBS_MOD_POWER:
         case SPELL_AURA_PERIODIC_ENERGIZE:
+            data.WriteBit(1); // Int 2
             data.WriteBit(1); // Int 4
             data.WriteBit(0); // Int 3
-            data.WriteBit(1); // Int 2
             data.WriteBit(1); // Int 5
         case SPELL_AURA_PERIODIC_MANA_LEECH:
+            data.WriteBit(1); // Int 2
             data.WriteBit(1); // Int 4
             data.WriteBit(0); // Int 3
-            data.WriteBit(1); // Int 2
             data.WriteBit(1); // Int 5
             break;
         default:
+            data.WriteBit(1); // Int 2
             data.WriteBit(1); // Int 4
             data.WriteBit(1); // Int 3
-            data.WriteBit(1); // Int 2
             data.WriteBit(1); // Int 5
             break;
     }
 
-    data.WriteBit(victimGuid[7]);
-    data.WriteBit(0); // Some data
+    data.WriteBit(targetGuid[5]);
+    data.WriteBit(targetGuid[3]);
+    data.WriteBit(casterGuid[1]);
+    data.WriteBit(targetGuid[2]);
+    data.WriteBit(casterGuid[6]);
+    data.WriteBit(casterGuid[3]);
+    data.WriteBit(casterGuid[4]);
+    data.WriteBit(0); // Power data
     data.WriteBit(casterGuid[2]);
-    data.WriteBit(casterGuid[0]);
-    data.WriteBit(victimGuid[1]);
+    data.WriteBit(targetGuid[6]);
+    data.WriteBit(casterGuid[5]);
+    data.WriteBit(casterGuid[4]);
     data.FlushBits();
-
-    data.WriteByteSeq(victimGuid[3]);
-
+    
     // Switch Loop
     data << uint32(aura->GetAuraType());                    // auraId
     switch (aura->GetAuraType())
@@ -4929,27 +4929,27 @@ void Unit::SendPeriodicAuraLog(SpellPeriodicAuraLogInfo* pInfo)
 
         case SPELL_AURA_PERIODIC_DAMAGE:
         case SPELL_AURA_PERIODIC_DAMAGE_PERCENT:
-            data << uint32(aura->GetSpellInfo()->GetSchoolMask());
-            data << uint32(pInfo->damage);                  // damage
             data << uint32(pInfo->overDamage);              // overkill
             data << uint32(pInfo->absorb);                  // absorb
+            data << uint32(pInfo->damage);                  // damage
             data << uint32(pInfo->resist);                  // resist
+            data << uint32(aura->GetSpellInfo()->GetSchoolMask());
             break;
         case SPELL_AURA_PERIODIC_HEAL:
         case SPELL_AURA_OBS_MOD_HEALTH:
-            data << uint32(aura->GetSpellInfo()->GetSchoolMask());
-            data << uint32(pInfo->damage);                  // damage
             data << uint32(pInfo->overDamage);              // overheal
             data << uint32(pInfo->absorb);                  // absorb
+            data << uint32(pInfo->damage);                  // damage
+            data << uint32(aura->GetSpellInfo()->GetSchoolMask());
             break;
         case SPELL_AURA_OBS_MOD_POWER:
         case SPELL_AURA_PERIODIC_ENERGIZE:
-            data << uint32(aura->GetMiscValue());           // power type
             data << uint32(pInfo->damage);                  // damage
+            data << uint32(aura->GetMiscValue());           // power type
             break;
         case SPELL_AURA_PERIODIC_MANA_LEECH:
-            data << uint32(aura->GetMiscValue());           // power type
             data << uint32(pInfo->damage);                  // amount
+            data << uint32(aura->GetMiscValue());           // power type
             //data << float(pInfo->multiplier);               // gain multiplier
             break;
         default:
@@ -4958,22 +4958,24 @@ void Unit::SendPeriodicAuraLog(SpellPeriodicAuraLogInfo* pInfo)
             break;
     }
 
-    data.WriteByteSeq(casterGuid[4]);
-    data.WriteByteSeq(casterGuid[3]);
-    data.WriteByteSeq(casterGuid[0]);
     data.WriteByteSeq(casterGuid[5]);
-    data.WriteByteSeq(casterGuid[1]);
+    data.WriteByteSeq(casterGuid[3]);
+    data.WriteByteSeq(targetGuid[4]);
     data << uint32(aura->GetId());                          // spellId
-    data.WriteByteSeq(victimGuid[7]);
-    data.WriteByteSeq(victimGuid[4]);
-    data.WriteByteSeq(victimGuid[1]);
-    data.WriteByteSeq(casterGuid[2]);
-    data.WriteByteSeq(victimGuid[5]);
+    data.WriteByteSeq(targetGuid[6]);
     data.WriteByteSeq(casterGuid[7]);
-    data.WriteByteSeq(victimGuid[2]);
+    data.WriteByteSeq(casterGuid[1]);
+    data.WriteByteSeq(targetGuid[5]);
+    data.WriteByteSeq(casterGuid[0]);
+    data.WriteByteSeq(targetGuid[1]);
+    data.WriteByteSeq(targetGuid[7]);
+    data.WriteByteSeq(casterGuid[4]);
+    data.WriteByteSeq(targetGuid[3]);
+    data.WriteByteSeq(casterGuid[2]);
+    data.WriteByteSeq(targetGuid[0]);
+    data.WriteByteSeq(targetGuid[2]);
     data.WriteByteSeq(casterGuid[6]);
-    data.WriteByteSeq(victimGuid[0]);
-    data.WriteByteSeq(victimGuid[6]);
+
     SendMessageToSet(&data, true);
 }
 
@@ -9808,6 +9810,26 @@ bool Unit::IsImmunedToSpellEffect(SpellInfo const* spellInfo, uint32 index) cons
     return false;
 }
 
+uint32 Unit::GetSchoolImmunityMask() const
+{
+    uint32 mask = 0;
+    SpellImmuneList const& schoolList = m_spellImmune[IMMUNITY_SCHOOL];
+    for (SpellImmuneList::const_iterator itr = schoolList.begin(); itr != schoolList.end(); ++itr)
+        mask |= itr->type;
+
+    return mask;
+}
+
+uint32 Unit::GetMechanicImmunityMask() const
+{
+    uint32 mask = 0;
+    SpellImmuneList const& mechanicList = m_spellImmune[IMMUNITY_MECHANIC];
+    for (SpellImmuneList::const_iterator itr = mechanicList.begin(); itr != mechanicList.end(); ++itr)
+        mask |= (1 << itr->type);
+
+    return mask;
+}
+
 uint32 Unit::MeleeDamageBonusDone(Unit* victim, uint32 pdamage, WeaponAttackType attType, SpellInfo const* spellProto)
 {
     if (!victim || pdamage == 0)
@@ -10131,12 +10153,6 @@ void Unit::Mount(uint32 mount, uint32 VehicleId, uint32 creatureEntry)
         {
             if (CreateVehicleKit(VehicleId, creatureEntry))
             {
-                // Send others that we now have a vehicle
-                WorldPacket data(SMSG_PLAYER_VEHICLE_DATA, GetPackGUID().size()+4);
-                data.appendPackGUID(GetGUID());
-                data << uint32(VehicleId);
-                SendMessageToSet(&data, true);
-
                 player->SendOnCancelExpectedVehicleRideAura();
 
                 // mounts can also have accessories
@@ -10173,9 +10189,8 @@ void Unit::Dismount()
     if (Player* thisPlayer = ToPlayer())
         thisPlayer->SendMovementSetCollisionHeight(thisPlayer->GetCollisionHeight(false));
 
-    WorldPacket data(SMSG_DISMOUNT, 9);
-
     ObjectGuid guid = GetGUID();
+    WorldPacket data(SMSG_DISMOUNT, 9);
 
     data.WriteBit(guid[6]);
     data.WriteBit(guid[3]);
@@ -10185,6 +10200,7 @@ void Unit::Dismount()
     data.WriteBit(guid[2]);
     data.WriteBit(guid[5]);
     data.WriteBit(guid[4]);
+
     data.WriteByteSeq(guid[3]);
     data.WriteByteSeq(guid[6]);
     data.WriteByteSeq(guid[7]);
@@ -10199,11 +10215,6 @@ void Unit::Dismount()
     // dismount as a vehicle
     if (GetTypeId() == TYPEID_PLAYER && GetVehicleKit())
     {
-        // Send other players that we are no longer a vehicle
-        data.Initialize(SMSG_PLAYER_VEHICLE_DATA, 8+4);
-        data.appendPackGUID(GetGUID());
-        data << uint32(0);
-        ToPlayer()->SendMessageToSet(&data, true);
         // Remove vehicle from player
         RemoveVehicleKit();
     }
@@ -10993,7 +11004,9 @@ void Unit::SetSpeed(UnitMoveType mtype, float rate, bool forced)
 
     static MovementStatusElements const speedVal = MSEExtraFloat;
     Movement::ExtraMovementStatusElement extra(&speedVal);
-    extra.Data.floatData = GetSpeed(mtype);
+    extra.Data.floatData.push_back(GetSpeed(mtype));
+    extra.Data.floatData.push_back(GetSpeed(mtype));
+    extra.Data.floatData.push_back(GetSpeed(mtype));
 
     Movement::PacketSender(this, moveTypeToOpcode[mtype][0], moveTypeToOpcode[mtype][1], moveTypeToOpcode[mtype][2], &extra).Send();
 }
@@ -11330,6 +11343,12 @@ float Unit::ApplyEffectModifiers(SpellInfo const* spellProto, uint8 effect_index
             case 2:
                 modOwner->ApplySpellMod(spellProto->Id, SPELLMOD_EFFECT3, value);
                 break;
+            case 3:
+                modOwner->ApplySpellMod(spellProto->Id, SPELLMOD_EFFECT4, value);
+                break;
+            case 4:
+                modOwner->ApplySpellMod(spellProto->Id, SPELLMOD_EFFECT5, value);
+                break;
         }
     }
     return value;
@@ -11652,7 +11671,7 @@ bool Unit::IsInDisallowedMountForm() const
 {
     ShapeshiftForm form = GetShapeshiftForm();
     return form != FORM_NONE && form != FORM_BATTLESTANCE && form != FORM_BERSERKERSTANCE && form != FORM_DEFENSIVESTANCE &&
-        form != FORM_SHADOW && form != FORM_STEALTH && form != FORM_UNDEAD;
+        form != FORM_SHADOW && form != FORM_STEALTH && form != FORM_UNDEAD && form != FORM_WISE_SERPENT && form != FORM_STURDY_OX && form != FORM_FIERCE_TIGER && form != FORM_MOONKIN;
 }
 
 /*#######################################
@@ -12103,7 +12122,7 @@ void Unit::RemoveFromWorld()
     {
         m_duringRemoveFromWorld = true;
         if (IsVehicle())
-            RemoveVehicleKit();
+            RemoveVehicleKit(true);
 
         RemoveCharmAuras();
         RemoveBindSightAuras();
@@ -13813,9 +13832,28 @@ void Unit::SendDurabilityLoss(Player* receiver, uint32 percent)
 
 void Unit::PlayOneShotAnimKit(uint32 id)
 {
-    WorldPacket data(SMSG_PLAY_ONE_SHOT_ANIM_KIT, 7+2);
-    data.appendPackGUID(GetGUID());
+    ObjectGuid Guid;
+    WorldPacket data(SMSG_PLAY_ONE_SHOT_ANIM_KIT, 7 + 2);
+
+    data.WriteBit(Guid[3]);
+    data.WriteBit(Guid[1]);
+    data.WriteBit(Guid[7]);
+    data.WriteBit(Guid[6]);
+    data.WriteBit(Guid[0]);
+    data.WriteBit(Guid[4]);
+    data.WriteBit(Guid[5]);
+    data.WriteBit(Guid[2]);
+    
+    data.WriteByteSeq(Guid[3]);
+    data.WriteByteSeq(Guid[6]);
+    data.WriteByteSeq(Guid[1]);
+    data.WriteByteSeq(Guid[4]);
     data << uint16(id);
+    data.WriteByteSeq(Guid[2]);
+    data.WriteByteSeq(Guid[7]);
+    data.WriteByteSeq(Guid[5]);
+    data.WriteByteSeq(Guid[0]);
+
     SendMessageToSet(&data, true);
 }
 
@@ -14640,7 +14678,7 @@ Unit* Unit::GetRedirectThreatTarget()
     return _redirectThreadInfo.GetTargetGUID() ? ObjectAccessor::GetUnit(*this, _redirectThreadInfo.GetTargetGUID()) : NULL;
 }
 
-bool Unit::CreateVehicleKit(uint32 id, uint32 creatureEntry)
+bool Unit::CreateVehicleKit(uint32 id, uint32 creatureEntry, bool loading /*= false*/)
 {
     VehicleEntry const* vehInfo = sVehicleStore.LookupEntry(id);
     if (!vehInfo)
@@ -14649,13 +14687,20 @@ bool Unit::CreateVehicleKit(uint32 id, uint32 creatureEntry)
     m_vehicleKit = new Vehicle(this, vehInfo, creatureEntry);
     m_updateFlag |= UPDATEFLAG_VEHICLE;
     m_unitTypeMask |= UNIT_MASK_VEHICLE;
+
+    if (!loading)
+        SendSetVehicleRecId(id);
+
     return true;
 }
 
-void Unit::RemoveVehicleKit()
+void Unit::RemoveVehicleKit(bool remove /*= false*/)
 {
     if (!m_vehicleKit)
         return;
+
+    if (!remove)
+        SendSetVehicleRecId(0);
 
     m_vehicleKit->Uninstall();
     delete m_vehicleKit;
@@ -15476,7 +15521,7 @@ uint32 Unit::GetModelForForm(ShapeshiftForm form) const
     return modelid;
 }
 
-uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
+uint32 Unit::GetModelForTotem(uint32 totemType) const
 {
     if (totemType == 3211)
         totemType = SUMMON_TYPE_TOTEM_FIRE;
@@ -15886,6 +15931,7 @@ void Unit::WriteMovementInfo(WorldPacket& data, Movement::ExtraMovementStatusEle
 {
     MovementInfo const& mi = m_movementInfo;
 
+    bool hasMountDisplayId = GetUInt32Value(UNIT_FIELD_MOUNT_DISPLAY_ID) != 0;
     bool hasMovementFlags = GetUnitMovementFlags() != 0;
     bool hasMovementFlags2 = GetExtraUnitMovementFlags() != 0;
     bool hasTimestamp = true;
@@ -15968,6 +16014,9 @@ void Unit::WriteMovementInfo(WorldPacket& data, Movement::ExtraMovementStatusEle
         case MSEHasMovementFlags2:
             data.WriteBit(!hasMovementFlags2);
             break;
+        case MSEHasMountDisplayId:
+            data.WriteBit(!hasMountDisplayId);
+            break;
         case MSEHasTimestamp:
             data.WriteBit(!hasTimestamp);
             break;
@@ -16000,6 +16049,12 @@ void Unit::WriteMovementInfo(WorldPacket& data, Movement::ExtraMovementStatusEle
             break;
         case MSEHasSpline:
             data.WriteBit(hasSpline);
+            break;
+        case MSEMountDisplayIdWithCheck: // Fallback here
+            if (!hasMountDisplayId)
+                break;
+        case MSEMountDisplayIdWithoutCheck:
+            data << GetUInt32Value(UNIT_FIELD_MOUNT_DISPLAY_ID);
             break;
         case MSEMovementFlags:
             if (hasMovementFlags)
@@ -16088,6 +16143,8 @@ void Unit::WriteMovementInfo(WorldPacket& data, Movement::ExtraMovementStatusEle
             break;
         case MSEForcesCount:
             data.WriteBits(0, 22);
+            break;
+        case MSEForces:
             break;
         case MSECounter:
             data << m_movementCounter;
@@ -16294,8 +16351,10 @@ void Unit::SendThreatListUpdate()
             data.WriteBit(targetGuid[0]);
             data.WriteBit(targetGuid[7]);
         }
+
         data.WriteBit(guid[2]);
         data.FlushBits();
+
         for (ThreatContainer::StorageType::const_iterator itr = tlist.begin(); itr != tlist.end(); ++itr)
         {
             ObjectGuid targetGuid = (*itr)->getUnitGuid();
@@ -16439,44 +16498,43 @@ void Unit::SendClearThreatListOpcode()
 void Unit::SendRemoveFromThreatListOpcode(HostileReference* pHostileReference)
 {
     TC_LOG_DEBUG("entities.unit", "WORLD: Send SMSG_THREAT_REMOVE Message");
-
     ObjectGuid victimGUID = GetGUID();
     ObjectGuid hostileGUID = pHostileReference->getUnitGuid();
 
     WorldPacket data(SMSG_THREAT_REMOVE, 1 + 1 + 8 + 8);
 
-    data.WriteBit(victimGUID[0]);
-    data.WriteBit(victimGUID[1]);
-    data.WriteBit(victimGUID[5]);
+    data.WriteBit(victimGUID [0]);
+    data.WriteBit(victimGUID [1]);
+    data.WriteBit(victimGUID [5]);
     data.WriteBit(hostileGUID[4]);
     data.WriteBit(hostileGUID[0]);
-    data.WriteBit(victimGUID[4]);
-    data.WriteBit(victimGUID[6]);
+    data.WriteBit(victimGUID [4]);
+    data.WriteBit(victimGUID [6]);
     data.WriteBit(hostileGUID[7]);
     data.WriteBit(hostileGUID[6]);
     data.WriteBit(hostileGUID[3]);
-    data.WriteBit(victimGUID[2]);
+    data.WriteBit(victimGUID [2]);
     data.WriteBit(hostileGUID[1]);
-    data.WriteBit(victimGUID[3]);
-    data.WriteBit(victimGUID[7]);
+    data.WriteBit(victimGUID [3]);
+    data.WriteBit(victimGUID [7]);
     data.WriteBit(hostileGUID[5]);
     data.WriteBit(hostileGUID[2]);
 
     data.WriteByteSeq(hostileGUID[3]);
     data.WriteByteSeq(hostileGUID[0]);
     data.WriteByteSeq(hostileGUID[2]);
-    data.WriteByteSeq(victimGUID[5]);
-    data.WriteByteSeq(victimGUID[4]);
-    data.WriteByteSeq(victimGUID[7]);
-    data.WriteByteSeq(victimGUID[3]);
-    data.WriteByteSeq(victimGUID[0]);
+    data.WriteByteSeq(victimGUID [5]);
+    data.WriteByteSeq(victimGUID [4]);
+    data.WriteByteSeq(victimGUID [7]);
+    data.WriteByteSeq(victimGUID [3]);
+    data.WriteByteSeq(victimGUID [0]);
     data.WriteByteSeq(hostileGUID[4]);
-    data.WriteByteSeq(victimGUID[1]);
+    data.WriteByteSeq(victimGUID [1]);
     data.WriteByteSeq(hostileGUID[1]);
-    data.WriteByteSeq(victimGUID[6]);
+    data.WriteByteSeq(victimGUID [6]);
     data.WriteByteSeq(hostileGUID[7]);
     data.WriteByteSeq(hostileGUID[6]);
-    data.WriteByteSeq(victimGUID[2]);
+    data.WriteByteSeq(victimGUID [2]);
     data.WriteByteSeq(hostileGUID[5]);
 
     SendMessageToSet(&data, false);
@@ -17134,4 +17192,58 @@ void Unit::BuildValuesUpdate(uint8 updateType, ByteBuffer* data, Player* target)
     updateMask.AppendToPacket(data);
     data->append(fieldBuffer);
     *data << uint8(0);
+}
+
+void Unit::SendSetVehicleRecId(uint32 vehicleId)
+{
+    if (Player* player = ToPlayer())
+    {
+        ObjectGuid moverGuid = GetGUID();
+        uint32 index = m_movementCounter++;
+        WorldPacket data(SMSG_MOVE_SET_VEHICLE_REC_ID, 8 + 4 + 4);
+        data.WriteBit(moverGuid[0]);
+        data.WriteBit(moverGuid[6]);
+        data.WriteBit(moverGuid[1]);
+        data.WriteBit(moverGuid[3]);
+        data.WriteBit(moverGuid[7]);
+        data.WriteBit(moverGuid[4]);
+        data.WriteBit(moverGuid[5]);
+        data.WriteBit(moverGuid[2]);
+
+        data.WriteByteSeq(moverGuid[6]);
+        data.WriteByteSeq(moverGuid[7]);
+        data.WriteByteSeq(moverGuid[0]);
+        data.WriteByteSeq(moverGuid[3]);
+        data << uint32(vehicleId);
+        data << uint32(index);
+        data.WriteByteSeq(moverGuid[1]);
+        data.WriteByteSeq(moverGuid[5]);
+        data.WriteByteSeq(moverGuid[2]);
+        data.WriteByteSeq(moverGuid[4]);
+
+        player->SendDirectMessage(&data);
+    }
+
+    ObjectGuid vehicleGuid = GetGUID();
+    WorldPacket data(SMSG_SET_VEHICLE_REC_ID, 8 + 4);
+    data.WriteBit(vehicleGuid[5]);
+    data.WriteBit(vehicleGuid[7]);
+    data.WriteBit(vehicleGuid[2]);
+    data.WriteBit(vehicleGuid[1]);
+    data.WriteBit(vehicleGuid[4]);
+    data.WriteBit(vehicleGuid[0]);
+    data.WriteBit(vehicleGuid[3]);
+    data.WriteBit(vehicleGuid[6]);
+
+    data.WriteByteSeq(vehicleGuid[5]);
+    data.WriteByteSeq(vehicleGuid[7]);
+    data.WriteByteSeq(vehicleGuid[4]);
+    data.WriteByteSeq(vehicleGuid[6]);
+    data.WriteByteSeq(vehicleGuid[2]);
+    data.WriteByteSeq(vehicleGuid[1]);
+    data.WriteByteSeq(vehicleGuid[3]);
+    data.WriteByteSeq(vehicleGuid[0]);
+    data << uint32(vehicleId);
+
+    SendMessageToSet(&data, true);
 }

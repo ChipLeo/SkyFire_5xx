@@ -80,21 +80,21 @@ void WorldSession::HandleChangeSeatsOnControlledVehicle(WorldPacket& recvData)
             {
                 MSEExtraInt8,
                 MSEHasGuidByte2,
-                MSEHasGuidByte4,
-                MSEHasGuidByte7,
-                MSEHasGuidByte6,
-                MSEHasGuidByte5,
-                MSEHasGuidByte0,
                 MSEHasGuidByte1,
+                MSEHasGuidByte7,
+                MSEHasGuidByte5,
                 MSEHasGuidByte3,
-                MSEGuidByte6,
-                MSEGuidByte1,
-                MSEGuidByte2,
+                MSEHasGuidByte6,
+                MSEHasGuidByte4,
+                MSEHasGuidByte0,
                 MSEGuidByte5,
-                MSEGuidByte3,
-                MSEGuidByte0,
                 MSEGuidByte4,
                 MSEGuidByte7,
+                MSEGuidByte1,
+                MSEGuidByte3,
+                MSEGuidByte2,
+                MSEGuidByte6,
+                MSEGuidByte0,
             };
 
             Movement::ExtraMovementStatusElement extra(accessoryGuid);
@@ -139,13 +139,28 @@ void WorldSession::HandleChangeSeatsOnControlledVehicle(WorldPacket& recvData)
     }
 }
 
-void WorldSession::HandleEnterPlayerVehicle(WorldPacket& data)
+void WorldSession::HandleEnterPlayerVehicle(WorldPacket& recvData)
 {
-    // Read guid
-    uint64 guid;
-    data >> guid;
+    ObjectGuid Guid;
+    Guid[5] = recvData.ReadBit();
+    Guid[7] = recvData.ReadBit();
+    Guid[3] = recvData.ReadBit();
+    Guid[0] = recvData.ReadBit();
+    Guid[2] = recvData.ReadBit();
+    Guid[4] = recvData.ReadBit();
+    Guid[6] = recvData.ReadBit();
+    Guid[1] = recvData.ReadBit();
 
-    if (Player* player = ObjectAccessor::FindPlayer(guid))
+    recvData.ReadByteSeq(Guid[5]);
+    recvData.ReadByteSeq(Guid[3]);
+    recvData.ReadByteSeq(Guid[1]);
+    recvData.ReadByteSeq(Guid[2]);
+    recvData.ReadByteSeq(Guid[7]);
+    recvData.ReadByteSeq(Guid[0]);
+    recvData.ReadByteSeq(Guid[6]);
+    recvData.ReadByteSeq(Guid[4]);
+
+    if (Player* player = ObjectAccessor::FindPlayer(Guid))
     {
         if (!player->GetVehicleKit())
             return;

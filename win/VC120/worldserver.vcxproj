@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -29,25 +29,25 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -120,7 +120,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 /debug %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;game.lib;shared.lib;scripts.lib;collision.lib;g3dlib.lib;gsoap.lib;Detour.lib;ace.lib;libmysql.lib;libeay32MD.lib;ssleay32MDd.lib;libeay32MDd.lib;zlib.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;C:\Program Files\MySQL\MySQL Server 5.5\lib\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>
@@ -169,7 +169,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;game.lib;shared.lib;scripts.lib;collision.lib;g3dlib.lib;gsoap.lib;Detour.lib;ace.lib;libmysql.lib;libeay32MD.lib;ssleay32MDd.lib;libeay32MDd.lib;zlib.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;C:\Program Files\MySQL\MySQL Server 5.5\lib\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>
@@ -218,7 +218,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;game.lib;shared.lib;scripts.lib;collision.lib;g3dlib.lib;gsoap.lib;Detour.lib;ace.lib;libmysql.lib;libeay32MD.lib;ssleay32MDd.lib;libeay32MDd.lib;zlib.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;C:\Program Files\MySQL\MySQL Server 5.5\lib\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>
@@ -266,7 +266,7 @@
     <Link>
       <AdditionalOptions> /machine:x64 /debug %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>user32.lib;advapi32.lib;game.lib;shared.lib;scripts.lib;collision.lib;g3dlib.lib;gsoap.lib;Detour.lib;ace.lib;libmysql.lib;libeay32MD.lib;ssleay32MDd.lib;libeay32MDd.lib;zlib.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\$(Platform)_$(Configuration)\;.\game__$(Platform)_$(Configuration)\;.\shared__$(Platform)_$(Configuration)\;C:\Program Files\MySQL\MySQL Server 5.5\lib\;.\scripts__$(Platform)_$(Configuration)\;.\collision__$(Platform)_$(Configuration)\;.\g3dlib__$(Platform)_$(Configuration)\;.\gsoap__$(Platform)_$(Configuration)\;.\Detour__$(Platform)_$(Configuration)\;.\ace__$(Platform)_$(Configuration)\;.\libmysql__$(Platform)_$(Configuration)\;C:\OpenSSL-Win64\lib\VC\;.\zlib__$(Platform)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <ProgramDataBaseFile>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFile>
@@ -325,9 +325,6 @@
     </ProjectReference>
     <ProjectReference Include="gsoap.vcxproj">
       <Project>D73AF7FF-7775-445D-BB97-E02B6C6DEA8A</Project>
-    </ProjectReference>
-    <ProjectReference Include="libmysql.vcxproj">
-      <Project>8B82300D-DE54-49A9-85AC-DF6735CE62A7</Project>
     </ProjectReference>
     <ProjectReference Include="scripts.vcxproj">
       <Project>D6820970-3A36-40EF-A874-C25F19D3820E</Project>

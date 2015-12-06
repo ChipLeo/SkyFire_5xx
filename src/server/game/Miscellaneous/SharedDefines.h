@@ -724,6 +724,48 @@ enum SpellAttr10
     SPELL_ATTR10_UNK31                            = 0x80000000  // 31
 };
 
+enum Specializations
+{
+    SPEC_NONE                           = 0,
+    SPEC_MAGE_ARCANE                    = 62,
+    SPEC_MAGE_FIRE                      = 63,
+    SPEC_MAGE_FROST                     = 64,
+    SPEC_PALADIN_HOLY                   = 65,
+    SPEC_PALADIN_PROTECTION             = 66,
+    SPEC_PALADIN_RETRIBUTION            = 70,
+    SPEC_WARRIOR_ARMS                   = 71,
+    SPEC_WARRIOR_FURY                   = 72,
+    SPEC_WARRIOR_PROTECTION             = 73,
+    SPEC_PET_FEROCITY                   = 74,
+    SPEC_PET_CUNNING                    = 79,
+    SPEC_PET_TENACITY                   = 81,
+    SPEC_DRUID_BALANCE                  = 102,
+    SPEC_DRUID_FERAL                    = 103,
+    SPEC_DRUID_GUARDIAN                 = 104,
+    SPEC_DRUID_RESTORATION              = 105,
+    SPEC_DEATH_KNIGHT_BLOOD             = 250,
+    SPEC_DEATH_KNIGHT_FROST             = 251,
+    SPEC_DEATH_KNIGHT_UNHOLY            = 252,
+    SPEC_HUNTER_BEAST_MASTERY           = 253,
+    SPEC_HUNTER_MARKSMANSHIP            = 254,
+    SPEC_HUNTER_SURVIVAL                = 255,
+    SPEC_PRIEST_DISCIPLINE              = 256,
+    SPEC_PRIEST_HOLY                    = 257,
+    SPEC_PRIEST_SHADOW                  = 258,
+    SPEC_ROGUE_ASSASSINATION            = 259,
+    SPEC_ROGUE_COMBAT                   = 260,
+    SPEC_ROGUE_SUBTLETY                 = 261,
+    SPEC_SHAMAN_ELEMENTAL               = 262,
+    SPEC_SHAMAN_ENHANCEMENT             = 263,
+    SPEC_SHAMAN_RESTORATION             = 264,
+    SPEC_WARLOCK_AFFLICTION             = 265,
+    SPEC_WARLOCK_DEMONOLOGY             = 266,
+    SPEC_WARLOCK_DESTRUCTION            = 267,
+    SPEC_MONK_BREWMASTER                = 268,
+    SPEC_MONK_WINDWALKER                = 269,
+    SPEC_MONK_MISTWEAVER                = 270
+};
+
 #define MIN_TALENT_SPEC         0
 #define MAX_TALENT_SPEC         1
 #define MIN_TALENT_SPECS        1
@@ -3075,10 +3117,25 @@ enum CreatureFamily
     CREATURE_FAMILY_BEETLE              = 53,
     CREATURE_FAMILY_SHALE_SPIDER        = 55,
     CREATURE_FAMILY_ZOMBIE              = 56,
-    CREATURE_FAMILY_BEETLE_OLD          = 57,
+    CREATURE_FAMILY_QA_TEST_FAMILY      = 57,
     CREATURE_FAMILY_SILITHID_2          = 59,
     CREATURE_FAMILY_WASP_2              = 66,
     CREATURE_FAMILY_HYDRA               = 68,
+    CREATURE_FAMILY_FEL_IMP             = 100,
+    CREATURE_FAMILY_VOIDLORD            = 101,
+    CREATURE_FAMILY_SHIVARRA            = 102,
+    CREATURE_FAMILY_OBSERVER            = 103,
+    CREATURE_FAMILY_WRATHGUARD          = 104,
+    CREATURE_FAMILY_INFERNAL            = 108,
+    CREATURE_FAMILY_FIRE_ELEMENTAL      = 116,
+    CREATURE_FAMILY_EARTH_ELEMENTAL     = 117,
+    CREATURE_FAMILY_CRANE               = 125,
+    CREATURE_FAMILY_WATER_STRIDER       = 126,
+    CREATURE_FAMILY_PORCUPINE           = 127,
+    CREATURE_FAMILY_QUILEN              = 128,
+    CREATURE_FAMILY_GOAT                = 129,
+    CREATURE_FAMILY_BASILISK            = 130,
+    CREATURE_FAMILY_DIREHORN            = 138
 };
 
 enum CreatureTypeFlags
@@ -3833,45 +3890,48 @@ enum ResponseCodes
     CHAR_CREATE_CHARACTER_RACE_ONLY                        = 67,
     CHAR_CREATE_CHARACTER_GOLD_LIMIT                       = 68,
     CHAR_CREATE_FORCE_LOGIN                                = 69,
+    CHAR_CREATE_TRIAL                                      = 70,
 
-    CHAR_DELETE_IN_PROGRESS                                = 70,
-    CHAR_DELETE_SUCCESS                                    = 71,
-    CHAR_DELETE_FAILED                                     = 72,
-    CHAR_DELETE_FAILED_LOCKED_FOR_TRANSFER                 = 73,
-    CHAR_DELETE_FAILED_GUILD_LEADER                        = 74,
-    CHAR_DELETE_FAILED_ARENA_CAPTAIN                       = 75,
-    CHAR_DELETE_FAILED_HAS_HEIRLOOM_OR_MAIL                = 76,
+    CHAR_DELETE_IN_PROGRESS                                = 71,
+    CHAR_DELETE_SUCCESS                                    = 72,
+    CHAR_DELETE_FAILED                                     = 73,
+    CHAR_DELETE_FAILED_LOCKED_FOR_TRANSFER                 = 74,
+    CHAR_DELETE_FAILED_GUILD_LEADER                        = 75,
+    CHAR_DELETE_FAILED_ARENA_CAPTAIN                       = 76,
+    CHAR_DELETE_FAILED_HAS_HEIRLOOM_OR_MAIL                = 77,
 
-    CHAR_LOGIN_IN_PROGRESS                                 = 77,
-    CHAR_LOGIN_SUCCESS                                     = 78,
-    CHAR_LOGIN_NO_WORLD                                    = 79,
-    CHAR_LOGIN_DUPLICATE_CHARACTER                         = 80,
-    CHAR_LOGIN_NO_INSTANCES                                = 81,
-    CHAR_LOGIN_FAILED                                      = 82,
-    CHAR_LOGIN_DISABLED                                    = 83,
-    CHAR_LOGIN_NO_CHARACTER                                = 84,
-    CHAR_LOGIN_LOCKED_FOR_TRANSFER                         = 85,
-    CHAR_LOGIN_LOCKED_BY_BILLING                           = 86,
-    CHAR_LOGIN_LOCKED_BY_MOBILE_AH                         = 87,
-    CHAR_LOGIN_TEMPORARY_GM_LOCK                           = 88,
+    CHAR_LOGIN_IN_PROGRESS                                 = 78,
+    CHAR_LOGIN_SUCCESS                                     = 79,
+    CHAR_LOGIN_NO_WORLD                                    = 80,
+    CHAR_LOGIN_DUPLICATE_CHARACTER                         = 81,
+    CHAR_LOGIN_NO_INSTANCES                                = 82,
+    CHAR_LOGIN_FAILED                                      = 83,
+    CHAR_LOGIN_DISABLED                                    = 84,
+    CHAR_LOGIN_NO_CHARACTER                                = 85,
+    CHAR_LOGIN_LOCKED_FOR_TRANSFER                         = 86,
+    CHAR_LOGIN_LOCKED_BY_BILLING                           = 87,
+    CHAR_LOGIN_LOCKED_BY_MOBILE_AH                         = 88,
+    CHAR_LOGIN_TEMPORARY_GM_LOCK                           = 89,
+    CHAR_LOGIN_LOCKED_BY_CHARACTER_UPGRADE                 = 90,
+    CHAR_LOGIN_LOCKED_BY_REVOKED_CHARACTER_UPGRADE         = 91,
 
-    CHAR_NAME_SUCCESS                                      = 89,
-    CHAR_NAME_FAILURE                                      = 90,
-    CHAR_NAME_NO_NAME                                      = 91,
-    CHAR_NAME_TOO_SHORT                                    = 92,
-    CHAR_NAME_TOO_LONG                                     = 93,
-    CHAR_NAME_INVALID_CHARACTER                            = 94,
-    CHAR_NAME_MIXED_LANGUAGES                              = 95,
-    CHAR_NAME_PROFANE                                      = 96,
-    CHAR_NAME_RESERVED                                     = 97,
-    CHAR_NAME_INVALID_APOSTROPHE                           = 98,
-    CHAR_NAME_MULTIPLE_APOSTROPHES                         = 99,
-    CHAR_NAME_THREE_CONSECUTIVE                            = 100,
-    CHAR_NAME_INVALID_SPACE                                = 101,
-    CHAR_NAME_CONSECUTIVE_SPACES                           = 102,
-    CHAR_NAME_RUSSIAN_CONSECUTIVE_SILENT_CHARACTERS        = 103,
-    CHAR_NAME_RUSSIAN_SILENT_CHARACTER_AT_BEGINNING_OR_END = 104,
-    CHAR_NAME_DECLENSION_DOESNT_MATCH_BASE_NAME            = 105,
+    CHAR_NAME_SUCCESS                                      = 92,
+    CHAR_NAME_FAILURE                                      = 93,
+    CHAR_NAME_NO_NAME                                      = 94,
+    CHAR_NAME_TOO_SHORT                                    = 95,
+    CHAR_NAME_TOO_LONG                                     = 96,
+    CHAR_NAME_INVALID_CHARACTER                            = 97,
+    CHAR_NAME_MIXED_LANGUAGES                              = 98,
+    CHAR_NAME_PROFANE                                      = 99,
+    CHAR_NAME_RESERVED                                     = 100,
+    CHAR_NAME_INVALID_APOSTROPHE                           = 101,
+    CHAR_NAME_MULTIPLE_APOSTROPHES                         = 102,
+    CHAR_NAME_THREE_CONSECUTIVE                            = 103,
+    CHAR_NAME_INVALID_SPACE                                = 104,
+    CHAR_NAME_CONSECUTIVE_SPACES                           = 105,
+    CHAR_NAME_RUSSIAN_CONSECUTIVE_SILENT_CHARACTERS        = 106,
+    CHAR_NAME_RUSSIAN_SILENT_CHARACTER_AT_BEGINNING_OR_END = 107,
+    CHAR_NAME_DECLENSION_DOESNT_MATCH_BASE_NAME            = 108,
 };
 
 /// Ban function modes
@@ -4146,14 +4206,14 @@ enum DungeonStatusFlag
 enum VoidTransferError
 {
     VOID_TRANSFER_ERROR_NO_ERROR          = 0,
-    VOID_TRANSFER_ERROR_INTERNAL_ERROR_1  = 1,
-    VOID_TRANSFER_ERROR_INTERNAL_ERROR_2  = 2,
-    VOID_TRANSFER_ERROR_FULL              = 3,
-    VOID_TRANSFER_ERROR_INTERNAL_ERROR_3  = 4,
-    VOID_TRANSFER_ERROR_INTERNAL_ERROR_4  = 5,
-    VOID_TRANSFER_ERROR_NOT_ENOUGH_MONEY  = 6,
-    VOID_TRANSFER_ERROR_INVENTORY_FULL    = 7,
-    VOID_TRANSFER_ERROR_INTERNAL_ERROR_5  = 8,
+    VOID_TRANSFER_ERROR_INTERNAL_ERROR_1  = 1, // Internal void storage Error.
+    VOID_TRANSFER_ERROR_INTERNAL_ERROR_2  = 2, // Internal void storage Error.
+    VOID_TRANSFER_ERROR_FULL              = 3, // There is not enough room in void storage to complete the deposit.
+    VOID_TRANSFER_ERROR_INTERNAL_ERROR_3  = 4, // Internal void storage Error.
+    VOID_TRANSFER_ERROR_INTERNAL_ERROR_4  = 5, // Internal void storage Error.
+    VOID_TRANSFER_ERROR_NOT_ENOUGH_MONEY  = 6, // You don't have enough money.
+    VOID_TRANSFER_ERROR_INVENTORY_FULL    = 7, // There is not enough room in your bags to complete the withdrawal.
+    VOID_TRANSFER_ERROR_INELIGIBLE_ITEMS  = 8, // One or more of your items are ineligible to be deposited into void storage.
     VOID_TRANSFER_ERROR_TRANSFER_UNKNOWN  = 9,
 };
 

@@ -1111,18 +1111,18 @@ void BattlegroundMgr::BuildBattlegroundListPacket(WorldPacket* data, uint64 guid
           << uint32(winnerHonor)                // Winner Honor Reward or Random Winner Honor Reward
           << uint8(bracketEntry->maxLevel)      // max level
           << uint32(loserHonor);                // Loser Honor Reward or Random Loser Honor Reward
-
+    
     data->WriteBit(guidBytes[0]);
-    data->WriteBit(0);                                      // unk
+    data->WriteBit(0);            // fake bit ?
     data->WriteBit(guidBytes[4]);
-    data->WriteBit(0);                                      // unk
+    data->WriteBit(0);            // fake bit ?
     data->WriteBit(guidBytes[2]);
-    data->WriteBit(0);                                      // unk
+    data->WriteBit(0);            // fake bit ?
     data->WriteBit(guidBytes[7]);
     data->WriteBit(guidBytes[6]);
     data->WriteBit(guidBytes[5]);
     data->WriteBit(guidBytes[1]);
-    data->WriteBit(0);                                      // unk
+    data->WriteBit(0);            // fake bit ?
     data->WriteBit(guidBytes[3]);
 
     size_t count_pos = data->bitwpos();

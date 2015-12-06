@@ -725,23 +725,41 @@ void WorldSession::HandleRaidTargetUpdateOpcode(WorldPacket& recvData)
     if (!group)
         return;
 
-    uint8 x;
-    recvData >> x;
+    uint8 Symbol, Index;
+    recvData >> Symbol >> Index;
 
     /** error handling **/
     /********************/
 
     // everything's fine, do it
-    if (x == 0xFF)                                           // target icon request
+    if (Symbol == 0xFF)                                     // target icon request
         group->SendTargetIconList(this);
     else                                                    // target icon update
     {
         if (!group->IsLeader(GetPlayer()->GetGUID()) && !group->IsAssistant(GetPlayer()->GetGUID()))
             return;
 
-        uint64 guid;
-        recvData >> guid;
-        group->SetTargetIcon(x, _player->GetGUID(), guid);
+        ObjectGuid targetGuid;
+
+        targetGuid[3] = recvData.ReadBit();
+        targetGuid[2] = recvData.ReadBit();
+        targetGuid[1] = recvData.ReadBit();
+        targetGuid[5] = recvData.ReadBit();
+        targetGuid[0] = recvData.ReadBit();
+        targetGuid[6] = recvData.ReadBit();
+        targetGuid[7] = recvData.ReadBit();
+        targetGuid[4] = recvData.ReadBit();
+
+        recvData.ReadByteSeq(targetGuid[2]);
+        recvData.ReadByteSeq(targetGuid[3]);
+        recvData.ReadByteSeq(targetGuid[0]);
+        recvData.ReadByteSeq(targetGuid[7]);
+        recvData.ReadByteSeq(targetGuid[5]);
+        recvData.ReadByteSeq(targetGuid[1]);
+        recvData.ReadByteSeq(targetGuid[6]);
+        recvData.ReadByteSeq(targetGuid[4]);
+
+        group->SetTargetIcon(Symbol, _player->GetGUID(), targetGuid, Index);
     }
 }
 
@@ -833,14 +851,51 @@ void WorldSession::HandleGroupAssistantLeaderOpcode(WorldPacket& recvData)
     if (!group->IsLeader(GetPlayer()->GetGUID()))
         return;
 
-    uint64 guid;
-    bool apply;
-    recvData >> guid;
-    recvData >> apply;
+    ObjectGuid guid;
+
+    uint8 unk = 0;
+    recvData >> unk;
+
+    guid[2] = recvData.ReadBit();
+    guid[0] = recvData.ReadBit();
+    guid[6] = recvData.ReadBit();
+    guid[3] = recvData.ReadBit();
+    guid[1] = recvData.ReadBit();
+    bool apply = recvData.ReadBit();
+    guid[4] = recvData.ReadBit();
+    guid[5] = recvData.ReadBit();
+    guid[7] = recvData.ReadBit();
+
+    recvData.ReadByteSeq(guid[5]);
+    recvData.ReadByteSeq(guid[1]);
+    recvData.ReadByteSeq(guid[0]);
+    recvData.ReadByteSeq(guid[7]);
+    recvData.ReadByteSeq(guid[3]);
+    recvData.ReadByteSeq(guid[6]);
+    recvData.ReadByteSeq(guid[2]);
+    recvData.ReadByteSeq(guid[4]);
 
     group->SetGroupMemberFlag(guid, apply, MEMBER_FLAG_ASSISTANT);
 
     group->SendUpdate();
+}
+
+void WorldSession::HandleGroupEveryoneIsAssistantOpcode(WorldPacket& recvData)
+{
+    TC_LOG_DEBUG("network", "WORLD: Received CMSG_SET_EVERYONE_IS_ASSISTANT");
+
+    Group* group = GetPlayer()->GetGroup();
+    if (!group)
+        return;
+
+    if (!group->IsLeader(GetPlayer()->GetGUID()))
+        return;
+
+    recvData.read_skip<uint8>();
+    bool apply = recvData.ReadBit();
+    recvData.FlushBits();
+
+    group->ChangeFlagEveryoneAssistant(apply);
 }
 
 void WorldSession::HandlePartyAssignmentOpcode(WorldPacket& recvData)
@@ -1317,7 +1372,7 @@ void WorldSession::HandleRequestPartyMemberStatsOpcode(WorldPacket& recvData)
     TC_LOG_DEBUG("network", "WORLD: Received CMSG_REQUEST_PARTY_MEMBER_STATS");
     ObjectGuid guid;
 
-    recvData.ReadBit(); // unk bit
+    recvData.read_skip<uint8>(); // flags
 
     guid[7] = recvData.ReadBit();
     guid[4] = recvData.ReadBit();
@@ -1533,4 +1588,46 @@ void WorldSession::HandleOptOutOfLootOpcode(WorldPacket& recvData)
     }
 
     GetPlayer()->SetPassOnGroupLoot(passOnLoot);
+}
+
+void WorldSession::HandleGroupInitiatePollRole(WorldPacket& recvData)
+{
+    TC_LOG_DEBUG("network", "WORLD: Received CMSG_GROUP_INITIATE_ROLE_POLL");
+
+    uint8 Index = 0;
+    recvData >> Index;
+
+    Group* group = GetPlayer()->GetGroup();
+    if (!group)
+        return;
+
+    SendRolePollInform(Index);
+}
+
+void WorldSession::SendRolePollInform(uint8 Index)
+{
+    ObjectGuid guid = GetPlayer()->GetGUID();
+
+    WorldPacket data(SMSG_GROUP_ROLE_POLL_INFORM, 8 + 1);
+
+    data.WriteBit(guid[5]);
+    data.WriteBit(guid[7]);
+    data.WriteBit(guid[3]);
+    data.WriteBit(guid[1]);
+    data.WriteBit(guid[2]);
+    data.WriteBit(guid[0]);
+    data.WriteBit(guid[4]);
+    data.WriteBit(guid[6]);
+
+    data.WriteByteSeq(guid[7]);
+    data << uint8(Index);
+    data.WriteByteSeq(guid[6]);
+    data.WriteByteSeq(guid[5]);
+    data.WriteByteSeq(guid[0]);
+    data.WriteByteSeq(guid[1]);
+    data.WriteByteSeq(guid[4]);
+    data.WriteByteSeq(guid[2]);
+    data.WriteByteSeq(guid[3]);
+
+    GetPlayer()->GetGroup()->BroadcastPacket(&data, false, -1);
 }

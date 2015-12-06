@@ -918,18 +918,9 @@ public:
         target->SetUInt32Value(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP);
         target->Mount(mId);
 
-        WorldPacket data(SMSG_MOVE_SET_RUN_SPEED, (8+4+1+4));
-        data.append(target->GetPackGUID());
-        data << (uint32)0;
-        data << (uint8)0;                                       //new 2.1.0
-        data << float(speed);
-        target->SendMessageToSet(&data, true);
+        target->SetSpeed(MOVE_RUN, speed, true);
 
-        data.Initialize(SMSG_MOVE_SET_SWIM_SPEED, (8+4+4));
-        data.append(target->GetPackGUID());
-        data << (uint32)0;
-        data << float(speed);
-        target->SendMessageToSet(&data, true);
+        target->SetSpeed(MOVE_SWIM, speed, true);
 
         return true;
     }

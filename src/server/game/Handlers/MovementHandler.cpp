@@ -443,7 +443,7 @@ void WorldSession::HandleForceSpeedChangeAck(WorldPacket &recvData)
         return;
     }
 
-    float newspeed = extras.Data.floatData;
+    float newspeed = extras.Data.floatData.front();
     /*----------------*/
 
     // client ACK send one packet for mounted/run case and need skip all except last from its
@@ -646,8 +646,6 @@ void WorldSession::HandleSummonResponseOpcode(WorldPacket& recvData)
 void WorldSession::HandleSetCollisionHeightAck(WorldPacket& recvPacket)
 {
     TC_LOG_DEBUG("network", "CMSG_MOVE_SET_COLLISION_HEIGHT_ACK");
-
-    recvPacket.read_skip<uint32>() ;
 
     static MovementStatusElements const heightElement = MSEExtraFloat;
     Movement::ExtraMovementStatusElement extra(&heightElement);

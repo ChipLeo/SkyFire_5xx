@@ -1888,6 +1888,9 @@
     <ClCompile Include="..\..\src\server\scripts\Pandaria\zone_wandering_island.cpp">
       <Filter>Pandaria</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\server\scripts\EasternKingdoms\zone_elwynn_forest.cpp">
+      <Filter>EasternKingdoms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\server\scripts\OutdoorPvP\OutdoorPvPSI.h">
