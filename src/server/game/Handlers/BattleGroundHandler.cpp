@@ -868,19 +868,30 @@ void WorldSession::HandleRequestPvpReward(WorldPacket& /*recvData*/)
     _player->SendPvpRewards();
 }
 
-void WorldSession::HandleRequestRatedBgStats(WorldPacket& /*recvData*/)
+void WorldSession::HandleRequestRatedInfo(WorldPacket& /*recvData*/)
 {
-    TC_LOG_DEBUG("network", "WORLD: CMSG_REQUEST_RATED_BG_STATS");
+    TC_LOG_DEBUG("network", "WORLD: CMSG_REQUEST_RATED_INFO");
 
-    WorldPacket data(SMSG_BATTLEFIELD_RATED_INFO, 29);
-    data << uint32(0);  // Reward
-    data << uint8(3);   // unk
-    data << uint32(0);  // unk
-    data << uint32(0);  // unk
-    data << _player->GetCurrencyWeekCap(CURRENCY_TYPE_CONQUEST_META_RBG, true);
-    data << uint32(0);  // unk
-    data << uint32(0);  // unk
-    data << _player->GetCurrency(CURRENCY_TYPE_CONQUEST_POINTS, true);
+    //RatedInfo* rInfo = sRatedMgr->GetRatedInfo(_player->GetGUID());
+
+    WorldPacket data(SMSG_BATTLEFIELD_RATED_INFO, 128);
+
+    for (uint8 i = 0; i < 4; ++i) // MAX_RATED_SLOT; ++i)
+    {
+        //RatedType ratedType = RatedInfo::GetRatedTypeBySlot(i);
+
+        //const StatsBySlot* stats = rInfo->GetStatsBySlot(ratedType);
+        //ASSERT(stats && "Stats must be already initialized");
+
+        data << uint32(0); // unk always 0, maybe this should be projected cap
+        data << uint32(0); // stats->SeasonWins);
+        data << uint32(0); // stats->SeasonGames);
+        data << uint32(0); // stats->PersonalRating);
+        data << uint32(0); // stats->WeekWins);
+        data << uint32(0); // stats->WeekBest);
+        data << uint32(0); // stats->WeekGames);
+        data << uint32(0); // stats->SeasonBest);
+    }
 
     SendPacket(&data);
 }

@@ -270,6 +270,8 @@ void WorldSession::HandleLfgTeleportOpcode(WorldPacket& recvData)
 
 void WorldSession::HandleLfgGetLockInfoOpcode(WorldPacket& recvData)
 {
+    recvData.read_skip<uint8>();
+
     bool forPlayer = recvData.ReadBit();
     TC_LOG_DEBUG("lfg", "CMSG_LFG_LOCK_INFO_REQUEST %s for %s", GetPlayerInfo().c_str(), (forPlayer ? "player" : "party"));
 

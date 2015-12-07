@@ -372,6 +372,12 @@ public:
         }
     }
 
+    ByteBuffer &operator<<(bool value)
+    {
+        WriteBit(value);
+        return *this;
+    }
+
     ByteBuffer &operator<<(uint8 value)
     {
         append<uint8>(value);

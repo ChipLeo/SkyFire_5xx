@@ -28,6 +28,7 @@
 #include "UpdateMask.h"
 #include "Path.h"
 #include "WaypointMovementGenerator.h"
+#include "MovementStructures.h"
 
 void WorldSession::HandleTaxiNodeStatusQueryOpcode(WorldPacket& recvData)
 {
@@ -295,10 +296,10 @@ void WorldSession::HandleMoveSplineDoneOpcode(WorldPacket& recvData)
 {
     TC_LOG_DEBUG("network", "WORLD: Received CMSG_MOVE_SPLINE_DONE");
 
-    uint32 SplineID;
-    recvData >> SplineID;
+    static MovementStatusElements const SplineID = MSEExtraInt32;
+    Movement::ExtraMovementStatusElement extra(&SplineID);
     MovementInfo movementInfo;                              // used only for proper packet read
-    _player->ReadMovementInfo(recvData, &movementInfo);
+    _player->ReadMovementInfo(recvData, &movementInfo, &extra);
 
     // in taxi flight packet received in 2 case:
     // 1) end taxi path in far (multi-node) flight

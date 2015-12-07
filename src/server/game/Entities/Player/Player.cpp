@@ -20979,7 +20979,7 @@ void Player::SendAttackSwingCancelAttack()
 
     WorldPacket data(SMSG_CANCEL_COMBAT, 1);
     data.WriteBits(0, 2);
-
+    data.FlushBits();
     GetSession()->SendPacket(&data);
 }
 
@@ -26970,6 +26970,7 @@ void Player::SendEquipmentSetList()
     uint32 count = 0;
     WorldPacket data(SMSG_LOAD_EQUIPMENT_SET);
 
+    size_t writePos = data.bitwpos();
     data.WriteBits(count, 19);
 
     for (EquipmentSets::iterator itr = m_EquipmentSets.begin(); itr != m_EquipmentSets.end(); ++itr)
@@ -27004,7 +27005,11 @@ void Player::SendEquipmentSetList()
         data.WriteBit(setGuid[2]);
         data.WriteBit(setGuid[6]);
         data.WriteBit(setGuid[0]);
+
+        count++;
     }
+
+    data.FlushBits();
 
     for (EquipmentSets::iterator itr = m_EquipmentSets.begin(); itr != m_EquipmentSets.end(); ++itr)
     {
@@ -27038,6 +27043,8 @@ void Player::SendEquipmentSetList()
         data.WriteByteSeq(setGuid[4]);
         data.append(itr->second.IconName.c_str(), itr->second.IconName.size());
     }
+
+    data.PutBits(writePos, count, 19);
 
     GetSession()->SendPacket(&data);
 }
@@ -28066,6 +28073,8 @@ void Player::SendMovementSetCollisionHeight(float height)
 {
     static MovementStatusElements const heightElement[] = { MSEExtraFloat, MSEExtraFloat };
     Movement::ExtraMovementStatusElement extra(heightElement);
+    extra.Data.floatData.push_back(height);
+    extra.Data.floatData.push_back(1.f);
     extra.Data.floatData.push_back(height);
     extra.Data.floatData.push_back(1.f);
     Movement::PacketSender(this, NULL_OPCODE, SMSG_MOVE_SET_COLLISION_HEIGHT, SMSG_MOVE_UPDATE_COLLISION_HEIGHT, &extra).Send();

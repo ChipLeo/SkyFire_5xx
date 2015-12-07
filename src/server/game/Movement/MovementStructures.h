@@ -120,6 +120,7 @@ enum MovementStatusElements
 
     MSEExtraFloat,
     MSEExtraInt8,
+    MSEExtraInt32,
     MSEExtra2Bits,
 };
 
@@ -141,6 +142,7 @@ namespace Movement
         {
             ObjectGuid guid;
             int8  byteData;
+            int32 intData;
             std::list<float> floatData;
         } Data;
 
