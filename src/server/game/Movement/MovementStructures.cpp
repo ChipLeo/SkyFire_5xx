@@ -5497,8 +5497,7 @@ void Movement::ExtraMovementStatusElement::WriteNextElement(ByteBuffer& packet)
             packet.WriteByteSeq(Data.guid[element - MSEGuidByte0]);
             break;
         case MSEExtraFloat:
-            packet << Data.floatData.front();
-            Data.floatData.pop_front();
+            packet << GetFloat();
             break;
         case MSEExtraInt8:
             packet << Data.byteData;
@@ -5778,4 +5777,19 @@ MovementStatusElements const* GetMovementStatusElementsSequence(Opcodes opcode)
     }
 
     return NULL;
+}
+
+float Movement::ExtraMovementStatusElement::GetFloat()
+{
+    uint32 tmp = 0;
+    for (std::list<float>::const_iterator itr = Data.floatData.begin(); itr != Data.floatData.end(); itr++)
+    {
+        if (tmp == FloatIndex)
+        {
+            FloatIndex++;
+            return (*itr);
+        }
+        tmp++;
+    }
+    return 0.0f;
 }

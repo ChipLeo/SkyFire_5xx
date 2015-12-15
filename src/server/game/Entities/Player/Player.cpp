@@ -28075,8 +28075,6 @@ void Player::SendMovementSetCollisionHeight(float height)
     Movement::ExtraMovementStatusElement extra(heightElement);
     extra.Data.floatData.push_back(height);
     extra.Data.floatData.push_back(1.f);
-    extra.Data.floatData.push_back(height);
-    extra.Data.floatData.push_back(1.f);
     Movement::PacketSender(this, NULL_OPCODE, SMSG_MOVE_SET_COLLISION_HEIGHT, SMSG_MOVE_UPDATE_COLLISION_HEIGHT, &extra).Send();
 }
 
