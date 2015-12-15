@@ -62,7 +62,6 @@ enum MovementStatusElements
     MSEHasSpline,
 
     MSEForces,
-    MSECount,
     MSECounter,
     MSEUnkTime,
     MSEGuidByte0,

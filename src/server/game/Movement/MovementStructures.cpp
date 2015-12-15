@@ -2104,6 +2104,50 @@ MovementStatusElements const DismissControlledVehicle[] =
     MSEEnd,
 };
 
+MovementStatusElements const MoveTeleport[] =
+{
+    MSEHasGuidByte0,
+    MSEHasGuidByte6,
+    MSEHasGuidByte5,
+    MSEHasGuidByte7,
+    MSEHasGuidByte2,
+    MSEHasTransportData,
+    MSEHasGuidByte4,
+    MSEHasTransportGuidByte1,
+    MSEHasTransportGuidByte3,
+    MSEHasTransportGuidByte6,
+    MSEHasTransportGuidByte4,
+    MSEHasTransportGuidByte5,
+    MSEHasTransportGuidByte2,
+    MSEHasTransportGuidByte0,
+    MSEHasTransportGuidByte7,
+    MSEHasGuidByte3,
+    MSEHasGuidByte1,
+    MSEZeroBit,
+    MSETransportGuidByte4,
+    MSETransportGuidByte3,
+    MSETransportGuidByte7,
+    MSETransportGuidByte1,
+    MSETransportGuidByte6,
+    MSETransportGuidByte0,
+    MSETransportGuidByte2,
+    MSETransportGuidByte5,
+    MSEGuidByte4,
+    MSEGuidByte7,
+    MSEPositionZ,
+    MSEPositionY,
+    MSEGuidByte2,
+    MSEGuidByte3,
+    MSEGuidByte5,
+    MSEPositionX,
+    MSECounter,
+    MSEGuidByte0,
+    MSEGuidByte6,
+    MSEGuidByte1,
+    MSEOrientation,
+    MSEEnd
+};
+
 MovementStatusElements const MoveUpdateTeleport[] =
 {
     MSEPositionZ,
@@ -5616,6 +5660,8 @@ MovementStatusElements const* GetMovementStatusElementsSequence(Opcodes opcode)
         //    return MoveNotActiveMover;
         //case CMSG_DISMISS_CONTROLLED_VEHICLE:
         //    return DismissControlledVehicle;
+        case SMSG_MOVE_TELEPORT:
+            return MoveTeleport;
         //case SMSG_MOVE_UPDATE_TELEPORT:
         //    return MoveUpdateTeleport;
         case CMSG_FORCE_MOVE_ROOT_ACK:
