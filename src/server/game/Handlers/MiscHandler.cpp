@@ -1182,11 +1182,6 @@ void WorldSession::HandleUpdateAccountData(WorldPacket& recvData)
 
         SetAccountData(AccountDataType(type), 0, "");
 
-        WorldPacket data(SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 4+4);
-        data << uint32(type);
-        data << uint32(0);
-        SendPacket(&data);
-
         return;
     }
 
@@ -1218,11 +1213,6 @@ void WorldSession::HandleUpdateAccountData(WorldPacket& recvData)
     dest >> adata;
 
     SetAccountData(AccountDataType(type), timestamp, adata);
-
-    WorldPacket data(SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 4+4);
-    data << uint32(type);
-    data << uint32(0);
-    SendPacket(&data);
 }
 
 void WorldSession::HandleRequestAccountData(WorldPacket& recvData)
