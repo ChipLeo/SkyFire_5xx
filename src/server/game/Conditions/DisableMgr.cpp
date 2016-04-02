@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -144,7 +144,7 @@ void LoadDisables()
                             flags -= RAID_STATUSFLAG_10MAN_HEROIC;
                         if (flags & RAID_STATUSFLAG_25MAN_HEROIC && !GetMapDifficultyData(entry, RAID_DIFFICULTY_25MAN_HEROIC))
                             flags -= RAID_STATUSFLAG_25MAN_HEROIC;
-                        if (flags & RAID_STATUSFLAG_10MAN_FLEX && !GetMapDifficultyData(entry, RAID_DIFFICULTY_FLEXIBLE))
+                        if (flags & RAID_STATUSFLAG_10MAN_FLEX && !GetMapDifficultyData(entry, RAID_DIFFICULTY_10MAN_FLEX))
                             flags -= RAID_STATUSFLAG_10MAN_FLEX;
                         if (flags & RAID_STATUSFLAG_25MAN_LFR && !GetMapDifficultyData(entry, RAID_DIFFICULTY_25MAN_LFR))
                             flags -= RAID_STATUSFLAG_25MAN_LFR;
@@ -375,7 +375,7 @@ bool IsDisabledFor(DisableType type, uint32 entry, Unit const* unit, uint8 flags
                             return disabledModes & RAID_STATUSFLAG_10MAN_HEROIC;
                         case RAID_DIFFICULTY_25MAN_HEROIC:
                             return disabledModes & RAID_STATUSFLAG_25MAN_HEROIC;
-                        case RAID_DIFFICULTY_FLEXIBLE:
+                        case RAID_DIFFICULTY_10MAN_FLEX:
                             return disabledModes & RAID_STATUSFLAG_10MAN_FLEX;
                         case RAID_DIFFICULTY_25MAN_LFR:
                             return disabledModes & RAID_STATUSFLAG_25MAN_LFR;

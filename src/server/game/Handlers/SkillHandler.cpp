@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -40,6 +40,7 @@ void WorldSession::HandeSetTalentSpecialization(WorldPacket& recvData)
         return;
 
     uint32 specializationId = GetClassSpecializations(_player->getClass())[specializationTabId];
+    uint32 specializationSpell = 0;
 
     _player->SetTalentSpecialization(_player->GetActiveSpec(), specializationId);
     _player->SetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID, specializationId);

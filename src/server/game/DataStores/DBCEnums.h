@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -323,31 +323,31 @@ enum AreaFlags
     AREA_FLAG_UNK9             = 0x40000000,
 };
 
-// TODO: Update creature_template structure
 enum Difficulty
 {
-    REGULAR_DIFFICULTY = 0,               // entry
+    REGULAR_DIFFICULTY           = 0,
 
-    DUNGEON_DIFFICULTY_NORMAL = 1,        // entry 
-    DUNGEON_DIFFICULTY_HEROIC = 2,        // difficulty_entry_2
+    DUNGEON_DIFFICULTY_NORMAL    = 0,
+    DUNGEON_DIFFICULTY_HEROIC    = 1,
+    DUNGEON_DIFFICULTY_CHALLENGE = 2,
 
-    RAID_DIFFICULTY_10MAN_NORMAL = 3,     // entry
-    RAID_DIFFICULTY_25MAN_NORMAL = 4,     // difficulty_entry_4
-    RAID_DIFFICULTY_10MAN_HEROIC = 5,     // difficulty_entry_5
-    RAID_DIFFICULTY_25MAN_HEROIC = 6,     // difficulty_entry_6
-    RAID_DIFFICULTY_25MAN_LFR = 7,        // difficulty_entry_7
+    RAID_DIFFICULTY_10MAN_NORMAL = 0,
+    RAID_DIFFICULTY_25MAN_NORMAL = 1,
+    RAID_DIFFICULTY_10MAN_HEROIC = 2,
+    RAID_DIFFICULTY_25MAN_HEROIC = 3,
+    RAID_DIFFICULTY_10MAN_FLEX   = 4,
+    RAID_DIFFICULTY_25MAN_LFR    = 5,
 
-    DUNGEON_DIFFICULTY_CHALLENGE = 8,     // difficulty_entry_8
-
-    RAID_DIFFICULTY_40MAN_DIFFICULTY = 9, // difficulty_entry_9
-
-    SCENARIO_DIFFICULTY_HEROIC = 11,      // difficulty_entry_10
-    RAID_DIFFICULTY_FLEXIBLE = 14,        // difficulty_entry_11
+    SCENARIO_DIFFICULTY_NORMAL   = 0,
+    SCENARIO_DIFFICULTY_HEROIC   = 1
 };
 
-#define MAX_DUNGEON_DIFFICULTY     DUNGEON_DIFFICULTY_HEROIC + 1
-#define MAX_RAID_DIFFICULTY        RAID_DIFFICULTY_40MAN_DIFFICULTY + 1
-#define MAX_DIFFICULTY             RAID_DIFFICULTY_FLEXIBLE + 1
+#define RAID_DIFFICULTY_MASK_25MAN 1    // since 25man difficulties are 1 and 3, we can check them like that
+
+#define MAX_DUNGEON_DIFFICULTY     3
+#define MAX_RAID_DIFFICULTY        6
+#define MAX_SCENARIO_DIFFICULTY    2
+#define MAX_DIFFICULTY             4 // temp hack Should be 6 but need to finish the DB side.
 
 enum SpawnMask
 {
@@ -360,7 +360,7 @@ enum SpawnMask
 
     SPAWNMASK_RAID_10MAN_NORMAL     = (1 << RAID_DIFFICULTY_10MAN_NORMAL),
     SPAWNMASK_RAID_25MAN_NORMAL     = (1 << RAID_DIFFICULTY_25MAN_NORMAL),
-    SPAWNMASK_RAID_10MAN_FLEX       = (1 << RAID_DIFFICULTY_FLEXIBLE),
+    SPAWNMASK_RAID_10MAN_FLEX       = (1 << RAID_DIFFICULTY_10MAN_FLEX),
     SPAWNMASK_RAID_25MAN_LFR        = (1 << RAID_DIFFICULTY_25MAN_LFR),
     SPAWNMASK_RAID_NORMAL_ALL       = (SPAWNMASK_RAID_10MAN_NORMAL | SPAWNMASK_RAID_25MAN_NORMAL | SPAWNMASK_RAID_10MAN_FLEX | SPAWNMASK_RAID_25MAN_LFR),
 
@@ -370,9 +370,9 @@ enum SpawnMask
 
     SPAWNMASK_RAID_ALL              = (SPAWNMASK_RAID_NORMAL_ALL | SPAWNMASK_RAID_HEROIC_ALL),
 
-    SPAWNMASK_SCENARIO_NORMAL       = (1 << REGULAR_DIFFICULTY),
+    SPAWNMASK_SCENARIO_NORMAL       = (1 << SCENARIO_DIFFICULTY_NORMAL),
     SPAWNMASK_SCENARIO_HEROIC       = (1 << SCENARIO_DIFFICULTY_HEROIC),
-    SPAWNMASK_SCENARIO_ALL          = (REGULAR_DIFFICULTY | SCENARIO_DIFFICULTY_HEROIC)
+    SPAWNMASK_SCENARIO_ALL          = (SCENARIO_DIFFICULTY_NORMAL | SCENARIO_DIFFICULTY_HEROIC)
 };
 
 enum FactionTemplateFlags

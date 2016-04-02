@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -1180,7 +1180,10 @@ void WorldSession::HandleUpdateAccountData(WorldPacket& recvData)
         type = recvData.ReadBits(3);
         recvData.rfinish();
 
-        SetAccountData(AccountDataType(type), 0, "");
+        WorldPacket data(SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 4 + 4);
+        data << uint32(type);
+        data << uint32(0);
+        SendPacket(&data);
 
         return;
     }
@@ -1213,6 +1216,11 @@ void WorldSession::HandleUpdateAccountData(WorldPacket& recvData)
     dest >> adata;
 
     SetAccountData(AccountDataType(type), timestamp, adata);
+
+    WorldPacket data(SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 4 + 4);
+    data << uint32(type);
+    data << uint32(0);
+    SendPacket(&data);
 }
 
 void WorldSession::HandleRequestAccountData(WorldPacket& recvData)

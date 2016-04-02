@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -27,6 +27,7 @@ EndScriptData */
 #include "AccountMgr.h"
 #include "AchievementMgr.h"
 #include "AuctionHouseMgr.h"
+#include "BlackMarketMgr.h"
 #include "Chat.h"
 #include "CreatureTextMgr.h"
 #include "DisableMgr.h"
@@ -76,6 +77,8 @@ public:
             { "areatrigger_tavern",            rbac::RBAC_PERM_COMMAND_RELOAD_AREATRIGGER_TAVERN, true,  &HandleReloadAreaTriggerTavernCommand,          "", NULL },
             { "areatrigger_teleport",          rbac::RBAC_PERM_COMMAND_RELOAD_AREATRIGGER_TELEPORT, true,  &HandleReloadAreaTriggerTeleportCommand,        "", NULL },
             { "autobroadcast",                 rbac::RBAC_PERM_COMMAND_RELOAD_AUTOBROADCAST, true,  &HandleReloadAutobroadcastCommand,              "", NULL },
+            { "bmauctions",                    rbac::RBAC_PERM_COMMAND_RELOAD_BLACKMARKET_AUCTIONS, true,  &HandleReloadBlackMarketAuctionsCommand, "", NULL },
+            { "blackmarket_template",          rbac::RBAC_PERM_COMMAND_RELOAD_BLACKMARKET_TEMPLATE, true,  &HandleReloadBlackMarketTemplateCommand, "", NULL },
             { "command",                       rbac::RBAC_PERM_COMMAND_RELOAD_COMMAND, true,  &HandleReloadCommandCommand,                    "", NULL },
             { "conditions",                    rbac::RBAC_PERM_COMMAND_RELOAD_CONDITIONS, true,  &HandleReloadConditions,                        "", NULL },
             { "config",                        rbac::RBAC_PERM_COMMAND_RELOAD_CONFIG, true,  &HandleReloadConfigCommand,                     "", NULL },
@@ -113,6 +116,7 @@ public:
             { "locales_page_text",             rbac::RBAC_PERM_COMMAND_RELOAD_LOCALES_PAGE_TEXT, true,  &HandleReloadLocalesPageTextCommand,            "", NULL },
             { "locales_points_of_interest",    rbac::RBAC_PERM_COMMAND_RELOAD_LOCALES_POINTS_OF_INTEREST, true,  &HandleReloadLocalesPointsOfInterestCommand,    "", NULL },
             { "locales_quest",                 rbac::RBAC_PERM_COMMAND_RELOAD_LOCALES_QUEST, true,  &HandleReloadLocalesQuestCommand,               "", NULL },
+            { "locales_quest_objective",       rbac::RBAC_PERM_COMMAND_RELOAD_LOCALES_QUEST_OBJECTIVE, true,  &HandleReloadLocalesQuestObjectiveCommand,               "", NULL },
             { "mail_level_reward",             rbac::RBAC_PERM_COMMAND_RELOAD_MAIL_LEVEL_REWARD, true,  &HandleReloadMailLevelRewardCommand,            "", NULL },
             { "mail_loot_template",            rbac::RBAC_PERM_COMMAND_RELOAD_MAIL_LOOT_TEMPLATE, true,  &HandleReloadLootTemplatesMailCommand,          "", NULL },
             { "milling_loot_template",         rbac::RBAC_PERM_COMMAND_RELOAD_MILLING_LOOT_TEMPLATE, true,  &HandleReloadLootTemplatesMillingCommand,       "", NULL },
@@ -123,6 +127,8 @@ public:
             { "pickpocketing_loot_template",   rbac::RBAC_PERM_COMMAND_RELOAD_PICKPOCKETING_LOOT_TEMPLATE, true,  &HandleReloadLootTemplatesPickpocketingCommand, "", NULL},
             { "points_of_interest",            rbac::RBAC_PERM_COMMAND_RELOAD_POINTS_OF_INTEREST, true,  &HandleReloadPointsOfInterestCommand,           "", NULL },
             { "prospecting_loot_template",     rbac::RBAC_PERM_COMMAND_RELOAD_PROSPECTING_LOOT_TEMPLATE, true,  &HandleReloadLootTemplatesProspectingCommand,   "", NULL },
+            { "quest_objective",               rbac::RBAC_PERM_COMMAND_RELOAD_QUEST_OBJECTIVES, true,  &HandleReloadQuestObjectivesCommand, "", NULL },
+            { "quest_objective_effects",       rbac::RBAC_PERM_COMMAND_RELOAD_QUEST_OBJECTIVE_EFFECTS, true,  &HandleReloadQuestObjectiveEffectsCommand, "", NULL },
             { "quest_poi",                     rbac::RBAC_PERM_COMMAND_RELOAD_QUEST_POI, true,  &HandleReloadQuestPOICommand,                   "", NULL },
             { "quest_template",                rbac::RBAC_PERM_COMMAND_RELOAD_QUEST_TEMPLATE, true,  &HandleReloadQuestTemplateCommand,              "", NULL },
             { "rbac",                          rbac::RBAC_PERM_COMMAND_RELOAD_RBAC, true,  &HandleReloadRBACCommand,                       "", NULL },
@@ -240,6 +246,8 @@ public:
     static bool HandleReloadAllQuestCommand(ChatHandler* handler, const char* /*args*/)
     {
         HandleReloadQuestAreaTriggersCommand(handler, "a");
+        HandleReloadQuestObjectivesCommand(handler, "a");
+        HandleReloadQuestObjectiveEffectsCommand(handler, "a");
         HandleReloadQuestPOICommand(handler, "a");
         HandleReloadQuestTemplateCommand(handler, "a");
 
@@ -315,6 +323,7 @@ public:
         HandleReloadLocalesPageTextCommand(handler, "a");
         HandleReloadLocalesPointsOfInterestCommand(handler, "a");
         HandleReloadLocalesQuestCommand(handler, "a");
+        HandleReloadLocalesQuestObjectiveCommand(handler, "a");
         return true;
     }
 
@@ -372,6 +381,14 @@ public:
         TC_LOG_INFO("misc", "Re-Loading Autobroadcasts...");
         sWorld->LoadAutobroadcasts();
         handler->SendGlobalGMSysMessage("DB table `autobroadcast` reloaded.");
+        return true;
+    }
+
+    static bool HandleReloadBlackMarketTemplateCommand(ChatHandler* handler, const char* /*args*/)
+    {
+        TC_LOG_INFO("misc", "Re-Loading BlackMarket Templates...");
+        sBlackMarketMgr->LoadBlackMarketTemplates();
+        handler->SendGlobalGMSysMessage("DB table `blackmarket_template` reloaded.");
         return true;
     }
 
@@ -582,11 +599,30 @@ public:
         return true;
     }
 
+    static bool HandleReloadQuestObjectivesCommand(ChatHandler* handler, const char* /*args*/)
+    {
+        TC_LOG_INFO("misc", "Re-Loading Quest Objectives...");
+        sObjectMgr->LoadQuestObjectives();
+        handler->SendGlobalGMSysMessage("DB table `quest_objective` reloaded.");
+        return true;
+    }
+
+    static bool HandleReloadQuestObjectiveEffectsCommand(ChatHandler* handler, const char* /*args*/)
+    {
+        TC_LOG_INFO("misc", "Re-Loading Quest Objective Effects...");
+        sObjectMgr->LoadQuestObjectiveVisualEffects();
+        handler->SendGlobalGMSysMessage("DB table `quest_objective_effects` (quest objective visual effects reloaded.");
+        return true;
+    }
+
     static bool HandleReloadQuestTemplateCommand(ChatHandler* handler, const char* /*args*/)
     {
         TC_LOG_INFO("misc", "Re-Loading Quest Templates...");
         sObjectMgr->LoadQuests();
         handler->SendGlobalGMSysMessage("DB table `quest_template` (quest definitions) reloaded.");
+
+        HandleReloadQuestObjectivesCommand(handler, "a");
+        HandleReloadQuestObjectiveEffectsCommand(handler, "a");
 
         /// dependent also from `gameobject` but this table not reloaded anyway
         TC_LOG_INFO("misc", "Re-Loading GameObjects for quests...");
@@ -1138,6 +1174,14 @@ public:
         return true;
     }
 
+    static bool HandleReloadLocalesQuestObjectiveCommand(ChatHandler* handler, const char* /*args*/)
+    {
+        TC_LOG_INFO("misc", "Re-Loading Locales Quest Objective ... ");
+        sObjectMgr->LoadQuestObjectiveLocales();
+        handler->SendGlobalGMSysMessage("DB table `locales_quest_objective` reloaded.");
+        return true;
+    }
+
     static bool HandleReloadMailLevelRewardCommand(ChatHandler* handler, const char* /*args*/)
     {
         TC_LOG_INFO("misc", "Re-Loading Player level dependent mail rewards...");
@@ -1153,6 +1197,14 @@ public:
         sAuctionMgr->LoadAuctionItems();
         sAuctionMgr->LoadAuctions();
         handler->SendGlobalGMSysMessage("Auctions reloaded.");
+        return true;
+    }
+
+    static bool HandleReloadBlackMarketAuctionsCommand(ChatHandler* handler, const char* /*args*/)
+    {
+        TC_LOG_INFO("misc", "Re-Loading BlackMarket Auctions...");
+        sBlackMarketMgr->LoadBlackMarketAuctions();
+        handler->SendGlobalGMSysMessage("BlackMarket Auctions reloaded.");
         return true;
     }
 

@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -1043,6 +1043,31 @@ SpellInfo::SpellInfo(SpellEntry const* spellEntry, SpellEffectEntry const** effe
         TotemCategory[i] = _totem ? _totem->TotemCategory[i] : 0;
     for (uint8 i = 0; i < 2; ++i)
         Totem[i] = _totem ? _totem->Totem[i] : 0;
+
+    // SpecializationSpellsEntry
+    SpecializationSpellsEntry const* specializationInfo = NULL;
+    for (uint32 i = 0; i < sSpecializationSpellsStore.GetNumRows(); i++)
+    {
+        specializationInfo = sSpecializationSpellsStore.LookupEntry(i);
+        if (!specializationInfo)
+            continue;
+
+        if (specializationInfo->SpellId == Id)
+            SpecializationIdList.push_back(specializationInfo->SpecializationId);
+
+        if (specializationInfo->RemovesSpellId == Id)
+            OverrideSpellList.push_back(specializationInfo->SpellId);
+    }
+
+    switch (Id)
+    {
+        case 31801:
+            SpecializationIdList.push_back(70);
+            SpecializationIdList.push_back(66);
+        case 105361:
+            OverrideSpellList.push_back(31801);
+            break;
+    }
 
     ChainEntry = NULL;
 }

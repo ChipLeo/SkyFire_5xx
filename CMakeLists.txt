@@ -1,5 +1,5 @@
-# Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
-# Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
+# Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+# Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
 #
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without
@@ -15,6 +15,9 @@ project(Project_Skyfire)
 # CMake policies (can not be handled elsewhere)
 cmake_minimum_required(VERSION 2.8.9)
 cmake_policy(SET CMP0005 OLD)
+if(POLICY CMP0043)
+  cmake_policy(SET CMP0043 OLD) # Disable 'Ignore COMPILE_DEFINITIONS_<Config> properties'
+endif(POLICY CMP0043)
 
 # add this options before PROJECT keyword
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
@@ -25,7 +28,7 @@ set(CMAKE_SKIP_BUILD_RPATH 0)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH 0)
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH 1)
-
+	   
 # set macro-directory
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/macros")
 

@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -393,6 +393,7 @@ public:
     uint32 SpellShapeshiftId;
     uint32 SpellTargetRestrictionsId;
     uint32 SpellTotemsId;
+    uint32 ResearchProject;
     // SpellScalingEntry
     int32  CastTimeMin;
     int32  CastTimeMax;
@@ -403,6 +404,12 @@ public:
     SpellEffectInfo Effects[MAX_SPELL_EFFECTS];
     uint32 ExplicitTargetMask;
     SpellChainNode const* ChainEntry;
+
+    // SpecializationSpellsEntry
+    std::list<uint32> SpecializationIdList;
+    std::list<uint32> OverrideSpellList;
+
+    uint32 talentId;
 
     // struct access functions
     SpellTargetRestrictionsEntry const* GetSpellTargetRestrictions() const;

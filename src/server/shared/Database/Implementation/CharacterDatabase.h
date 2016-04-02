@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -320,6 +320,11 @@ enum CharacterDatabaseStatements
     CHAR_REP_GM_BUG,
     CHAR_DEL_GM_BUG,
 
+    CHAR_SEL_GM_SUGGESTS,
+    CHAR_DEL_ALL_GM_SUGGESTS,
+    CHAR_REP_GM_SUGGEST,
+    CHAR_DEL_GM_SUGGEST,
+
     CHAR_INS_GM_SURVEY,
     CHAR_INS_GM_SUBSURVEY,
     CHAR_INS_LAG_REPORT,
@@ -571,6 +576,16 @@ enum CharacterDatabaseStatements
     CHAR_INS_ITEMCONTAINER_MONEY,
 
     CHAR_UPD_GROUP_ROLE,
+
+    CHAR_SEL_CHAR_RESEARCH_DIGSITES,
+    CHAR_INS_CHAR_RESEARCH_DIGSITE,
+    CHAR_DEL_CHAR_RESEARCH_DIGSITE,
+    CHAR_SEL_CHAR_RESEARCH_HISTORY,
+    CHAR_INS_CHAR_RESEARCH_HISTORY,
+    CHAR_DEL_CHAR_RESEARCH_HISTORY,
+    CHAR_SEL_CHAR_RESEARCH_PROJECTS,
+    CHAR_INS_CHAR_RESEARCH_PROJECT,
+    CHAR_DEL_CHAR_RESEARCH_PROJECTS,
 
     CHAR_SEL_ACCOUNT_BATTLE_PETS,
     CHAR_DEL_ACCOUNT_BATTLE_PET,

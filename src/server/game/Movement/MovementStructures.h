@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -118,6 +118,7 @@ enum MovementStatusElements
     MSEbit172,          // writes bit value 0 or skips read bit
 
     MSEExtraFloat,
+    MSEExtraFloat2,
     MSEExtraInt8,
     MSEExtraInt32,
     MSEExtra2Bits,
@@ -143,8 +144,9 @@ namespace Movement
         {
             ObjectGuid guid;
             int8  byteData;
-            int32 intData;
             std::list<float> floatData;
+            int32 extraInt32Data;
+            uint32 extra2BitsData;
         } Data;
 
     protected:

@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -311,6 +311,26 @@ enum ESceneObjectFields
     SCENEOBJECT_FIELD_CREATED_BY                             = OBJECT_END + 0x2, // Size: 2, Flags: UF_FLAG_PUBLIC
     SCENEOBJECT_FIELD_SCENE_TYPE                             = OBJECT_END + 0x4, // Size: 1, Flags: UF_FLAG_PUBLIC
     SCENEOBJECT_FIELD_END                                    = OBJECT_END + 0x5
+};
+
+enum EObjectDynamicFields
+{
+    OBJECT_DYNAMIC_END = 0x0,
+};
+
+enum EUnitDynamicFields
+{
+    UNIT_DYNAMIC_FIELD_PASSIVE_SPELLS = OBJECT_DYNAMIC_END + 0x0, // Size: 0x1
+    UNIT_DYNAMIC_FIELD_WORLD_EFFECTS = OBJECT_DYNAMIC_END + 0x1, // Size: 0x1
+    UNIT_DYNAMIC_END = OBJECT_DYNAMIC_END + 0x2,
+};
+
+enum EPlayerDynamicFields
+{
+    PLAYER_DYNAMIC_FIELD_RESERACH_SITE = UNIT_DYNAMIC_END + 0x0, // Size: 0x1
+    PLAYER_DYNAMIC_FIELD_RESEARCH_SITE_PROGRESS = UNIT_DYNAMIC_END + 0x1, // Size: 0x1
+    PLAYER_DYNAMIC_FIELD_DAILY_QUESTS = UNIT_DYNAMIC_END + 0x2, // Size: 0x1
+    PLAYER_DYNAMIC_END = UNIT_DYNAMIC_END + 0x3
 };
 
 #endif // _UPDATEFIELDS_H

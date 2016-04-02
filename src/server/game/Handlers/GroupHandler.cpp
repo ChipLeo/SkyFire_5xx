@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -598,12 +598,14 @@ void WorldSession::HandleLootMethodOpcode(WorldPacket& recvData)
 
 void WorldSession::HandleLootRoll(WorldPacket& recvData)
 {
-    uint64 guid;
-    uint32 itemSlot;
-    uint8  rollType;
-    recvData >> guid;                  // guid of the item rolled
+    ObjectGuid guid;
+    uint8 rollType, itemSlot;
+
     recvData >> itemSlot;
     recvData >> rollType;              // 0: pass, 1: need, 2: greed
+
+    recvData.ReadGuidMask(guid, 7, 1, 2, 0, 6, 3, 4, 5);
+    recvData.ReadGuidBytes(guid, 0, 2, 7, 3, 1, 5, 4, 6);
 
     Group* group = GetPlayer()->GetGroup();
     if (!group)

@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -291,5 +291,20 @@ void WorldSession::HandleSubmitBugOpcode(WorldPacket& recvPacket)
     }
 
     if (BugTicket* ticket = new BugTicket(GetPlayer(), recvPacket))
+        sTicketMgr->AddTicket(ticket);
+}
+
+void WorldSession::HandleSubmitSuggestOpcode(WorldPacket& recvPacket)
+{
+    if (!sTicketMgr->GetFeedBackSystemStatus())
+        return;
+
+    if (GetPlayer()->getLevel() < sWorld->getIntConfig(CONFIG_TICKET_LEVEL_REQ))
+    {
+        SendNotification(GetTrinityString(LANG_TICKET_REQ), sWorld->getIntConfig(CONFIG_TICKET_LEVEL_REQ));
+        return;
+    }
+
+    if (SuggestTicket* ticket = new SuggestTicket(GetPlayer(), recvPacket))
         sTicketMgr->AddTicket(ticket);
 }

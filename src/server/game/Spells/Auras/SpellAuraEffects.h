@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -48,6 +48,7 @@ class AuraEffect
         uint32 GetId() const { return m_spellInfo->Id; }
         uint32 GetEffIndex() const { return m_effIndex; }
         int32 GetBaseAmount() const { return m_baseAmount; }
+        void SetBaseAmount(int32 amount) { m_baseAmount = amount; }
         int32 GetAmplitude() const { return m_amplitude; }
 
         int32 GetMiscValueB() const { return m_spellInfo->Effects[m_effIndex].MiscValueB; }
@@ -96,7 +97,7 @@ class AuraEffect
         Aura* const m_base;
 
         SpellInfo const* const m_spellInfo;
-        int32 const m_baseAmount;
+        int32 m_baseAmount;
 
         int32 m_amount;
 

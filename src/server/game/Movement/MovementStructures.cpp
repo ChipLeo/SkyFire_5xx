@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -5493,20 +5493,21 @@ void Movement::ExtraMovementStatusElement::ReadNextElement(ByteBuffer& packet)
         case MSEGuidByte5:
         case MSEGuidByte6:
         case MSEGuidByte7:
-            packet.ReadByteSeq(Data.guid[element - MSEGuidByte0]);
+            packet.ReadByteSeq(Data.guid [element - MSEGuidByte0]);
             break;
         case MSEExtraFloat:
-        {
             float floatData;
             packet >> floatData;
             Data.floatData.push_back(floatData);
             break;
-        }
         case MSEExtraInt8:
             packet >> Data.byteData;
             break;
         case MSEExtraInt32:
-            packet >> Data.intData;
+            packet >> Data.extraInt32Data;
+            break;
+        case MSEExtra2Bits:
+            Data.extra2BitsData = packet.ReadBits(2);
             break;
         default:
             ASSERT(PrintInvalidSequenceElement(element, __FUNCTION__));
@@ -5547,7 +5548,10 @@ void Movement::ExtraMovementStatusElement::WriteNextElement(ByteBuffer& packet)
             packet << Data.byteData;
             break;
         case MSEExtraInt32:
-            packet << Data.intData;
+            packet << Data.extraInt32Data;
+            break;
+        case MSEExtra2Bits:
+            packet.WriteBits(Data.extra2BitsData, 2);
             break;
         default:
             ASSERT(PrintInvalidSequenceElement(element, __FUNCTION__));

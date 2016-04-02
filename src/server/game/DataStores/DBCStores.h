@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -83,6 +83,10 @@ PvPDifficultyEntry const* GetBattlegroundBracketByLevel(uint32 mapid, uint32 lev
 PvPDifficultyEntry const* GetBattlegroundBracketById(uint32 mapid, BattlegroundBracketId id);
 
 CharStartOutfitEntry const* GetCharStartOutfitEntry(uint8 race, uint8 class_, uint8 gender);
+
+typedef std::vector<std::pair<int32, int32> > DigsitePOIPolygon;
+typedef std::map<uint32 /*digsiteId*/, DigsitePOIPolygon> DigsitePOIPolygonContainer;
+DigsitePOIPolygon const* GetDigsitePOIPolygon(uint32 digsiteId);
 
 uint32 GetPowerIndexByClass(uint32 powerType, uint32 classId);
 LFGDungeonEntry const* GetLFGDungeon(uint32 mapId, Difficulty difficulty);
@@ -186,7 +190,11 @@ extern DBCStorage <OverrideSpellDataEntry>       sOverrideSpellDataStore;
 extern DBCStorage <QuestSortEntry>               sQuestSortStore;
 extern DBCStorage <QuestXPEntry>                 sQuestXPStore;
 extern DBCStorage <QuestFactionRewEntry>         sQuestFactionRewardStore;
+extern DBCStorage <QuestPOIPointEntry>           sQuestPOIPointStore;
 extern DBCStorage <RandomPropertiesPointsEntry>  sRandomPropertiesPointsStore;
+extern DBCStorage <ResearchBranchEntry>          sResearchBranchStore;
+extern DBCStorage <ResearchProjectEntry>         sResearchProjectStore;
+extern DBCStorage <ResearchSiteEntry>            sResearchSiteStore;
 extern DBCStorage <ScalingStatDistributionEntry> sScalingStatDistributionStore;
 extern DBCStorage <ScalingStatValuesEntry>       sScalingStatValuesStore;
 extern DBCStorage <SkillLineEntry>               sSkillLineStore;

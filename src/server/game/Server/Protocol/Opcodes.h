@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -192,6 +192,7 @@ enum Opcodes
     CMSG_CORPSE_QUERY,
     CMSG_CREATURE_QUERY,
     CMSG_DANCE_QUERY,
+    CMSG_DB_QUERY_BULK,
     CMSG_DECLINE_CHANNEL_INVITE,
     CMSG_DEL_FRIEND,
     CMSG_DEL_IGNORE,
@@ -691,6 +692,7 @@ enum Opcodes
     SMSG_AI_REACTION,
     SMSG_ALL_ACHIEVEMENT_DATA,
     SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT,
+    SMSG_ARCHAEOLOGY_SURVERY_CAST,
     SMSG_AREA_SPIRIT_HEALER_TIME,
     SMSG_AREA_TRIGGER_MESSAGE,
     SMSG_AREA_TRIGGER_MOVEMENT_UPDATE,

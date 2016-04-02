@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -1793,8 +1793,11 @@ void World::SetInitialWorldSettings()
     TC_LOG_INFO("server.loading", "Loading GM tickets...");
     sTicketMgr->LoadGmTickets();
 
-    TC_LOG_INFO("server.loading", "Loading GM bugs...");
+    TC_LOG_INFO("server.loading", "Loading Support bugs tickets...");
     sTicketMgr->LoadBugTickets();
+
+    TC_LOG_INFO("server.loading", "Loading Support suggest tickets...");
+    sTicketMgr->LoadSuggestTickets();
 
     TC_LOG_INFO("server.loading", "Loading client addons...");
     AddonMgr::LoadFromDB();
@@ -1835,6 +1838,15 @@ void World::SetInitialWorldSettings()
 
     TC_LOG_INFO("server.loading", "Loading Calendar data...");
     sCalendarMgr->LoadFromDB();
+
+    TC_LOG_INFO("server.loading", "Loading Research Digsite info...");
+    sObjectMgr->LoadResearchDigsiteInfo();
+
+    TC_LOG_INFO("server.loading", "Loading Archaeology Find info...");
+    sObjectMgr->LoadArchaeologyFindInfo();
+
+    TC_LOG_INFO("server.loading", "Loading Research Project requirements...");
+    sObjectMgr->LoadResearchProjectRequirements();
 
     TC_LOG_INFO("server.loading", "Loading Battle Pet breed data...");
     sObjectMgr->LoadBattlePetBreedData();
@@ -1952,7 +1964,7 @@ void World::SetInitialWorldSettings()
     sObjectMgr->LoadHotfixData();
 
     TC_LOG_INFO("server.loading", "Loading BlackMarket Templates...");
-    sBlackMarketMgr->LoadFromDB();
+    sBlackMarketMgr->LoadBlackMarketTemplates();
 
     TC_LOG_INFO("server.loading", "Loading missing KeyChains...");
     sObjectMgr->LoadMissingKeyChains();

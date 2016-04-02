@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -2056,22 +2056,49 @@ void WorldSession::HandleEquipmentSetUse(WorldPacket& recvData)
 
 void WorldSession::HandleCharFactionOrRaceChange(WorldPacket& recvData)
 {
-    uint64 guid;
-    std::string newname;
-    uint8 gender, skin, face, hairStyle, hairColor, facialHair, race;
-    recvData >> guid;
+    ObjectGuid guid;
+    uint8 gender, skin, face, hairStyle, hairColor, facialHair, race = 0;
+
+    recvData >> gender;
+    recvData >> race;
+    guid[3] = recvData.ReadBit();
+    guid[2] = recvData.ReadBit();
+    bool hasSkinColor = recvData.ReadBit();
+    bool hasFace = recvData.ReadBit();
+    guid[6] = recvData.ReadBit();
+    uint32 nameLength = recvData.ReadBits(6);
+    bool hasFacialHair = recvData.ReadBit();
+    bool hasHairStyle = recvData.ReadBit();
+    guid[4] = recvData.ReadBit();
+    guid[1] = recvData.ReadBit();
+    guid[0] = recvData.ReadBit();
+    guid[5] = recvData.ReadBit();
+    bool hasHairColor = recvData.ReadBit();
+    bool isFactionChange = recvData.ReadBit();
+    guid[7] = recvData.ReadBit();
+
+    recvData.ReadGuidBytes(guid, 2, 1, 4, 5, 0);
+    std::string newname = recvData.ReadString(nameLength);
+    recvData.ReadGuidBytes(guid, 6, 3, 7);
+
+    if (hasHairColor)
+        recvData >> hairColor;
+    if (hasHairStyle)
+        recvData >> hairStyle;
+    if (hasSkinColor)
+        recvData >> skin;
+    if (hasFace)
+        recvData >> face;
+    if (hasFacialHair)
+        recvData >> facialHair;
 
     if (!IsLegitCharacterForAccount(GUID_LOPART(guid)))
     {
         TC_LOG_ERROR("network", "Account %u, IP: %s tried to factionchange character %u, but it does not belong to their account!",
             GetAccountId(), GetRemoteAddress().c_str(), GUID_LOPART(guid));
-        recvData.rfinish();
         KickPlayer();
         return;
     }
-
-    recvData >> newname;
-    recvData >> gender >> skin >> hairColor >> hairStyle >> facialHair >> face >> race;
 
     uint32 lowGuid = GUID_LOPART(guid);
 
@@ -2104,7 +2131,7 @@ void WorldSession::HandleCharFactionOrRaceChange(WorldPacket& recvData)
     Field* fields = result->Fetch();
     uint32 at_loginFlags = fields[0].GetUInt16();
     char const* knownTitlesStr = fields[1].GetCString();
-    uint32 used_loginFlag = ((recvData.GetOpcode() == CMSG_CHAR_FACTION_OR_RACE_CHANGE) ? AT_LOGIN_CHANGE_RACE : AT_LOGIN_CHANGE_FACTION);
+    uint32 used_loginFlag = isFactionChange ? AT_LOGIN_CHANGE_FACTION : AT_LOGIN_CHANGE_RACE;
 
     if (!sObjectMgr->GetPlayerInfo(race, playerClass))
     {
@@ -2273,7 +2300,7 @@ void WorldSession::HandleCharFactionOrRaceChange(WorldPacket& recvData)
             trans->Append(stmt);
         }
 
-        if (recvData.GetOpcode() == CMSG_CHAR_FACTION_OR_RACE_CHANGE)
+        if (isFactionChange)
         {
             // Delete all Flypaths
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHAR_TAXI_PATH);

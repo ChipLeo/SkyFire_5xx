@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -1137,6 +1137,33 @@ void WorldSession::HandleCastSpellOpcode(WorldPacket& recvPacket)
     Spell* spell = new Spell(caster, spellInfo, TRIGGERED_NONE, 0, false);
     spell->m_cast_count = castCount;                       // set count of casts
     spell->m_glyphIndex = glyphIndex;
+
+    if (castFlags & 0x8)   // Archaeology
+    {
+        SpellResearchData* researchData = new SpellResearchData();
+        memset(researchData, 0, sizeof(SpellResearchData*));
+        uint32 count;
+        uint8 type;
+        recvPacket >> count;
+        for (uint32 i = 0; i < count; ++i)
+        {
+            recvPacket >> type;
+            switch (type)
+            {
+                case 2: // Keystones
+                    recvPacket >> researchData->keystoneItemId;       // Item id
+                    recvPacket >> researchData->keystoneCount;        // Item count
+                    break;
+                case 1: // Fragments
+                    recvPacket >> researchData->fragmentCurrencyId;   // Currency id
+                    recvPacket >> researchData->fragmentCount;        // Currency count
+                    break;
+            }
+        }
+
+        spell->m_researchData = researchData;
+    }
+
     spell->prepare(&targets);
 }
 

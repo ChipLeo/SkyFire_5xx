@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -2254,4 +2254,43 @@ uint32 AreaTriggerUpdateFieldFlags[AREATRIGGER_END] =
     UF_FLAG_PUBLIC, // AREATRIGGER_FIELD_SPELL_ID
     UF_FLAG_VIEWER_DEPENDENT, // AREATRIGGER_FIELD_SPELL_VISUAL_ID
     UF_FLAG_PUBLIC | UF_FLAG_URGENT // AREATRIGGER_FIELD_EXPLICIT_SCALE
+};
+
+uint32 SceneObjectUpdateFieldFlags [SCENEOBJECT_FIELD_END] =
+{
+    UF_FLAG_PUBLIC, // SCENEOBJECT_FIELD_SCRIPT_PACKAGE_ID
+    UF_FLAG_PUBLIC, // SCENEOBJECT_FIELD_RND_SEED_VAL
+    UF_FLAG_PUBLIC, // SCENEOBJECT_FIELD_CREATED_BY
+    UF_FLAG_PUBLIC, // SCENEOBJECT_FIELD_CREATED_BY + 1
+    UF_FLAG_PUBLIC, // SCENEOBJECT_FIELD_SCENE_TYPE
+};
+
+uint32 DynamicItemUpdateFieldFlags [ITEM_DYNAMIC_END] =
+{
+    UF_FLAG_PUBLIC, // ITEM_DYNAMIC_FIELD_MODIFIERS
+};
+
+uint32 ObjectUpdateFieldFlags [OBJECT_END] =
+{
+    UF_FLAG_PUBLIC, // OBJECT_FIELD_GUID
+    UF_FLAG_PUBLIC, // OBJECT_FIELD_GUID
+    UF_FLAG_PUBLIC, // OBJECT_FIELD_DATA
+    UF_FLAG_PUBLIC, // OBJECT_FIELD_DATA
+    UF_FLAG_PUBLIC, // OBJECT_FIELD_TYPE
+    UF_FLAG_VIEWER_DEPENDENT, // OBJECT_FIELD_ENTRY_ID
+    UF_FLAG_VIEWER_DEPENDENT | UF_FLAG_URGENT, // OBJECT_FIELD_DYNAMIC_FLAGS
+    UF_FLAG_PUBLIC, // OBJECT_FIELD_SCALE
+};
+
+uint32 UnitDynamicField [UNIT_DYNAMIC_END] =
+{
+    UF_FLAG_PUBLIC, // UNIT_DYNAMIC_FIELD_PASSIVE_SPELLS
+    UF_FLAG_PUBLIC, // UNIT_DYNAMIC_FIELD_WORLD_EFFECTS
+};
+
+uint32 PlayerDynamicField [PLAYER_DYNAMIC_END] =
+{
+    UF_FLAG_PRIVATE, // PLAYER_DYNAMIC_FIELD_RESERACH_SITE
+    UF_FLAG_PRIVATE, // PLAYER_DYNAMIC_FIELD_RESEARCH_SITE_PROGRESS
+    UF_FLAG_PRIVATE, // PLAYER_DYNAMIC_FIELD_DAILY_QUESTS
 };

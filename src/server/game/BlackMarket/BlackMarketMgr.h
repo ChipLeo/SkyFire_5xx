@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -129,8 +129,8 @@ private:
 public:
     void Update();
 
-    void LoadFromDB();
-    void LoadAuctions();
+    void LoadBlackMarketTemplates();
+    void LoadBlackMarketAuctions();
 
     BlackMarketAuctionTemplate* GetTemplate(uint32 templateId) const;
     uint32 GetTemplatesCount() { return _templates.size(); }

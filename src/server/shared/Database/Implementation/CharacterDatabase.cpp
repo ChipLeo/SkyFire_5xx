@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2011-2015 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2015 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -264,10 +264,10 @@ void CharacterDatabaseConnection::DoPrepareStatements()
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", CONNECTION_ASYNC);
 
     // Currency
-    PrepareStatement(CHAR_SEL_PLAYER_CURRENCY, "SELECT currency, week_count, total_count FROM character_currency WHERE guid = ?", CONNECTION_ASYNC);
-    PrepareStatement(CHAR_UPD_PLAYER_CURRENCY, "UPDATE character_currency SET week_count = ?, total_count = ? WHERE guid = ? AND currency = ?", CONNECTION_ASYNC);
-    PrepareStatement(CHAR_REP_PLAYER_CURRENCY, "REPLACE INTO character_currency (guid, currency, week_count, total_count) VALUES (?, ?, ?, ?)", CONNECTION_ASYNC);
-
+    PrepareStatement(CHAR_SEL_PLAYER_CURRENCY, "SELECT currency, week_count, total_count, season_count, flags FROM character_currency WHERE guid = ?", CONNECTION_ASYNC);
+    PrepareStatement(CHAR_UPD_PLAYER_CURRENCY, "UPDATE character_currency SET week_count = ?, total_count = ?, season_count = ?, flags = ? WHERE guid = ? AND currency = ?", CONNECTION_ASYNC);
+    PrepareStatement(CHAR_REP_PLAYER_CURRENCY, "REPLACE INTO character_currency (guid, currency, week_count, total_count, season_count, flags) VALUES (?, ?, ?, ?, ?, ?)", CONNECTION_ASYNC);
+ 
     // Account data
     PrepareStatement(CHAR_SEL_ACCOUNT_DATA, "SELECT type, time, data FROM account_data WHERE accountId = ?", CONNECTION_SYNCH);
     PrepareStatement(CHAR_REP_ACCOUNT_DATA, "REPLACE INTO account_data (accountId, type, time, data) VALUES (?, ?, ?, ?)", CONNECTION_ASYNC);
@@ -363,6 +363,12 @@ void CharacterDatabaseConnection::DoPrepareStatements()
     PrepareStatement(CHAR_REP_GM_BUG, "REPLACE INTO ticket_bug (ticketId, playerGuid, bugNote, ticketCreateTime, mapId, posX, posY, posZ, orientation, closedBy, assignedTo, comment) VALUES (?, ?, ?, UNIX_TIMESTAMP(NOW()), ?, ?, ?, ?, ?, ?, ?, ?)", CONNECTION_ASYNC);
     PrepareStatement(CHAR_DEL_GM_BUG, "DELETE FROM ticket_bug WHERE ticketId = ?", CONNECTION_ASYNC);
     PrepareStatement(CHAR_DEL_ALL_GM_BUGS, "TRUNCATE TABLE ticket_bug", CONNECTION_ASYNC);
+
+    // GM suggest Tickets
+    PrepareStatement(CHAR_SEL_GM_SUGGESTS, "SELECT ticketId, playerGuid, suggestNote, ticketCreateTime, mapId, posX, posY, posZ, orientation, closedBy, assignedTo, comment FROM ticket_suggest", CONNECTION_SYNCH);
+    PrepareStatement(CHAR_REP_GM_SUGGEST, "REPLACE INTO ticket_suggest (ticketId, playerGuid, suggestNote, ticketCreateTime, mapId, posX, posY, posZ, orientation, closedBy, assignedTo, comment) VALUES (?, ?, ?, UNIX_TIMESTAMP(NOW()), ?, ?, ?, ?, ?, ?, ?, ?)", CONNECTION_ASYNC);
+    PrepareStatement(CHAR_DEL_GM_SUGGEST, "DELETE FROM ticket_suggest WHERE ticketId = ?", CONNECTION_ASYNC);
+    PrepareStatement(CHAR_DEL_ALL_GM_SUGGESTS, "TRUNCATE TABLE ticket_suggest", CONNECTION_ASYNC);
 
     // GM Survey/subsurvey/lag report
     PrepareStatement(CHAR_INS_GM_SURVEY, "INSERT INTO gm_surveys (guid, surveyId, mainSurvey, overallComment, createTime) VALUES (?, ?, ?, ?, UNIX_TIMESTAMP(NOW()))", CONNECTION_ASYNC);
@@ -566,8 +572,8 @@ void CharacterDatabaseConnection::DoPrepareStatements()
     PrepareStatement(CHAR_INS_CHAR_SPELL, "INSERT INTO character_spell (guid, spell, active, disabled) VALUES (?, ?, ?, ?)", CONNECTION_ASYNC);
     PrepareStatement(CHAR_DEL_CHAR_STATS, "DELETE FROM character_stats WHERE guid = ?", CONNECTION_ASYNC);
     PrepareStatement(CHAR_INS_CHAR_STATS, "INSERT INTO character_stats (guid, maxhealth, maxpower1, maxpower2, maxpower3, maxpower4, maxpower5, strength, agility, stamina, intellect, spirit, "
-                     "armor, resHoly, resFire, resNature, resFrost, resShadow, resArcane, blockPct, dodgePct, parryPct, critPct, rangedCritPct, spellCritPct, attackPower, rangedAttackPower, "
-                     "spellPower, resilience) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", CONNECTION_ASYNC);
+                     "armor, resHoly, resFire, resNature, resFrost, resShadow, resArcane, blockPct, dodgePct, parryPct, critPct, rangedCritPct, offhandCritPct, spellCritPct, attackPower, rangedAttackPower, "
+                     "spellPower, resilience, mastery, pvpDamage, pvpHealing) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  ?)", CONNECTION_ASYNC);
     PrepareStatement(CHAR_DEL_PETITION_BY_OWNER, "DELETE FROM petition WHERE ownerguid = ?", CONNECTION_ASYNC);
     PrepareStatement(CHAR_DEL_PETITION_SIGNATURE_BY_OWNER, "DELETE FROM petition_sign WHERE ownerguid = ?", CONNECTION_ASYNC);
     PrepareStatement(CHAR_DEL_PETITION_BY_OWNER_AND_TYPE, "DELETE FROM petition WHERE ownerguid = ? AND type = ?", CONNECTION_ASYNC);
@@ -644,6 +650,17 @@ void CharacterDatabaseConnection::DoPrepareStatements()
     PrepareStatement(CHAR_UPD_CHAR_PET_SLOT_BY_ID, "UPDATE character_pet SET slot = ? WHERE owner = ? AND id = ?", CONNECTION_ASYNC);
     PrepareStatement(CHAR_DEL_CHAR_PET_BY_ID, "DELETE FROM character_pet WHERE id = ?", CONNECTION_ASYNC);
     PrepareStatement(CHAR_DEL_CHAR_PET_BY_SLOT, "DELETE FROM character_pet WHERE owner = ? AND (slot = ? OR slot > ?)", CONNECTION_ASYNC);
+
+    // Archaeology
+    PrepareStatement(CHAR_SEL_CHAR_RESEARCH_DIGSITES, "SELECT digsiteId, currentFindGUID, remainingFindCount FROM character_research_digsites WHERE guid = ?", CONNECTION_ASYNC);
+    PrepareStatement(CHAR_INS_CHAR_RESEARCH_DIGSITE, "INSERT INTO character_research_digsites (guid, digsiteId, currentFindGUID, remainingFindCount) VALUES (?, ?, ?, ?)", CONNECTION_ASYNC);
+    PrepareStatement(CHAR_DEL_CHAR_RESEARCH_DIGSITE, "DELETE FROM character_research_digsites WHERE guid = ? AND digsiteId = ?", CONNECTION_ASYNC);
+    PrepareStatement(CHAR_SEL_CHAR_RESEARCH_HISTORY, "SELECT projectId, researchCount, firstResearchTimestamp FROM character_research_history WHERE guid = ?", CONNECTION_ASYNC);
+    PrepareStatement(CHAR_INS_CHAR_RESEARCH_HISTORY, "INSERT INTO character_research_history (guid, projectId, researchCount, firstResearchTimestamp) VALUES (?, ?, ?, ?)", CONNECTION_ASYNC);
+    PrepareStatement(CHAR_DEL_CHAR_RESEARCH_HISTORY, "DELETE FROM character_research_history WHERE guid = ?", CONNECTION_ASYNC);
+    PrepareStatement(CHAR_SEL_CHAR_RESEARCH_PROJECTS, "SELECT projectId FROM character_research_projects WHERE guid = ?", CONNECTION_ASYNC);
+    PrepareStatement(CHAR_INS_CHAR_RESEARCH_PROJECT, "INSERT INTO character_research_projects (guid, projectId) VALUES (?, ?)", CONNECTION_ASYNC);
+    PrepareStatement(CHAR_DEL_CHAR_RESEARCH_PROJECTS, "DELETE FROM character_research_projects WHERE guid = ?", CONNECTION_ASYNC);
 
     // battle Pet
     PrepareStatement(CHAR_SEL_ACCOUNT_BATTLE_PETS, "SELECT id, species, nickname, timestamp, level, xp, health, maxHealth, power, speed, quality, breed, flags FROM account_battle_pet WHERE accountId = ?", CONNECTION_ASYNC);
