@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2011-2017 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -107,8 +107,23 @@ void BlackMarketMgr::LoadBlackMarketTemplates()
             blackmarket_template->Id = fields[0].GetUInt32();
             blackmarket_template->MarketId = fields[1].GetUInt32();
             blackmarket_template->SellerNPCEntry = fields[2].GetUInt32();
+            if (!sObjectMgr->GetCreatureTemplate(blackmarket_template->SellerNPCEntry))
+            {
+                TC_LOG_ERROR("sql.sql", "Table `blackmarket_template` (MarketId: %u) have data for not existing creature template (Entry: %u), ignoring", blackmarket_template->MarketId, blackmarket_template->SellerNPCEntry);
+                continue;
+            }
             blackmarket_template->ItemEntry = fields[3].GetUInt32();
+            if (!sObjectMgr->GetItemTemplate(blackmarket_template->ItemEntry))
+            {
+                TC_LOG_ERROR("sql.sql", "Table `blackmarket_template` (MarketId: %u) have data for not existing item template (Entry: %u), ignoring.", blackmarket_template->MarketId, blackmarket_template->ItemEntry);
+                continue;
+            }
             blackmarket_template->Quantity = fields[4].GetUInt32();
+            if (!blackmarket_template->Quantity)
+            {
+                TC_LOG_ERROR("sql.sql", "Table `blackmarket_template` (MarketId: %u) have amount == 0 for (ItemEntry : %u) in `blackmarket_template` table, ignoring.", blackmarket_template->MarketId, blackmarket_template->ItemEntry);
+                continue;
+            }
             blackmarket_template->MinBid = fields[5].GetUInt32();
             blackmarket_template->Duration = fields[6].GetUInt32();
             blackmarket_template->Chance = fields[7].GetFloat();

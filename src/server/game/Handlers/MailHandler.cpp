@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2011-2017 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -921,7 +921,7 @@ void WorldSession::HandleMailCreateTextItem(WorldPacket& recvData)
 /// @todo Fix me! ... this void has probably bad condition, but good data are sent
 void WorldSession::HandleQueryNextMailTime(WorldPacket& /*recvData*/)
 {
-    WorldPacket data(SMSG_MAIL_QUERY_NEXT_TIME_RESULT, 8);
+    WorldPacket data(MSG_QUERY_NEXT_MAIL_TIME, 8);
 
     if (!_player->m_mailsLoaded)
         _player->_LoadMail();

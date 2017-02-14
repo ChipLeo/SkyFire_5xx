@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2011-2017 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -704,7 +704,7 @@ void WorldSession::HandleSetSelectionOpcode(WorldPacket& recvData)
 
 void WorldSession::HandleStandStateChangeOpcode(WorldPacket& recvData)
 {
-    // TC_LOG_DEBUG("network", "WORLD: Received CMSG_STANDSTATECHANGE"); -- too many spam in log at lags/debug stop
+    // TC_LOG_DEBUG("network", "WORLD: Received CMSG_STAND_STATE_CHANGE"); -- too many spam in log at lags/debug stop
     uint32 animstate;
     recvData >> animstate;
 
@@ -1170,10 +1170,9 @@ void WorldSession::HandleUpdateAccountData(WorldPacket& recvData)
 {
     TC_LOG_DEBUG("network", "WORLD: Received CMSG_UPDATE_ACCOUNT_DATA");
 
-    uint32 timestamp, type, decompressedSize, compressedSize;
-    recvData >> decompressedSize >> timestamp >> compressedSize;
-
-    TC_LOG_DEBUG("network", "UAD: time %u, decompressedSize %u, compressedSize %u", timestamp, decompressedSize, compressedSize);
+    uint32 timestamp = 0, decompressedSize = 0, compCount = 0;
+    uint8 type = 0;
+    recvData >> decompressedSize >> timestamp >> compCount;
 
     if (decompressedSize == 0)                               // erase
     {
@@ -1190,8 +1189,8 @@ void WorldSession::HandleUpdateAccountData(WorldPacket& recvData)
 
     if (decompressedSize > 0xFFFF)
     {
-        recvData.rfinish();                   // unnneded warning spam in this case
-        TC_LOG_ERROR("network", "UAD: Account data packet too big, size %u", decompressedSize);
+        recvData.rfinish();                   // unneeded warning spam in this case
+        TC_LOG_DEBUG("network", "UAD: Account data packet too big, size %u", decompressedSize);
         return;
     }
 
@@ -1199,18 +1198,19 @@ void WorldSession::HandleUpdateAccountData(WorldPacket& recvData)
     dest.resize(decompressedSize);
 
     uLongf realSize = decompressedSize;
-    if (uncompress(dest.contents(), &realSize, recvData.contents() + recvData.rpos(), recvData.size() - recvData.rpos()) != Z_OK)
+    if (uncompress(const_cast<uint8*>(dest.contents()), &realSize, const_cast<uint8*>(recvData.contents() + recvData.rpos()), compCount) != Z_OK)
     {
-        recvData.rfinish();                   // unnneded warning spam in this case
-        TC_LOG_ERROR("network", "UAD: Failed to decompress account data");
+        recvData.rfinish();                   // unneeded warning spam in this case
+        TC_LOG_DEBUG("network", "UAD: Failed to decompress account data");
         return;
     }
 
-    type = recvData.ReadBits(3);    
+    recvData.rpos(recvData.rpos() + compCount);
+
+    type = recvData.ReadBits(3);
+
     if (type > NUM_ACCOUNT_DATA_TYPES)
         return;
-
-    recvData.rfinish();                       // uncompress read (recvData.size() - recvData.rpos())
 
     std::string adata;
     dest >> adata;
@@ -1760,7 +1760,7 @@ void WorldSession::SendTitleLost(uint32 TitleIndex)
 
 void WorldSession::HandleTimeSyncResp(WorldPacket& recvData)
 {
-    TC_LOG_DEBUG("network", "CMSG_TIME_SYNC_RESP");
+    TC_LOG_DEBUG("network", "CMSG_TIME_SYNC_RESPONSE");
 
     uint32 counter, clientTicks;
     recvData >> counter >> clientTicks;
@@ -2005,7 +2005,7 @@ void WorldSession::HandleWorldStateUITimerUpdate(WorldPacket& /*recvData*/)
     // empty opcode
     TC_LOG_DEBUG("network", "WORLD: CMSG_WORLD_STATE_UI_TIMER_UPDATE");
 
-    WorldPacket data(SMSG_WORLD_STATE_UI_TIMER_UPDATE, 4);
+    WorldPacket data(SMSG_UI_TIME, 4);
     data << uint32(time(NULL));
     SendPacket(&data);
 }
@@ -2022,7 +2022,7 @@ void WorldSession::SendSetPhaseShift(std::set<uint32> const& phaseIds, std::set<
 {
     ObjectGuid guid = _player->GetGUID();
 
-    WorldPacket data(SMSG_SET_PHASE_SHIFT, 1 + 8 + 2 * phaseIds.size() + 4 + 2 * worldMapAreas.size() + 2 * terrainswaps.size() + 4);
+    WorldPacket data(SMSG_PHASE_SHIFT_CHANGE, 1 + 8 + 2 * phaseIds.size() + 4 + 2 * worldMapAreas.size() + 2 * terrainswaps.size() + 4);
     data.WriteBit(guid[0]);
     data.WriteBit(guid[3]);
     data.WriteBit(guid[1]);
@@ -2192,14 +2192,7 @@ void WorldSession::HandleRequestHotfix(WorldPacket& recvPacket)
     ObjectGuid* guids = new ObjectGuid[count];
     for (uint32 i = 0; i < count; ++i)
     {
-        guids[i][6] = recvPacket.ReadBit();
-        guids[i][3] = recvPacket.ReadBit();
-        guids[i][0] = recvPacket.ReadBit();
-        guids[i][1] = recvPacket.ReadBit();
-        guids[i][4] = recvPacket.ReadBit();
-        guids[i][5] = recvPacket.ReadBit();
-        guids[i][7] = recvPacket.ReadBit();
-        guids[i][2] = recvPacket.ReadBit();
+        recvPacket.ReadGuidMask(guids[i], 6, 3, 0, 1, 4, 5, 7, 2);
     }
 
     uint32 entry;
@@ -2207,16 +2200,10 @@ void WorldSession::HandleRequestHotfix(WorldPacket& recvPacket)
     {
         recvPacket.ReadByteSeq(guids[i][1]);
         recvPacket >> entry;
-        recvPacket.ReadByteSeq(guids[i][0]);
-        recvPacket.ReadByteSeq(guids[i][5]);
-        recvPacket.ReadByteSeq(guids[i][6]);
-        recvPacket.ReadByteSeq(guids[i][4]);
-        recvPacket.ReadByteSeq(guids[i][7]);
-        recvPacket.ReadByteSeq(guids[i][2]);
-        recvPacket.ReadByteSeq(guids[i][3]);
+        recvPacket.ReadGuidBytes(guids[i], 0, 5, 6, 4, 7, 2, 3);
 
         // temp: this should be moved once broadcast text is properly implemented
-        if (type == DB2_REPLY_BROADCAST)
+        if (type == DB2_REPLY_BROADCASTTEXT)
         {
             SendBroadcastText(entry);
             continue;
@@ -2240,7 +2227,7 @@ void WorldSession::HandleRequestHotfix(WorldPacket& recvPacket)
         TC_LOG_DEBUG("network", "SMSG_DB_REPLY: Sent hotfix entry: %u type: %u", entry, type);
     }
 
-    delete [] guids;
+    delete[] guids;
 }
 
 void WorldSession::SendBroadcastText(uint32 entry)
@@ -2278,7 +2265,7 @@ void WorldSession::SendBroadcastText(uint32 entry)
     WorldPacket data(SMSG_DB_REPLY);
     data << uint32(entry);
     data << uint32(time(NULL));
-    data << uint32(DB2_REPLY_BROADCAST);
+    data << uint32(DB2_REPLY_BROADCASTTEXT);
     data << uint32(buffer.size());
     data.append(buffer);
 

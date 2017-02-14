@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2011-2017 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -635,6 +635,7 @@ typedef std::set<uint32> RewardedQuestSet;
 
 //               quest,  keep
 typedef std::map<uint32, bool> QuestStatusSaveMap;
+typedef std::map<uint32, bool> QuestObjectiveStatusSaveMap;
 
 enum QuestSlotOffsets
 {
@@ -3493,6 +3494,7 @@ class Player : public Unit, public GridObject<Player>
     QuestStatusMap m_QuestStatus;
     QuestObjectiveStatusMap m_questObjectiveStatus;
     QuestStatusSaveMap m_QuestStatusSave;
+    QuestObjectiveStatusSaveMap m_questObjectiveStatusSave;
 
     RewardedQuestSet m_RewardedQuests;
     QuestStatusSaveMap m_RewardedQuestsSave;

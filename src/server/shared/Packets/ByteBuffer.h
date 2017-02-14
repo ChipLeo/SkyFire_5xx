@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2011-2017 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -739,7 +739,7 @@ public:
         WriteBits(buffer._curbitval >> buffer._bitpos, 8 - buffer._bitpos);
     }
 
-    // can be used in SMSG_MONSTER_MOVE opcode
+    // can be used in SMSG_ON_MONSTER_MOVE opcode
     void appendPackXYZ(float x, float y, float z)
     {
         uint32 packed = 0;

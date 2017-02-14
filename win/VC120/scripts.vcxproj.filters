@@ -1891,6 +1891,9 @@
     <ClCompile Include="..\..\src\server\scripts\EasternKingdoms\zone_elwynn_forest.cpp">
       <Filter>EasternKingdoms</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\server\scripts\Spells\spell_mastery.cpp">
+      <Filter>Spells</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\server\scripts\OutdoorPvP\OutdoorPvPSI.h">

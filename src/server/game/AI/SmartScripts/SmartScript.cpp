@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2011-2017 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -2173,6 +2173,54 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
                 break;
             }
             sGameEventMgr->StartEvent(eventId, true);
+            break;
+        }
+        case SMART_ACTION_SET_HEALTH:
+        {
+            ObjectList* targets = GetTargets(e, unit);
+            if (!targets)
+                break;
+
+            for (ObjectList::const_iterator itr = targets->begin(); itr != targets->end(); ++itr)
+            {
+                if (IsUnit(*itr))
+                {
+                    if (e.action.sethealthpointorpercent.healthpointmod == 0)
+                    {
+                        int32 healthpct = int32(e.action.sethealthpointorpercent.healthpointpercent);
+                        (*itr)->ToUnit()->ModifyHealth(int32((*itr)->ToUnit()->CountPctFromMaxHealth(healthpct)));
+                    }
+                    else if (e.action.sethealthpointorpercent.healthpointmod == 1)
+                    {
+                        int32 missingHealth = int32((*itr)->ToUnit()->GetMaxHealth() - (*itr)->ToUnit()->GetHealth());
+                        (*itr)->ToUnit()->ModifyHealth(missingHealth);
+                    }
+                    else if (e.action.sethealthpointorpercent.healthpointmod == 2)
+                        (*itr)->ToUnit()->SetHealth(me->GetHealth());
+                    else if (e.action.sethealthpointorpercent.healthpointmod == 3)
+                        me->SetHealth((*itr)->ToUnit()->GetHealth());
+                    else if (e.action.sethealthpointorpercent.healthpointmod == 4)
+                        (*itr)->ToUnit()->SetMaxHealth(me->GetMaxHealth());
+                    else if (e.action.sethealthpointorpercent.healthpointmod == 5)
+                        me->SetMaxHealth((*itr)->ToUnit()->GetMaxHealth());
+                    else if (e.action.sethealthpointorpercent.healthpointmod == 6)
+                    {
+                        uint32 health = uint32(e.action.sethealthpointorpercent.healthpoint);
+                        (*itr)->ToUnit()->SetMaxHealth(health);
+                    }
+                    else if (e.action.sethealthpointorpercent.healthpointmod == 7)
+                    {
+                        uint32 health = uint32(e.action.sethealthpointorpercent.healthpoint);
+                        (*itr)->ToUnit()->SetHealth(health);
+                    }
+                    else
+                    {
+                        TC_LOG_ERROR("sql.sql", "SmartScript: Invalid type for SMART_ACTION_SET_HEALTH, skipping");
+                        break;
+                    }
+                }
+            }
+            delete targets;
             break;
         }
         default:

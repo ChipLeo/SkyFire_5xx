@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2011-2016 Project SkyFire <http://www.projectskyfire.org/>
- * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2011-2017 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -4712,7 +4712,7 @@ void Spell::SendLogExecute()
 {
     ObjectGuid CastergGuid = m_caster->GetGUID();
 
-    WorldPacket data(SMSG_SPELLLOGEXECUTE, 8 + 4 + 4 + 4 + 4 + 8);
+    WorldPacket data(SMSG_SPELL_EXECUTE_LOG, 8 + 4 + 4 + 4 + 4 + 8);
 
     data.WriteGuidMask(CastergGuid, 0, 6, 5, 7, 2);
     data.WriteBits(0, 19); // effCount

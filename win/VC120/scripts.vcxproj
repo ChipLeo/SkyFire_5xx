@@ -293,6 +293,7 @@
     <ClInclude Include="..\..\src\server\scripts\Northrend\DraktharonKeep\drak_tharon_keep.h" />
     <ClCompile Include="..\..\src\server\scripts\EasternKingdoms\zone_elwynn_forest.cpp" />
     <ClCompile Include="..\..\src\server\scripts\Pandaria\zone_wandering_island.cpp" />
+    <ClCompile Include="..\..\src\server\scripts\Spells\spell_mastery.cpp" />
     <ClCompile Include="..\..\src\server\scripts\Spells\spell_shaman.cpp" />
     <ClCompile Include="..\..\src\server\scripts\Spells\spell_hunter.cpp" />
     <ClCompile Include="..\..\src\server\scripts\Spells\spell_rogue.cpp" />
