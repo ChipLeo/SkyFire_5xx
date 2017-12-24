@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2011-2017 Project SkyFire <http://www.projectskyfire.org/>
  * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2005-2017 MaNGOS <https://www.getmangos.eu/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_DBCSTORES_H
-#define TRINITY_DBCSTORES_H
+#ifndef SKYFIRE_DBCSTORES_H
+#define SKYFIRE_DBCSTORES_H
 
 #include "Common.h"
 #include "DBCStore.h"
@@ -70,6 +70,7 @@ void Map2ZoneCoordinates(float &x, float &y, uint32 zone);
 uint32 GetClassBySkillId(uint32 skillId);
 uint32 GetSkillIdByClass(uint32 classId);
 std::list<uint32> GetSpellsForLevels(uint32 classId, uint32 raceMask, uint32 specializationId, uint32 minLevel, uint32 maxLevel);
+std::vector<uint32> const* GetSpecializationSpells(uint32 specializationId);
 
 typedef std::map<uint32/*pair32(map, diff)*/, MapDifficulty> MapDifficultyMap;
 MapDifficulty const* GetMapDifficultyData(uint32 mapId, Difficulty difficulty);

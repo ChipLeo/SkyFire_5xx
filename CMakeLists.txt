@@ -13,7 +13,7 @@
 project(Project_Skyfire)
 
 # CMake policies (can not be handled elsewhere)
-cmake_minimum_required(VERSION 2.8.9)
+cmake_minimum_required(VERSION 2.8.7)
 cmake_policy(SET CMP0005 OLD)
 if(POLICY CMP0043)
   cmake_policy(SET CMP0043 OLD) # Disable 'Ignore COMPILE_DEFINITIONS_<Config> properties'
@@ -59,10 +59,7 @@ find_package(PCHSupport)
 find_package(ACE REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(Threads REQUIRED)
-
-if( NOT USE_MYSQL_SOURCES )
-  find_package(MySQL REQUIRED)
-endif()
+find_package(MySQL REQUIRED)
 
 if( UNIX )
   find_package(Readline)

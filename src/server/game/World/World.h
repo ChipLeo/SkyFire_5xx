@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2011-2017 Project SkyFire <http://www.projectskyfire.org/>
  * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2005-2017 MaNGOS <https://www.getmangos.eu/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -173,6 +173,7 @@ enum WorldBoolConfigs
     CONFIG_BLACK_MARKET_OPEN,
     CONFIG_TICKETS_GM_ENABLED,
     CONFIG_TICKETS_FEEDBACK_SYSTEM_ENABLED,
+    CONFIG_BOOST_NEW_ACCOUNT,
     BOOL_CONFIG_VALUE_COUNT
 };
 
@@ -364,6 +365,8 @@ enum WorldIntConfigs
     CONFIG_BLACK_MARKET_MAX_AUCTIONS,
     CONFIG_BLACK_MARKET_AUCTION_DELAY,
     CONFIG_BLACK_MARKET_AUCTION_DELAY_MOD,
+    CONFIG_BOOST_START_MONEY,
+    CONFIG_BOOST_START_LEVEL,
     INT_CONFIG_VALUE_COUNT
 };
 
@@ -396,6 +399,7 @@ enum Rates
     RATE_XP_EXPLORE,
     RATE_REPAIRCOST,
     RATE_REPUTATION_GAIN,
+    RATE_REPUTATION_LFG_BONUS,
     RATE_REPUTATION_LOWLEVEL_KILL,
     RATE_REPUTATION_LOWLEVEL_QUEST,
     RATE_REPUTATION_RECRUIT_A_FRIEND_BONUS,

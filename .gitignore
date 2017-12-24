@@ -1,5 +1,7 @@
 
 build*/
+Win32*/
+x64*/
 .directory
 .mailmap
 *.orig
@@ -16,10 +18,5 @@ CMakeLists.txt.user
 *.BACKUP.*
 *.BASE.*
 *.LOCAL.*
-*__x64_*
-*__Win32_*
-bin
-*.suo
-*.sdf
-ipch
-*.opensdf
+win*/
+win_tools*/

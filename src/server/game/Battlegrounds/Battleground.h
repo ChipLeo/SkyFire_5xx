@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2011-2017 Project SkyFire <http://www.projectskyfire.org/>
  * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2005-2017 MaNGOS <https://www.getmangos.eu/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -529,7 +529,7 @@ class Battleground
         void DoorOpen(uint32 type);
         void DoorClose(uint32 type);
         //to be removed
-        const char* GetTrinityString(int32 entry);
+        const char* GetSkyFireString(int32 entry);
 
         virtual bool HandlePlayerUnderMap(Player* /*player*/) { return false; }
 

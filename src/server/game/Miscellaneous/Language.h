@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2011-2017 Project SkyFire <http://www.projectskyfire.org/>
  * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2016 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2005-2017 MaNGOS <https://www.getmangos.eu/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -20,7 +20,7 @@
 #ifndef SF_LANGUAGE_H
 #define SF_LANGUAGE_H
 
-enum TrinityStrings
+enum SkyFireStrings
 {
     // for chat commands
     LANG_SELECT_CHAR_OR_CREATURE        = 1,
@@ -306,9 +306,13 @@ enum TrinityStrings
     LANG_COMMAND_WHISPERON              = 285,
     LANG_COMMAND_WHISPEROFF             = 286,
     LANG_COMMAND_CREATGUIDNOTFOUND      = 287,
-      // TICKET STRINGS NEED REWRITE // 288-296 FREE
+    LANG_USE_BOOST                      = 288,
+    LANG_COMMAND_BOOST_ADD              = 289,
+    LANG_COMMAND_BOOST_DEL              = 290,
 
-      // END
+    // 291-296 FREE
+
+    // END
     LANG_COMMAND_SPAWNDIST              = 297,
     LANG_COMMAND_SPAWNTIME              = 298,
     LANG_COMMAND_MODIFY_HONOR           = 299,
@@ -1055,7 +1059,7 @@ enum TrinityStrings
     LANG_COMMAND_TICKETRESET            = 2028,
     LANG_COMMAND_TICKETLISTRESPONSE     = 2029,
 
-    // Trinity strings                    5000-9999
+    // Skyfire strings                    5000-9999
     LANG_COMMAND_FREEZE                 = 5000,
     LANG_COMMAND_FREEZE_ERROR           = 5001,
     LANG_COMMAND_FREEZE_WRONG           = 5002,
@@ -1096,7 +1100,7 @@ enum TrinityStrings
     LANG_NPCINFO_EQUIPMENT              = 5036,
     LANG_NPCINFO_MECHANIC_IMMUNE        = 5037,
     LANG_NPCINFO_UNIT_FIELD_FLAGS       = 5038,
-    // Room for more Trinity strings      5039-9999
+    // Room for more Skyfire strings      5039-9999
 
     // Level requirement notifications
     LANG_SAY_REQ                        = 6604,

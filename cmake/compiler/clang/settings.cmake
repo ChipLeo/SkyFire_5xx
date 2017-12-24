@@ -12,6 +12,17 @@
 # Set build-directive (used in core to tell which buildtype we used)
 add_definitions(-D_BUILD_DIRECTIVE='"$(CONFIGURATION)"')
 
+# Check C++14 compiler support
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++14" COMPILER_SUPPORTS_CXX14)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+if(COMPILER_SUPPORTS_CXX14)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+else()
+  message(FATAL_ERROR "Error, SkyFire requires a compiler that supports C++14!")
+endif()
+
 if(WITH_WARNINGS)
   set(WARNING_FLAGS "-W -Wall -Wextra -Winit-self -Wfatal-errors")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${WARNING_FLAGS}")
