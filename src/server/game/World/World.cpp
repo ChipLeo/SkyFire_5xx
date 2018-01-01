@@ -281,7 +281,7 @@ void World::AddSession_(WorldSession* s)
         return;
     }
 
-    s->SendUnk1E9B();
+    s->SendDanceStudioCreateResult();
 
     s->SendAuthResponse(AUTH_OK, false);
 
