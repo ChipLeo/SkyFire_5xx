@@ -992,8 +992,8 @@ void WorldSession::SendAddonsInfo()
     WorldPacket data(SMSG_ADDON_INFO, 1000);
 
     AddonMgr::BannedAddonList const* bannedAddons = AddonMgr::GetBannedAddons();
-    data.WriteBits((uint32)bannedAddons->size(), 18);
-    data.WriteBits((uint32)m_addonsList.size(), 23);
+    data.WriteBits(uint32(bannedAddons->size()), 18);
+    data.WriteBits(uint32(m_addonsList.size()), 23);
 
     for (AddonsList::iterator itr = m_addonsList.begin(); itr != m_addonsList.end(); ++itr)
     {
@@ -1013,7 +1013,7 @@ void WorldSession::SendAddonsInfo()
                 data << uint8(0);
 
             for (int i = 0; i < 256; i++)
-                data.put(pos + pubKeyOrder[i], addonPublicKey[i]);
+                data.put<uint8>(pos + pubKeyOrder[i], addonPublicKey[i]);
         }
 
         if (itr->Enabled)
