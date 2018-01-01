@@ -1087,14 +1087,15 @@ void WorldSession::SendUnk121E()
     SendPacket(&data);
 }
 
-void WorldSession::SendUnk1E9B()
+void WorldSession::SendDanceStudioCreateResult()
 {
-    WorldPacket data(SMSG_UNK_1E9B, 4 + 4 + 4 + 4 + 1);
+    WorldPacket data(SMSG_DANCE_STUDIO_CREATE_RESULT, 4 + 4 + 4 + 4 + 1);
     data << UINT32(0x473216);
     data << UINT32(0x0C24E5);
     data << UINT32(0xA58757);
     data << UINT32(0x108D59);
-    data << UINT8(0x80);
+    data.WriteBit(1);
+    data.FlushBits();
     SendPacket(&data);
 }
 
