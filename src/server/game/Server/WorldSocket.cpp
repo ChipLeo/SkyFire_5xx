@@ -860,8 +860,8 @@ int WorldSocket::ProcessIncoming(WorldPacket* new_pct)
 
 int WorldSocket::HandleSendAuthSession()
 {
-    WorldPacket packet(SMSG_AUTH_CHALLENGE, 37);
-    packet << uint16(0);
+    WorldPacket packet(SMSG_AUTH_CHALLENGE, 39);
+    packet << uint16(0); //skip 2 byte
 
     for (int i = 0; i < 8; i++)
         packet << uint32(0);
@@ -870,7 +870,6 @@ int WorldSocket::HandleSendAuthSession()
     packet << uint32(m_Seed);
 
     return SendPacket(packet);
-
 }
 
 int WorldSocket::HandleAuthSession(WorldPacket& recvPacket)
