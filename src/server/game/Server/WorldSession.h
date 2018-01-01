@@ -281,7 +281,7 @@ class WorldSession
         void ReadAddonsInfo(WorldPacket& data);
         void SendAddonsInfo();
         void SendTimezoneInformation();
-        void SendUnk00A3();
+        void SendDisplayPromotion();
         void SendUnk043F();
         void SendFeatureSystemStatusGlueScreen();
         void SendDanceStudioCreateResult();

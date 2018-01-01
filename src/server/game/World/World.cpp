@@ -292,7 +292,7 @@ void World::AddSession_(WorldSession* s)
     s->SendTutorialsData();
 
     s->SendUnk043F();
-    s->SendUnk00A3();
+    s->SendDisplayPromotion();
 
     //s->SendTimezoneInformation();
 

@@ -1061,9 +1061,9 @@ void WorldSession::SendTimezoneInformation()
     SendPacket(&data);
 }
 
-void WorldSession::SendUnk00A3()
+void WorldSession::SendDisplayPromotion()
 {
-    WorldPacket data(SMSG_UNK_00A3, 4);
+    WorldPacket data(SMSG_DISPLAY_PROMOTION, 4);
     data << UINT32(0);
     SendPacket(&data);
 }
