@@ -4905,46 +4905,47 @@ void Unit::SendPeriodicAuraLog(SpellPeriodicAuraLogInfo* pInfo)
     data.WriteBits(1, 21); // Count
 
     // Count loop here
-    data.WriteBit(pInfo->critical);
-    size_t pos = data.bitwpos();
-
     data.WriteBit(targetGuid [0]);
 
     // All sent for now, will mess with it l8 ^^
     switch (aura->GetAuraType())
     {
-
         case SPELL_AURA_PERIODIC_DAMAGE:
         case SPELL_AURA_PERIODIC_DAMAGE_PERCENT:
             data.WriteBit(0); // Int 2 -- OverKill
             data.WriteBit(0); // Int 4 -- Absorb
-            data.WriteBit(0); // Int 3 -- SchoolMask
+            data.WriteBit(pInfo->critical);
             data.WriteBit(0); // Int 5 -- Resist
+            data.WriteBit(0); // Int 3 -- SchoolMask
             break;
         case SPELL_AURA_PERIODIC_HEAL:
         case SPELL_AURA_OBS_MOD_HEALTH:
             data.WriteBit(0); // Int 2 -- OverHeal
             data.WriteBit(0); // Int 4 -- Absorb
-            data.WriteBit(0); // Int 3 -- SchoolMask
+            data.WriteBit(pInfo->critical);
             data.WriteBit(1); // Int 5
+            data.WriteBit(0); // Int 3 -- SchoolMask
             break;
         case SPELL_AURA_OBS_MOD_POWER:
         case SPELL_AURA_PERIODIC_ENERGIZE:
             data.WriteBit(1); // Int 2
             data.WriteBit(1); // Int 4
-            data.WriteBit(0); // Int 3
+            data.WriteBit(pInfo->critical);
             data.WriteBit(1); // Int 5
+            data.WriteBit(0); // Int 3
         case SPELL_AURA_PERIODIC_MANA_LEECH:
             data.WriteBit(1); // Int 2
             data.WriteBit(1); // Int 4
-            data.WriteBit(0); // Int 3
+            data.WriteBit(pInfo->critical);
             data.WriteBit(1); // Int 5
+            data.WriteBit(0); // Int 3
             break;
         default:
             data.WriteBit(1); // Int 2
             data.WriteBit(1); // Int 4
-            data.WriteBit(1); // Int 3
+            data.WriteBit(pInfo->critical);
             data.WriteBit(1); // Int 5
+            data.WriteBit(1); // Int 3
             break;
     }
 
@@ -4959,42 +4960,45 @@ void Unit::SendPeriodicAuraLog(SpellPeriodicAuraLogInfo* pInfo)
     data.WriteBit(casterGuid [2]);
     data.WriteBit(targetGuid [6]);
     data.WriteBit(casterGuid [5]);
-    data.WriteBit(casterGuid [4]);
+    data.WriteBit(targetGuid [4]);
     data.FlushBits();
 
     // Switch Loop
-    data << uint32(aura->GetAuraType());                    // auraId
     switch (aura->GetAuraType())
     {
 
         case SPELL_AURA_PERIODIC_DAMAGE:
         case SPELL_AURA_PERIODIC_DAMAGE_PERCENT:
             data << uint32(pInfo->overDamage);              // overkill
-            data << uint32(pInfo->absorb);                  // absorb
             data << uint32(pInfo->damage);                  // damage
+            data << uint32(aura->GetAuraType());            // auraId
             data << uint32(pInfo->resist);                  // resist
+            data << uint32(pInfo->absorb);                  // absorb
             data << uint32(aura->GetSpellInfo()->GetSchoolMask());
             break;
         case SPELL_AURA_PERIODIC_HEAL:
         case SPELL_AURA_OBS_MOD_HEALTH:
             data << uint32(pInfo->overDamage);              // overheal
-            data << uint32(pInfo->absorb);                  // absorb
             data << uint32(pInfo->damage);                  // damage
+            data << uint32(aura->GetAuraType());            // auraId
+            data << uint32(pInfo->absorb);                  // absorb
             data << uint32(aura->GetSpellInfo()->GetSchoolMask());
             break;
         case SPELL_AURA_OBS_MOD_POWER:
         case SPELL_AURA_PERIODIC_ENERGIZE:
             data << uint32(pInfo->damage);                  // damage
+            data << uint32(aura->GetAuraType());            // auraId
             data << uint32(aura->GetMiscValue());           // power type
             break;
         case SPELL_AURA_PERIODIC_MANA_LEECH:
             data << uint32(pInfo->damage);                  // amount
+            data << uint32(aura->GetAuraType());            // auraId
             data << uint32(aura->GetMiscValue());           // power type
-            //data << float(pInfo->multiplier);               // gain multiplier
             break;
         default:
             SF_LOG_ERROR("entities.unit", "Unit::SendPeriodicAuraLog: unknown aura %u", uint32(aura->GetAuraType()));
             data << uint32(0); // Mask
+            data << uint32(0);
             break;
     }
 
@@ -5058,7 +5062,7 @@ void Unit::SendAttackStateUpdate(CalcDamageInfo* damageInfo)
     SF_LOG_DEBUG("entities.unit", "WORLD: Sending SMSG_ATTACKER_STATE_UPDATE");
 
     ObjectGuid guid = GetGUID();
-    uint32 count = 1;
+    uint8 count = 1;
     uint32 counter = 0;
     size_t maxsize = 4 + 5 + 5 + 4 + 4 + 1 + 4 + 4 + 4 + 4 + 4 + 1 + 4 + 4 + 4 + 4 + 4 * 12;
     WorldPacket data(SMSG_ATTACKER_STATE_UPDATE, maxsize);    // we guess size
@@ -5099,7 +5103,7 @@ void Unit::SendAttackStateUpdate(CalcDamageInfo* damageInfo)
     data << uint32(overkill < 0 ? 0 : overkill);            // Overkill
     data << uint8(count);                                   // Sub damage count
 
-    for (uint32 i = 0; i < count; ++i)
+    for (uint8 i = 0; i < count; ++i)
     {
         data << uint32(damageInfo->damageSchoolMask);       // School of sub damage
         data << float(damageInfo->damage);                  // sub damage
@@ -5108,13 +5112,13 @@ void Unit::SendAttackStateUpdate(CalcDamageInfo* damageInfo)
 
     if (damageInfo->HitInfo & (HITINFO_FULL_ABSORB | HITINFO_PARTIAL_ABSORB))
     {
-        for (uint32 i = 0; i < count; ++i)
+        for (uint8 i = 0; i < count; ++i)
             data << uint32(damageInfo->absorb);             // Absorb
     }
 
     if (damageInfo->HitInfo & (HITINFO_FULL_RESIST | HITINFO_PARTIAL_RESIST))
     {
-        for (uint32 i = 0; i < count; ++i)
+        for (uint8 i = 0; i < count; ++i)
             data << uint32(damageInfo->resist);             // Resist
     }
 
@@ -5148,7 +5152,7 @@ void Unit::SendAttackStateUpdate(CalcDamageInfo* damageInfo)
     if (damageInfo->HitInfo & (HITINFO_BLOCK | HITINFO_UNK12))
         data << float(0);
 
-    data.put(size, data.wpos() - size - 4); // Blizz - Weird and Lazy people....
+    data.put<uint32>(size, data.wpos() - size - 4); // Blizz - Weird and Lazy people....
     SendMessageToSet(&data, true);
 }
 
