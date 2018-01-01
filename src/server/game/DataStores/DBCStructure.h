@@ -2211,7 +2211,7 @@ struct SpellEntry
     uint32    runeCostID;                                   // 5        m_runeCostID
     //uint32    spellMissileID;                             // 6        m_spellMissileID not used
     //uint32  spellDescriptionVariableID;                   // 7        m_spellDescriptionVariableID, 3.2.0
-    uint32 SpellDifficultyId;                               // 8        m_spellDifficultyID - id from SpellDifficulty.dbc
+    float  SpellScale; //uint32 SpellDifficultyId;          // 8
     uint32 SpellScalingId;                                  // 9        SpellScaling.dbc
     uint32 SpellAuraOptionsId;                              // 10       SpellAuraOptions.dbc
     uint32 SpellAuraRestrictionsId;                         // 11       SpellAuraRestrictions.dbc
@@ -2234,8 +2234,8 @@ struct SpellEntry
 struct SpellMiscEntry
 {
     uint32    Id;                                           // 0        m_ID
-    //uint32  SpellId                                       // 1
-    //uint32  Unk                                           // 2
+    uint32    SpellId;                                      // 1
+    uint32    SpellDifficultyId;                            // 2        m_spellDifficultyID - id from SpellDifficulty.dbc
     uint32    Attributes;                                   // 3        m_attribute
     uint32    AttributesEx;                                 // 4        m_attributesEx
     uint32    AttributesEx2;                                // 5        m_attributesExB
