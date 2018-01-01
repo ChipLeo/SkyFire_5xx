@@ -172,16 +172,13 @@ void ReputationMgr::SendState(FactionState const* faction)
     uint32 count = 1;
 
     WorldPacket data(SMSG_SET_FACTION_STANDING, 4 + 4 + 3 + 4 + 4);
-    size_t countPos = data.bitwpos();
 
     data.WriteBit(_sendFactionIncreased);
+    size_t countPos = data.bitwpos();
     data.WriteBits(count, 21);
     data.FlushBits();
 
     _sendFactionIncreased = false; // Reset
-
-    data << uint32(faction->Standing);
-    data << uint32(faction->ReputationListID);
 
     for (FactionStateList::iterator itr = _factions.begin(); itr != _factions.end(); ++itr)
     {
