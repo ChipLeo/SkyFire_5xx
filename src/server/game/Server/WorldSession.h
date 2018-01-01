@@ -283,7 +283,7 @@ class WorldSession
         void SendTimezoneInformation();
         void SendUnk00A3();
         void SendUnk043F();
-        void SendUnk121E();
+        void SendFeatureSystemStatusGlueScreen();
         void SendDanceStudioCreateResult();
         bool IsAddonRegistered(const std::string& prefix) const;
 

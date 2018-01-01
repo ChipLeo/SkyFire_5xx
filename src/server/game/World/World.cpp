@@ -284,9 +284,7 @@ void World::AddSession_(WorldSession* s)
     s->SendDanceStudioCreateResult();
 
     s->SendAuthResponse(AUTH_OK, false);
-
-    s->SendUnk121E();
-
+    s->SendFeatureSystemStatusGlueScreen();
     s->SendAddonsInfo();
     s->SendClientCacheVersion(sWorld->getIntConfig(CONFIG_CLIENTCACHE_VERSION));
     if (s->HasBoost())

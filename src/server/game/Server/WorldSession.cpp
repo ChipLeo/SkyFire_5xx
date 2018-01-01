@@ -1077,9 +1077,9 @@ void WorldSession::SendUnk043F()
     SendPacket(&data);
 }
 
-void WorldSession::SendUnk121E()
+void WorldSession::SendFeatureSystemStatusGlueScreen()
 {
-    WorldPacket data(SMSG_UNK_121E, 1);
+    WorldPacket data(SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN, 1);
     data.WriteBit(1);
     data.WriteBit(0);
     data.WriteBit(1);
