@@ -1268,6 +1268,7 @@ void WorldSession::HandleRequestAccountData(WorldPacket& recvData)
     data.WriteBit(guid[4]);
     data.WriteBit(guid[2]);
     data.WriteBit(guid[6]);
+    data.FlushBits();
     data.WriteByteSeq(guid[3]);
     data.WriteByteSeq(guid[1]);
     data.WriteByteSeq(guid[5]);
