@@ -29,6 +29,13 @@
 #include "WorldSession.h"
 #include "WorldPacket.h"
 
+void WorldSession::HandleBattlePetJournal(WorldPacket& recvData)
+{
+    SF_LOG_DEBUG("network", "WORLD: Received CMSG_BATTLE_PET_REQUEST_JOURNAL");
+    BattlePetMgr* battlePetMgr = GetPlayer()->GetBattlePetMgr();
+    battlePetMgr->SendBattlePetJournal();
+}
+
 void WorldSession::HandleBattlePetDelete(WorldPacket& recvData)
 {
     SF_LOG_DEBUG("network", "WORLD: Received CMSG_BATTLE_PET_DELETE");

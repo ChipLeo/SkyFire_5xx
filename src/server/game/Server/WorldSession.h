@@ -1080,6 +1080,7 @@ class WorldSession
 
         // Battle Pets
         void HandleBattlePetDelete(WorldPacket& recvData);
+        void HandleBattlePetJournal(WorldPacket& recvData);
         void HandleBattlePetModifyName(WorldPacket& recvData);
         void HandleBattlePetQueryName(WorldPacket& recvData);
         void HandleBattlePetSetBattleSlot(WorldPacket& recvData);

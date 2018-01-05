@@ -1056,6 +1056,9 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
 
     SendPacket(&data);
 
+    data.Initialize(SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED);
+    SendPacket(&data);
+
     pCurrChar->SendInitialPacketsBeforeAddToMap();
 
     //Show cinematic at the first time that player login
