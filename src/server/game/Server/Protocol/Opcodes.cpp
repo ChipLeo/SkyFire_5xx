@@ -167,6 +167,7 @@ void OpcodeTable::InitializeClientTable()
     DEFINE_OPCODE_HANDLER(CMSG_DEL_FRIEND,                         0x1103, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleDelFriendOpcode              ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_DEL_IGNORE,                         0x0737, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleDelIgnoreOpcode              ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_DESTROY_ITEM,                       0x0026, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleDestroyItemOpcode            ); // 5.4.8 18414
+    DEFINE_OPCODE_HANDLER(CMSG_DISCARDED_TIME_SYNC_ACKS,           0x115B, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleDiscardedTimeSyncAcks        ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_DISMISS_CRITTER,                    0x12DB, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleDismissCritter               ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_DUEL_PROPOSED,                      0x1A26, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleDuelProposedOpcode           ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_DUEL_RESPONSE,                      0x03E2, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleDuelResponseOpcode           ); // 5.4.8 18414

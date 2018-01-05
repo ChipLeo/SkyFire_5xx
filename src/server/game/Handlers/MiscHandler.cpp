@@ -2537,3 +2537,11 @@ void WorldSession::HandleSelectFactionOpcode(WorldPacket& recvPacket)
 
     _player->SendMovieStart(116);
 }
+
+void WorldSession::HandleDiscardedTimeSyncAcks(WorldPacket& recvPacket)
+{
+    bool hasData = !recvPacket.ReadBit();
+    uint32 index;
+    if (hasData)
+        recvPacket >> index;
+}
