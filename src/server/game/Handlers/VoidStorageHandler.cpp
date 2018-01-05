@@ -123,7 +123,7 @@ void WorldSession::HandleVoidStorageQuery(WorldPacket& recvData)
 
     WorldPacket data(SMSG_VOID_STORAGE_CONTENTS, 2 * count + (14 + 4 + 4 + 4 + 4) * count);
 
-    data.WriteBits(count, 8);
+    data.WriteBits(count, 7);
 
     ByteBuffer itemData((14 + 4 + 4 + 4 + 4) * count);
 
