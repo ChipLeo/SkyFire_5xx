@@ -554,6 +554,7 @@ void Channel::List(Player const* player)
             member->IsVisibleGloballyFor(player))
         {
             data << uint64(i->first);
+            data << uint32(realmID);
             data << uint8(i->second.flags);             // flags seems to be changed...
             ++count;
         }
