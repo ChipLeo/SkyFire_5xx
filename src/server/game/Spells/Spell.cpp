@@ -4726,7 +4726,7 @@ void Spell::SendLogExecute()
         if (!m_effectExecuteData[i])
             continue;
 
-        data << uint32(m_spellInfo->Effects[i].Effect); // SpellID
+        //data << uint32(m_spellInfo->Effects[i].Effect); // SpellID
 
         //data.append(*m_effectExecuteData[i]);
 

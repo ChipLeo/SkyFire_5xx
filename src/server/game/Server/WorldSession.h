@@ -527,8 +527,6 @@ class WorldSession
         void HandleForceSpeedChangeAck(WorldPacket& recvData);
         void HandleSetCollisionHeightAck(WorldPacket& recvPacket);
 
-        void HandlePingOpcode(WorldPacket& recvPacket);
-        void HandleAuthSessionOpcode(WorldPacket& recvPacket);
         void HandleRepopRequestOpcode(WorldPacket& recvPacket);
         void HandleAutostoreLootItemOpcode(WorldPacket& recvPacket);
         void HandleLootMoneyOpcode(WorldPacket& recvPacket);
@@ -587,7 +585,6 @@ class WorldSession
         void HandleSetActionButtonOpcode(WorldPacket& recvPacket);
 
         void HandleGameObjectUseOpcode(WorldPacket& recPacket);
-        void HandleMeetingStoneInfo(WorldPacket& recPacket);
         void HandleGameobjectReportUse(WorldPacket& recvPacket);
 
         void HandleNameQueryOpcode(WorldPacket& recvPacket);
@@ -751,7 +748,6 @@ class WorldSession
         void HandleQueryNextMailTime(WorldPacket& recvData);
         void HandleCancelChanneling(WorldPacket& recvData);
 
-        void SendItemPageInfo(ItemTemplate* itemProto);
         void HandleSplitItemOpcode(WorldPacket& recvPacket);
         void HandleSwapInvItemOpcode(WorldPacket& recvPacket);
         void HandleDestroyItemOpcode(WorldPacket& recvPacket);
@@ -836,7 +832,6 @@ class WorldSession
         void HandleChannelBan(WorldPacket& recvPacket);
         void HandleChannelUnban(WorldPacket& recvPacket);
         void HandleChannelAnnouncements(WorldPacket& recvPacket);
-        void HandleChannelModerate(WorldPacket& recvPacket);
         void HandleChannelDeclineInvite(WorldPacket& recvPacket);
         void HandleChannelDisplayListQuery(WorldPacket& recvPacket);
         void HandleGetChannelMemberCount(WorldPacket& recvPacket);
