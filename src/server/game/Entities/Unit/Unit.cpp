@@ -262,6 +262,8 @@ m_HostileRefManager(this), _lastDamagedTime(0)
 
     _lastLiquid = NULL;
     _isWalkingBeforeCharm = false;
+
+    _oldFactionId = 0;
 }
 
 ////////////////////////////////////////////////////////////
@@ -14532,6 +14534,7 @@ bool Unit::SetCharmedBy(Unit* charmer, CharmType type, AuraApplication const* au
 
     // Set charmed
     Map* map = GetMap();
+    _oldFactionId = getFaction();
     if (!IsVehicle() || (IsVehicle() && map && !map->IsBattleground()))
         setFaction(charmer->getFaction());
 
@@ -14649,6 +14652,14 @@ void Unit::RemoveCharmedBy(Unit* charmer)
         ClearUnitState(UNIT_STATE_POSSESSED);
         RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PLAYER_CONTROLLED);
     }
+
+    if (_oldFactionId)
+    {
+        setFaction(_oldFactionId);
+        _oldFactionId = 0;
+    }
+    else
+         RestoreFaction();
 
     if (Creature* creature = ToCreature())
     {

@@ -2993,6 +2993,8 @@ class Unit : public WorldObject
     bool _isWalkingBeforeCharm; // Are we walking before we were charmed?
 
     time_t _lastDamagedTime; // Part of Evade mechanics
+
+    uint32 _oldFactionId;           ///< faction before charm
 };
 
 namespace Skyfire
