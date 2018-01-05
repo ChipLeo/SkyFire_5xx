@@ -2463,7 +2463,7 @@ void WorldSession::SendLoadCUFProfiles()
         data.WriteBit(profile->BoolOptions[CUF_USE_CLASS_COLORS]);
         data.WriteBit(profile->BoolOptions[CUF_KEEP_GROUPS_TOGETHER]);
         data.WriteBit(profile->BoolOptions[CUF_DISPLAY_POWER_BAR]);
-        data.WriteBits(profile->ProfileName.size(), 8);
+        data.WriteBits(profile->ProfileName.size(), 7);
         data.WriteBit(profile->BoolOptions[CUF_DISPLAY_PETS]);
         data.WriteBit(profile->BoolOptions[CUF_DISPLAY_AGGRO_HIGHLIGHT]);
         data.WriteBit(profile->BoolOptions[CUF_UNK_145]);
