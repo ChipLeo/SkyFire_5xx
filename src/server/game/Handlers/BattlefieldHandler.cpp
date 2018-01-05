@@ -312,3 +312,14 @@ void WorldSession::HandleBfExitRequest(WorldPacket& recvData)
     if (Battlefield* bf = sBattlefieldMgr->GetBattlefieldByGUID(guid))
         bf->AskToLeaveQueue(_player);
 }
+
+void WorldSession::HandleRequestConquestFormulaConstants(WorldPacket& /*recvData*/)
+{
+    WorldPacket l_Data(SMSG_CONQUEST_FORMULA_CONSTANTS, 5 * 4);
+    l_Data << uint32(2000); // PvpMinCPPerWeek
+    l_Data << float(1639.28f); // ArenaTeam::g_PvpCPBaseCoefficient
+    l_Data << float(0.00412f); // ArenaTeam::g_PvpCPExpCoefficient
+    l_Data << uint32(3500); // ArenaTeam::g_PvpMaxCPPerWeek
+    l_Data << float(1511.26); // ArenaTeam::g_PvpCPNumerator
+    SendPacket(&l_Data);
+}

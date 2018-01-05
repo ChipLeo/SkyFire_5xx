@@ -887,6 +887,7 @@ class WorldSession
         void HandleRequestPvpOptions(WorldPacket& recvData);
         void HandleRequestPvpReward(WorldPacket& recvData);
         void HandleRequestRatedInfo(WorldPacket& recvData);
+        void HandleRequestConquestFormulaConstants(WorldPacket& recvData);
 
         void HandleWardenDataOpcode(WorldPacket& recvData);
         void HandleWorldTeleportOpcode(WorldPacket& recvData);
