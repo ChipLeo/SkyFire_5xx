@@ -1015,3 +1015,19 @@ void WorldSession::HandleGuildBankTabNote(WorldPacket& recvData)
     if (Guild* guild = GetPlayer()->GetGuild())
         guild->HandleSetBankTabNote(this, tabId, note);
 }
+
+void WorldSession::HandleGuildSetAchievementTracking(WorldPacket& recvData)
+{
+    uint32 count = recvData.ReadBits(22);
+    std::set<uint32> achievementIds;
+
+    for (uint32 i = 0; i < count; ++i)
+    {
+        uint32 achievementId;
+        recvData >> achievementId;
+        achievementIds.insert(achievementId);
+    }
+
+    /* not implemented if (Guild* guild = GetPlayer()->GetGuild())
+        guild->HandleSetAchievementTracking(this, achievementIds);*/
+}

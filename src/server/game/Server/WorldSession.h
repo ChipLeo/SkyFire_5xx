@@ -996,6 +996,7 @@ class WorldSession
         void HandleQueryGuildBankTabText(WorldPacket& recvData);
         void HandleSetGuildBankTabText(WorldPacket& recvData);
         void HandleGuildQueryXPOpcode(WorldPacket& recvData);
+        void HandleGuildSetAchievementTracking(WorldPacket& recvData);
 
         // Refer-a-Friend
         void HandleGrantLevel(WorldPacket& recvData);
