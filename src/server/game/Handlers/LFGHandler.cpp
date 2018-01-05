@@ -296,9 +296,14 @@ void WorldSession::SendLfgPlayerLockInfo()
     uint32 lsize = uint32(lock.size());
 
     SF_LOG_DEBUG("lfg", "SMSG_LFG_PLAYER_INFO %s", GetPlayerInfo().c_str());
-    WorldPacket data(SMSG_LFG_PLAYER_INFO, 1 + rsize * (4 + 1 + 4 + 4 + 4 + 4 + 1 + 4 + 4 + 4) + 4 + lsize * (1 + 4 + 4 + 4 + 4 + 1 + 4 + 4 + 4));
+    WorldPacket data(SMSG_LFG_PLAYER_INFO, 5);// 1 + rsize * (4 + 1 + 4 + 4 + 4 + 4 + 1 + 4 + 4 + 4) + 4 + lsize * (1 + 4 + 4 + 4 + 4 + 1 + 4 + 4 + 4));
 
-    data << uint8(randomDungeons.size());                  // Random Dungeon count
+    data.WriteBits(0, 20);
+    data.WriteBit(0);
+    data.WriteBits(0, 17);
+    data.FlushBits();
+
+    /*data << uint8(randomDungeons.size());                  // Random Dungeon count
     for (lfg::LfgDungeonSet::const_iterator it = randomDungeons.begin(); it != randomDungeons.end(); ++it)
     {
         data << uint32(*it);                               // Dungeon Entry (id + type)
@@ -349,7 +354,7 @@ void WorldSession::SendLfgPlayerLockInfo()
         }
     }
 
-    BuildPlayerLockDungeonBlock(data, lock);
+    BuildPlayerLockDungeonBlock(data, lock);*/
     SendPacket(&data);
 }
 
@@ -403,9 +408,9 @@ void WorldSession::HandleLfrLeaveOpcode(WorldPacket& recvData)
     //sLFGMgr->LeaveLfr(GetPlayer(), dungeonId);
 }
 
-void WorldSession::HandleLfgGetStatus(WorldPacket& /*recvData*/)
+void WorldSession::HandleDFGetJoinStatus(WorldPacket& /*recvData*/)
 {
-    SF_LOG_DEBUG("lfg", "CMSG_LFG_GET_STATUS %s", GetPlayerInfo().c_str());
+    SF_LOG_DEBUG("lfg", "CMSG_DF_GET_JOIN_STATUS  %s", GetPlayerInfo().c_str()); //CMSG_LFG_GET_STATUS
 
     if (!GetPlayer()->isUsingLfg())
         return;
@@ -837,6 +842,7 @@ void WorldSession::SendLfgLfrList(bool update)
 {
     SF_LOG_DEBUG("lfg", "SMSG_LFG_LFR_LIST %s update: %u",
         GetPlayerInfo().c_str(), update ? 1 : 0);
+    return; // wrong
     WorldPacket data(SMSG_LFG_UPDATE_SEARCH, 1);
     data << uint8(update);                                 // In Lfg Queue?
     SendPacket(&data);
