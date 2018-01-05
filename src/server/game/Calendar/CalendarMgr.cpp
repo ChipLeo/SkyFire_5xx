@@ -67,9 +67,19 @@ void CalendarMgr::LoadFromDB()
             std::string description = fields[3].GetString();
             CalendarEventType type  = CalendarEventType(fields[4].GetUInt8());
             int32 dungeonId         = fields[5].GetInt32();
-            uint32 eventTime        = fields[6].GetUInt32();
+            time_t eventTime        = fields[6].GetUInt32();
             uint32 flags            = fields[7].GetUInt32();
             uint32 guildId = 0;
+
+            // unpack time
+            tm lt = tm();
+            lt.tm_min = eventTime & 0x3F;
+            lt.tm_hour = (eventTime >> 6) & 0x1F;
+            lt.tm_mday = ((eventTime >> 14) & 0x3F) + 1;
+            lt.tm_mon = (eventTime >> 20) & 0xF;
+            lt.tm_year = ((eventTime >> 24) & 0xFF) + 100;
+            lt.tm_isdst = -1;
+            eventTime = ACE_OS::mktime(&lt);
 
             if (flags & CALENDAR_FLAG_GUILD_EVENT || flags & CALENDAR_FLAG_WITHOUT_INVITES)
                 guildId = Player::GetGuildIdFromDB(creatorGUID);
@@ -231,7 +241,7 @@ void CalendarMgr::UpdateEvent(CalendarEvent* calendarEvent)
     stmt->setString(3, calendarEvent->GetDescription());
     stmt->setUInt8(4, calendarEvent->GetType());
     stmt->setInt32(5, calendarEvent->GetDungeonId());
-    stmt->setUInt32(6, uint32(calendarEvent->GetEventTime()));
+    stmt->setUInt32(6, calendarEvent->GetPackedEventTime());
     stmt->setUInt32(7, calendarEvent->GetFlags());
     trans->Append(stmt);
     CharacterDatabase.CommitTransaction(trans);

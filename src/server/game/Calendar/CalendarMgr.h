@@ -246,6 +246,13 @@ struct CalendarEvent
         void SetEventTime(time_t eventTime) { _eventTime = eventTime; }
         time_t GetEventTime() const { return _eventTime; }
 
+        uint32 GetPackedEventTime()
+        {
+            tm lt;
+            ACE_OS::localtime_r(&_eventTime, &lt);
+            return ((lt.tm_year - 100) << 24 | lt.tm_mon << 20 | (lt.tm_mday - 1) << 14 | lt.tm_wday << 11 | lt.tm_hour << 6 | lt.tm_min);
+        }
+
         void SetFlags(uint32 flags) { _flags = flags; }
         uint32 GetFlags() const { return _flags; }
 

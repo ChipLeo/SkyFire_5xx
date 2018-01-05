@@ -267,7 +267,7 @@ void WorldSession::HandleCalendarAddEvent(WorldPacket& recvData)
     std::string description;
     uint8 type;
     int32 dungeonId;
-    uint32 eventPackedTime;
+    time_t eventPackedTime;
     uint32 maxInvites;  // always 100, necesary? Not find the way how to change it
     uint32 flags;
     uint32 inviteeCount;
@@ -314,7 +314,7 @@ void WorldSession::HandleCalendarAddEvent(WorldPacket& recvData)
     description = recvData.ReadString(descriptionLength);
 
     CalendarEvent* calendarEvent = new CalendarEvent(sCalendarMgr->GetFreeEventId(), guid, 0, CalendarEventType(type), dungeonId,
-        time_t(eventPackedTime), flags, title, description);
+        eventPackedTime, flags, title, description);
 
     if (calendarEvent->IsGuildEvent() || calendarEvent->IsGuildAnnouncement())
         if (Player* creator = ObjectAccessor::FindPlayer(guid))
@@ -327,18 +327,9 @@ void WorldSession::HandleCalendarAddEvent(WorldPacket& recvData)
     }
     else
     {
-        uint32 inviteCount;
-        recvData >> inviteCount;
-
-        for (uint32 i = 0; i < inviteCount; ++i)
+        for (std::list<CalendarInvitePacketInfo>::iterator iter = calendarInviteList.begin(); iter != calendarInviteList.end(); ++iter)
         {
-            uint64 invitee = 0;
-            uint8 status = 0;
-            uint8 rank = 0;
-            recvData.readPackGUID(invitee);
-            recvData >> status >> rank;
-
-            CalendarInvite* invite = new CalendarInvite(sCalendarMgr->GetFreeInviteId(), calendarEvent->GetEventId(), invitee, guid, 946684800, CalendarInviteStatus(status), CalendarModerationRank(rank), "");
+            CalendarInvite* invite = new CalendarInvite(sCalendarMgr->GetFreeInviteId(), calendarEvent->GetEventId(), iter->Guid, guid, 946684800, CalendarInviteStatus(iter->Status), CalendarModerationRank(iter->ModerationRank), "");
             sCalendarMgr->AddInvite(calendarEvent, invite);
         }
     }
@@ -358,7 +349,7 @@ void WorldSession::HandleCalendarUpdateEvent(WorldPacket& recvData)
     uint8 type;
     uint32 maxInvites;
     int32 dungeonId;
-    uint32 eventPackedTime;
+    time_t eventPackedTime;
     uint32 flags;
     uint16 descriptionLength;
     uint16 titleLength;
@@ -406,7 +397,7 @@ void WorldSession::HandleCalendarUpdateEvent(WorldPacket& recvData)
 
     SF_LOG_DEBUG("network", "CMSG_CALENDAR_UPDATE_EVENT [" UI64FMTD "] EventId [" UI64FMTD
         "], InviteId [" UI64FMTD "] Title %s, Description %s, type %u "
-        "MaxInvites %u, Dungeon ID %d, Time %u, Flags %u",
+        "MaxInvites %u, Dungeon ID %d, Time " UI64FMTD ", Flags %u",
         guid, (uint64)eventId, (uint64)inviteId, title.c_str(),
         description.c_str(), type, maxInvites, dungeonId,
         eventPackedTime, flags);
@@ -417,7 +408,7 @@ void WorldSession::HandleCalendarUpdateEvent(WorldPacket& recvData)
 
         calendarEvent->SetType(CalendarEventType(type));
         calendarEvent->SetFlags(flags);
-        calendarEvent->SetEventTime(time_t(eventPackedTime));
+        calendarEvent->SetEventTime(eventPackedTime);
         calendarEvent->SetDungeonId(dungeonId);
         calendarEvent->SetTitle(title);
         calendarEvent->SetDescription(description);
@@ -446,17 +437,17 @@ void WorldSession::HandleCalendarCopyEvent(WorldPacket& recvData)
     uint64 guid = _player->GetGUID();
     uint64 eventId;
     uint64 inviteId;
-    uint32 time;
+    time_t time;
 
     recvData >> eventId >> inviteId;
     recvData.ReadPackedTime(time);
     SF_LOG_DEBUG("network", "CMSG_CALENDAR_COPY_EVENT [" UI64FMTD "], EventId [" UI64FMTD
-        "] inviteId [" UI64FMTD "] Time: %u", guid, eventId, inviteId, time);
+        "] inviteId [" UI64FMTD "] Time: " UI64FMTD, guid, eventId, inviteId, time);
 
     if (CalendarEvent* oldEvent = sCalendarMgr->GetEvent(eventId))
     {
         CalendarEvent* newEvent = new CalendarEvent(*oldEvent, sCalendarMgr->GetFreeEventId(), guid);
-        newEvent->SetEventTime(time_t(time));
+        newEvent->SetEventTime(time);
         CalendarInviteStore invites = sCalendarMgr->GetEventInvites(eventId);
 
         for (CalendarInviteStore::const_iterator itr = invites.begin(); itr != invites.end(); ++itr)

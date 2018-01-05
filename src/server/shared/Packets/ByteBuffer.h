@@ -658,7 +658,7 @@ public:
             append(str.c_str(), len);
     }
 
-    uint32 ReadPackedTime()
+    time_t ReadPackedTime()
     {
         uint32 packedDate = read<uint32>();
         tm lt = tm();
@@ -668,12 +668,12 @@ public:
         //lt.tm_wday = (packedDate >> 11) & 7;
         lt.tm_mday = ((packedDate >> 14) & 0x3F) + 1;
         lt.tm_mon = (packedDate >> 20) & 0xF;
-        lt.tm_year = ((packedDate >> 24) & 0x1F) + 100;
-
-        return uint32(mktime(&lt) + SF_TIMEZONE);
+        lt.tm_year = ((packedDate >> 24) & 0xFF) + 100;
+        lt.tm_isdst = -1;
+        return (ACE_OS::mktime(&lt));
     }
 
-    ByteBuffer& ReadPackedTime(uint32& time)
+    ByteBuffer& ReadPackedTime(time_t& time)
     {
         time = ReadPackedTime();
         return *this;
