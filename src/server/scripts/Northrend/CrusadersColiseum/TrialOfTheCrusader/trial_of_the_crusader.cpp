@@ -218,7 +218,7 @@ class npc_announcer_toc10 : public CreatureScript
                 if (creature->IsVisible())
                     creature->SetVisible(false);
             }
-            creature->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+            creature->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             return true;
         }
 

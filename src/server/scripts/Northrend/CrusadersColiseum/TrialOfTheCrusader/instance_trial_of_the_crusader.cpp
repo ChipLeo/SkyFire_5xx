@@ -398,7 +398,7 @@ class instance_trial_of_the_crusader : public InstanceMapScript
                     if (state == DONE || NeedSave)
                     {
                         if (Unit* announcer = instance->GetCreature(GetData64(NPC_BARRENT)))
-                            announcer->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                            announcer->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                         Save();
                     }
                 }

@@ -662,7 +662,7 @@ public:
                 _following = false;
                 _runningScript = false;
                 if (me->GetEntry() == NPC_LAKE_FROG_QUEST)
-                    me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                    me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             }
 
             void UpdateAI(uint32 diff) OVERRIDE
@@ -687,11 +687,11 @@ public:
                             _events.ScheduleEvent(EVENT_LAKEFROG_3, 3000);
                             break;
                         case EVENT_LAKEFROG_3:
-                            me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                            me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                             _events.ScheduleEvent(EVENT_LAKEFROG_4, 25000);
                             break;
                         case EVENT_LAKEFROG_4:
-                            me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                            me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                             _events.ScheduleEvent(EVENT_LAKEFROG_5, 2000);
                             break;
                         case EVENT_LAKEFROG_5:

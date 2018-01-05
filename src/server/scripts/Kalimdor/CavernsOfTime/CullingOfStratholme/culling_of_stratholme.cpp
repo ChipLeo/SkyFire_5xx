@@ -297,7 +297,7 @@ public:
         }
         player->CLOSE_GOSSIP_MENU();
         ai->SetDespawnAtFar(true);
-        creature->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+        creature->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
         return true;
     }
 
@@ -409,7 +409,7 @@ public:
                     case NOT_STARTED:
                         bStepping = true;
                         step = 0;
-                        me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                        me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                         bossEvent = DATA_MEATHOOK_EVENT;
                         gossipStep = 0;
                         break;
@@ -499,7 +499,7 @@ public:
                     break;
                 case 8:
                     gossipStep = 1;
-                    me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                    me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                     SetHoldState(true);
                     break;
                 case 12:
@@ -524,7 +524,7 @@ public:
                     break;
                 case 20:
                     gossipStep = 2;
-                    me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                    me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                     SetRun(false);
                     SetHoldState(true);
                     break;
@@ -570,7 +570,7 @@ public:
                     SetRun(true);
                     SetDespawnAtFar(false);
                     gossipStep = 4;
-                    me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                    me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                     SetHoldState(true);
                     break;
                 case 47:
@@ -586,7 +586,7 @@ public:
                     break;
                 case 54:
                     gossipStep = 5;
-                    me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                    me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                     SetHoldState(true);
                     break;
              }
@@ -1136,7 +1136,7 @@ public:
                                 if (instance->GetData(DATA_EPOCH_EVENT) == DONE)
                                 {
                                     gossipStep = 3;
-                                    me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                                    me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                                     bStepping = false;
                                     bossEvent = DATA_MAL_GANIS_EVENT;
                                     JumpToNextStep(15000);

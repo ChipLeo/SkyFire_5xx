@@ -379,9 +379,9 @@ bool Creature::UpdateEntry(uint32 Entry, uint32 team, const CreatureData* data)
     ObjectMgr::ChooseCreatureFlags(cInfo, npcflag, unit_flags, dynamicflags, data);
 
     if (cInfo->flags_extra & CREATURE_FLAG_EXTRA_WORLDEVENT)
-        SetUInt32Value(UNIT_FIELD_NPC_FLAGS, npcflag | sGameEventMgr->GetNPCFlag(this));
+        SetUInt64Value(UNIT_FIELD_NPC_FLAGS, npcflag | sGameEventMgr->GetNPCFlag(this));
     else
-        SetUInt32Value(UNIT_FIELD_NPC_FLAGS, npcflag);
+        SetUInt64Value(UNIT_FIELD_NPC_FLAGS, npcflag);
 
     SetAttackTime(BASE_ATTACK,  cInfo->baseattacktime);
     SetAttackTime(OFF_ATTACK,   cInfo->baseattacktime);
@@ -945,7 +945,7 @@ void Creature::SaveToDB(uint32 mapid, uint8 spawnMask, uint32 phaseMask)
     CreatureData& data = sObjectMgr->NewOrExistCreatureData(m_DBTableGuid);
 
     uint32 displayId = GetNativeDisplayId();
-    uint32 npcflag = GetUInt32Value(UNIT_FIELD_NPC_FLAGS);
+    uint64 npcflag = GetUInt64Value(UNIT_FIELD_NPC_FLAGS);
     uint32 unit_flags = GetUInt32Value(UNIT_FIELD_FLAGS);
     uint32 dynamicflags = GetUInt32Value(OBJECT_FIELD_DYNAMIC_FLAGS);
 
@@ -1452,7 +1452,7 @@ void Creature::setDeathState(DeathState s)
             SaveRespawnTime();
 
         SetTarget(0);                // remove target selection in any cases (can be set at aura remove in Unit::setDeathState)
-        SetUInt32Value(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_NONE);
+        SetUInt64Value(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_NONE);
 
         setActive(false);
 
@@ -1487,7 +1487,7 @@ void Creature::setDeathState(DeathState s)
         UpdateMovementFlags();
 
         CreatureTemplate const* cinfo = GetCreatureTemplate();
-        SetUInt32Value(UNIT_FIELD_NPC_FLAGS, cinfo->npcflag);
+        SetUInt64Value(UNIT_FIELD_NPC_FLAGS, cinfo->npcflag);
         ClearUnitState(uint32(UNIT_STATE_ALL_STATE));
         SetMeleeDamageSchool(SpellSchools(cinfo->dmgschool));
         LoadCreaturesAddon(true);

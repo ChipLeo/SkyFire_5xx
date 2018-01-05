@@ -1159,7 +1159,7 @@ class npc_tirion_fordring_tft : public CreatureScript
             {
                 _events.Reset();
                 if (_instance->GetBossState(DATA_THE_LICH_KING) == DONE)
-                    me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                    me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             }
 
             void MovementInform(uint32 type, uint32 id) OVERRIDE
@@ -1211,7 +1211,7 @@ class npc_tirion_fordring_tft : public CreatureScript
                 if (me->GetCreatureTemplate()->GossipMenuId == sender && !action)
                 {
                     _events.SetPhase(PHASE_INTRO);
-                    me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                    me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                     me->SetWalk(true);
                     me->GetMotionMaster()->MovePoint(POINT_TIRION_INTRO, TirionIntro);
                 }
@@ -1224,7 +1224,7 @@ class npc_tirion_fordring_tft : public CreatureScript
                 if (_instance->GetBossState(DATA_THE_LICH_KING) == DONE)
                     return;
 
-                me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             }
 
             void UpdateAI(uint32 diff) OVERRIDE

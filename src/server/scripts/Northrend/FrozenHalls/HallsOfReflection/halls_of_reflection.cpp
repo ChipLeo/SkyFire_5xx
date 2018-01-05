@@ -322,12 +322,12 @@ class npc_jaina_or_sylvanas_hor : public CreatureScript
                 case 0:
                     player->CLOSE_GOSSIP_MENU();
                     _events.ScheduleEvent(EVENT_START_INTRO, 1000);
-                    me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP|UNIT_NPC_FLAG_QUESTGIVER);
+                    me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP|UNIT_NPC_FLAG_QUESTGIVER);
                     break;
                 case 1:
                     player->CLOSE_GOSSIP_MENU();
                     _events.ScheduleEvent(EVENT_SKIP_INTRO, 1000);
-                    me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP|UNIT_NPC_FLAG_QUESTGIVER);
+                    me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP|UNIT_NPC_FLAG_QUESTGIVER);
                     break;
             }
         }
@@ -339,7 +339,7 @@ class npc_jaina_or_sylvanas_hor : public CreatureScript
             _utherGUID = 0;
             _lichkingGUID = 0;
 
-            me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP|UNIT_NPC_FLAG_QUESTGIVER);
+            me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP|UNIT_NPC_FLAG_QUESTGIVER);
             me->SetStandState(UNIT_STAND_STATE_STAND);
             _events.ScheduleEvent(EVENT_WALK_INTRO1, 3000);
         }
@@ -368,7 +368,7 @@ class npc_jaina_or_sylvanas_hor : public CreatureScript
                         Talk(SAY_JAINA_INTRO_2);
                     else
                         Talk(SAY_SYLVANAS_INTRO_2);
-                    me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP|UNIT_NPC_FLAG_QUESTGIVER);
+                    me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP|UNIT_NPC_FLAG_QUESTGIVER);
                     break;
                 case EVENT_START_INTRO:
                     me->GetMotionMaster()->MovePoint(0, MoveThronePos);
@@ -773,7 +773,7 @@ class npc_jaina_or_sylvanas_escape_hor : public CreatureScript
             {
                 case 0:
                     player->CLOSE_GOSSIP_MENU();
-                    me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP|UNIT_NPC_FLAG_QUESTGIVER);
+                    me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP|UNIT_NPC_FLAG_QUESTGIVER);
                     _events.ScheduleEvent(EVENT_ESCAPE_7, 0);
                     break;
             }
@@ -858,7 +858,7 @@ class npc_jaina_or_sylvanas_escape_hor : public CreatureScript
                         _events.ScheduleEvent(EVENT_ESCAPE_6, 5000);
                         break;
                     case EVENT_ESCAPE_6:
-                        me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP|UNIT_NPC_FLAG_QUESTGIVER);
+                        me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP|UNIT_NPC_FLAG_QUESTGIVER);
                         break;
                     case EVENT_ESCAPE_7:
                         if (Creature* lichking = ObjectAccessor::GetCreature(*me, _lichkingGUID))

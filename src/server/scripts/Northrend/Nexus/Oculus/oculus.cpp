@@ -250,7 +250,7 @@ public:
                 Talk(SAY_BELGARISTRASZ);
 
             // The gossip flag should activate when Drakos die and not from DB
-            me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+            me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
         }
     };
 

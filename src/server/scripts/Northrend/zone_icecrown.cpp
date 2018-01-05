@@ -1002,7 +1002,7 @@ class npc_margrave_dhakar : public CreatureScript
 
             void Reset() OVERRIDE
             {
-                me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                 me->SetUInt32Value(UNIT_FIELD_NPC_EMOTESTATE, EMOTE_STATE_NONE);
 
                 _events.Reset();
@@ -1016,7 +1016,7 @@ class npc_margrave_dhakar : public CreatureScript
                     if (me->GetCreatureTemplate()->GossipMenuId == sender && !action)
                     {
                         _events.ScheduleEvent(EVENT_INTRO, 1000);
-                        me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                        me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                     }
                 }
             }

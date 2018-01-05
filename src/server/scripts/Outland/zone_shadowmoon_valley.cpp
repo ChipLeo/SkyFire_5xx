@@ -747,12 +747,12 @@ public:
             Step = 0;
 
             Event = false;
-            me->SetUInt32Value(UNIT_FIELD_NPC_FLAGS, 2);
+            me->SetUInt64Value(UNIT_FIELD_NPC_FLAGS, 2);
         }
 
         void StartEvent()
         {
-            me->SetUInt32Value(UNIT_FIELD_NPC_FLAGS, 0);
+            me->SetUInt64Value(UNIT_FIELD_NPC_FLAGS, 0);
             me->SetUInt32Value(UNIT_FIELD_ANIM_TIER, 0);
             Unit* Illidan = me->SummonCreature(C_ILLIDAN, -5107.83f, 602.584f, 85.2393f, 4.92598f, TEMPSUMMON_CORPSE_DESPAWN, 0);
             if (Illidan)

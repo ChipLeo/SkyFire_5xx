@@ -1181,7 +1181,7 @@ public:
                         break;
 
                     case 16:
-                        me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
+                        me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
                         phaseTimer = 20000;
                         ++phase;
                         break;
@@ -2348,11 +2348,11 @@ public:
         npc_hidden_cultistAI(Creature* creature) : ScriptedAI(creature)
         {
            uiEmoteState = creature->GetUInt32Value(UNIT_FIELD_NPC_EMOTESTATE);
-           uiNpcFlags = creature->GetUInt32Value(UNIT_FIELD_NPC_FLAGS);
+           uiNpcFlags = creature->GetUInt64Value(UNIT_FIELD_NPC_FLAGS);
         }
 
         uint32 uiEmoteState;
-        uint32 uiNpcFlags;
+        uint64 uiNpcFlags;
 
         uint32 uiEventTimer;
         uint8 uiEventPhase;
@@ -2365,7 +2365,7 @@ public:
                 me->SetUInt32Value(UNIT_FIELD_NPC_EMOTESTATE, uiEmoteState);
 
             if (uiNpcFlags)
-                me->SetUInt32Value(UNIT_FIELD_NPC_FLAGS, uiNpcFlags);
+                me->SetUInt64Value(UNIT_FIELD_NPC_FLAGS, uiNpcFlags);
 
             uiEventTimer = 0;
             uiEventPhase = 0;
@@ -2380,7 +2380,7 @@ public:
         void DoAction(int32 /*iParam*/) OVERRIDE
         {
             me->StopMoving();
-            me->SetUInt32Value(UNIT_FIELD_NPC_FLAGS, 0);
+            me->SetUInt64Value(UNIT_FIELD_NPC_FLAGS, 0);
             if (Player* player = ObjectAccessor::GetPlayer(*me, uiPlayerGUID))
                 me->SetFacingToObject(player);
             uiEventTimer = 3000;

@@ -180,7 +180,7 @@ public:
 
                 me->SetVisible(true);
                 me->SetPhaseMask(1, true);
-                me->SetUInt32Value(UNIT_FIELD_NPC_FLAGS, 1);
+                me->SetUInt64Value(UNIT_FIELD_NPC_FLAGS, 1);
                 me->setFaction(35);
                 me->SetStandState(UNIT_STAND_STATE_SIT_HIGH_CHAIR);
                 me->RemoveAura(SPELL_NEFARIANS_BARRIER);
@@ -199,7 +199,7 @@ public:
             Talk(SAY_GAMESBEGIN_2);
 
             me->setFaction(103);
-            me->SetUInt32Value(UNIT_FIELD_NPC_FLAGS, 0);
+            me->SetUInt64Value(UNIT_FIELD_NPC_FLAGS, 0);
             DoCast(me, SPELL_NEFARIANS_BARRIER);
             me->SetStandState(UNIT_STAND_STATE_STAND);
             AttackStart(target);

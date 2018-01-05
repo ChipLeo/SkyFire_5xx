@@ -642,7 +642,7 @@ class npc_expedition_commander : public CreatureScript
                         break;
                     case ACTION_COMMANDER_RESET:
                         summons.clear();
-                        me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                        me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                         break;
                 }
             }

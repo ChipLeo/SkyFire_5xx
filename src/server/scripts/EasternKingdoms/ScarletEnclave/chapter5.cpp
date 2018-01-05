@@ -646,7 +646,7 @@ public:
                             //UpdateWorldState(me->GetMap(), WORLD_STATE_REMAINS, 1);
                             UpdateWorldState(me->GetMap(), WORLD_STATE_COUNTDOWN, 0);
                             UpdateWorldState(me->GetMap(), WORLD_STATE_EVENT_BEGIN, 1);
-                            me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                            me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                             JumpToNextStep(3000);
                             break;
 

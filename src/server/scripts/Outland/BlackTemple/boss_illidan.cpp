@@ -1416,8 +1416,8 @@ public:
 
             KillAllElites();
 
-            me->SetUInt32Value(UNIT_FIELD_NPC_FLAGS, 0); // Database sometimes has strange values..
-            me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+            me->SetUInt64Value(UNIT_FIELD_NPC_FLAGS, 0); // Database sometimes has strange values..
+            me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             me->setActive(false);
             me->SetVisible(false);
         }
@@ -1484,7 +1484,7 @@ public:
         void BeginChannel()
         {
             me->setActive(true);
-            me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+            me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             if (!JustCreated)
                 return;
             float x, y, z;

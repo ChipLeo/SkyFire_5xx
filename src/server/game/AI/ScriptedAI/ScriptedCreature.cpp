@@ -455,6 +455,15 @@ bool ScriptedAI::EnterEvadeIfOutOfCombatArea(uint32 const diff)
     return true;
 }
 
+void Scripted_NoMovementAI::AttackStart(Unit* target)
+{
+    if (!target)
+        return;
+
+    if (me->Attack(target, true))
+        DoStartNoMovement(target);
+}
+
 // BossAI - for instanced bosses
 BossAI::BossAI(Creature* creature, uint32 bossId) : ScriptedAI(creature),
     instance(creature->GetInstanceScript()),

@@ -631,7 +631,7 @@ public:
                         if (charmer->HasAura(SPELL_EFFECT_STOLEN_HORSE))
                         {
                             charmer->RemoveAurasDueToSpell(SPELL_EFFECT_STOLEN_HORSE);
-                            caster->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK);
+                            caster->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK);
                             caster->setFaction(35);
                             DoCast(caster, SPELL_CALL_DARK_RIDER, true);
                             if (Creature* Dark_Rider = me->FindNearestCreature(28654, 15))
@@ -704,7 +704,7 @@ public:
                 return;
 
             deathcharger->RestoreFaction();
-            deathcharger->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK);
+            deathcharger->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK);
             deathcharger->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
             if (!me->GetVehicle() && deathcharger->IsVehicle() && deathcharger->GetVehicleKit()->HasEmptySeat(0))
                 me->EnterVehicle(deathcharger);
@@ -718,7 +718,7 @@ public:
 
             if (killer->GetTypeId() == TYPEID_PLAYER && deathcharger->GetTypeId() == TYPEID_UNIT && deathcharger->IsVehicle())
             {
-                deathcharger->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK);
+                deathcharger->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK);
                 deathcharger->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                 deathcharger->setFaction(2096);
             }

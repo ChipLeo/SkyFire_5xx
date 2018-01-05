@@ -342,7 +342,7 @@ public:
                     break;
                 case 30:
                     SetEscortPaused(true);
-                    me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                    me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                     SetRun(false);
                     break;
                 case 31:
@@ -366,7 +366,7 @@ public:
                     me->HandleEmoteCommand(EMOTE_ONESHOT_EXCLAMATION);
                     //make horsie run off
                     SetEscortPaused(true);
-                    me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                    me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                     instance->SetData(TYPE_THRALL_PART2, DONE);
                     SetRun();
                     break;
@@ -482,7 +482,7 @@ public:
         }
         void StartWP()
         {
-            me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+            me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             SetEscortPaused(false);
         }
         void DoMount()

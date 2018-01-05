@@ -636,7 +636,7 @@ public:
             return false;
         }
 
-        creature->SetUInt32Value(UNIT_FIELD_NPC_FLAGS, npcFlags);
+        creature->SetUInt64Value(UNIT_FIELD_NPC_FLAGS, npcFlags);
 
         PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_UPD_CREATURE_NPCFLAG);
 
@@ -717,7 +717,7 @@ public:
         CreatureTemplate const* cInfo = target->GetCreatureTemplate();
 
         uint32 faction = target->getFaction();
-        uint32 npcflags = target->GetUInt32Value(UNIT_FIELD_NPC_FLAGS);
+        uint64 npcflags = target->GetUInt64Value(UNIT_FIELD_NPC_FLAGS);
         uint32 mechanicImmuneMask = cInfo->MechanicImmuneMask;
         uint32 displayid = target->GetDisplayId();
         uint32 nativeid = target->GetNativeDisplayId();

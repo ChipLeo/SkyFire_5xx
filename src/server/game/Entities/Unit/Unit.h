@@ -1838,64 +1838,64 @@ class Unit : public WorldObject
 
     bool IsVendor()       const
     {
-        return HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_VENDOR);
+        return HasFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_VENDOR);
     }
     bool IsTrainer()      const
     {
-        return HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_TRAINER);
+        return HasFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_TRAINER);
     }
     bool IsQuestGiver()   const
     {
-        return HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
+        return HasFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
     }
     bool IsGossip()       const
     {
-        return HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+        return HasFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
     }
     bool IsTaxi()         const
     {
-        return HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_FLIGHTMASTER);
+        return HasFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_FLIGHTMASTER);
     }
     bool IsGuildMaster()  const
     {
-        return HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_PETITIONER);
+        return HasFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_PETITIONER);
     }
     bool IsBattleMaster() const
     {
-        return HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_BATTLEMASTER);
+        return HasFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_BATTLEMASTER);
     }
     bool IsBanker()       const
     {
-        return HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_BANKER);
+        return HasFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_BANKER);
     }
     bool IsInnkeeper()    const
     {
-        return HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_INNKEEPER);
+        return HasFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_INNKEEPER);
     }
     bool IsSpiritHealer() const
     {
-        return HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPIRITHEALER);
+        return HasFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPIRITHEALER);
     }
     bool IsSpiritGuide()  const
     {
-        return HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPIRITGUIDE);
+        return HasFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPIRITGUIDE);
     }
     bool IsTabardDesigner()const
     {
-        return HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_TABARDDESIGNER);
+        return HasFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_TABARDDESIGNER);
     }
     bool IsAuctioner()    const
     {
-        return HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_AUCTIONEER);
+        return HasFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_AUCTIONEER);
     }
     bool IsArmorer()      const
     {
-        return HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_REPAIR);
+        return HasFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_REPAIR);
     }
     bool IsServiceProvider() const;
     bool IsSpiritService() const
     {
-        return HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPIRITHEALER | UNIT_NPC_FLAG_SPIRITGUIDE);
+        return HasFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_SPIRITHEALER | UNIT_NPC_FLAG_SPIRITGUIDE);
     }
 
     bool IsInFlight()  const

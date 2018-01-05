@@ -277,7 +277,7 @@ public:
             _summonGUID = 0;
             _playerGUID = 0;
 
-            me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
+            me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
             uiTimer = 0;
             uiPhase = 0;
             uiQuest = 0;
@@ -296,7 +296,7 @@ public:
         void SetData(uint32 type, uint32 data) OVERRIDE
         {
             _removeFlag = true;
-            me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
+            me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
 
             switch (type)
             {
@@ -339,7 +339,7 @@ public:
             {
                 if (uiRemoveFlagTimer <= diff)
                 {
-                    me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
+                    me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
                     _removeFlag = false;
 
                     uiRemoveFlagTimer = 10000;
@@ -1207,7 +1207,7 @@ public:
 
         void Reset() OVERRIDE
         {
-            me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+            me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             me->SetUInt32Value(UNIT_FIELD_NPC_EMOTESTATE, EMOTE_STATE_COWER);
             _heading = me->GetOrientation();
         }
@@ -1221,7 +1221,7 @@ public:
                 switch (eventId)
                 {
                     case EVENT_RECRUIT_1:
-                        me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                        me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                         me->SetUInt32Value(UNIT_FIELD_NPC_EMOTESTATE, EMOTE_ONESHOT_NONE);
                         Talk(SAY_RECRUIT);
                         _events.ScheduleEvent(EVENT_RECRUIT_2, 3000);

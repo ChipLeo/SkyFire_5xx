@@ -414,7 +414,7 @@ public:
 
         void StartWP()
         {
-            me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+            me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             SetEscortPaused(false);
             uiStep = 1;
             Start();
@@ -707,7 +707,7 @@ public:
                         Player* player = GetPlayerForEscort();
                         if (player)
                             player->GroupEventHappens(QUEST_HALLS_OF_STONE, me);
-                        me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                        me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                         JumpToNextStep(180000);
                         break;
                     }

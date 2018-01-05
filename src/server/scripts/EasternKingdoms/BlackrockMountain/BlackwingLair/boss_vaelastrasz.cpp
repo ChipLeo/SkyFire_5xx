@@ -72,7 +72,7 @@ public:
     {
         boss_vaelAI(Creature* creature) : BossAI(creature, BOSS_VAELASTRAZ)
         {
-            creature->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+            creature->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             creature->setFaction(35);
             creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
         }
@@ -107,7 +107,7 @@ public:
         void BeginSpeech(Unit* target)
         {
             PlayerGUID = target->GetGUID();
-            me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+            me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             events.ScheduleEvent(EVENT_SPEECH_1, 1000);
         }
 

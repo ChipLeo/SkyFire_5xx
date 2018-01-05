@@ -38,6 +38,7 @@ ACE_Pointer_Hash<TYPE>::operator () (TYPE t) const
   // The cast below is legit... we only want a hash, and need not convert
   // the hash back to a pointer.
 #  pragma warning(push)
+#  pragma warning(disable : 4302)   /* Truncate pointer to unsigned long */
 #  pragma warning(disable : 4311)   /* Truncate pointer to unsigned long */
 #endif /* ACE_WIN64 */
   return reinterpret_cast<unsigned long> (t);

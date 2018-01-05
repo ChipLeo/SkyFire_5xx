@@ -207,7 +207,7 @@ public:
         npc_morriduneAI(Creature* creature) : npc_escortAI(creature)
         {
             Talk(SAY_MORRIDUNE_1);
-            me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+            me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
             Start(false, false, 0);
         }
 
@@ -218,7 +218,7 @@ public:
                 case 4:
                     SetEscortPaused(true);
                     me->SetFacingTo(1.775791f);
-                    me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                    me->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                     Talk(SAY_MORRIDUNE_2);
                     break;
             }

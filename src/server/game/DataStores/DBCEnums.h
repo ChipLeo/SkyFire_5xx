@@ -325,29 +325,31 @@ enum AreaFlags
 
 enum Difficulty
 {
-    REGULAR_DIFFICULTY           = 0,
+    REGULAR_DIFFICULTY                  = 0,    // entry
 
-    DUNGEON_DIFFICULTY_NORMAL    = 0,
-    DUNGEON_DIFFICULTY_HEROIC    = 1,
-    DUNGEON_DIFFICULTY_CHALLENGE = 2,
+    DUNGEON_DIFFICULTY_NORMAL           = 1,    // difficulty_entry_1
+    DUNGEON_DIFFICULTY_HEROIC           = 2,    // difficulty_entry_2
 
-    RAID_DIFFICULTY_10MAN_NORMAL = 0,
-    RAID_DIFFICULTY_25MAN_NORMAL = 1,
-    RAID_DIFFICULTY_10MAN_HEROIC = 2,
-    RAID_DIFFICULTY_25MAN_HEROIC = 3,
-    RAID_DIFFICULTY_10MAN_FLEX   = 4,
-    RAID_DIFFICULTY_25MAN_LFR    = 5,
+    RAID_DIFFICULTY_10MAN_NORMAL        = 3,    // difficulty_entry_3
+    RAID_DIFFICULTY_25MAN_NORMAL        = 4,    // difficulty_entry_4
+    RAID_DIFFICULTY_10MAN_HEROIC        = 5,    // difficulty_entry_5
+    RAID_DIFFICULTY_25MAN_HEROIC        = 6,    // difficulty_entry_6
+    RAID_DIFFICULTY_25MAN_LFR           = 7,    // difficulty_entry_7
 
-    SCENARIO_DIFFICULTY_NORMAL   = 0,
-    SCENARIO_DIFFICULTY_HEROIC   = 1
+    DUNGEON_DIFFICULTY_CHALLENGE        = 8,    // difficulty_entry_8
+
+    RAID_DIFFICULTY_40MAN_DIFFICULTY    = 9,    // difficulty_entry_9
+                                                // difficulty_entry_10
+    SCENARIO_DIFFICULTY_HEROIC          = 11,   // difficulty_entry_11
+    SCENARIO_DIFFICULTY                 = 12,   // difficulty_entry_12
+                                                // difficulty_entry_13
+    RAID_DIFFICULTY_FLEXIBLE            = 14,   // difficulty_entry_14
+    DUNGEON_DIFFICULTY_MAX              = 15
 };
 
-#define RAID_DIFFICULTY_MASK_25MAN 1    // since 25man difficulties are 1 and 3, we can check them like that
-
-#define MAX_DUNGEON_DIFFICULTY     3
-#define MAX_RAID_DIFFICULTY        6
-#define MAX_SCENARIO_DIFFICULTY    2
-#define MAX_DIFFICULTY             4 // temp hack Should be 6 but need to finish the DB side.
+#define MAX_DUNGEON_DIFFICULTY     DUNGEON_DIFFICULTY_CHALLENGE + 1
+#define MAX_RAID_DIFFICULTY        RAID_DIFFICULTY_40MAN_DIFFICULTY + 1
+#define MAX_DIFFICULTY             RAID_DIFFICULTY_FLEXIBLE + 1
 
 enum SpawnMask
 {
@@ -360,7 +362,7 @@ enum SpawnMask
 
     SPAWNMASK_RAID_10MAN_NORMAL     = (1 << RAID_DIFFICULTY_10MAN_NORMAL),
     SPAWNMASK_RAID_25MAN_NORMAL     = (1 << RAID_DIFFICULTY_25MAN_NORMAL),
-    SPAWNMASK_RAID_10MAN_FLEX       = (1 << RAID_DIFFICULTY_10MAN_FLEX),
+    SPAWNMASK_RAID_10MAN_FLEX       = (1 << RAID_DIFFICULTY_FLEXIBLE),
     SPAWNMASK_RAID_25MAN_LFR        = (1 << RAID_DIFFICULTY_25MAN_LFR),
     SPAWNMASK_RAID_NORMAL_ALL       = (SPAWNMASK_RAID_10MAN_NORMAL | SPAWNMASK_RAID_25MAN_NORMAL | SPAWNMASK_RAID_10MAN_FLEX | SPAWNMASK_RAID_25MAN_LFR),
 
@@ -370,9 +372,9 @@ enum SpawnMask
 
     SPAWNMASK_RAID_ALL              = (SPAWNMASK_RAID_NORMAL_ALL | SPAWNMASK_RAID_HEROIC_ALL),
 
-    SPAWNMASK_SCENARIO_NORMAL       = (1 << SCENARIO_DIFFICULTY_NORMAL),
+    SPAWNMASK_SCENARIO_NORMAL       = (1 << REGULAR_DIFFICULTY),
     SPAWNMASK_SCENARIO_HEROIC       = (1 << SCENARIO_DIFFICULTY_HEROIC),
-    SPAWNMASK_SCENARIO_ALL          = (SCENARIO_DIFFICULTY_NORMAL | SCENARIO_DIFFICULTY_HEROIC)
+    SPAWNMASK_SCENARIO_ALL          = (REGULAR_DIFFICULTY | SCENARIO_DIFFICULTY_HEROIC)
 };
 
 enum FactionTemplateFlags
@@ -440,6 +442,16 @@ enum MountFlags
 {
     MOUNT_FLAG_CAN_PITCH                = 0x4,                    // client checks MOVEMENTFLAG2_FULL_SPEED_PITCHING
     MOUNT_FLAG_CAN_SWIM                 = 0x8,                    // client checks MOVEMENTFLAG_SWIMMING
+};
+
+enum SkillRaceClassInfoFlags
+{
+    SKILL_FLAG_NO_SKILLUP_MESSAGE       = 0x2,
+    SKILL_FLAG_ALWAYS_MAX_VALUE         = 0x10,
+    SKILL_FLAG_UNLEARNABLE              = 0x20,     // Skill can be unlearned
+    SKILL_FLAG_INCLUDE_IN_SORT          = 0x80,     // Spells belonging to a skill with this flag will additionally compare skill ids when sorting spellbook in client
+    SKILL_FLAG_NOT_TRAINABLE            = 0x100,
+    SKILL_FLAG_MONO_VALUE               = 0x400     // Skill always has value 1 - clientside display flag, real value can be different
 };
 
 enum SpellCategoryFlags
@@ -560,6 +572,7 @@ enum VehicleSeatFlagsB
     VEHICLE_SEAT_FLAG_B_EJECTABLE                = 0x00000020,           // ejectable
     VEHICLE_SEAT_FLAG_B_USABLE_FORCED_2          = 0x00000040,
     VEHICLE_SEAT_FLAG_B_USABLE_FORCED_3          = 0x00000100,
+    VEHICLE_SEAT_FLAG_B_KEEP_PET                 = 0x00020000,
     VEHICLE_SEAT_FLAG_B_USABLE_FORCED_4          = 0x02000000,
     VEHICLE_SEAT_FLAG_B_CAN_SWITCH               = 0x04000000,
     VEHICLE_SEAT_FLAG_B_VEHICLE_PLAYERFRAME_UI   = 0x80000000            // Lua_UnitHasVehiclePlayerFrameUI - actually checked for flagsb &~ 0x80000000

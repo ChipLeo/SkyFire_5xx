@@ -1524,7 +1524,7 @@ class npc_observation_ring_keeper : public CreatureScript
                 if (sender != 10333)
                     return;
 
-                me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                me->RemoveFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                 me->DespawnOrUnsummon(2000);
                 DoCast(SPELL_TELEPORT);
                 Talk(SAY_KEEPER_CHOSEN_1, player);

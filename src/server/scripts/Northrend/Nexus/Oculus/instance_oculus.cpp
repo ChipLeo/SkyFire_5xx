@@ -143,7 +143,7 @@ public:
                     {
                         creature->SetWalk(true),
                         creature->GetMotionMaster()->MovePoint(0, 941.453f, 1044.1f, 359.967f),
-                        creature->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                        creature->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                     }
                     break;
                 case NPC_ETERNOS:
@@ -152,7 +152,7 @@ public:
                     {
                         creature->SetWalk(true),
                         creature->GetMotionMaster()->MovePoint(0, 943.202f, 1059.35f, 359.967f),
-                        creature->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                        creature->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                     }
                     break;
                 case NPC_VERDISA:
@@ -161,7 +161,7 @@ public:
                     {
                         creature->SetWalk(true),
                         creature->GetMotionMaster()->MovePoint(0, 949.188f, 1032.91f, 359.967f),
-                        creature->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                        creature->SetFlag64(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                     }
                     break;
                 case NPC_GREATER_WHELP:
