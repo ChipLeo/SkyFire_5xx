@@ -375,8 +375,8 @@ void OpcodeTable::InitializeClientTable()
     DEFINE_OPCODE_HANDLER(CMSG_REQUEST_CATEGORY_COOLDOWNS,         0x1203, STATUS_LOGGEDIN,  PROCESS_INPLACE,      &WorldSession::HandleRequestCategoryCooldowns     ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_REQUEST_CEMETERY_LIST,              0x06E4, STATUS_LOGGEDIN,  PROCESS_INPLACE,      &WorldSession::HandleRequestCemeteryList          ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_REQUEST_CONQUEST_FORMULA_CONSTANTS, 0x0365, STATUS_UNHANDLED, PROCESS_INPLACE,      &WorldSession::Handle_NULL                        ); // 5.4.8 18414
-    DEFINE_OPCODE_HANDLER(CMSG_REQUEST_FORCED_REACTIONS,           0x06F5, STATUS_UNHANDLED, PROCESS_INPLACE,      &WorldSession::Handle_NULL                        ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_REQUEST_HOTFIX,                     0x158D, STATUS_LOGGEDIN,  PROCESS_INPLACE,      &WorldSession::HandleRequestHotfix                ); // 5.4.8 18414
+    DEFINE_OPCODE_HANDLER(CMSG_REQUEST_FORCED_REACTIONS,           0x06F5, STATUS_LOGGEDIN,  PROCESS_INPLACE,      &WorldSession::HandleRequestForcedReactionsOpcode ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_REQUEST_INSPECT_RATED_BG_STATS,     0x0882, STATUS_LOGGEDIN,  PROCESS_INPLACE,      &WorldSession::Handle_NULL                        ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_REQUEST_PARTY_MEMBER_STATS,         0x0806, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleRequestPartyMemberStatsOpcode); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_REQUEST_PVP_OPTIONS_ENABLED,        0x0A22, STATUS_LOGGEDIN,  PROCESS_INPLACE,      &WorldSession::HandleRequestPvpOptions            ); // 5.4.8 18414
