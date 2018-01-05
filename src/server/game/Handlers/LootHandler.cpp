@@ -556,3 +556,9 @@ void WorldSession::HandleLootMasterGiveOpcode(WorldPacket& recvData)
     loot->NotifyItemRemoved(slotid);
     --loot->unlootedCount;
 }
+
+void WorldSession::HandleSetLootSpecialization(WorldPacket& recvData)
+{
+    uint32 specializationId = recvData.read<uint32>();
+    GetPlayer()->SetLootSpecId(specializationId);
+}

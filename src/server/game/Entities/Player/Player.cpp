@@ -698,6 +698,7 @@ Player::Player(WorldSession* session): Unit(true), phaseMgr(this)
         SetAcceptWhispers(true);
 
     m_lootGuid = 0;
+    m_lootSpecId = 0;
 
     m_comboTarget = 0;
     m_comboPoints = 0;

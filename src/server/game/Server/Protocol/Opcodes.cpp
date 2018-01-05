@@ -402,6 +402,7 @@ void OpcodeTable::InitializeClientTable()
     DEFINE_OPCODE_HANDLER(CMSG_SET_FACTION_INACTIVE,               0x0778, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleSetFactionInactiveOpcode     ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_SET_FACTION_NOTATWAR,               0x064B, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleSetFactionNotAtWar           ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_SET_LFG_BONUS_FACTION_ID,           0x0247, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleSetLfgBonusFactionID         ); // 5.4.8 18414
+    DEFINE_OPCODE_HANDLER(CMSG_SET_LOOT_SPECIALIZATION,            0x1260, STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleSetLootSpecialization        ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_SET_PLAYER_DECLINED_NAMES,          0x09E2, STATUS_AUTHED,    PROCESS_THREADUNSAFE, &WorldSession::HandleSetPlayerDeclinedNames       ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_SET_PRIMARY_TALENT_TREE,            0x06C6, STATUS_LOGGEDIN,  PROCESS_INPLACE,      &WorldSession::HandeSetTalentSpecialization       ); // 5.4.8 18414
     DEFINE_OPCODE_HANDLER(CMSG_SET_PVP,                            0x02C5, STATUS_LOGGEDIN,  PROCESS_INPLACE,      &WorldSession::HandleSetPvP                       ); // 5.4.8 18414

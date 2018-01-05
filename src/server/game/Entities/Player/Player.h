@@ -2522,6 +2522,9 @@ class Player : public Unit, public GridObject<Player>
         m_lootGuid = guid;
     }
 
+    uint32 GetLootSpecId() const { return m_lootSpecId; }
+    void SetLootSpecId(uint32 specId) { m_lootSpecId = specId;  SetUInt32Value(PLAYER_FIELD_LOOT_SPEC_ID, specId);  }
+
     void RemovedInsignia(Player* looterPlr);
 
     WorldSession* GetSession() const
@@ -3450,6 +3453,7 @@ class Player : public Unit, public GridObject<Player>
 
     void outDebugValues() const;
     uint64 m_lootGuid;
+    uint32 m_lootSpecId;
 
     uint32 m_team;
     uint32 m_nextSave;

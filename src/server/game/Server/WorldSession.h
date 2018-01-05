@@ -497,6 +497,7 @@ class WorldSession
         void HandleMoveRootAck(WorldPacket& recvPacket);
         void HandleLookingForGroup(WorldPacket& recvPacket);
         void HandleReturnToGraveyard(WorldPacket& recvPacket);
+        void HandleSetLootSpecialization(WorldPacket& recvData);
 
         // new inspect
         void HandleInspectOpcode(WorldPacket& recvPacket);
