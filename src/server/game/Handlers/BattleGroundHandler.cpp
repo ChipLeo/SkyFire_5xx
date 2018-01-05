@@ -668,6 +668,76 @@ void WorldSession::HandleBattlefieldStatusOpcode(WorldPacket & /*recvData*/)
     }
 }
 
+void WorldSession::HandleRequestBattlefieldStatusOpcode(WorldPacket& recvData)
+{
+    // we must update all queues here
+    Battleground* bg = NULL;
+    for (uint8 i = 0; i < PLAYER_MAX_BATTLEGROUND_QUEUES; ++i)
+    {
+        BattlegroundQueueTypeId bgQueueTypeId = _player->GetBattlegroundQueueTypeId(i);
+        if (!bgQueueTypeId)
+            continue;
+        BattlegroundTypeId bgTypeId = BattlegroundMgr::BGTemplateId(bgQueueTypeId);
+        uint8 arenaType = BattlegroundMgr::BGArenaType(bgQueueTypeId);
+        if (bgTypeId == _player->GetBattlegroundTypeId())
+        {
+            bg = _player->GetBattleground();
+            //i cannot check any variable from player class because player class doesn't know if player is in 2v2 / 3v3 or 5v5 arena
+            //so i must use bg pointer to get that information
+            if (bg && bg->GetArenaType() == arenaType)
+            {
+                WorldPacket data;
+                sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, bg, _player, _player->GetBattlegroundQueueIndex(bgQueueTypeId), STATUS_NONE, _player->GetBattlegroundQueueJoinTime(bgTypeId), 0, arenaType);
+                _player->SendDirectMessage(&data);
+
+                // wrong WorldPackets::Battleground::BattlefieldStatusActive battlefieldStatus;
+                //sBattlegroundMgr->BuildBattlegroundStatusActive(&battlefieldStatus, bg, _player, i, _player->GetBattlegroundQueueJoinTime(bgQueueTypeId), arenaType);
+                continue;
+            }
+        }
+
+        //we are sending update to player about queue - he can be invited there!
+        //get GroupQueueInfo for queue status
+        BattlegroundQueue& bgQueue = sBattlegroundMgr->GetBattlegroundQueue(bgQueueTypeId);
+        GroupQueueInfo ginfo;
+        if (!bgQueue.GetPlayerGroupInfoData(_player->GetGUID(), &ginfo))
+            continue;
+        if (ginfo.IsInvitedToBGInstanceGUID)
+        {
+            bg = sBattlegroundMgr->GetBattleground(ginfo.IsInvitedToBGInstanceGUID, bgTypeId);
+            if (!bg)
+                continue;
+
+            WorldPacket data;
+            sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, bg, _player, _player->GetBattlegroundQueueIndex(bgQueueTypeId), STATUS_NONE, _player->GetBattlegroundQueueJoinTime(bgTypeId), 0, arenaType);
+            _player->SendDirectMessage(&data);
+
+            // wrong WorldPackets::Battleground::BattlefieldStatusNeedConfirmation battlefieldStatus;
+            //sBattlegroundMgr->BuildBattlegroundStatusNeedConfirmation(&battlefieldStatus, bg, _player, i, _player->GetBattlegroundQueueJoinTime(bgQueueTypeId), getMSTimeDiff(getMSTime(), ginfo.RemoveInviteTime), arenaType);
+        }
+        else
+        {
+            bg = sBattlegroundMgr->GetBattlegroundTemplate(bgTypeId);
+            if (!bg)
+                continue;
+
+            // expected bracket entry
+            PvPDifficultyEntry const* bracketEntry = GetBattlegroundBracketByLevel(bg->GetMapId(), _player->getLevel());
+            if (!bracketEntry)
+                continue;
+
+            uint32 avgTime = bgQueue.GetAverageQueueWaitTime(&ginfo, bracketEntry->GetBracketId());
+
+            WorldPacket data;
+            sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, bg, _player, _player->GetBattlegroundQueueIndex(bgQueueTypeId), STATUS_NONE, _player->GetBattlegroundQueueJoinTime(bgTypeId), 0, arenaType);
+            _player->SendDirectMessage(&data);
+
+            // wrong WorldPackets::Battleground::BattlefieldStatusQueued battlefieldStatus;
+            //sBattlegroundMgr->BuildBattlegroundStatusQueued(&battlefieldStatus, bg, _player, i, _player->GetBattlegroundQueueJoinTime(bgQueueTypeId), avgTime, arenaType, ginfo.Players.size() > 1);
+        }
+    }
+}
+
 void WorldSession::HandleBattlemasterJoinArena(WorldPacket& recvData)
 {
     SF_LOG_DEBUG("network", "WORLD: CMSG_BATTLEMASTER_JOIN_ARENA");

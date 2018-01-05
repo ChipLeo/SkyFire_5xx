@@ -495,7 +495,6 @@ class WorldSession
         // new
         void HandleMoveUnRootAck(WorldPacket& recvPacket);
         void HandleMoveRootAck(WorldPacket& recvPacket);
-        void HandleLookingForGroup(WorldPacket& recvPacket);
         void HandleReturnToGraveyard(WorldPacket& recvPacket);
         void HandleDiscardedTimeSyncAcks(WorldPacket& recvPacket);
         void HandleSetLootSpecialization(WorldPacket& recvData);
@@ -890,6 +889,7 @@ class WorldSession
         void HandleRequestPvpOptions(WorldPacket& recvData);
         void HandleRequestPvpReward(WorldPacket& recvData);
         void HandleRequestRatedInfo(WorldPacket& recvData);
+        void HandleRequestBattlefieldStatusOpcode(WorldPacket& recvData);
         void HandleRequestConquestFormulaConstants(WorldPacket& recvData);
 
         void HandleWardenDataOpcode(WorldPacket& recvData);
@@ -931,7 +931,7 @@ class WorldSession
         void HandleLfgTeleportOpcode(WorldPacket& recvData);
         void HandleLfrJoinOpcode(WorldPacket& recvData);
         void HandleLfrLeaveOpcode(WorldPacket& recvData);
-        void HandleLfgGetStatus(WorldPacket& recvData);
+        void HandleDFGetJoinStatus(WorldPacket& recvData);
 
         void SendLfgUpdateStatus(lfg::LfgUpdateData const& updateData, bool party);
         void SendLfgRoleChosen(uint64 guid, uint8 roles);
@@ -1062,6 +1062,7 @@ class WorldSession
         void HandleWorldStateUITimerUpdate(WorldPacket& recvData);
         void HandleReadyForAccountDataTimes(WorldPacket& recvData);
         void HandleQueryQuestsCompleted(WorldPacket& recvData);
+        void HandleQuestNPCQuery(WorldPacket& recvData);
         void HandleQuestPOIQuery(WorldPacket& recvData);
         void HandleEjectPassenger(WorldPacket& data);
         void HandleEnterPlayerVehicle(WorldPacket& recvData);
@@ -1073,6 +1074,7 @@ class WorldSession
         void HandleSelectFactionOpcode(WorldPacket& recvPacket);
         void HandleRequestCategoryCooldowns(WorldPacket& recvPacket);
         void HandleRequestCemeteryList(WorldPacket& recvPacket);
+        void HandleQueryCountdownTimer(WorldPacket& recvPacket);
 
         void SendBroadcastText(uint32 entry);
 

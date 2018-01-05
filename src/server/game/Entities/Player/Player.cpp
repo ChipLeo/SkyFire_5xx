@@ -3111,12 +3111,12 @@ void Player::RemoveFromGroup(Group* group, uint64 guid, RemoveMethod method /* =
     }
 }
 
-void Player::SendLogXPGain(uint32 GivenXP, Unit* victim, uint32 BonusXP, bool recruitAFriend, float /*group_rate*/)
+void Player::SendLogXPGain(uint32 GivenXP, Unit* victim, uint32 BonusXP, bool recruitAFriend, float group_rate)
 {
     ObjectGuid victimGuid = victim ? victim->GetGUID() : 0;
 
-    WorldPacket data(SMSG_LOG_XPGAIN, 1 + 1 + 8 + 4 + 4 + 4 + 1);
-    data.WriteBit(0);                       // has XP
+    WorldPacket data(SMSG_LOG_XP_GAIN, 1 + 1 + 8 + 4 + 4 + 4 + 1);
+    data.WriteBit(!victim);                // has XP
     data.WriteBit(victimGuid[1]);//17
     data.WriteBit(victimGuid[2]);//18
     data.WriteBit(victimGuid[7]);//23
@@ -3126,21 +3126,23 @@ void Player::SendLogXPGain(uint32 GivenXP, Unit* victim, uint32 BonusXP, bool re
     data.WriteBit(victimGuid[0]);//16
     data.WriteBit(victimGuid[5]);//21
     data.WriteBit(victimGuid[6]);//22
-    data.WriteBit(0);                      // unknown
+    data.WriteBit(group_rate==0);
+
+    data.FlushBits();
 
     data.WriteByteSeq(victimGuid[4]);//20
     data.WriteByteSeq(victimGuid[2]);//18
     data << uint8(recruitAFriend ? 1 : 0); // does the GivenXP include a RaF bonus?
-    data << float(1);                      // 1 - none 0 - 100% group bonus output
+    data << group_rate;
     data.WriteByteSeq(victimGuid[7]);//23
     data.WriteByteSeq(victimGuid[1]);//17
     data.WriteByteSeq(victimGuid[3]);//19
     data.WriteByteSeq(victimGuid[6]);//22
 
-    data << uint32(GivenXP + BonusXP);    // given experience
+    data << uint32(GivenXP + BonusXP);     // given experience
 
     if (victim)
-        data << uint32(GivenXP);          // experience without bonus
+        data << uint32(GivenXP);           // experience without bonus
 
     data.WriteByteSeq(victimGuid[0]);//16
     data.WriteByteSeq(victimGuid[5]);//21
@@ -3225,22 +3227,33 @@ void Player::GiveLevel(uint8 level)
     sObjectMgr->GetPlayerClassLevelInfo(getClass(), level, basehp, basemana);
 
     // send levelup info to client
-    WorldPacket data(SMSG_LEVELUP_INFO, ((MAX_POWERS_PER_CLASS * 4) + 4 + 4 + (MAX_STATS * 4) + 4));
+    WorldPacket data(SMSG_LEVEL_UP_INFO, ((MAX_POWERS_PER_CLASS * 5) + 4 + 4 + (MAX_STATS * 5) + 4));
+
+    bool talent = false;
+    switch (level)
+    {
+        case 15:
+        case 30:
+        case 45:
+        case 60:
+        case 75:
+        case 90:
+            talent = true;
+        break;
+        default: break;
+    }
+
+    data << uint32(talent);
 
     data << uint32(int32(basehp) - int32(GetCreateHealth()));
 
     for (uint8 i = STAT_STRENGTH; i < MAX_STATS; ++i)       // Stats loop (0-4)
         data << uint32(int32(info.stats[i]) - GetCreateStat(Stats(i)));
 
-    bool talent = false;
-
-    data << bool(talent);
     data << uint32(level);
-    data << uint32(int32(basemana) - int32(GetCreateMana()));
-    data << uint32(0); //unk
-    data << uint32(0); //unk
-    data << uint32(0); //unk
-    data << uint32(0); //unk
+
+    for (uint8 i = 0; i < MAX_POWERS_PER_CLASS; ++i)
+        data << uint32(GetMaxPower(Powers(i)));
 
     GetSession()->SendPacket(&data);
 
@@ -19667,10 +19680,12 @@ void Player::SendRaidInfo()
 {
     uint32 counter = 0;
 
-    WorldPacket data(SMSG_RAID_INSTANCE_INFO, 4);
+    WorldPacket data(SMSG_INSTANCE_INFO, 3);
+
+    ByteBuffer info;
 
     size_t p_counter = data.wpos();
-    data << uint32(counter);                                // placeholder
+    data.WriteBits(0, 20);                                // placeholder
 
     time_t now = time(NULL);
 
@@ -19687,20 +19702,41 @@ void Player::SendRaidInfo()
                     if (InstanceScript* instanceScript = ((InstanceMap*)map)->GetInstanceScript())
                         completedEncounters = instanceScript->GetCompletedEncounterMask();
 
-                data << uint32(save->GetMapId());           // map id
-                data << uint32(save->GetDifficulty());      // difficulty
-                data << uint32(isHeroic);                   // heroic
-                data << uint64(save->GetInstanceId());      // instance id
-                data << uint8(1);                           // expired = 0
-                data << uint8(0);                           // extended = 1
-                data << uint32(save->GetResetTime() - now); // reset time
-                data << uint32(completedEncounters);        // completed encounters mask
+                ObjectGuid guid = save->GetInstanceId();
+
+                data.WriteBit(guid[1]);
+                data.WriteBit(guid[2]);
+                data.WriteBit(guid[6]);
+                data.WriteBit(1);
+                data.WriteBit(guid[0]);
+                data.WriteBit(guid[5]);
+                data.WriteBit(guid[4]);
+                data.WriteBit(0);
+                data.WriteBit(guid[7]);
+                data.WriteBit(guid[3]);
+
+                info.WriteByteSeq(guid[7]);
+                info.WriteByteSeq(guid[6]);
+                info.WriteByteSeq(guid[4]);
+                info.WriteByteSeq(guid[2]);
+                info.WriteByteSeq(guid[0]);
+                info << uint32(save->GetResetTime() - now); // reset time
+                info << uint32(completedEncounters);        // completed encounters mask
+                info.WriteByteSeq(guid[1]);
+                info << uint32(save->GetMapId());           // map id
+                info << uint32(save->GetDifficulty());      // difficulty
+                info.WriteByteSeq(guid[3]);
+                info.WriteByteSeq(guid[5]);
+
                 ++counter;
             }
         }
     }
 
-    data.put<uint32>(p_counter, counter);
+    data.FlushBits();
+    data.append(info);
+
+    data.PutBits(p_counter, counter, 20);
     GetSession()->SendPacket(&data);
 }
 
@@ -21168,8 +21204,9 @@ void Player::SendDungeonDifficulty(bool IsInGroup)
 
 void Player::SendRaidDifficulty(bool IsInGroup, int32 forcedDifficulty)
 {
-    WorldPacket data(MSG_SET_RAID_DIFFICULTY, 4);
-    data << uint32(forcedDifficulty == -1 ? GetRaidDifficulty() : forcedDifficulty);
+    WorldPacket data(MSG_SET_RAID_DIFFICULTY, 5);
+    data << uint32(forcedDifficulty == -1 ? GetDifficulty(!IsInGroup) : forcedDifficulty);
+    data << uint8(IsInGroup);
     GetSession()->SendPacket(&data);
 }
 
@@ -21728,6 +21765,36 @@ void Player::VehicleSpellInitialize()
 
     uint8 cooldownCount = vehicle->m_CreatureSpellCooldowns.size();
     ObjectGuid VehicleGuid = vehicle->GetGUID();
+
+    /*SF_LOG_DEBUG("network", "Player: Send SMSG_PET_MODE");
+
+    WorldPacket dat(SMSG_PET_MODE, 8);
+
+    dat.WriteBit(VehicleGuid[5]);
+    dat.WriteBit(VehicleGuid[0]);
+    dat.WriteBit(VehicleGuid[6]);
+    dat.WriteBit(VehicleGuid[3]);
+    dat.WriteBit(VehicleGuid[7]);
+    dat.WriteBit(VehicleGuid[2]);
+    dat.WriteBit(VehicleGuid[4]);
+    dat.WriteBit(VehicleGuid[1]);
+
+    dat << uint8(1);
+    dat << uint8(1);
+    dat << uint16(0x400);
+
+    dat.WriteByteSeq(VehicleGuid[2]);
+    dat.WriteByteSeq(VehicleGuid[5]);
+    dat.WriteByteSeq(VehicleGuid[4]);
+    dat.WriteByteSeq(VehicleGuid[0]);
+    dat.WriteByteSeq(VehicleGuid[1]);
+    dat.WriteByteSeq(VehicleGuid[7]);
+    dat.WriteByteSeq(VehicleGuid[3]);
+    dat.WriteByteSeq(VehicleGuid[6]);
+
+    GetSession()->SendPacket(&dat);*/
+
+    SF_LOG_DEBUG("network", "Player: Send SMSG_PET_SPELLS_MESSAGE");
 
     WorldPacket data(SMSG_PET_SPELLS_MESSAGE, 8 + 2 + 4 + 4 + 4 * 10 + 1 + 1 + cooldownCount * (4 + 2 + 4 + 4));
 
@@ -24321,9 +24388,6 @@ void Player::SendInitialPacketsAfterAddToMap()
     }
     else if (GetRaidDifficulty() != GetStoredRaidDifficulty())
         SendRaidDifficulty(GetGroup() != NULL);
-
-    m_battlePetMgr->SendBattlePetJournal();
-    m_battlePetMgr->SendBattlePetJournalLock();
 }
 
 void Player::SendUpdateToOutOfRangeGroupMembers()

@@ -375,7 +375,7 @@ void WorldSession::HandleGameObjectQueryOpcode(WorldPacket& recvData)
 
         data << int32(info->unkInt32);                      // 4.x, unknown
 
-        data.put(pos, uint32(data.wpos() - (pos + 4)));
+        data.put<uint32>(pos, uint32(data.wpos() - (pos + 4)));
         SF_LOG_DEBUG("network", "WORLD: Sent SMSG_GAMEOBJECT_QUERY_RESPONSE");
     }
     else
@@ -585,92 +585,160 @@ void WorldSession::HandleCorpseMapPositionQuery(WorldPacket& recvData)
     SendPacket(&data);
 }
 
+void WorldSession::HandleQuestNPCQuery(WorldPacket& recvData)
+{
+    uint32 QuestID[50];
+    for (uint8 i = 0; i < 50; ++i)
+        recvData >> QuestID[i];
+
+    uint32 RequestCount;
+    recvData >> RequestCount;
+    uint32 ResponseCount = 0;
+
+    if (RequestCount)
+    {
+        WorldPacket Response(SMSG_QUEST_NPC_QUERY_RESPONSE, 3);
+
+        QuestRelations* NPCRelations = sObjectMgr->GetCreatureQuestInvolvedMap();
+        ByteBuffer BitPart;
+        ByteBuffer BytePart;
+
+        for (uint32 i = 0; i < RequestCount; ++i)
+        {
+            uint32 NPCCount = 0;
+
+            BytePart << uint32(QuestID[i]);
+
+            if (NPCRelations->size())
+            {
+                for (QuestRelations::const_iterator itr = NPCRelations->begin(); itr != NPCRelations->end(); ++itr)
+                {
+                    if (itr->second == QuestID[i])
+                    {
+                        BytePart << uint32(itr->first);
+                        NPCCount++;
+                    }
+                }
+            }
+
+            ResponseCount++;
+            BitPart.WriteBits(NPCCount, 22);
+        }
+
+        Response.WriteBits(ResponseCount, 21);
+
+        if (ResponseCount) // Failproof :P.
+        {
+            Response.AppendBits(BitPart);
+            Response.FlushBits();
+            Response.append(BytePart);
+        }
+
+        Response.FlushBits();
+
+        SendPacket(&Response);
+    }
+}
+
 void WorldSession::HandleQuestPOIQuery(WorldPacket& recvData)
 {
-    uint32 count = recvData.ReadBits(22);
+    // The CMSG sends the number of quests which are watched (you may have 10 quests and only watch 2), and the quest order in the tracklog, for which we store the player slot.
+    // The SMSG responds with the same count, and the data for each quest watched, using the questId retrieved from the player slot stored.
 
-    if (count >= MAX_QUEST_LOG_SIZE)
-    {
-        recvData.rfinish();
-        return;
-    }
+    uint32 WatchedQuests = recvData.ReadBits(22);
 
-    ByteBuffer poiData;
+    std::set<uint16> WatchedQuestsSlotList;
 
-    WorldPacket data(SMSG_QUEST_POI_QUERY_RESPONSE, 4+(4+4)*count);
-    data.WriteBits(count, 20);
-
-    for (uint32 i = 0; i < count; ++i)
-    {
-        uint32 questId;
-        recvData >> questId;
-
-        bool questOk = false;
-
-        uint16 questSlot = _player->FindQuestSlot(questId);
-
-        if (questSlot != MAX_QUEST_LOG_SIZE)
-            questOk =_player->GetQuestSlotQuestId(questSlot) == questId;
-
-        if (questOk)
+    // Get the query data and store what is needed (CMSG sends 50 entries, but they are not valid, weird shit. Store the player slots for the valid tracked quests to use in SMSG).
+    for (uint8 count = 0; count < WatchedQuests; ++count)
+        if (uint32 questId = recvData.read<uint32>())
         {
-            QuestPOIVector const* POI = sObjectMgr->GetQuestPOIVector(questId);
+            uint16 questSlot = _player->FindQuestSlot(questId);
+            if (questId && (questSlot < MAX_QUEST_LOG_SIZE))
+                WatchedQuestsSlotList.insert(questSlot);
+        }
+
+    // Send the response.
+    WorldPacket data(SMSG_QUEST_POI_QUERY_RESPONSE);
+
+    data.WriteBits(WatchedQuestsSlotList.size(), 20);
+
+    if (!WatchedQuestsSlotList.empty())
+    {
+        for (std::set<uint16>::iterator itr = WatchedQuestsSlotList.begin(); itr != WatchedQuestsSlotList.end(); itr++)
+        {
+            uint16 watchedQuestSlot = (*itr);
+            uint32 questID = _player->GetQuestSlotQuestId(watchedQuestSlot);
+
+            QuestPOIVector const* POI = sObjectMgr->GetQuestPOIVector(questID);
 
             if (POI)
             {
-                data.WriteBits(POI->size(), 18);                // POI count bits
+                data.WriteBits(POI->size(), 18);             // POI size
 
-                for (QuestPOIVector::const_iterator itr = POI->begin(); itr != POI->end(); ++itr)
-                {
-                    data.WriteBits(itr->points.size(), 21);     // POI points count bits
-
-                    poiData << uint32(itr->FloorId);            // floor id
-
-                    for (std::vector<QuestPOIPoint>::const_iterator itr2 = itr->points.begin(); itr2 != itr->points.end(); ++itr2)
-                    {
-                        poiData << int32(itr2->x);              // POI point x
-                        poiData << int32(itr2->y);              // POI point y
-                    }
-
-                    poiData << int32(itr->ObjectiveIndex);      // objective index
-                    poiData << uint32(itr->Id);                 // POI index
-                    poiData << uint32(0);                       // unknown (new 5.x.x)
-                    poiData << uint32(0);                       // unknown (new 5.x.x)
-                    poiData << uint32(itr->MapId);              // mapid
-                    poiData << uint32(itr->points.size());      // POI points count
-                    poiData << uint32(itr->AreaId);             // areaid
-                    poiData << uint32(0);                       // unknown (new 5.x.x)
-                    poiData << uint32(itr->Unk4);               // unknown
-                    poiData << uint32(itr->Unk3);               // unknown
-                }
-
-                poiData << uint32(questId);                     // quest ID
-                poiData << uint32(POI->size());                 // POI count
+                for (QuestPOIVector::const_iterator itr = POI->begin(); itr != POI->end(); itr++)
+                    data.WriteBits(itr->points.size(), 21);  // POI points size
             }
             else
-            {
                 data.WriteBits(0, 18);
-                data.FlushBits();
-
-                poiData << uint32(questId);
-                poiData << uint32(0);
-            }
-        }
-        else
-        {
-            data.WriteBits(0, 18);
-            data.FlushBits();
-
-            poiData << uint32(questId);
-            poiData << uint32(0);
         }
     }
 
     data.FlushBits();
 
-    poiData << uint32(count);
+    if (!WatchedQuestsSlotList.empty())
+    {
+        for (std::set<uint16>::iterator itr = WatchedQuestsSlotList.begin(); itr != WatchedQuestsSlotList.end(); itr++)
+        {
+            uint16 watchedQuestSlot = (*itr);
+            uint32 questID = _player->GetQuestSlotQuestId(watchedQuestSlot);
 
-    data.append(poiData);
+            QuestPOIVector const* POI = sObjectMgr->GetQuestPOIVector(questID);
+
+            if (POI)
+            {
+                for (QuestPOIVector::const_iterator itr = POI->begin(); itr != POI->end(); itr++)
+                {
+                    data << uint32(itr->FloorId);           // FloorId
+
+                    for (std::vector<QuestPOIPoint>::const_iterator itr2 = itr->points.begin(); itr2 != itr->points.end(); itr2++)
+                    {
+                        data << int32(itr2->x);             // POI point x
+                        data << int32(itr2->y);             // POI point y
+                    }
+
+                    data << int32(itr->ObjectiveIndex);     // objective index
+                    data << uint32(itr->Id);                // POI index
+                    data << uint32(0);                      // another unk - high numbers, 269151 ex., somehow ordered. Could be blobId, some repeat.
+                    data << uint32(itr->Unk4);              // Unk 4 (Ok).
+                    data << uint32(itr->MapId);             // MapId
+                    data << uint32(itr->points.size());     // POI points count
+                    data << uint32(itr->AreaId);            // AreaId
+                    data << uint32(0);                      // another unk
+                    data << uint32(0);                      // another unk
+                    data << uint32(itr->Unk3);              // Unk 3 (Ok).
+                }
+
+                data << uint32(questID);                    // quest ID
+                data << uint32(POI->size());                // POI count
+            }
+            else
+            {
+                data << uint32(questID); // quest ID
+                data << uint32(0); // POI count
+            }
+        }
+    }
+
+    data << uint32(WatchedQuests);
 
     SendPacket(&data);
+}
+
+void WorldSession::HandleQueryCountdownTimer(WorldPacket& recvData)
+{
+    SF_LOG_DEBUG("network", "WORLD: Recv CMSG_QUERY_COUNTDOWN_TIMER");
+
+    uint32 timer;
+    recvData >> timer;
 }
