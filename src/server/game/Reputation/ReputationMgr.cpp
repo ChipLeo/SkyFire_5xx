@@ -169,7 +169,7 @@ void ReputationMgr::SendForceReactions()
 
 void ReputationMgr::SendState(FactionState const* faction)
 {
-    uint32 count = 1;
+    uint32 count = 0;
 
     WorldPacket data(SMSG_SET_FACTION_STANDING, 4 + 4 + 3 + 4 + 4);
 
