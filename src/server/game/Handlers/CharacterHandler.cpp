@@ -1350,9 +1350,9 @@ void WorldSession::HandleShowingCloakOpcode(WorldPacket& recvData)
     _player->ToggleFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_HIDE_CLOAK);
 }
 
-void WorldSession::HandleShowAccountAchievements(WorldPacket& recvData)
+void WorldSession::HandleInspectDisabled(WorldPacket& recvData)
 {
-    SF_LOG_DEBUG("network", "CMSG_SHOW_ACCOUNT_ACHIEVEMENTS for %s", _player->GetName());
+    SF_LOG_DEBUG("network", "CMSG_INSPECT_DISABLED for %s", _player->GetName());
 
     bool showing = recvData.ReadBit();
 }

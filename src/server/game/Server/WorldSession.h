@@ -513,7 +513,7 @@ class WorldSession
         void HandleMountSpecialAnimOpcode(WorldPacket& recvdata);
 
         // character view
-        void HandleShowAccountAchievements(WorldPacket& recvPacket);
+        void HandleInspectDisabled(WorldPacket& recvPacket);
         void HandleShowingHelmOpcode(WorldPacket& recvData);
         void HandleShowingCloakOpcode(WorldPacket& recvData);
 
