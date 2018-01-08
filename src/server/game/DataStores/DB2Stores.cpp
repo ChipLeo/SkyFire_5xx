@@ -186,6 +186,21 @@ void LoadDB2Stores(std::string const& dataPath)
         exit(1);
     }
 
+    // Check loaded DB2 files proper version
+    if (!sBattlePetAbilityStore.LookupEntry(1238)           // last battle pet ability added in 5.4.8 (18414)
+        || !sBattlePetSpeciesStore.LookupEntry(1386)        // last battle pet species added in 5.4.8 (18414)
+        || !sBattlePetStateStore.LookupEntry(176)           // last battle pet state added in 5.4.8 (18414)
+        || !sItemToBattlePetStore.LookupEntry(109014)       // last battle pet item added in 5.4.8 (18414)
+        || !sBroadcastTextStore.LookupEntry(77161)          // last broadcast text added in 5.4.8 (18414)
+        || !sItemStore.LookupEntry(112353)                  // last item added in 5.4.8 (18414)
+        || !sItemExtendedCostStore.LookupEntry(5280)        // last item extended cost added in 5.4.8 (18414)
+        || !sQuestPackageItemStore.LookupEntry(2256)        // last quest package item in 5.4.8 (18414)
+        || !sSceneScriptStore.LookupEntry(11156))           // last scene script added in 5.4.8 (18414)
+    {
+        SF_LOG_ERROR("misc", "You have _outdated_ DB2 files, Please extract correct db2 files from client 5.4.8 18414.");
+        exit(1);
+    }
+
     SF_LOG_INFO("misc", ">> Initialized %d DB2 data stores.", DB2FilesCount);
 }
 
