@@ -21142,12 +21142,6 @@ bool Player::CanSpeak() const
 /***              LOW LEVEL FUNCTIONS:Notifiers        ***/
 /*********************************************************/
 
-void Player::SendAttackSwingNotInRange()
-{
-    WorldPacket data(SMSG_ATTACKSWING_NOTINRANGE, 0);
-    GetSession()->SendPacket(&data);
-}
-
 void Player::SavePositionInDB(uint32 mapid, float x, float y, float z, float o, uint32 zone, uint64 guid)
 {
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHARACTER_POSITION);
@@ -21199,15 +21193,19 @@ void Player::Customize(uint64 guid, uint8 gender, uint8 skin, uint8 face, uint8 
     CharacterDatabase.Execute(stmt);
 }
 
-void Player::SendAttackSwingDeadTarget()
+void Player::SendAttackSwingNotInRange()
 {
-    WorldPacket data(SMSG_ATTACKSWING_DEADTARGET, 0);
+    WorldPacket data(SMSG_ATTACK_SWING_ERROR, 1);
+    data.WriteBits(2, 2);
+    data.FlushBits();
     GetSession()->SendPacket(&data);
 }
 
-void Player::SendAttackSwingCantAttack()
+void Player::SendAttackSwingDeadTarget()
 {
-    WorldPacket data(SMSG_ATTACKSWING_CANT_ATTACK, 0);
+    WorldPacket data(SMSG_ATTACK_SWING_ERROR, 1);
+    data.WriteBits(1, 2);
+    data.FlushBits();
     GetSession()->SendPacket(&data);
 }
 
@@ -21215,7 +21213,7 @@ void Player::SendAttackSwingCancelAttack()
 {
     ObjectGuid guid = GetGUID();
 
-    WorldPacket data(SMSG_CANCEL_COMBAT, 1);
+    WorldPacket data(SMSG_ATTACK_SWING_ERROR, 1);
     data.WriteBits(0, 2);
     data.FlushBits();
     GetSession()->SendPacket(&data);
@@ -21223,7 +21221,9 @@ void Player::SendAttackSwingCancelAttack()
 
 void Player::SendAttackSwingBadFacingAttack()
 {
-    WorldPacket data(SMSG_ATTACKSWING_BADFACING, 0);
+    WorldPacket data(SMSG_ATTACK_SWING_ERROR, 1);
+    data.WriteBits(3, 2);
+    data.FlushBits();
     GetSession()->SendPacket(&data);
 }
 
