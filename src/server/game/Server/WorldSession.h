@@ -488,6 +488,9 @@ class WorldSession
         // played time
         void HandlePlayedTime(WorldPacket& recvPacket);
 
+        // Pandaren Faction Choice
+        void HandlePandarenFactionChoiceOpcode(WorldPacket& recvPacket);
+
         // Boost
         void SendBattlePayDistributionUpdate(uint64 playerGuid, int8 bonusId, int32 bonusFlag, int32 textId, std::string const& bonusText, std::string const& bonusText2);
         void HandleBattleCharBoost(WorldPacket& recvPacket);

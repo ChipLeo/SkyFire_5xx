@@ -58,6 +58,7 @@
 #include "BattlefieldMgr.h"
 #include "DB2Stores.h"
 #include "Boost.h"
+#include "ReputationMgr.h"
 
 void WorldSession::HandleRepopRequestOpcode(WorldPacket& recvData)
 {
@@ -1459,6 +1460,59 @@ void WorldSession::HandlePlayedTime(WorldPacket& recvData)
     data << uint32(_player->GetLevelPlayedTime());
     data << uint8(unk1);                                    // 0 - will not show in chat frame
     SendPacket(&data);
+}
+
+void WorldSession::HandlePandarenFactionChoiceOpcode(WorldPacket& recvData)
+{
+    if (_player->getRace() != RACE_PANDAREN_NEUTRAL)
+    {
+        SF_LOG_ERROR("network", "Player '%s' (GUID: %u) sent CMSG_PANDAREN_CHOOSE_FACTION, but his race is %d. Race should be %d.",
+            _player->GetName().c_str(), _player->GetGUIDLow(), _player->getRace(), RACE_PANDAREN_NEUTRAL);
+        recvData.rfinish();
+        return;
+    }
+
+    uint32 race;
+    recvData >> race;
+
+    uint32 const* languageSpells;
+    WorldLocation location;
+    uint32 homebindLocation;
+
+    if (race)
+    {
+        race = RACE_PANDAREN_ALLIANCE;
+        languageSpells = pandarenLanguageSpellsAlliance;
+        location = WorldLocation(870, 3878.543213f, 2589.685547f, 757.201599f, 2.045576f);
+        homebindLocation = 9;
+    }
+    else
+    {
+        race = RACE_PANDAREN_HORDE;
+        languageSpells = pandarenLanguageSpellsHorde;
+        location = WorldLocation(870, 3878.543213f, 2589.685547f, 757.201599f, 2.045576f);
+        homebindLocation = 363;
+    }
+
+    _player->SetRace(race);
+    _player->setFactionForRace(race);
+    _player->TeleportTo(location);
+    _player->SetHomebind(location, homebindLocation);
+
+    for (uint8 i = 0; i < PANDAREN_FACTION_LANGUAGE_COUNT; i++)
+        _player->learnSpell(languageSpells[i], false);
+
+    WorldPacket data(SMSG_PANDAREN_FACTION_CHOSEN, 4 + 1);
+    data << (uint32)race;
+    data.WriteBit(1); // unk bool
+    data.FlushBits();
+    SendPacket(&data);
+
+    _player->GetReputationMgr().UpdateReputationFlags();
+
+    _player->GetReputationMgr().SendInitialReputations();
+    _player->SendFeatureSystemStatus();
+    _player->GetReputationMgr().SendForceReactions();
 }
 
 void WorldSession::HandleInspectOpcode(WorldPacket& recvData)
