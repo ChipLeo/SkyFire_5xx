@@ -37,6 +37,83 @@ struct TempSummonData
     uint32 time;         ///< Despawn time, usable only with certain temp summon types
 };
 
+// Creature Pet entries
+enum EPetEntries
+{
+    // Warlock
+    PET_ENTRY_INFERNAL = 89,
+    PET_ENTRY_IMP = 416,
+    PET_ENTRY_VOIDWALKER = 1860,
+    PET_ENTRY_SUCCUBUS = 1863,
+    PET_ENTRY_FELHUNTER = 417,
+    PET_ENTRY_FELGUARD = 17252,
+    PET_ENTRY_FEL_IMP = 58959,
+    PET_ENTRY_VOIDLORD = 58960,
+    PET_ENTRY_SHIVARRA = 58963,
+    PET_ENTRY_OBSERVER = 58964,
+    PET_ENTRY_WRATHGUARD = 58965,
+    PET_ENTRY_WILD_IMP = 55659,
+    PET_ENTRY_ABYSSAL = 58997,
+    PET_ENTRY_TERRORGUARD = 59000,
+    PET_ENTRY_DOOMGUARD = 11859,
+
+    // Mage
+    PET_ENTRY_WATER_ELEMENTAL = 510,
+    PET_ENTRY_MIRROR_IMAGE = 31216,
+
+    // Druid
+    PET_ENTRY_TREANT_GUARDIAN = 54985,
+    PET_ENTRY_TREANT_FERAL = 54984,
+    PET_ENTRY_TREANT_RESTO = 54983,
+    PET_ENTRY_TREANT_BALANCE = 1964,
+
+    // Shaman
+    PET_ENTRY_FIRE_ELEMENTAL = 15438,
+    PET_ENTRY_FERAL_SPIRIT = 29264,
+    PET_ENTRY_FERAL_SPIRIT_SYMBIOSIS = 58488,
+    PET_ENTRY_EARTH_ELEMENTAL = 15352,
+    PET_ENTRY_HEALING_TIDE_TOTEM = 59764,
+
+    // Death Knight
+    PET_ENTRY_GHOUL = 26125,
+    PET_ENTRY_BLOODWORM = 28017,
+    PET_ENTRY_GARGOYLE = 27829,
+    PET_ENTRY_DEAD_ARMY = 24207,
+
+    // Priest
+    PET_ENTRY_SHADOWFIEND = 19668,
+    PET_ENTRY_MINDBENDER = 62982,
+    PET_ENTRY_MINDBENDER_SHA = 67236,
+    PET_ENTRY_SHADOWY_APPARITION = 61966,
+    PET_ENTRY_PSYFIEND = 59190,
+
+    // Hunter
+    PET_ENTRY_VENOMOUS_SNAKE = 19833,
+    PET_ENTRY_VIPER = 19921,
+    PET_ENTRY_MURDER_OF_CROWS = 61994,
+    PET_ENTRY_DIRE_BEAST_DUNGEONS = 62005,
+    PET_ENTRY_DIRE_BEAST_VALLEY_OF_THE_FW = 62210,
+    PET_ENTRY_DIRE_BEAST_KALIMDOR = 62855,
+    PET_ENTRY_DIRE_BEAST_ESTERN_KINGDOMS = 62856,
+    PET_ENTRY_DIRE_BEAST_OUTLAND = 62857,
+    PET_ENTRY_DIRE_BEAST_NORTHREND = 62858,
+    PET_ENTRY_DIRE_BEAST_KRASARANG_WILDS = 62860,
+    PET_ENTRY_DIRE_BEAST_JADE_FOREST = 62865,
+    PET_ENTRY_DIRE_BEAST_VALE_OF_ETERNAL_BLOSSOMS = 64617,
+    PET_ENTRY_DIRE_BEAST_KUNLAI_SUMMIT = 64618,
+    PET_ENTRY_DIRE_BEAST_TOWNLONG_STEPPES = 64619,
+    PET_ENTRY_DIRE_BEAST_DREAD_WASTES = 64620,
+
+    // Rogue
+    PET_ENTRY_DECOY = 62261,
+
+    // Paladin
+    PET_ENTRY_GUARDIAN_OF_ANCIENT_KINGS = 46506,
+
+    // Monk
+    PET_ENTRY_XUEN_THE_WHITE_TIGER = 63508
+};
+
 class TempSummon : public Creature
 {
     public:
@@ -72,9 +149,15 @@ class Minion : public TempSummon
         Unit* GetOwner() const { return m_owner; }
         float GetFollowAngle() const { return m_followAngle; }
         void SetFollowAngle(float angle) { m_followAngle = angle; }
-        bool IsPetGhoul() const {return GetEntry() == 26125;} // Ghoul may be guardian or pet
-        bool IsSpiritWolf() const {return GetEntry() == 29264;} // Spirit wolf from feral spirits
+
+        bool IsTreant() const;
+        bool IsPetGhoul() const { return GetEntry() == PET_ENTRY_GHOUL; }
+        bool IsPetGargoyle() const { return GetEntry() == PET_ENTRY_GARGOYLE; }
+        bool IsSpiritWolf() const { return GetEntry() == PET_ENTRY_FERAL_SPIRIT; }
+        bool isWrathGuard() const { return GetEntry() == PET_ENTRY_WRATHGUARD; }
+        bool IsWaterElemental() const { return GetEntry() == PET_ENTRY_WATER_ELEMENTAL; } 
         bool IsGuardianPet() const;
+        bool IsWarlockPet() const;
     protected:
         Unit* const m_owner;
         float m_followAngle;
@@ -122,5 +205,46 @@ public:
 
 private:
     TempSummon& m_owner;
+};
+
+inline
+bool Minion::IsTreant() const
+{
+    switch (GetEntry())
+    {
+    case PET_ENTRY_TREANT_GUARDIAN:
+    case PET_ENTRY_TREANT_FERAL:
+    case PET_ENTRY_TREANT_BALANCE:
+    case PET_ENTRY_TREANT_RESTO:
+        return true;
+    default:
+        return false;
+    }
+}
+
+inline
+bool Minion::IsWarlockPet() const
+{
+    auto checkEntry = [this]()
+    {
+        switch (GetEntry())
+        {
+        case PET_ENTRY_INFERNAL:
+        case PET_ENTRY_IMP:
+        case PET_ENTRY_VOIDWALKER:
+        case PET_ENTRY_SUCCUBUS:
+        case PET_ENTRY_FELHUNTER:
+        case PET_ENTRY_FELGUARD:
+        case PET_ENTRY_OBSERVER:
+        case PET_ENTRY_SHIVARRA:
+        case PET_ENTRY_VOIDLORD:
+        case PET_ENTRY_FEL_IMP:
+            return true;
+        default:
+            return false;
+        }
+    };
+
+    return IsPet() && checkEntry() || isWrathGuard();
 };
 #endif

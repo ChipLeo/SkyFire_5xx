@@ -61,6 +61,9 @@ m_subGroupsCounts(NULL), m_guid(0), m_counter(0), m_maxEnchantingLevel(0), m_dbS
 {
     for (uint8 i = 0; i < TARGETICONCOUNT; ++i)
         m_targetIcons[i] = 0;
+
+    for (uint8 i = 0; i < WORLD_MARKER_COUNT; ++i)
+        m_worldMarkers[i] = nullptr;
 }
 
 Group::~Group()
@@ -88,6 +91,12 @@ Group::~Group()
         for (BoundInstancesMap::iterator itr2 = m_boundInstances[i].begin(); itr2 != m_boundInstances[i].end(); ++itr2)
             itr2->second.save->RemoveGroup(this);
 
+    for (uint8 i = 0; i < WORLD_MARKER_COUNT; ++i)
+    {
+        if (m_worldMarkers[i])
+            delete m_worldMarkers[i];
+    }
+
     // Sub group counters clean up
     delete [] m_subGroupsCounts;
 }
@@ -100,6 +109,7 @@ bool Group::Create(Player* leader)
     m_guid = MAKE_NEW_GUID(lowguid, 0, HIGHGUID_GROUP);
     m_leaderGuid = leaderGuid;
     m_leaderName = leader->GetName();
+    leader->SetFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_GROUP_LEADER);
 
     if (isBGGroup() || isBFGroup())
         m_groupType = GROUPTYPE_BGRAID;
@@ -704,6 +714,10 @@ void Group::ChangeLeader(uint64 newLeaderGuid)
         CharacterDatabase.CommitTransaction(trans);
     }
 
+    if (Player* oldLeader = ObjectAccessor::FindPlayer(m_leaderGuid))
+        oldLeader->RemoveFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_GROUP_LEADER);
+
+    newLeader->SetFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_GROUP_LEADER);
     m_leaderGuid = newLeader->GetGUID();
     m_leaderName = newLeader->GetName();
     ToggleGroupMemberFlag(slot, MEMBER_FLAG_ASSISTANT, false);
@@ -1627,40 +1641,122 @@ void Group::SendTargetIconList(WorldSession* session)
     if (!session)
         return;
 
-    uint8 Index = 0;
-    WorldPacket data(SMSG_RAID_TARGET_UPDATE_ALL, (1 + TARGETICONCOUNT * 9));
-    data.WriteBits(0, 25);
+    WorldPacket data(SMSG_RAID_TARGET_UPDATE_ALL, (4 + 10 * TARGETICONCOUNT));
+
+    size_t count_pos = data.bitwpos();
+    data.WriteBits(0, 23);
+    uint8 count = 0;
 
     for (uint8 i = 0; i < TARGETICONCOUNT; ++i)
     {
-        if (m_targetIcons[i] == 0)
+        if (!m_targetIcons[i])
             continue;
 
-        ObjectGuid guid = m_targetIcons[i];
+        ObjectGuid guid = ObjectGuid(m_targetIcons[i]);
+        data.WriteGuidMask(guid, 2, 1, 3, 7, 6, 4, 0, 5);
 
-        data.WriteBit(guid[2]);
-        data.WriteBit(guid[1]);
-        data.WriteBit(guid[3]);
-        data.WriteBit(guid[7]);
-        data.WriteBit(guid[6]);
-        data.WriteBit(guid[4]);
-        data.WriteBit(guid[0]);
-        data.WriteBit(guid[5]);
+        count++;
+    }
 
-        data.WriteByteSeq(guid[4]);
-        data.WriteByteSeq(guid[7]);
-        data.WriteByteSeq(guid[1]);
-        data.WriteByteSeq(guid[0]);
-        data.WriteByteSeq(guid[6]);
-        data.WriteByteSeq(guid[5]);
-        data.WriteByteSeq(guid[3]);
+    data.PutBits(count_pos, count, 23);
+    data.FlushBits();
+
+    for (uint8 i = 0; i < TARGETICONCOUNT; ++i)
+    {
+        if (!m_targetIcons[i])
+            continue;
+
+        ObjectGuid guid = ObjectGuid(m_targetIcons[i]);
+        data.WriteGuidBytes(guid, 4, 7, 1, 0, 6, 5, 3);
         data << uint8(i);
         data.WriteByteSeq(guid[2]);
     }
 
-    data << uint8(Index);
+    data << uint8(1);
 
     session->SendPacket(&data);
+}
+
+void Group::SetWorldMarker(uint8 slot, const Position& pos, uint32 mapID)
+{
+    ASSERT(slot < WORLD_MARKER_COUNT && "World Marker slot must be at the maximum value of 4");
+
+    WorldMarkerPosition* position = new WorldMarkerPosition();
+    position->mapID = mapID;
+    position->position = pos;
+
+    m_worldMarkers[slot] = position;
+    SendWorldMarkerUpdate();
+}
+
+void Group::SendWorldMarkerUpdate()
+{
+    uint8 count = std::count_if(m_worldMarkers.begin(), m_worldMarkers.end(),
+        [](std::map<uint8, WorldMarkerPosition*>::value_type const& marker) { return marker.second; });
+
+    ObjectGuid guid = ObjectGuid(0);
+
+    WorldPacket data(SMSG_WORLD_MARKERS_CHANGED, count * 18 + 6);
+
+    uint32 mask = 0;
+    for (uint8 i = 0; i < WORLD_MARKER_COUNT; ++i)
+        if (m_worldMarkers[i])
+            mask |= 1 << i;
+
+    data << uint8(0);
+    data << uint32(mask);
+    data.WriteBits(count, 3);
+
+    for (uint8 i = 0; i < WORLD_MARKER_COUNT; ++i)
+    {
+        if (!m_worldMarkers[i])
+            continue;
+
+        data.WriteGuidMask(guid, 6, 2, 7, 1, 4, 3, 5, 0);
+    }
+
+    for (uint8 i = 0; i < WORLD_MARKER_COUNT; ++i)
+    {
+        const WorldMarkerPosition* marker = m_worldMarkers[i];
+        if (!marker)
+            continue;
+
+        data.WriteByteSeq(guid[6]);
+        data << float(marker->position.GetPositionY());
+        data.WriteByteSeq(guid[2]);
+        data << float(marker->position.GetPositionX());
+        data.WriteGuidBytes(guid, 7, 5, 0, 4);
+        data << float(marker->position.GetPositionZ());
+        data.WriteGuidBytes(guid, 3, 1);
+        data << uint32(marker->mapID);
+    }
+
+    BroadcastPacket(&data, false);
+}
+
+void Group::ClearWorldMarker(uint8 slot)
+{
+    if (slot == WORLD_MARKER_COUNT)
+    {
+        for (uint8 i = 0; i < WORLD_MARKER_COUNT; ++i)
+        {
+            if (!m_worldMarkers[i])
+                continue;
+
+            delete m_worldMarkers[i];
+            m_worldMarkers[i] = nullptr;
+        }
+
+        SendWorldMarkerUpdate();
+        return;
+    }
+    else if (m_worldMarkers[slot])
+    {
+        delete m_worldMarkers[slot];
+        m_worldMarkers[slot] = nullptr;
+
+        SendWorldMarkerUpdate();
+    }
 }
 
 void Group::SendUpdate()
@@ -1774,7 +1870,7 @@ void Group::SendUpdateToPlayer(uint64 playerGUID, MemberSlot* slot)
 
         Player* member = ObjectAccessor::FindPlayer(memberGuid);
 
-        uint8 onlineState = member ? MEMBER_STATUS_ONLINE : MEMBER_STATUS_OFFLINE;
+        uint8 onlineState = (member && !member->GetSession()->PlayerLogout()) ? MEMBER_STATUS_ONLINE : MEMBER_STATUS_OFFLINE;
         onlineState = onlineState | ((isBGGroup() || isBFGroup()) ? MEMBER_STATUS_PVP : 0);
 
         data.WriteBit(memberGuid[1]);
@@ -1838,8 +1934,8 @@ void Group::SendUpdateToPlayer(uint64 playerGUID, MemberSlot* slot)
 
     //if (hasInstanceDifficulty)
     {
-        data << uint32(m_raidDifficulty);               // raid Difficulty
-        data << uint32(m_dungeonDifficulty);            // dungeon Difficulty
+        data << uint32(m_dungeonDifficulty);               // dungeon Difficulty
+        data << uint32(m_raidDifficulty);                  // raid Difficulty
     }
 
     data.append(memberData);
@@ -1935,24 +2031,11 @@ void Group::SendReadyCheckCompleted()
     ObjectGuid guid = m_guid;
 
     WorldPacket data(SMSG_RAID_READY_CHECK_COMPLETED, 1 + 8 + 1);
-    data.WriteBit(guid[4]);
-    data.WriteBit(guid[2]);
-    data.WriteBit(guid[5]);
-    data.WriteBit(guid[7]);
-    data.WriteBit(guid[1]);
-    data.WriteBit(guid[0]);
-    data.WriteBit(guid[3]);
-    data.WriteBit(guid[6]);
+    data.WriteGuidMask(guid, 4, 2, 5, 7, 1, 0, 3, 6);
 
-    data.WriteByteSeq(guid[6]);
-    data.WriteByteSeq(guid[0]);
-    data.WriteByteSeq(guid[3]);
-    data.WriteByteSeq(guid[1]);
-    data.WriteByteSeq(guid[5]);
+    data.WriteGuidBytes(guid, 6, 0, 3, 1, 5);
     data << uint8(0);
-    data.WriteByteSeq(guid[7]);
-    data.WriteByteSeq(guid[2]);
-    data.WriteByteSeq(guid[4]);
+    data.WriteGuidBytes(guid, 7, 2, 4);
 
     BroadcastPacket(&data, false);
 }
@@ -2026,40 +2109,27 @@ void Group::OfflineReadyCheck()
 
             WorldPacket data(SMSG_RAID_READY_CHECK_CONFIRM, 1 + 1 + 8 + 1 + 8);
             data.WriteBit(groupGuid[4]);
-            data.WriteBit(playerGuid[5]);
-            data.WriteBit(playerGuid[3]);
+            data.WriteGuidMask(playerGuid, 5, 3);
             data.WriteBit(0);
             data.WriteBit(groupGuid[2]);
             data.WriteBit(playerGuid[6]);
             data.WriteBit(groupGuid[3]);
-            data.WriteBit(playerGuid[0]);
-            data.WriteBit(playerGuid[1]);
-            data.WriteBit(groupGuid[1]);
-            data.WriteBit(groupGuid[5]);
-            data.WriteBit(playerGuid[7]);
-            data.WriteBit(playerGuid[4]);
+            data.WriteGuidMask(playerGuid, 0, 1);
+            data.WriteGuidMask(groupGuid, 1, 5);
+            data.WriteGuidMask(playerGuid, 7, 4);
             data.WriteBit(groupGuid[6]);
             data.WriteBit(playerGuid[2]);
-            data.WriteBit(groupGuid[0]);
-            data.WriteBit(groupGuid[7]);
+            data.WriteGuidMask(groupGuid, 0, 7);
             data.FlushBits();
 
-            data.WriteByteSeq(playerGuid[4]);
-            data.WriteByteSeq(playerGuid[2]);
-            data.WriteByteSeq(playerGuid[1]);
-            data.WriteByteSeq(groupGuid[4]);
-            data.WriteByteSeq(groupGuid[2]);
+            data.WriteGuidBytes(playerGuid, 4, 2, 1);
+            data.WriteGuidBytes(groupGuid, 4, 2);
             data.WriteByteSeq(playerGuid[0]);
-            data.WriteByteSeq(groupGuid[5]);
-            data.WriteByteSeq(groupGuid[3]);
+            data.WriteGuidBytes(groupGuid, 5, 3);
             data.WriteByteSeq(playerGuid[7]);
-            data.WriteByteSeq(groupGuid[6]);
-            data.WriteByteSeq(groupGuid[1]);
-            data.WriteByteSeq(playerGuid[6]);
-            data.WriteByteSeq(playerGuid[3]);
-            data.WriteByteSeq(playerGuid[5]);
-            data.WriteByteSeq(groupGuid[0]);
-            data.WriteByteSeq(groupGuid[7]);
+            data.WriteGuidBytes(groupGuid, 6, 1);
+            data.WriteGuidBytes(playerGuid, 6, 3, 5);
+            data.WriteGuidBytes(groupGuid, 0, 7);
 
             BroadcastPacket(&data, false);
 

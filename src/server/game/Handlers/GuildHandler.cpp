@@ -327,6 +327,20 @@ void WorldSession::HandleGuildQueryRanksOpcode(WorldPacket& recvPacket)
             guild->SendGuildRankInfo(this);
 }
 
+void WorldSession::HandleGuildUpdateRanksOpcode(WorldPacket& recvPacket)
+{
+    uint32 GuildID = 0;
+    bool RankUpdate = false;
+
+    recvPacket >> GuildID;
+    RankUpdate = recvPacket.ReadBit();
+
+    SF_LOG_DEBUG("guild", "CMSG_GUILD_EVENT_UPDATE_RANKS for Guild id %u Rank: %u", GuildID, RankUpdate);
+
+    if (Guild* guild = GetPlayer()->GetGuild())
+        guild->HandleUpdateRank(this, GuildID, RankUpdate);
+}
+
 void WorldSession::HandleGuildAddRankOpcode(WorldPacket& recvPacket)
 {
     uint32 rankId;

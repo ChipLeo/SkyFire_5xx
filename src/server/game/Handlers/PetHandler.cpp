@@ -978,6 +978,63 @@ void WorldSession::HandlePetLearnTalent(WorldPacket& recvData)
     SF_LOG_DEBUG("network", "WORLD: CMSG_PET_LEARN_TALENT");
 }
 
+void WorldSession::HandlePetLearnSpecialization(WorldPacket& recvData)
+{
+    SF_LOG_DEBUG("network", "WORLD: CMSG_PET_LEARN_SPECIALIZATION");
+
+    uint32 index = recvData.read<uint32>();
+
+    ObjectGuid guid; // not used yet
+    recvData.ReadGuidMask(guid, 5, 7, 3, 0, 6, 4, 1, 2);
+
+    recvData.ReadGuidBytes(guid, 7, 5, 4, 3, 0, 2, 6, 1);
+
+    recvData.rfinish();
+
+    // pet should not learn specialization of owner if in combat
+    if (_player->IsInCombat())
+        return;
+
+    uint32 specializationId = 0;
+
+    switch (index)
+    {
+    case 0:
+        specializationId = PET_SPECIALIZATION_FEROCITY;
+        break;
+    case 1:
+        specializationId = PET_SPECIALIZATION_TENACITY;
+        break;
+    case 2:
+        specializationId = PET_SPECIALIZATION_CUNNING;
+        break;
+    default:
+        break;
+    }
+
+    Pet* pet = _player->GetPet();
+    if (!pet)
+        return;
+
+    // do nothing if required specialization index is 0 (not specialization)
+    if (!specializationId)
+        return;
+
+    // do nothing if required specialization is already learned
+    if (pet->GetSpecializationId() == specializationId)
+        return;
+
+    // if there is another different specialization, unlearned old spec spells
+    if (pet->GetSpecializationId())
+        pet->UnlearnSpecializationSpell();
+
+    // everything is alright now, set specialization and learn spec spells
+    pet->SetSpecializationId(specializationId);
+    pet->LearnSpecializationSpell();
+
+    _player->SendTalentsInfoData(true);
+}
+
 void WorldSession::HandleLearnPreviewTalentsPet(WorldPacket& recvData)
 {
     SF_LOG_DEBUG("network", "CMSG_LEARN_PREVIEW_TALENTS_PET");

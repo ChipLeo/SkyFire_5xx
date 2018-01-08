@@ -12152,21 +12152,29 @@ int32 Unit::GetCreatePowers(Powers power) const
                 return 100;
             return (GetTypeId() == TYPEID_PLAYER || !((Creature const*)this)->IsPet() || ((Pet const*)this)->getPetType() != HUNTER_PET ? 0 : 100);
         case POWER_ENERGY:
-            return 100;
+            return ((IsPet() && GetEntry() == PET_ENTRY_IMP || GetEntry() == PET_ENTRY_FELHUNTER || GetEntry() == PET_ENTRY_VOIDWALKER ||
+                GetEntry() == PET_ENTRY_SUCCUBUS || GetEntry() == PET_ENTRY_FELGUARD || GetEntry() == PET_ENTRY_SHIVARRA || GetEntry() == PET_ENTRY_OBSERVER ||
+                GetEntry() == PET_ENTRY_VOIDLORD || GetEntry() == PET_ENTRY_FEL_IMP) ? 200 : 100);
         case POWER_RUNIC_POWER:
             return 1000;
         case POWER_RUNES:
             return 0;
+        case POWER_SHADOW_ORBS:
+            return (GetTypeId() == TYPEID_PLAYER && ToPlayer()->getClass() == CLASS_PRIEST && (ToPlayer()->GetSpecializationId(ToPlayer()->GetActiveSpec()) == CHAR_SPECIALIZATION_PRIEST_SHADOW) ? 3 : 0);
+        case POWER_BURNING_EMBERS:
+            return (GetTypeId() == TYPEID_PLAYER && ToPlayer()->getClass() == CLASS_WARLOCK && (ToPlayer()->GetSpecializationId(ToPlayer()->GetActiveSpec()) == CHAR_SPECIALIZATION_WARLOCK_DESTRUCTION) ? 40 : 0);
+        case POWER_DEMONIC_FURY:
+            return (GetTypeId() == TYPEID_PLAYER && ToPlayer()->getClass() == CLASS_WARLOCK && (ToPlayer()->GetSpecializationId(ToPlayer()->GetActiveSpec()) == CHAR_SPECIALIZATION_WARLOCK_DEMONOLOGY) ? 1000 : 0);
         case POWER_SOUL_SHARDS:
-            return 3;
+            return (GetTypeId() == TYPEID_PLAYER && ToPlayer()->getClass() == CLASS_WARLOCK && (ToPlayer()->GetSpecializationId(ToPlayer()->GetActiveSpec()) == CHAR_SPECIALIZATION_WARLOCK_AFFLICTION) ? 400 : 0); // UPDATED 5.4.8
         case POWER_ECLIPSE:
-            return 100;
+            return (GetTypeId() == TYPEID_PLAYER && ToPlayer()->getClass() == CLASS_DRUID && (ToPlayer()->GetSpecializationId(ToPlayer()->GetActiveSpec()) == CHAR_SPECIALIZATION_DRUID_BALANCE) ? 100 : 0); // Should be -100 to 100 this needs the power to be int32 instead of uint32
         case POWER_HOLY_POWER:
-            return 3;
+            return (GetTypeId() == TYPEID_PLAYER && ToPlayer()->getClass() == CLASS_PALADIN ? 3 : 0);
         case POWER_HEALTH:
             return 0;
         case POWER_CHI:
-            return 4;
+            return (GetTypeId() == TYPEID_PLAYER && ToPlayer()->getClass() == CLASS_MONK ? 4 : 0);
         default:
             break;
     }

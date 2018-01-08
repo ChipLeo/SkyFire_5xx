@@ -577,7 +577,7 @@ void WorldSession::HandleCorpseMapPositionQuery(WorldPacket& recvData)
     uint32 transportGuidLow;
     recvData >> transportGuidLow;
 
-    WorldPacket data(SMSG_CORPSE_MAP_POSITION_QUERY_RESPONSE, 4+4+4+4);
+    WorldPacket data(SMSG_CORPSE_QUERY, 4+4+4+4);
     data << float(0);
     data << float(0);
     data << float(0);

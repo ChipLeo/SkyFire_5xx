@@ -802,6 +802,7 @@ public:
     void HandleGuildPartyRequest(WorldSession* session);
     void HandleNewsSetSticky(WorldSession* session, uint32 newsId, bool sticky);
     void HandleSetBankTabNote(WorldSession* session, uint32 tabId, std::string note);
+    void HandleUpdateRank(WorldSession* session, uint32 GuildID, bool RankId);
 
     void UpdateMemberData(Player* player, uint8 dataid, uint32 value);
     void OnPlayerStatusChange(Player* player, uint32 flag, bool state);

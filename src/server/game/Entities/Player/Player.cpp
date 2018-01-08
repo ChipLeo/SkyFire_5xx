@@ -932,12 +932,17 @@ Player::~Player()
     delete m_achievementMgr;
     delete m_reputationMgr;
     delete m_battlePetMgr;
+    GetSession()->m_petslist.clear();
 
     for (uint8 i = 0; i < VOID_STORAGE_MAX_SLOT; ++i)
         delete _voidStorageItems[i];
 
     for (uint8 i = 0; i < MAX_CUF_PROFILES; ++i)
         delete _CUFProfiles[i];
+
+    for (uint8 i = 0; i < RESEARCH_CONTINENT_COUNT; ++i)
+        for (uint8 j = 0; j < MAX_DIGSITES_PER_CONTINENT; ++j)
+            delete _researchDigsites[i][j];
 
     ClearResurrectRequestData();
 
@@ -4130,7 +4135,7 @@ bool Player::IsNeedCastPassiveSpellAtLearn(SpellInfo const* spellInfo) const
     // note: form passives activated with shapeshift spells be implemented by HandleShapeshiftBoosts instead of spell_learn_spell
     // talent dependent passives activated at form apply have proper stance data
     ShapeshiftForm form = GetShapeshiftForm();
-    bool need_cast = (!spellInfo->Stances || (form && (spellInfo->Stances & (1 << (form - 1)))) ||
+    bool need_cast = (!spellInfo->Stances || (form && (spellInfo->Stances & (UI64LIT(1) << (form - 1)))) ||
         (!form && (spellInfo->AttributesEx2 & SPELL_ATTR2_NOT_NEED_SHAPESHIFT)));
 
     if (spellInfo->AttributesEx8 & SPELL_ATTR8_MASTERY_SPECIALIZATION)
@@ -4339,15 +4344,16 @@ void Player::removeSpell(uint32 spell_id, bool disabled, bool learn_low_rank)
     if (uint32 prev_id = sSpellMgr->GetPrevSpellInChain(spell_id))
     {
         // if talent then lesser rank also talent and need learn
-        if (talentCosts)
-        {
+        //if (talentCosts)
+        //{
             // I cannot see why mangos has these lines.
             //if (learn_low_rank)
             //    learnSpell(prev_id, false);
-        }
+        //}
         // if ranked non-stackable spell: need activate lesser rank and update dendence state
         /// No need to check for spellInfo != NULL here because if cur_active is true, then that means that the spell was already in m_spells, and only valid spells can be pushed there.
-        else if (cur_active && !spellInfo->IsStackableWithRanks() && spellInfo->IsRanked())
+        //else
+        if (cur_active && !spellInfo->IsStackableWithRanks() && spellInfo->IsRanked())
         {
             // need manually update dependence state (learn spell ignore like attempts)
             PlayerSpellMap::iterator prev_itr = m_spells.find(prev_id);
@@ -7143,6 +7149,48 @@ void Player::setFactionForRace(uint8 race)
     setFaction(rEntry ? rEntry->FactionID : 0);
 }
 
+void Player::SendFeatureSystemStatus()
+{
+    bool feedbackSystem = sWorld->getBoolConfig(CONFIG_TICKETS_FEEDBACK_SYSTEM_ENABLED);
+    bool excessiveWarning = false;
+
+    WorldPacket data(SMSG_FEATURE_SYSTEM_STATUS, 4 + 4 + 4 + 1 + 4 + 2 + 4 + 4 + 4 + 4 + 4 + 4 + 4);
+    data << uint32(0);                  // Scroll of Resurrection per day?
+    data << uint32(0);                  // Scroll of Resurrection current
+    data << uint32(0);
+    data << uint8(2);
+    data << uint32(0);
+
+    data.WriteBit(1);
+    data.WriteBit(0);                   // ingame shop status (0 - "The Shop is temporarily unavailable.")
+    data.WriteBit(1);
+    data.WriteBit(0);                   // Recruit a Friend button
+    data.WriteBit(0);                   // server supports voice chat
+    data.WriteBit(0);                   // show ingame shop icon
+    data.WriteBit(0);                   // Scroll of Resurrection button
+    data.WriteBit(excessiveWarning);    // excessive play time warning
+    data.WriteBit(0);                   // ingame shop parental control (1 - "Feature has been disabled by Parental Controls.")
+    data.WriteBit(feedbackSystem);      // feedback system (bug, suggestion and report systems)
+    data.FlushBits();
+
+    if (excessiveWarning)
+    {
+        data << uint32(0);              // excessive play time warning after period(in seconds)
+        data << uint32(0);
+        data << uint32(0);
+    }
+
+    if (feedbackSystem)
+    {
+        data << uint32(0);
+        data << uint32(1);
+        data << uint32(10);
+        data << uint32(60000);
+    }
+
+    GetSession()->SendPacket(&data);
+}
+
 ReputationRank Player::GetReputationRank(uint32 faction) const
 {
     FactionEntry const* factionEntry = sFactionStore.LookupEntry(faction);
@@ -7579,6 +7627,20 @@ void Player::_SaveCurrency(SQLTransaction& trans)
 
         itr->second.state = PLAYERCURRENCY_UNCHANGED;
     }
+}
+
+void Player::ModifyCurrencyFlag(uint32 id, uint8 flag)
+{
+    if (!id)
+        return;
+
+    if (_currencyStorage.find(id) == _currencyStorage.end())
+        return;
+
+    _currencyStorage[id].flags = flag;
+
+    if (_currencyStorage[id].state != PLAYERCURRENCY_NEW)
+        _currencyStorage[id].state = PLAYERCURRENCY_CHANGED;
 }
 
 void Player::SendNewCurrency(uint32 id) const
@@ -17671,7 +17733,7 @@ void Player::_LoadArenaTeamInfo(PreparedQueryResult result)
     // arenateamid, played_week, played_season, personal_rating
     memset((void*)&m_uint32Values[PLAYER_FIELD_PVP_INFO], 0, sizeof(uint32) * MAX_ARENA_SLOT * ARENA_TEAM_END);
 
-    uint16 personalRatingCache[] = {0, 0, 0};
+    uint16 personalRatingCache[] = { 0, 0, 0 };
 
     if (result)
     {
@@ -17698,8 +17760,7 @@ void Player::_LoadArenaTeamInfo(PreparedQueryResult result)
             SetArenaTeamInfoField(arenaSlot, ARENA_TEAM_GAMES_WEEK, uint32(fields[1].GetUInt16()));
             SetArenaTeamInfoField(arenaSlot, ARENA_TEAM_GAMES_SEASON, uint32(fields[2].GetUInt16()));
             SetArenaTeamInfoField(arenaSlot, ARENA_TEAM_WINS_SEASON, uint32(fields[3].GetUInt16()));
-        }
-        while (result->NextRow());
+        } while (result->NextRow());
     }
 
     for (uint8 slot = 0; slot <= 2; ++slot)
@@ -21164,6 +21225,8 @@ void Player::SendAttackSwingBadFacingAttack()
 
 void Player::SendAutoRepeatCancel(Unit* target)
 {
+    SF_LOG_DEBUG("network", "Player: Send SMSG_CANCEL_AUTO_REPEAT");
+
     WorldPacket data(SMSG_CANCEL_AUTO_REPEAT, 8);
     ObjectGuid Guid = target->GetGUID();
 
@@ -21204,9 +21267,8 @@ void Player::SendDungeonDifficulty(bool IsInGroup)
 
 void Player::SendRaidDifficulty(bool IsInGroup, int32 forcedDifficulty)
 {
-    WorldPacket data(MSG_SET_RAID_DIFFICULTY, 5);
-    data << uint32(forcedDifficulty == -1 ? GetDifficulty(!IsInGroup) : forcedDifficulty);
-    data << uint8(IsInGroup);
+    WorldPacket data(MSG_SET_RAID_DIFFICULTY, 4);
+    data << uint32(forcedDifficulty == -1 ? GetRaidDifficulty() : forcedDifficulty);
     GetSession()->SendPacket(&data);
 }
 
@@ -21436,6 +21498,8 @@ void Player::RemovePet(Pet* pet, PetSaveMode mode, bool returnreagent)
 
     if (pet->isControlled())
     {
+        SF_LOG_DEBUG("network", "Player: Send SMSG_PET_SPELLS_MESSAGE");
+
         ObjectGuid Guid;
         WorldPacket data(SMSG_PET_SPELLS_MESSAGE, 8);
 
@@ -21452,6 +21516,9 @@ void Player::RemovePet(Pet* pet, PetSaveMode mode, bool returnreagent)
         data.WriteBit(Guid[1]);
 
         data.FlushBits();
+
+        for (uint32 i = 0; i < MAX_SPELL_CONTROL_BAR; ++i)
+            data << uint32(0);
 
         data.WriteByteSeq(Guid[2]);
         data.WriteByteSeq(Guid[7]);
@@ -21601,6 +21668,8 @@ bool Player::RemoveMItem(uint32 id)
 
 void Player::SendOnCancelExpectedVehicleRideAura()
 {
+    SF_LOG_DEBUG("network", "Player: Send SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA");
+
     WorldPacket data(SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA, 0);
     GetSession()->SendPacket(&data);
 }
@@ -21620,6 +21689,8 @@ void Player::PetSpellInitialize()
     uint32 spellCount = 0;
     uint32 spellHistoryCount = 0;
     uint32 cooldownCount = pet->m_CreatureSpellCooldowns.size() + pet->m_CreatureCategoryCooldowns.size();
+
+    SF_LOG_DEBUG("network", "Player: Send SMSG_PET_SPELLS_MESSAGE");
 
     WorldPacket data(SMSG_PET_SPELLS_MESSAGE, 8+2+4+4+4*MAX_UNIT_ACTION_BAR_INDEX+1+1);
 
@@ -21722,6 +21793,8 @@ void Player::PossessSpellInitialize()
         SF_LOG_ERROR("entities.player", "Player::PossessSpellInitialize(): charm (" UI64FMTD ") has no charminfo!", charm->GetGUID());
         return;
     }
+
+    SF_LOG_DEBUG("network", "Player: Send SMSG_PET_SPELLS_MESSAGE");
 
     ObjectGuid Guid = charm->GetGUID();
     WorldPacket data(SMSG_PET_SPELLS_MESSAGE, 8+2+4+4+4*MAX_UNIT_ACTION_BAR_INDEX+1+1);
@@ -21883,9 +21956,9 @@ void Player::VehicleSpellInitialize()
     data.WriteByteSeq(VehicleGuid[6]);
     data << uint32(vehicle->IsSummon() ? vehicle->ToTempSummon()->GetTimer() : 0); // Duration
     data.WriteByteSeq(VehicleGuid[5]);
-    data << uint8(vehicle->GetReactState());                // React State
-    data << uint8(0);                                       // Command State
-    data << uint16(0x800);                                  // DisableActions (set for all vehicles)
+    data << uint8(1);// vehicle->GetReactState());                // React State
+    data << uint8(1);                                       // Command State
+    data << uint16(0x000);                                  // DisableActions (set for all vehicles)
 
     GetSession()->SendPacket(&data);
 }
@@ -21914,6 +21987,8 @@ void Player::CharmSpellInitialize()
                     ++addlist;
         }
     }
+
+    SF_LOG_DEBUG("network", "Player: Send SMSG_PET_SPELLS_MESSAGE");
 
     ObjectGuid CharmGuid = charm->GetGUID();
     WorldPacket data(SMSG_PET_SPELLS_MESSAGE, 8+2+4+4+4*MAX_UNIT_ACTION_BAR_INDEX+1+4*addlist+1);
@@ -21954,6 +22029,8 @@ void Player::CharmSpellInitialize()
 
 void Player::SendRemoveControlBar()
 {
+    SF_LOG_DEBUG("network", "Player: Send SMSG_PET_SPELLS_MESSAGE");
+
     ObjectGuid Guid;
     WorldPacket data(SMSG_PET_SPELLS_MESSAGE, 8);
 
@@ -21971,6 +22048,9 @@ void Player::SendRemoveControlBar()
 
     data.FlushBits();
 
+    for (uint32 i = 0; i < MAX_SPELL_CONTROL_BAR; ++i)
+        data << uint32(0);
+
     data.WriteByteSeq(Guid[2]);
     data.WriteByteSeq(Guid[7]);
     data.WriteByteSeq(Guid[0]);
@@ -21982,6 +22062,7 @@ void Player::SendRemoveControlBar()
     data.WriteByteSeq(Guid[6]);
     data << uint32(0);
     data.WriteByteSeq(Guid[5]);
+    data << uint32(0);
 
     GetSession()->SendPacket(&data);
 }
@@ -22061,13 +22142,15 @@ void Player::RestoreSpellMods(Spell* spell, uint32 ownerAuraId, Aura* aura)
     if (!spell || spell->m_appliedMods.empty())
         return;
 
-    for (uint8 i=0; i<MAX_SPELLMOD; ++i)
+    std::list<Aura*> aurasQueue;
+
+    for (uint8 i = 0; i < MAX_SPELLMOD; ++i)
     {
         for (SpellModList::iterator itr = m_spellMods[i].begin(); itr != m_spellMods[i].end(); ++itr)
         {
             SpellModifier* mod = *itr;
 
-            // spellmods without aura set cannot be charged
+            // Spellmods without aura set cannot be charged
             if (!mod->ownerAura || !mod->ownerAura->IsUsingCharges())
                 continue;
 
@@ -22078,32 +22161,42 @@ void Player::RestoreSpellMods(Spell* spell, uint32 ownerAuraId, Aura* aura)
             if (aura && mod->ownerAura != aura)
                 continue;
 
-            // check if mod affected this spell
-            // first, check if the mod aura applied at least one spellmod to this spell
+            // Check if mod affected this spell
+            // First, check if the mod aura applied at least one spellmod to this spell
             Spell::UsedSpellMods::iterator iterMod = spell->m_appliedMods.find(mod->ownerAura);
             if (iterMod == spell->m_appliedMods.end())
                 continue;
-            // secondly, check if the current mod is one of the spellmods applied by the mod aura
+            // Second, check if the current mod is one of those applied by the mod aura
             if (!(mod->mask & spell->m_spellInfo->SpellFamilyFlags))
                 continue;
 
-            // remove from list
-            spell->m_appliedMods.erase(iterMod);
+            // remove from list - This will be done after all mods have been gone through
+            // to ensure we iterate over all mods of an aura before removing said aura
+            // from applied mods (Else, an aura with two mods on the current spell would
+            // only see the first of its modifier restored)
+            aurasQueue.push_back(mod->ownerAura);
 
-            // add mod charges back to mod
+            // Add mod charges back to mod
             if (mod->charges == -1)
                 mod->charges = 1;
             else
                 mod->charges++;
 
-            // Do not set more spellmods than avalible
+            // Do not set more spellmods than available
             if (mod->ownerAura->GetCharges() < mod->charges)
                 mod->charges = mod->ownerAura->GetCharges();
 
             // Skip this check for now - aura charges may change due to various reason
-            /// @todo trac these changes correctly
+            /// @todo track these changes correctly
             //ASSERT (mod->ownerAura->GetCharges() <= mod->charges);
         }
+    }
+
+    for (std::list<Aura*>::iterator itr = aurasQueue.begin(); itr != aurasQueue.end(); ++itr)
+    {
+        Spell::UsedSpellMods::iterator iterMod = spell->m_appliedMods.find(*itr);
+        if (iterMod != spell->m_appliedMods.end())
+            spell->m_appliedMods.erase(iterMod);
     }
 }
 
@@ -22275,8 +22368,7 @@ void Player::LeaveAllArenaTeams(uint64 guid)
             if (arenaTeam)
                 arenaTeam->DelMember(guid, true);
         }
-    }
-    while (result->NextRow());
+    } while (result->NextRow());
 }
 
 void Player::SetRestBonus(float rest_bonus_new)
@@ -24256,6 +24348,128 @@ void Player::SetGroup(Group* group, int8 subgroup)
     UpdateObjectVisibility(false);
 }
 
+void Player::DataPetGuids(WorldPacket &data_guids, ByteBuffer &data_guids2, ObjectGuid guid)
+{
+    data_guids.WriteGuidMask(guid, 1, 6, 0, 4, 5, 7, 2, 3);
+    data_guids2.WriteGuidBytes(guid, 5, 2, 3, 0, 6, 1, 4, 7);
+}
+
+void Player::SendPetsInSlots(Player* owner, uint64 guid, bool all, int64 show_num)
+{
+    uint32 ownerid = owner->GetGUIDLow();
+    m_free_slot = 0;
+    WorldPacket data_guids(SMSG_PET_GUIDS, 3 + (8 * GetSession()->m_petslist.size()));
+    ByteBuffer data_guids2;
+    ObjectGuid pet_guids;
+
+    if (all == true && show_num == -1)
+        data_guids.WriteBits(GetSession()->m_petslist.size(), 24); // This is for adding all Pets guid for the actual 5 first pets.
+    else if (all == true && show_num > -1)
+        data_guids.WriteBits(1, 24); // This is for adding 1 Pet guid for 1 actual pet.
+
+    ObjectGuid guid_zero = guid;
+    WorldPacket data(SMSG_STABLE_LIST, 200);
+
+    data.WriteGuidMask(guid_zero, 3, 0, 4, 7, 2, 1, 6, 5);
+    ByteBuffer data2((4 + 4 + 1 + 4 + 20 + 4 + 4)* uint32(GetSession()->m_petslist.size()));
+
+    data.WriteBits(uint32(GetSession()->m_petslist.size()), 19);
+    uint8 petNum = 0;
+    uint64 guid_new_pet;
+    for (PetSlotsList::iterator itr = GetSession()->m_petslist.begin(); itr != GetSession()->m_petslist.end(); ++itr)
+    {
+        guid_new_pet = itr->second.guid;
+        data.WriteBits(itr->second.name.length(), 8);
+        if (itr->second.slot < 5)
+        {
+            if (m_free_slot == itr->second.slot)
+                ++m_free_slot;
+        }
+        if (all == true)
+        {
+            if (show_num > -1)
+            {
+                if (uint8(show_num) == petNum)
+                {
+                    ObjectGuid guid2 = itr->second.guid;
+                    DataPetGuids(data_guids, data_guids2, guid2);
+                }
+            }
+            else
+            {
+                ObjectGuid guid2 = itr->second.guid;
+                DataPetGuids(data_guids, data_guids2, guid2);
+            }
+        }
+
+        data2 << uint32(itr->second.pettemplate);                       // creature_template
+        data2 << uint32(itr->second.level);                             // Level
+        data2 << uint8(itr->second.slottype);                           // 1 = current, 3 = in stable (any from 4, 5, ... create problems with proper show)
+        data2 << uint32(GUID_LOPART(itr->second.guid));                 // The PetGUIDLow
+        data2.WriteString(itr->second.name);                            // petname
+        data2 << uint32(itr->second.entry);                             // PetEntry
+        data2 << uint32(itr->second.slot);                              // petNum
+        ++petNum;
+    }
+
+    data.FlushBits();
+    data2.WriteGuidBytes(guid_zero, 3, 5, 7, 2, 0, 4, 1, 6);
+
+    data.append(data2);
+    if (all == true)
+    {
+        data_guids.FlushBits();
+        data_guids.append(data_guids2);
+        GetSession()->SendPacket(&data_guids); // Lets send this one first if "all" is true -> SMSG_PET_GUIDS.
+    }
+
+    GetSession()->SendPacket(&data); // now we can send this -> SMSG_STABLE_LIST.
+}
+
+void Player::InitializePetSlots(Player* owner, uint64 guid)
+{
+    uint32 ownerid = owner->GetGUIDLow();
+    PreparedStatement* stmt;
+    PreparedQueryResult result;
+
+    stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_PET_BY_SLOT_2);
+    stmt->setUInt32(0, ownerid);
+    stmt->setUInt8(1, uint8(PET_SAVE_AS_CURRENT));
+    stmt->setUInt8(2, uint8(MAX_PET_STABLES_STABLED));
+    result = CharacterDatabase.AsyncQuery(stmt);
+
+    if (!result) // You dont have any pets
+        return;
+
+    m_free_slot = 0;
+    do
+    {
+        Field* fields = result->Fetch();
+        uint32 length = fields[8].GetString().length();
+        uint64 guid_new_pet = 0;
+        std::string name = "";
+        name = fields[8].GetString();
+
+        if (name.length() == 0)
+        {
+            name = "unknown";
+        }
+
+        if (fields[7].GetUInt8() < 5) // only the first 5 pets should have a guid and a check if there is some place empty for a new pet.
+        {
+            if (m_free_slot == fields[7].GetUInt8())
+                ++m_free_slot;
+
+            guid_new_pet = MAKE_NEW_GUID(fields[0].GetUInt32(), fields[7].GetUInt8(), HIGHGUID_PET); // Create an uniqe GUID for the pet.
+        }
+        else
+            guid_new_pet = 0;
+
+        GetSession()->addPet(fields[7].GetUInt8(), fields[0].GetUInt32(), fields[1].GetUInt32(), guid_new_pet, fields[4].GetUInt8(), fields[8].GetString(), true);
+
+    } while (result->NextRow());
+}
+
 void Player::SendInitialPacketsBeforeAddToMap()
 {
     /// Pass 'this' as argument because we're not stored in ObjectAccessor yet
@@ -24684,7 +24898,10 @@ void Player::SendAurasForTarget(Unit* target)
     ObjectGuid targetGuid = target->GetGUID();
     Unit::VisibleAuraMap const* visibleAuras = target->GetVisibleAuras();
 
+    ByteBuffer auraData;
+
     WorldPacket data(SMSG_AURA_UPDATE);
+
     data.WriteBit(targetGuid[7]);
     data.WriteBit(1);                                   // Is AURA_UPDATE_ALL
     data.WriteBits(visibleAuras->size(), 24);           // Aura Count
@@ -24731,50 +24948,34 @@ void Player::SendAurasForTarget(Unit* target)
             data.WriteBit(casterGuid[2]);
             data.WriteBit(casterGuid[0]);
             data.WriteBit(casterGuid[7]);
+            auraData.WriteByteSeq(casterGuid[3]);
+            auraData.WriteByteSeq(casterGuid[2]);
+            auraData.WriteByteSeq(casterGuid[1]);
+            auraData.WriteByteSeq(casterGuid[6]);
+            auraData.WriteByteSeq(casterGuid[4]);
+            auraData.WriteByteSeq(casterGuid[0]);
+            auraData.WriteByteSeq(casterGuid[5]);
+            auraData.WriteByteSeq(casterGuid[7]);
         }
 
         data.WriteBits(0, 22);                          // Unk effect count
         data.WriteBit(flags & AFLAG_DURATION);          // HasDuration
         data.WriteBit(flags & AFLAG_DURATION);          // HasMaxDuration
-    }
 
-    data.FlushBits();
-
-    for (Unit::VisibleAuraMap::const_iterator itr = visibleAuras->begin(); itr != visibleAuras->end(); ++itr)
-    {
-        AuraApplication * auraApp = itr->second;
-        Aura const* aura = auraApp->GetBase();
-        uint32 flags = auraApp->GetFlags();
-        if (aura->GetMaxDuration() > 0 && !(aura->GetSpellInfo()->AttributesEx5 & SPELL_ATTR5_HIDE_DURATION))
-            flags |= AFLAG_DURATION;
-
-        if (!(flags & AFLAG_CASTER))
-        {
-            ObjectGuid casterGuid = aura->GetCasterGUID();
-            data.WriteByteSeq(casterGuid[3]);
-            data.WriteByteSeq(casterGuid[2]);
-            data.WriteByteSeq(casterGuid[1]);
-            data.WriteByteSeq(casterGuid[6]);
-            data.WriteByteSeq(casterGuid[4]);
-            data.WriteByteSeq(casterGuid[0]);
-            data.WriteByteSeq(casterGuid[5]);
-            data.WriteByteSeq(casterGuid[7]);
-        }
-
-        data << uint8(flags);
-        data << uint16(aura->GetCasterLevel());
-        data << uint32(aura->GetId());
+        auraData << uint8(flags);
+        auraData << uint16(aura->GetCasterLevel());
+        auraData << uint32(aura->GetId());
 
         if (flags & AFLAG_DURATION)
-            data << uint32(aura->GetMaxDuration());
+            auraData << uint32(aura->GetMaxDuration());
 
         if (flags & AFLAG_DURATION)
-            data << uint32(aura->GetDuration());
+            auraData << uint32(aura->GetDuration());
 
         // send stack amount for aura which could be stacked (never 0 - causes incorrect display) or charges
         // stack amount has priority over charges (checked on retail with spell 50262)
-        data << uint8(aura->GetSpellInfo()->StackAmount ? aura->GetStackAmount() : aura->GetCharges());
-        data << uint32(auraApp->GetEffectMask());
+        auraData << uint8(aura->GetSpellInfo()->StackAmount ? aura->GetStackAmount() : aura->GetCharges());
+        auraData << uint32(auraApp->GetEffectMask());
 
         if (flags & AFLAG_ANY_EFFECT_AMOUNT_SENT)
         {
@@ -24783,15 +24984,19 @@ void Player::SendAurasForTarget(Unit* target)
                 if (auraApp->HasEffect(i))
                 {
                     if (AuraEffect const* eff = aura->GetEffect(i))
-                        data << float(eff->GetAmount());
+                        auraData << float(eff->GetAmount());
                     else
-                        data << float(0.f);
+                        auraData << float(0.f);
                 }
             }
         }
 
-        data << uint8(auraApp->GetSlot());
+        auraData << uint8(auraApp->GetSlot());
     }
+
+    data.FlushBits();
+
+    data.append(auraData);
 
     data.WriteByteSeq(targetGuid[2]);
     data.WriteByteSeq(targetGuid[6]);
@@ -25539,9 +25744,12 @@ void Player::ResurectUsingRequestData()
 
 void Player::SetClientControl(Unit* target, uint8 allowMove)
 {
+    SF_LOG_DEBUG("network", "Player: Send SMSG_CLIENT_CONTROL_UPDATE");
+
     ObjectGuid guid = target->GetGUID();
 
     WorldPacket data(SMSG_CLIENT_CONTROL_UPDATE, 9 + 1);
+
     data.WriteBit(guid[2]);
     data.WriteBit(guid[7]);
     data.WriteBit(allowMove);
@@ -25562,14 +25770,20 @@ void Player::SetClientControl(Unit* target, uint8 allowMove)
     data.WriteByteSeq(guid[6]);
     data.WriteByteSeq(guid[3]);
     data.WriteByteSeq(guid[0]);
+
     GetSession()->SendPacket(&data);
 
-    if (target == this && allowMove == 1)
-        SetMover(this);
+    if (this != target)
+        SetViewpoint(target, allowMove);
+
+    if (allowMove)
+        SetMover(target);
 }
 
 void Player::SetMover(Unit* target)
 {
+    SF_LOG_DEBUG("network", "Player: Send SMSG_MOVE_SET_ACTIVE_MOVER");
+
     m_mover->m_movedPlayer = NULL;
     m_mover = target;
     m_mover->m_movedPlayer = this;
@@ -26942,13 +27156,38 @@ void Player::UnsummonPetTemporaryIfAny()
     if (!pet)
         return;
 
-    if (!m_temporaryUnsummonedPetNumber && pet->isControlled() && !pet->isTemporarySummoned())
+    if (pet->isControlled() && !pet->isTemporarySummoned())
     {
         m_temporaryUnsummonedPetNumber = pet->GetCharmInfo()->GetPetNumber();
         m_oldpetspell = pet->GetUInt32Value(UNIT_FIELD_CREATED_BY_SPELL);
     }
+    else if (pet->isControlled() && !pet->isTemporarySummoned() && m_temporaryUnsummonedPetNumber != GetSession()->m_petslist[GetPetSlot()].entry)
+    {
+        m_temporaryUnsummonedPetNumber = GetSession()->m_petslist[GetPetSlot()].entry;
+    }
+    else if (!pet->isControlled() && getClass() == CLASS_HUNTER)
+        m_temporaryUnsummonedPetNumber = 0;
 
-    RemovePet(pet, PET_SAVE_AS_CURRENT);
+    if (getClass() == CLASS_HUNTER)
+    {
+        RemovePet(pet, PetSaveMode(GetPetSlot()));
+    }
+    else if (getClass() == CLASS_WARLOCK)
+    {
+        if (pet->GetEntry() && pet->GetEntry() == PET_ENTRY_IMP)
+            RemovePet(pet, PET_SAVE_AS_CURRENT);
+        else
+            RemovePet(pet, PET_SAVE_NOT_IN_SLOT);
+
+        m_temporaryUnsummonedPetNumber = pet->GetCharmInfo()->GetPetNumber();
+    }
+    else if (getClass() == CLASS_MAGE)
+    {
+        RemovePet(pet, PET_SAVE_NOT_IN_SLOT);
+        m_temporaryUnsummonedPetNumber = pet->GetCharmInfo()->GetPetNumber();
+    }
+    else
+        RemovePet(pet, PET_SAVE_AS_CURRENT);
 }
 
 void Player::ResummonPetTemporaryUnSummonedIfAny()
@@ -27117,8 +27356,17 @@ void Player::BuildPetTalentsInfoData(WorldPacket* data)
     }*/
 }
 
-void Player::SendTalentsInfoData()
+void Player::SendTalentsInfoData(bool pet /*= false*/)
 {
+    if (pet)
+    {
+        Pet* pPet = GetPet();
+        WorldPacket data(SMSG_SET_PET_SPECIALIZATION);
+        data << uint16(pPet ? pPet->GetSpecializationId() : 0);
+        GetSession()->SendPacket(&data);
+        return;
+    }
+
     WorldPacket data(SMSG_UPDATE_TALENT_DATA, 50);
     BuildPlayerTalentsInfoData(&data);
     GetSession()->SendPacket(&data);

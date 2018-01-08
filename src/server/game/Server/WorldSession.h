@@ -266,6 +266,39 @@ class CharacterCreateInfo
         uint8 CharCount;
 };
 
+// Pets into memory
+struct PetSlots
+{
+    void clean_start()
+    {
+        entry = 0;
+        pettemplate = 0;
+        guid = 0;
+        namelen = 0;
+        slot = 0;
+        slottype = 0;
+        level = 0;
+        name = "";
+        petType = 1;
+        SetDisplayId = 0;
+        SetSpecializationId = 0;
+    }
+
+    uint32 entry;
+    uint32 pettemplate;
+    uint64 guid;
+    uint8 namelen;
+    uint8 slot;
+    uint8 slottype;
+    uint8 level;
+    uint8 petType = 1;
+    uint32 SetDisplayId;
+    uint32 SetSpecializationId;
+    std::string name;
+};
+
+typedef std::unordered_map<uint8, PetSlots> PetSlotsList;
+
 /// Player session in the World
 class WorldSession
 {
@@ -638,6 +671,7 @@ class WorldSession
         void HandleGroupEveryoneIsAssistantOpcode(WorldPacket& recvData);
         void HandlePartyAssignmentOpcode(WorldPacket& recvData);
         void HandleGroupInitiatePollRole(WorldPacket& recvData);
+        void HandleClearWorldMarkerOpcode(WorldPacket& recv_data);
 
         void HandlePetitionBuyOpcode(WorldPacket& recvData);
         void HandlePetitionShowSignOpcode(WorldPacket& recvData);
@@ -678,6 +712,7 @@ class WorldSession
         void HandleGuildRequestMaxDailyXP(WorldPacket& recvPacket);
         void HandleGuildRequestChallengeUpdate(WorldPacket& recvPacket);
         void HandleAutoDeclineGuildInvites(WorldPacket& recvPacket);
+        void HandleGuildUpdateRanksOpcode(WorldPacket& recvPacket);
 
         void HandleGuildFinderAddApplication(WorldPacket& recvPacket);
         void HandleGuildFinderBrowse(WorldPacket& recvPacket);
@@ -862,6 +897,20 @@ class WorldSession
         void HandlePetCastSpellOpcode(WorldPacket& recvPacket);
         void HandlePetLearnTalent(WorldPacket& recvPacket);
         void HandleLearnPreviewTalentsPet(WorldPacket& recvPacket);
+        void HandlePetLearnSpecialization(WorldPacket& recvPacket);
+        void HandleStableChangeSlot(WorldPacket& recvData);
+
+        // Pets in memory system
+        PetSlotsList    m_petslist;
+
+        bool addPet(uint8 slot, uint32 entry, uint32 pettemplate, uint64 guid, uint8 petlevel, std::string name, bool checking = false);
+        bool addPet(uint8 slot, PetSlots PetToSave, bool checking = false);
+        bool delPet(uint8 slot);
+        bool delPet(Unit* pet_entry);
+        bool movePet(uint8 slot, uint32 entry);
+        PetSlots checkPets(uint8 slot, uint32 entry);
+        PetSlots savePet(uint8 slot);
+        uint8 CheckEmptyPetSlot(Player* owner);
 
         void HandleSetActionBarToggles(WorldPacket& recvData);
 
@@ -889,6 +938,7 @@ class WorldSession
         void HandleRequestRatedInfo(WorldPacket& recvData);
         void HandleRequestBattlefieldStatusOpcode(WorldPacket& recvData);
         void HandleRequestConquestFormulaConstants(WorldPacket& recvData);
+        void HandleWargameRequest(WorldPacket& recvData);
 
         void HandleWardenDataOpcode(WorldPacket& recvData);
         void HandleWorldTeleportOpcode(WorldPacket& recvData);
@@ -1036,6 +1086,10 @@ class WorldSession
         void HandleReforgeItemOpcode(WorldPacket& recvData);
         void SendReforgeResult(bool success);
 
+        // Item Upgrade
+        void SendItemUpgradeResult(uint32 result);
+        void HandleUpgradeItem(WorldPacket& recvData);
+
         // BlackMarket
         void HandleBlackMarketHelloOpcode(WorldPacket& recvData);
         void SendBlackMarketHello(ObjectGuid NpcGUID, bool Open);
@@ -1073,6 +1127,7 @@ class WorldSession
         void HandleRequestCategoryCooldowns(WorldPacket& recvPacket);
         void HandleRequestCemeteryList(WorldPacket& recvPacket);
         void HandleQueryCountdownTimer(WorldPacket& recvPacket);
+        void HandleChangeCurrencyFlags(WorldPacket& recvPacket);
 
         void SendBroadcastText(uint32 entry);
 
@@ -1090,6 +1145,8 @@ class WorldSession
         void HandleBattlePetSetBattleSlot(WorldPacket& recvData);
         void HandleBattlePetSetFlags(WorldPacket& recvData);
         void HandleBattlePetSummonCompanion(WorldPacket& recvData);
+
+        void HandleRequestResearchHistory(WorldPacket& recvPacket);
 
         // Titles
         void HandleSetTitleOpcode(WorldPacket& recvData);

@@ -71,6 +71,52 @@ void WorldSession::SendBattleGroundList(uint64 guid, BattlegroundTypeId bgTypeId
     SendPacket(&data);
 }
 
+void WorldSession::HandleWargameRequest(WorldPacket& recvData)
+{
+    recvData.read_skip<uint32>(); // unk (mostly 0)
+    recvData.read_skip<uint32>(); // realm ID
+
+    ObjectGuid targetGUID;
+    ObjectGuid bgGUID;
+
+    bgGUID[5] = recvData.ReadBit();
+    targetGUID[1] = recvData.ReadBit();
+    bgGUID[6] = recvData.ReadBit();
+    recvData.ReadGuidMask(targetGUID, 0, 7, 4);
+    bgGUID[7] = recvData.ReadBit();
+    targetGUID[6] = recvData.ReadBit();
+    bgGUID[0] = recvData.ReadBit();
+    targetGUID[3] = recvData.ReadBit();
+    recvData.ReadGuidMask(bgGUID, 2, 4);
+    targetGUID[2] = recvData.ReadBit();
+    recvData.ReadGuidMask(bgGUID, 3, 1);
+    targetGUID[5] = recvData.ReadBit();
+
+    recvData.FlushBits();
+
+    recvData.ReadByteSeq(bgGUID[4]);
+    recvData.ReadGuidBytes(targetGUID, 7, 2);
+    recvData.ReadByteSeq(bgGUID[2]);
+    recvData.ReadByteSeq(targetGUID[5]);
+    recvData.ReadByteSeq(bgGUID[3]);
+    recvData.ReadByteSeq(targetGUID[3]);
+    recvData.ReadByteSeq(bgGUID[0]);
+    recvData.ReadByteSeq(targetGUID[1]);
+    recvData.ReadByteSeq(bgGUID[1]);
+    recvData.ReadByteSeq(targetGUID[4]);
+    recvData.ReadByteSeq(bgGUID[6]);
+    recvData.ReadGuidBytes(targetGUID, 0, 6);
+    recvData.ReadGuidBytes(bgGUID, 5, 7);
+
+    //SF_LOG_ERROR("network", "Battleground: Player (%u) just challenged player (%u) for Wargame (TypeID: %u)", _player->GetGUIDLow(), GUID_LOPART(targetGUID), BattlegroundMgr::GetBattlegroundTypeIdFromGUID(bgGUID));
+
+    // Send informative message to challenger
+    WorldPacket data(SMSG_WARGAME_REQUEST_SENT, 6);
+    recvData.WriteGuidMask(targetGUID, 4, 3, 0, 2, 1, 6, 5, 7);
+    recvData.WriteGuidBytes(targetGUID, 1, 4, 5, 6, 2, 0, 3, 7);
+    _player->GetSession()->SendPacket(&data);
+}
+
 void WorldSession::HandleBattlemasterJoinOpcode(WorldPacket& recvData)
 {
     uint32 bgTypeId_;

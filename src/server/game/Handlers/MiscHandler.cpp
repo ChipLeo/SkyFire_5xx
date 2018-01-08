@@ -1184,7 +1184,7 @@ void WorldSession::HandleUpdateAccountData(WorldPacket& recvData)
         WorldPacket data(SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 4 + 4);
         data << uint32(type);
         data << uint32(0);
-        SendPacket(&data);
+        //SendPacket(&data);
 
         return;
     }
@@ -1222,7 +1222,7 @@ void WorldSession::HandleUpdateAccountData(WorldPacket& recvData)
     WorldPacket data(SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 4 + 4);
     data << uint32(type);
     data << uint32(0);
-    SendPacket(&data);
+    //SendPacket(&data);
 }
 
 void WorldSession::HandleRequestAccountData(WorldPacket& recvData)
@@ -2598,4 +2598,22 @@ void WorldSession::HandleDiscardedTimeSyncAcks(WorldPacket& recvPacket)
     uint32 index;
     if (hasData)
         recvPacket >> index;
+}
+
+void WorldSession::HandleRequestResearchHistory(WorldPacket& recvPacket)
+{
+    SF_LOG_DEBUG("network", "WORLD: CMSG_REQUEST_RESEARCH_HISTORY");
+
+    _player->SendResearchHistory();
+}
+
+void WorldSession::HandleChangeCurrencyFlags(WorldPacket& recvPacket)
+{
+    SF_LOG_DEBUG("network", "WORLD: Received CMSG_SET_CURRENCY_FLAGS");
+
+    uint32 currencyId, flags;
+    recvPacket >> flags >> currencyId;
+
+    if (GetPlayer())
+        GetPlayer()->ModifyCurrencyFlag(currencyId, uint8(flags));
 }

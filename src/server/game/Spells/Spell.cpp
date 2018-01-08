@@ -4710,6 +4710,9 @@ void Spell::SendSpellGo()
 
 void Spell::SendLogExecute()
 {
+    if (m_spellInfo->Attributes & SPELL_ATTR0_HIDE_IN_COMBAT_LOG)
+         return;
+
     ObjectGuid CastergGuid = m_caster->GetGUID();
 
     WorldPacket data(SMSG_SPELL_EXECUTE_LOG, 8 + 4 + 4 + 4 + 4 + 8);

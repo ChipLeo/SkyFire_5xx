@@ -388,8 +388,23 @@ void Pet::SavePetToDB(PetSaveMode mode)
         mode = PET_SAVE_NOT_IN_SLOT;
     }
 
+    if (owner->getClass() == CLASS_WARLOCK && GetEntry() == PET_ENTRY_IMP) // Always save the imp as 0
+    {
+        owner->SetPetSlot(0, true, GetCharmInfo()->GetPetNumber());
+        mode = PET_SAVE_AS_CURRENT;
+    }
+    else if (owner->getClass() == CLASS_WARLOCK)
+    {
+        owner->SetPetSlot(100, false, GetCharmInfo()->GetPetNumber());
+        mode = PET_SAVE_NOT_IN_SLOT;
+
+    }
+
     uint32 curhealth = GetHealth();
     uint32 curmana = GetPower(POWER_MANA);
+
+    if (getPowerType() == POWER_FOCUS)
+        curmana = GetPower(POWER_FOCUS);
 
     SQLTransaction trans = CharacterDatabase.BeginTransaction();
     // save auras before possibly removing them
@@ -436,9 +451,13 @@ void Pet::SavePetToDB(PetSaveMode mode)
             trans->Append(stmt);
         }
 
+        if (owner->getLevel() < 10)
+            SetReactState(REACT_DEFENSIVE);
+
+        PetSlots Memory = owner->GetSession()->savePet(uint8(mode));
         // save pet
         std::ostringstream ss;
-        ss  << "INSERT INTO character_pet (id, entry,  owner, modelid, level, exp, Reactstate, slot, name, renamed, curhealth, curmana, abdata, savetime, CreatedBySpell, PetType) "
+        ss  << "INSERT INTO character_pet (id, entry,  owner, modelid, level, exp, Reactstate, slot, name, renamed, curhealth, curmana, abdata, savetime, CreatedBySpell, PetType, specialization) "
             << "VALUES ("
             << m_charmInfo->GetPetNumber() << ','
             << GetEntry() << ','
@@ -462,10 +481,15 @@ void Pet::SavePetToDB(PetSaveMode mode)
         ss  << "', "
             << time(NULL) << ','
             << GetUInt32Value(UNIT_FIELD_CREATED_BY_SPELL) << ','
-            << uint32(getPetType()) << ')';
+            << uint32(getPetType())
+            << GetSpecializationId()
+            << ')';
 
         trans->Append(ss.str().c_str());
         CharacterDatabase.CommitTransaction(trans);
+
+        if (owner->getClass() == CLASS_HUNTER)
+            owner->SetTemporaryUnsummonedPetNumber(owner->GetSession()->m_petslist[owner->GetPetSlot()].entry);
     }
     // delete
     else
@@ -2074,4 +2098,34 @@ void Pet::SetDisplayId(uint32 modelId)
         if (Player* player = owner->ToPlayer())
             if (player->GetGroup())
                 player->SetGroupUpdateFlag(GROUP_UPDATE_FLAG_PET_MODEL_ID);
+}
+
+void Pet::LearnSpecializationSpell()
+{
+    for (uint32 i = 0; i < sSpecializationSpellsStore.GetNumRows(); i++)
+    {
+        SpecializationSpellsEntry const* specializationEntry = sSpecializationSpellsStore.LookupEntry(i);
+        if (!specializationEntry)
+            continue;
+
+        if (specializationEntry->SpecializationId != GetSpecializationId())
+            continue;
+
+        learnSpell(specializationEntry->SpellId);
+    }
+}
+
+void Pet::UnlearnSpecializationSpell()
+{
+    for (uint32 i = 0; i < sSpecializationSpellsStore.GetNumRows(); i++)
+    {
+        SpecializationSpellsEntry const* specializationEntry = sSpecializationSpellsStore.LookupEntry(i);
+        if (!specializationEntry)
+            continue;
+
+        if (specializationEntry->SpecializationId != GetSpecializationId())
+            continue;
+
+        unlearnSpell(specializationEntry->SpellId, false);
+    }
 }

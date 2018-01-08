@@ -1101,6 +1101,12 @@ void Guardian::UpdateMaxHealth()
         case ENTRY_FELHUNTER:   multiplicator = 9.5f;   break;
         case ENTRY_FELGUARD:    multiplicator = 11.0f;  break;
         case ENTRY_BLOODWORM:   multiplicator = 1.0f;   break;
+        case PET_ENTRY_GHOUL:
+        case PET_ENTRY_GARGOYLE: multiplicator = 15.0f; break;
+        case ENTRY_WATER_ELEMENTAL:
+            multiplicator = 1.0f;
+            stamina = 0.0f;
+            break;
         default:                multiplicator = 10.0f;  break;
     }
 
@@ -1126,6 +1132,7 @@ void Guardian::UpdateMaxPower(Powers power)
         case ENTRY_SUCCUBUS:
         case ENTRY_FELHUNTER:
         case ENTRY_FELGUARD:    multiplicator = 11.5f;  break;
+        case PET_ENTRY_WATER_ELEMENTAL: multiplicator = 1.0f;   addValue = 0.0f;    break;
         default:                multiplicator = 15.0f;  break;
     }
 
