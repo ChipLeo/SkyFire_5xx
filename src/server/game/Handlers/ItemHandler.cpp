@@ -933,14 +933,13 @@ void WorldSession::HandleBuyBankSlotOpcode(WorldPacket& recvData)
     recvData.ReadByteSeq(guid[4]);
 
     // cheating protection
-    /* not critical if "cheated", and check skip allow by slots in bank windows open by .bank command.
+    // not critical if "cheated", and check skip allow by slots in bank windows open by .bank command.
     Creature* creature = GetPlayer()->GetNPCIfCanInteractWith(guid, UNIT_NPC_FLAG_BANKER);
     if (!creature)
     {
-        SF_LOG_DEBUG("WORLD: HandleBuyBankSlotOpcode - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(guid)));
+        SF_LOG_DEBUG("network", "WORLD: HandleBuyBankSlotOpcode - Player (GUID: %u, name: %s) can't interact with Unit (GUID: %u).", GetPlayer()->GetGUIDLow(), GetPlayer()->GetName().c_str(), uint32(GUID_LOPART(guid)));
         return;
     }
-    */
 
     uint32 slot = _player->GetBankBagSlotCount();
 
@@ -951,12 +950,9 @@ void WorldSession::HandleBuyBankSlotOpcode(WorldPacket& recvData)
 
     BankBagSlotPricesEntry const* slotEntry = sBankBagSlotPricesStore.LookupEntry(slot);
 
-    WorldPacket data(SMSG_BUY_BANK_SLOT_RESULT, 4);
-
     if (!slotEntry)
     {
-        data << uint32(ERR_BANKSLOT_FAILED_TOO_MANY);
-        SendPacket(&data);
+        SF_LOG_DEBUG("network", "WORLD: HandleBuyBankSlotOpcode - Player (GUID: %u, name: %s) send a wrong slot.", GetPlayer()->GetGUIDLow(), GetPlayer()->GetName().c_str());
         return;
     }
 
@@ -964,16 +960,12 @@ void WorldSession::HandleBuyBankSlotOpcode(WorldPacket& recvData)
 
     if (!_player->HasEnoughMoney(uint64(price)))
     {
-        data << uint32(ERR_BANKSLOT_INSUFFICIENT_FUNDS);
-        SendPacket(&data);
+        SF_LOG_DEBUG("network", "WORLD: HandleBuyBankSlotOpcode - Player (GUID: %u, name: %s) not enough money.", GetPlayer()->GetGUIDLow(), GetPlayer()->GetName().c_str());
         return;
     }
 
     _player->SetBankBagSlotCount(slot);
     _player->ModifyMoney(-int64(price));
-
-     data << uint32(ERR_BANKSLOT_OK);
-     SendPacket(&data);
 
     _player->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BUY_BANK_SLOT);
 }
