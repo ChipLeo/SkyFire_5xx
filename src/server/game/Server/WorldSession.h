@@ -282,7 +282,7 @@ class WorldSession
         void SendAddonsInfo();
         void SendTimezoneInformation();
         void SendDisplayPromotion();
-        void SendUnk043F();
+        void SendBattlePayGetDistributionList();
         void SendFeatureSystemStatusGlueScreen();
         void SendDanceStudioCreateResult();
         bool IsAddonRegistered(const std::string& prefix) const;

@@ -1068,9 +1068,9 @@ void WorldSession::SendDisplayPromotion()
     SendPacket(&data);
 }
 
-void WorldSession::SendUnk043F()
+void WorldSession::SendBattlePayGetDistributionList()
 {
-    WorldPacket data(SMSG_UNK_043F, 4 + 3);
+    WorldPacket data(SMSG_BATTLE_PAY_GET_DISTRIBUTION_LIST_RESPONSE, 4 + 3);
     data << UINT32(0);
     data.WriteBits(0, 19);
     data.FlushBits();
