@@ -242,8 +242,8 @@ BugTicket::BugTicket(Player* player, WorldPacket& bugPacket) : TicketInfo(player
 {
     _ticketId = sTicketMgr->GenerateBugId();
 
-    bugPacket >> _pos.x;
     bugPacket >> _pos.y;
+    bugPacket >> _pos.x;
     bugPacket >> _pos.z;
     bugPacket >> _Orientation;
     bugPacket >> _mapId;
@@ -333,11 +333,11 @@ SuggestTicket::SuggestTicket(Player* player, WorldPacket& suggestPacket) : Ticke
 {
     _ticketId = sTicketMgr->GenerateSuggestId();
 
-    suggestPacket >> _pos.x;
-    suggestPacket >> _pos.y;
     suggestPacket >> _pos.z;
     suggestPacket >> _Orientation;
+    suggestPacket >> _pos.y;
     suggestPacket >> _mapId;
+    suggestPacket >> _pos.x;
     uint8 lenNote = suggestPacket.ReadBits(10);
     _suggestnote = suggestPacket.ReadString(lenNote);
 }
