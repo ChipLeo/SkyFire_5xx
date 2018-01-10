@@ -123,7 +123,7 @@ char const ResearchProjectfmt [] = "nxxiixxxi";
 char const ResearchSitefmt [] = "niixx";
 char const ScalingStatDistributionfmt[] = "niiiiiiiiiiiiiiiiiiiixi";
 char const ScalingStatValuesfmt[] = "iniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii";
-char const SkillLinefmt[] = "nisxixixx";
+char const SkillLinefmt[] = "nissisiii";
 char const SkillLineAbilityfmt[] = "niiiiiiiiiixx";
 char const SoundEntriesfmt[] = "nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 char const SpecializationSpellsfmt[] = "niiix";
@@ -135,7 +135,7 @@ const std::string CustomSpellDifficultyfmt = "ppppp";
 const std::string CustomSpellDifficultyIndex = "id";
 char const SpellDurationfmt[] = "niii";
 //                                             0         10        20    26
-char const SpellEffectEntryfmt[] =            "niifiiiffiiiiiifiifiiiiixiiiix";
+char const SpellEffectEntryfmt[] =            "niifiiiffiiiiiifiifiiiiifiiiii";
 const std::string CustomSpellEffectEntryfmt = "papppppppppapppappppppppppp";
 const std::string CustomSpellEffectEntryIndex = "Id";
 char const SpellEntryfmt[] =            "nssxxixxfiiiiiiiiiiiiiiii";

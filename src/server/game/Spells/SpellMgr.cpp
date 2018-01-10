@@ -1615,6 +1615,20 @@ void SpellMgr::LoadSpellTargetPositions()
             continue;
         }
 
+        /* not implemented
+        SpellEffectInfo const effect = spellInfo->Effects[effIndex];
+        if (!effect)
+        {
+            SF_LOG_ERROR("sql.sql", "Spell (Id: %u, EffectIndex: %u) listed in `spell_target_position` does not have an effect at index %u.", spellId, effIndex, effIndex);
+            continue;
+        }
+
+        // target facing is in degrees for 6484 & 9268... (blizz sucks)
+        if (effect->PositionFacing > 2 * M_PI)
+            st.target_Orientation = effect->PositionFacing * M_PI / 180;
+        else
+            st.target_Orientation = effect->PositionFacing;*/
+
         if (spellInfo->Effects[effIndex].TargetA.GetTarget() == TARGET_DEST_DB || spellInfo->Effects[effIndex].TargetB.GetTarget() == TARGET_DEST_DB)
         {
             std::pair<uint32, SpellEffIndex> key = std::make_pair(Spell_ID, effIndex);

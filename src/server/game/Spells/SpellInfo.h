@@ -247,6 +247,7 @@ public:
     int32     MiscValue;
     int32     MiscValueB;
     Mechanics Mechanic;
+    float     PositionFacing;
     SpellImplicitTargetInfo TargetA;
     SpellImplicitTargetInfo TargetB;
     SpellRadiusEntry const* RadiusEntry;

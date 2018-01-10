@@ -2060,14 +2060,13 @@ struct SkillLineEntry
 {
     uint32    id;                                           // 0        m_ID
     int32     categoryId;                                   // 1        m_categoryID
-    //uint32    skillCostID;                                // 2        m_skillCostsID
-    char* name;                                             // 3        m_displayName_lang
-    //char*     description;                                // 4        m_description_lang
-    uint32    spellIcon;                                    // 5        m_spellIconID
-    //char*     alternateVerb;                              // 6        m_alternateVerb_lang
-    uint32    canLink;                                      // 7        m_canLink (prof. with recipes)
-    //uint32 unk1                                           // 8 - Pandaria
-    //uint32 unkFlags                                       // 9 - Pandaria
+    char*     name;                                         // 2        m_displayName_lang
+    char*     description;                                  // 3        m_description_lang
+    uint32    spellIcon;                                    // 4        m_spellIconID
+    char*     alternateVerb;                                // 5        m_alternateVerb_lang
+    uint32    canLink;                                      // 6        m_canLink (prof. with recipes)
+    uint32    ParentSkillLineID;                            // 7
+    uint32    Flags;                                        // 8
 };
 
 struct SkillLineAbilityEntry
@@ -2137,12 +2136,12 @@ struct SpellEffectEntry
     float     EffectRealPointsPerLevel;                     // 18        m_effectRealPointsPerLevel
     flag128   EffectSpellClassMask;                         // 19 20 21 22 m_effectSpellClassMask1(2/3), effect 0
     uint32    EffectTriggerSpell;                           // 23        m_effectTriggerSpell
-    //uint32  Unk0                                          // 24        unk - Pandaria
+    float     EffectPosFacing;                              // 24        unk - Pandaria
     uint32    EffectImplicitTargetA;                        // 25        m_implicitTargetA
     uint32    EffectImplicitTargetB;                        // 26        m_implicitTargetB
     uint32    EffectSpellId;                                // 27        new 4.0.0
     uint32    EffectIndex;                                  // 28        new 4.0.0
-    //uint32  Unk0                                          // 29        4.2.0 only 0 or 1
+    uint32    EffectAttributes;                             // 29
 };
 
 #define MAX_SPELL_EFFECTS 32
