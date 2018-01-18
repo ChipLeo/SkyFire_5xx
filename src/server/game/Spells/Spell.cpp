@@ -3908,6 +3908,8 @@ void Spell::SendCastResult(Player* caster, SpellInfo const* spellInfo, uint8 cas
 
 void Spell::SendSpellStart()
 {
+    SF_LOG_DEBUG("spells", "Spell::SendSpellStart Home: spell id %u source %u", m_spellInfo->Id, m_caster->GetEntry());
+
     if (!IsNeedSendToClient())
         return;
 
@@ -4238,10 +4240,14 @@ void Spell::SendSpellStart()
     }
 
     m_caster->SendMessageToSet(&data, true);
+
+    SF_LOG_DEBUG("spells", "Spell::SendSpellStart End: spell id %u source %u", m_spellInfo->Id, m_caster->GetEntry());
 }
 
 void Spell::SendSpellGo()
 {
+    SF_LOG_DEBUG("spells", "Spell::SendSpellGo Home: spell id %u source %u", m_spellInfo->Id, m_caster->GetEntry());
+
     // not send invisible spell casting
     if (!IsNeedSendToClient())
         return;
@@ -4706,6 +4712,8 @@ void Spell::SendSpellGo()
         m_channelTargetEffectMask = 0;
 
     m_caster->SendMessageToSet(&data, true);
+
+    SF_LOG_DEBUG("spells", "Spell::SendSpellGo End: spell id %u source %u", m_spellInfo->Id, m_caster->GetEntry());
 }
 
 void Spell::SendLogExecute()
@@ -7287,7 +7295,8 @@ bool Spell::IsAutoActionResetSpell() const
 bool Spell::IsNeedSendToClient() const
 {
     return m_spellInfo->SpellVisual[0] || m_spellInfo->SpellVisual[1] || m_spellInfo->IsChanneled() ||
-        (m_spellInfo->AttributesEx8 & SPELL_ATTR8_AURA_SEND_AMOUNT) || m_spellInfo->Speed > 0.0f || (!m_triggeredByAuraSpell && !IsTriggered());
+        (m_spellInfo->AttributesEx8 & SPELL_ATTR8_AURA_SEND_AMOUNT) || m_spellInfo->Speed > 0.0f || (!m_triggeredByAuraSpell && !IsTriggered())
+        || (m_spellInfo->Attributes & SPELL_ATTR0_HIDE_IN_COMBAT_LOG);
 }
 
 bool Spell::HaveTargetsForEffect(uint8 effect) const
