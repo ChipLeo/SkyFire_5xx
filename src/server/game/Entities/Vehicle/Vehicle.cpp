@@ -780,6 +780,9 @@ bool VehicleJoinEvent::Execute(uint64, uint32)
     ASSERT(Target && Target->GetBase()->IsInWorld());
     ASSERT(Target->GetBase()->HasAuraTypeWithCaster(SPELL_AURA_CONTROL_VEHICLE, Passenger->GetGUID()));
 
+    SF_LOG_DEBUG("entities.vehicle", "Passenger GuidLow: %u, Entry: %u, board on vehicle GuidLow: %u, Entry: %u SeatId: %d Execute",
+        Passenger->GetGUIDLow(), Passenger->GetEntry(), Target->GetBase()->GetGUIDLow(), Target->GetBase()->GetEntry(), (int32)Seat->first);
+
     Target->RemovePendingEventsForSeat(Seat->first);
     Target->RemovePendingEventsForPassenger(Passenger);
 
@@ -802,6 +805,8 @@ bool VehicleJoinEvent::Execute(uint64, uint32)
     Passenger->InterruptNonMeleeSpells(false);
     Passenger->RemoveAurasByType(SPELL_AURA_MOUNTED);
 
+    VehicleSeatEntry const* veSeat = Seat->second.SeatInfo;
+
     Player* player = Passenger->ToPlayer();
     if (player)
     {
@@ -812,13 +817,22 @@ bool VehicleJoinEvent::Execute(uint64, uint32)
         player->StopCastingCharm();
         player->StopCastingBindSight();
         player->SendOnCancelExpectedVehicleRideAura();
-        player->UnsummonPetTemporaryIfAny();
+        if (!(veSeat->m_flagsB & VEHICLE_SEAT_FLAG_B_KEEP_PET))
+            player->UnsummonPetTemporaryIfAny();
+
+        // player->UnsummonPetTemporaryIfAny();
+        //Target->GetBase()->SendClearTarget();                 // SMSG_BREAK_TARGET
+        //TC_LOG_DEBUG("entities.vehicle", "VehicleJoinEvent::Executed  SMSG_BREAK_TARGET");
+        //player->SetDisableGravity(true);                      // SMSG_MOVE_GRAVITY_DISABLE
+        //TC_LOG_DEBUG("entities.vehicle", "VehicleJoinEvent::Executed  SMSG_MOVE_GRAVITY_DISABLE");
+        //player->SetControlled(true, UNIT_STATE_ROOT);         // SMSG_FORCE_ROOT - In some cases we send SMSG_SPLINE_MOVE_ROOT here (for creatures)
+                                                                 // also adds MOVEMENTFLAG_ROOT
+        //TC_LOG_DEBUG("entities.vehicle", "VehicleJoinEvent::Executed  SMSG_FORCE_ROOT");
     }
 
     if (Seat->second.SeatInfo->m_flags & VEHICLE_SEAT_FLAG_PASSENGER_NOT_SELECTABLE)
         Passenger->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
 
-    VehicleSeatEntry const* veSeat = Seat->second.SeatInfo;
     Passenger->m_movementInfo.transport.pos.Relocate(veSeat->m_attachmentOffsetX, veSeat->m_attachmentOffsetY, veSeat->m_attachmentOffsetZ);
     Passenger->m_movementInfo.transport.time = 0;
     Passenger->m_movementInfo.transport.seat = Seat->first;
