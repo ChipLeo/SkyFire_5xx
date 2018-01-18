@@ -1178,7 +1178,8 @@ enum ReactStates
 {
     REACT_PASSIVE = 0,
     REACT_DEFENSIVE = 1,
-    REACT_AGGRESSIVE = 2
+    REACT_AGGRESSIVE = 2,
+    REACT_ASSIST = 3
 };
 
 enum CommandStates
@@ -2683,7 +2684,7 @@ class Unit : public WorldObject
     void ClearComboPointHolders();
 
     ///----------Pet responses methods-----------------
-    void SendPetActionFeedback(uint8 msg);
+    void SendPetActionFeedback(uint8 msg, uint32 spellId = 0);
     void SendPetTalk(uint32 pettalk);
     void SendPetAIReaction(ObjectGuid UnitGUID);
     ///----------End of Pet responses methods----------

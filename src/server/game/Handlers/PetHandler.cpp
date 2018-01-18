@@ -340,6 +340,7 @@ void WorldSession::HandlePetActionHelper(Unit* pet, uint64 guid1, uint32 spellid
 
                 case REACT_DEFENSIVE:                       //recovery
                 case REACT_AGGRESSIVE:                      //activete
+                case REACT_ASSIST:                          //assist
                     if (pet->GetTypeId() == TYPEID_UNIT)
                         pet->ToCreature()->SetReactState(ReactStates(spellid));
                     break;
@@ -576,10 +577,16 @@ void WorldSession::HandlePetSetAction(WorldPacket& recvData)
 {
     SF_LOG_INFO("network", "HandlePetSetAction. CMSG_PET_SET_ACTION");
 
-    uint64 petguid;
-    uint8  count;
+    ObjectGuid petguid;
+    uint32 position;
+    uint32 data;
 
-    recvData >> petguid;
+    recvData >> position;
+    recvData >> data;
+
+    recvData.ReadGuidMask(petguid, 1, 0, 5, 3, 2, 7, 6, 4);
+
+    recvData.ReadGuidBytes(petguid, 5, 6, 7, 3, 2, 1, 4, 0);
 
     Unit* pet = ObjectAccessor::GetUnit(*_player, petguid);
 

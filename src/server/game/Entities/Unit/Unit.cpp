@@ -6660,6 +6660,116 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffect* triggere
             }
             break;
         }
+        case SPELLFAMILY_ROGUE:
+        {
+            switch (dummySpell->Id)
+            {
+            case 51701: // Honor Among Thieves
+            {
+                if (!triggeredByAura || !triggeredByAura->GetBase() || !triggeredByAura->GetBase()->GetCaster())
+                    return false;
+
+                if (triggeredByAura->GetBase()->GetCaster()->GetTypeId() != TYPEID_PLAYER)
+                    return false;
+
+                Player* player = triggeredByAura->GetBase()->GetCaster()->ToPlayer();
+                if (!player)
+                    return false;
+
+                if (!player->IsInCombat())
+                    return false;
+
+                if (player->HasSpellCooldown(51701))
+                    return false;
+
+                if (!(procEx & PROC_EX_CRITICAL_HIT))
+                    return false;
+
+                Unit* spellTarget = ObjectAccessor::GetUnit(*player, player->GetComboTarget());
+                if (!spellTarget)
+                    spellTarget = player->GetSelectedUnit();
+                if (spellTarget && player->IsValidAttackTarget(spellTarget))
+                {
+                    player->AddSpellCooldown(51701, 0, time(NULL) + 2);
+                    player->CastSpell(spellTarget, 51699, true);
+                }
+
+                break;
+            }
+            case 63254: // Glyph of Deadly Momentum
+            {
+                if (GetTypeId() != TYPEID_PLAYER)
+                    return false;
+
+                if (!(procFlag & PROC_FLAG_KILL))
+                    return false;
+
+                if (Aura* recuperate = GetAura(73651))
+                    recuperate->RefreshDuration();
+
+                if (Aura* sliceAndDice = GetAura(5171))
+                    sliceAndDice->RefreshDuration();
+
+                break;
+            }
+            case 114015:// Anticipation
+            {
+                if (GetTypeId() != TYPEID_PLAYER)
+                    return false;
+
+                if (!procSpell)
+                    return false;
+
+                if (procSpell->Id == 115190)
+                    return false;
+
+                if (!procSpell->HasEffect(SPELL_EFFECT_ADD_COMBO_POINTS))
+                    return false;
+
+                uint8 newCombo = 0;
+
+                for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
+                {
+                    if (procSpell->Effects[i].IsEffect(SPELL_EFFECT_ADD_COMBO_POINTS))
+                    {
+                        newCombo = procSpell->Effects[i].BasePoints;
+                        break;
+                    }
+                }
+
+                if ((ToPlayer()->GetComboPoints() + newCombo) < 5)
+                    return false;
+
+                for (int i = 0; i < MAX_SPELL_EFFECTS; ++i)
+                    if (procSpell->Effects[i].Effect == SPELL_EFFECT_ADD_COMBO_POINTS)
+                    {
+                        basepoints0 = procSpell->Effects[i].BasePoints;
+                        break;
+                    }
+
+                triggered_spell_id = 115189;
+
+                break;
+            }
+            case 51626: // Deadly Brew
+            case 51667: // Cut to the Chase
+                return false;
+            /*case 57934: // Tricks of the Trade
+            {
+                Unit* redirectTarget = GetMisdirectionTarget();
+                RemoveAura(57934);
+                if (!redirectTarget)
+                    break;
+                CastSpell(this, 59628, true);
+                CastSpell(redirectTarget, 57933, true);
+                break;
+            }*/
+            default:
+                break;
+            }
+
+            break;
+        }
         default:
             break;
     }
@@ -7199,6 +7309,12 @@ bool Unit::HandleProcTriggerSpell(Unit* victim, uint32 damage, AuraEffect* trigg
                             return false;
                         break;
                     }
+                    // Rogue T10 4P bonus, should proc on victim
+                    case 70803:
+                    {
+                        target = victim;
+                        break;
+                    }
                 }
                 break;
             }
@@ -7330,6 +7446,71 @@ bool Unit::HandleProcTriggerSpell(Unit* victim, uint32 damage, AuraEffect* trigg
             // Procs only if damage takes health below $s1%
             if (!HealthBelowPctDamaged(triggerAmount, damage))
                 return false;
+            break;
+        }
+        case 2823:  // Deadly Poison
+        case 3408:  // Crippling Poison
+        case 5761:  // Mind-Numbling Poison
+        case 8679:  // Wound Poison
+        case 108211:// Leeching Poison
+        case 108215:// Paralytic Poison
+        {
+            if (GetTypeId() != TYPEID_PLAYER)
+                return false;
+
+            // Don't trigger poison if no damage dealed (except for absorb)
+            if (!damage && !(procEx & PROC_EX_ABSORB))
+                return false;
+
+            break;
+        }
+        case 76857: // Mastery : Critical Block
+        case 58410: // Master Poisoner
+        case 79147: // Sanguinary Vein
+        case 91023: // Find Weakness
+        case 108942:// Phantasm
+        case 113043:// Omen of Clarity (new)
+        case 122464:// Dematerialize
+        case 122280:// Healing Elixirs
+        case 54927: // Glyph of Avenging Wrath
+        case 124487:// Zen Focus
+        case 88764: // Rolling Thunder
+        case 12598: // Counterspell
+        case 115946:// Glyph of Burning Anger
+        case 88821: // Daybreak
+        case 131542:// Relentless Grip
+        case 56420: // Glyph of Denounce
+        case 126046:// Adaptation
+            return false;
+
+        case 35551: // Combat Potency
+        {
+            if (GetTypeId() != TYPEID_PLAYER)
+                return false;
+
+            if (procSpell && procSpell->Id != 86392)
+                return false;
+
+            if (procSpell && procSpell->Id == 86392)
+                if (!roll_chance_i(20))
+                    return false;
+
+            float offHandSpeed = GetAttackTime(OFF_ATTACK) / IN_MILLISECONDS;
+
+            if (!procSpell && (procFlags & PROC_FLAG_DONE_OFFHAND_ATTACK))
+                if (!roll_chance_f(20.0f * offHandSpeed / 1.4f))
+                    return false;
+
+            break;
+        }
+        case 121152:// Blindside
+        {
+            if (!procSpell)
+                return false;
+
+            if (procSpell->Id != 5374 && procSpell->Id != 27576)
+                return false;
+
             break;
         }
         default:
@@ -9007,6 +9188,14 @@ uint32 Unit::SpellDamageBonusDone(Unit* victim, SpellInfo const* spellProto, uin
                 if (AuraEffect* aurEff = GetAuraEffect(64962, EFFECT_1))
                     DoneTotal += aurEff->GetAmount();
             break;
+        case SPELLFAMILY_ROGUE:
+        {
+            // Revealing Strike for direct damage abilities
+            if (spellProto->AttributesEx & SPELL_ATTR1_REQ_COMBO_POINTS1 && damagetype != DOT)
+                if (AuraEffect* aurEff = victim->GetAuraEffect(84617, 2, GetGUID()))
+                    DoneTotalMod *= (100.0f + aurEff->GetAmount()) / 100.0f;
+            break;
+        }
     }
 
     // Done fixed damage bonus auras
@@ -10211,6 +10400,9 @@ float Unit::GetPPMProcChance(uint32 WeaponSpeed, float PPM, const SpellInfo* spe
 
 void Unit::Mount(uint32 mount, uint32 VehicleId, uint32 creatureEntry)
 {
+    SF_LOG_DEBUG("entities.unit", "Unit::Mount: %u, VehicleId: %u, Creature: %u",
+        mount, VehicleId, creatureEntry);
+
     if (mount)
         SetUInt32Value(UNIT_FIELD_MOUNT_DISPLAY_ID, mount);
 
@@ -10876,6 +11068,24 @@ int32 Unit::ModifyPower(Powers power, int32 dVal)
         SetPower(power, maxPower);
         gain = maxPower - curPower;
     }
+
+    /*if (power == POWER_SHADOW_ORB)
+    {
+        if (GetPower(POWER_SHADOW_ORB) > 0)
+        {
+            // Shadow Orb visual
+            if (!HasAura(77487) && !HasAura(57985))
+                CastSpell(this, 77487, true);
+            // Glyph of Shadow Ravens
+            else if (!HasAura(77487) && HasAura(57985))
+                CastSpell(this, 127850, true);
+        }
+        else
+        {
+            RemoveAurasDueToSpell(77487);
+            RemoveAurasDueToSpell(127850);
+        }
+    }*/
 
     return gain;
 }
@@ -13186,14 +13396,25 @@ Player* Unit::GetSpellModOwner() const
 }
 
 ///----------Pet responses methods-----------------
-void Unit::SendPetActionFeedback(uint8 msg)
+void Unit::SendPetActionFeedback(uint8 msg, uint32 spellId)
 {
     Unit* owner = GetOwner();
     if (!owner || owner->GetTypeId() != TYPEID_PLAYER)
         return;
 
+    bool hasSpellData = spellId != 0;
+
     WorldPacket data(SMSG_PET_ACTION_FEEDBACK, 1);
+
+    data.WriteBit(!hasSpellData);
+
+    data.FlushBits();
+
     data << uint8(msg);
+
+    if (hasSpellData)
+        data << uint32(spellId);
+
     owner->ToPlayer()->GetSession()->SendPacket(&data);
 }
 
@@ -13203,9 +13424,29 @@ void Unit::SendPetTalk(uint32 pettalk)
     if (!owner || owner->GetTypeId() != TYPEID_PLAYER)
         return;
 
+    ObjectGuid guid = GetGUID();
+
     WorldPacket data(SMSG_PET_ACTION_SOUND, 8 + 4);
-    data << uint64(GetGUID());
+
+    data.WriteBit(guid[2]);
+    data.WriteBit(guid[7]);
+    data.WriteBit(guid[6]);
+    data.WriteBit(guid[0]);
+    data.WriteBit(guid[5]);
+    data.WriteBit(guid[1]);
+    data.WriteBit(guid[3]);
+    data.WriteBit(guid[4]);
+
+    data.WriteByteSeq(guid[7]);
+    data.WriteByteSeq(guid[4]);
+    data.WriteByteSeq(guid[6]);
+    data.WriteByteSeq(guid[1]);
     data << uint32(pettalk);
+    data.WriteByteSeq(guid[2]);
+    data.WriteByteSeq(guid[3]);
+    data.WriteByteSeq(guid[5]);
+    data.WriteByteSeq(guid[0]);
+
     owner->ToPlayer()->GetSession()->SendPacket(&data);
 }
 
@@ -16778,6 +17019,8 @@ uint32 Unit::GetRemainingPeriodicAmount(uint64 caster, uint32 spellId, AuraType 
 
 void Unit::SendClearTarget()
 {
+    SF_LOG_DEBUG("network", "Unit: Send SMSG_BREAK_TARGET");
+
     WorldPacket data(SMSG_BREAK_TARGET, GetPackGUID().size());
 
     ObjectGuid guid = GetGUID();
