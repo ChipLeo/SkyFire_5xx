@@ -10223,6 +10223,32 @@ void Unit::Mount(uint32 mount, uint32 VehicleId, uint32 creatureEntry)
         {
             if (CreateVehicleKit(VehicleId, creatureEntry))
             {
+                // Send others that we now have a vehicle
+                ObjectGuid guid = GetGUID();
+                WorldPacket data(SMSG_PLAYER_VEHICLE_DATA, GetPackGUID().size() + 4);
+
+                data.WriteBit(guid[0]);
+                data.WriteBit(guid[6]);
+                data.WriteBit(guid[1]);
+                data.WriteBit(guid[3]);
+                data.WriteBit(guid[7]);
+                data.WriteBit(guid[4]);
+                data.WriteBit(guid[5]);
+                data.WriteBit(guid[2]);
+
+                data.WriteByteSeq(guid[6]);
+                data.WriteByteSeq(guid[7]);
+                data.WriteByteSeq(guid[0]);
+                data.WriteByteSeq(guid[3]);
+                data << uint32(VehicleId);
+                data << uint32(0);
+                data.WriteByteSeq(guid[1]);
+                data.WriteByteSeq(guid[5]);
+                data.WriteByteSeq(guid[2]);
+                data.WriteByteSeq(guid[4]);
+
+                SendMessageToSet(&data, true);
+
                 player->SendOnCancelExpectedVehicleRideAura();
 
                 // mounts can also have accessories
@@ -10285,6 +10311,31 @@ void Unit::Dismount()
     // dismount as a vehicle
     if (GetTypeId() == TYPEID_PLAYER && GetVehicleKit())
     {
+        // Send other players that we are no longer a vehicle
+        ObjectGuid guid = GetGUID();
+        data.Initialize(SMSG_PLAYER_VEHICLE_DATA, 8 + 4);
+
+        data.WriteBit(guid[0]);
+        data.WriteBit(guid[6]);
+        data.WriteBit(guid[1]);
+        data.WriteBit(guid[3]);
+        data.WriteBit(guid[7]);
+        data.WriteBit(guid[4]);
+        data.WriteBit(guid[5]);
+        data.WriteBit(guid[2]);
+
+        data.WriteByteSeq(guid[6]);
+        data.WriteByteSeq(guid[7]);
+        data.WriteByteSeq(guid[0]);
+        data.WriteByteSeq(guid[3]);
+        data << uint32(0);
+        data << uint32(0);
+        data.WriteByteSeq(guid[1]);
+        data.WriteByteSeq(guid[5]);
+        data.WriteByteSeq(guid[2]);
+        data.WriteByteSeq(guid[4]);
+
+        ToPlayer()->SendMessageToSet(&data, true);
         // Remove vehicle from player
         RemoveVehicleKit();
     }
