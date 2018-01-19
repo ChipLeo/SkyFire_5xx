@@ -1,5 +1,5 @@
-# Copyright (C) 2011-2017 Project SkyFire <http://www.projectskyfire.org/
-# Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
+# Copyright (C) 2011-2018 Project SkyFire <http://www.projectskyfire.org/
+# Copyright (C) 2008-2018 TrinityCore <http://www.trinitycore.org/>
 #
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without
@@ -17,19 +17,11 @@ matrix:
     #  sudo: required
     #  compiler: clang
     - os: linux
+      sudo: required
       dist: trusty
-      sudo: required
+      group: deprecated-2017Q4
       compiler: gcc
-  # ENABLE AFTER ACE 6.4.3 is available.
-    #- os: linux
-    #  dist: xenial
-    #  sudo: required
-    #  compiler: clang
-    - os: linux
-      dist: xenial
       sudo: required
-      compiler: gcc
-sudo: required
 
 language: cpp
 
@@ -68,12 +60,3 @@ notifications:
       - "irc.rizon.net#project_skyfire"
     on_success: always
     on_failure: always
-
-  webhooks:
-    urls:
-      - http://87.106.181.7/travis-ci.php
-    on_success: always
-    on_failure: always
-    on_start: always
-    on_cancel: always
-    on_error: always
