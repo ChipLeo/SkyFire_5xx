@@ -20,13 +20,13 @@
 #ifndef SKYFIRE_DBCSFRM_H
 #define SKYFIRE_DBCSFRM_H
 
-// x - skip<uint32>, X - skip<uint8>, s - char*, f - float, i - uint32, b - uint8, d - index (not included)
+// x - skip<uint32>, X - skip<uint8>, s - char*, f - float, i - uint32, b - uint8, d - index (not included), e - uint64
 // n - index (included), l - bool, p - field present in sql dbc, a - field absent in sql dbc
 
 char const Achievementfmt[] = "niixsxiixixxiii";
 const std::string CustomAchievementfmt = "pppaaaapapaappa";
 const std::string CustomAchievementIndex = "ID";
-char const AchievementCriteriafmt[] = "niiiixiiiisiiiiiiiiiiiii";
+char const AchievementCriteriafmt[] = "niiieiiiisiiiiiiiiiiiii";
 char const AreaTableEntryfmt[] = "iiinixxxxxxxisiiiiiffixxxxxxxx";
 char const AreaGroupEntryfmt[] = "niiiiiii";
 char const AreaPOIEntryfmt[] = "niiiiiiiiiiiffixixxixxx";
@@ -51,7 +51,7 @@ char const CreatureSpellDatafmt[] = "niiiixxxx";
 char const CreatureTypefmt[] = "nxx";
 char const CurrencyTypesfmt[] = "nixxxiiiiixx";
 char const Criteriafmt[] = "niiiiixxiiii";
-char const CriteriaTreefmt[] = "niixiiis";
+char const CriteriaTreefmt[] = "nieiiise";
 char const ChrSpecializationfmt[] = "nxiixiiixxxxxx";
 char const DestructibleModelDatafmt[] = "ixxixxxixxxixxxixxxxxxxx";
 char const DungeonEncounterfmt[] = "iiixisxxx";

@@ -78,14 +78,14 @@ struct AchievementCriteriaEntry
         struct
         {
             uint32  creatureID;                             // 3
-            uint32  creatureCount;                          // 4
+            uint64  creatureCount;                          // 4
         } kill_creature;
 
         // ACHIEVEMENT_CRITERIA_TYPE_WIN_BG                 = 1
         struct
         {
             uint32  bgMapID;                                // 3
-            uint32  winCount;                               // 4
+            uint64  winCount;                               // 4
         } win_bg;
 
         // ACHIEVEMENT_CRITERIA_TYPE_REACH_LEVEL            = 5
@@ -93,14 +93,14 @@ struct AchievementCriteriaEntry
         struct
         {
             uint32  unused;                                 // 3
-            uint32  level;                                  // 4
+            uint64  level;                                  // 4
         } reach_level;
 
         // ACHIEVEMENT_CRITERIA_TYPE_REACH_SKILL_LEVEL      = 7
         struct
         {
             uint32  skillID;                                // 3
-            uint32  skillLevel;                             // 4
+            uint64  skillLevel;                             // 4
         } reach_skill_level;
 
         // ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_ACHIEVEMENT   = 8
@@ -113,35 +113,35 @@ struct AchievementCriteriaEntry
         struct
         {
             uint32  unused;                                 // 3
-            uint32  totalQuestCount;                        // 4
+            uint64  totalQuestCount;                        // 4
         } complete_quest_count;
 
         // ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_DAILY_QUEST_DAILY = 10
         struct
         {
             uint32  unused;                                 // 3
-            uint32  numberOfDays;                           // 4
+            uint64  numberOfDays;                           // 4
         } complete_daily_quest_daily;
 
         // ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_QUESTS_IN_ZONE = 11
         struct
         {
             uint32  zoneID;                                 // 3
-            uint32  questCount;                             // 4
+            uint64  questCount;                             // 4
         } complete_quests_in_zone;
 
         // ACHIEVEMENT_CRITERIA_TYPE_CURRENCY = 12
         struct
         {
             uint32 currency;
-            uint32 count;
+            uint64 count;
         } currencyGain;
 
         // ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_DAILY_QUEST   = 14
         struct
         {
             uint32  unused;                                 // 3
-            uint32  questCount;                             // 4
+            uint64  questCount;                             // 4
         } complete_daily_quest;
 
         // ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_BATTLEGROUND  = 15
@@ -178,7 +178,7 @@ struct AchievementCriteriaEntry
         struct
         {
             uint32  unused;                                 // 3
-            uint32  fallHeight;                             // 4
+            uint64  fallHeight;                             // 4
         } fall_without_dying;
 
         // ACHIEVEMENT_CRITERIA_TYPE_DEATHS_FROM            = 26
@@ -191,7 +191,7 @@ struct AchievementCriteriaEntry
         struct
         {
             uint32  questID;                                // 3
-            uint32  questCount;                             // 4
+            uint64  questCount;                             // 4
         } complete_quest;
 
         // ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET        = 28
@@ -199,7 +199,7 @@ struct AchievementCriteriaEntry
         struct
         {
             uint32  spellID;                                // 3
-            uint32  spellCount;                             // 4
+            uint64  spellCount;                             // 4
         } be_spell_target;
 
         // ACHIEVEMENT_CRITERIA_TYPE_CAST_SPELL             = 29
@@ -207,28 +207,28 @@ struct AchievementCriteriaEntry
         struct
         {
             uint32  spellID;                                // 3
-            uint32  castCount;                              // 4
+            uint64  castCount;                              // 4
         } cast_spell;
 
         // ACHIEVEMENT_CRITERIA_TYPE_BG_OBJECTIVE_CAPTURE
         struct
         {
             uint32 objectiveId;                             // 3
-            uint32 completeCount;                           // 4
+            uint64 completeCount;                           // 4
         } bg_objective;
 
         // ACHIEVEMENT_CRITERIA_TYPE_HONORABLE_KILL_AT_AREA = 31
         struct
         {
             uint32  areaID;                                 // 3 Reference to AreaTable.dbc
-            uint32  killCount;                              // 4
+            uint64  killCount;                              // 4
         } honorable_kill_at_area;
 
         // ACHIEVEMENT_CRITERIA_TYPE_WIN_ARENA              = 32
         struct
         {
             uint32 mapID;                                   // 3 Reference to Map.dbc
-            uint32 count;                                   // 4 Number of times that the arena must be won.
+            uint64 count;                                   // 4 Number of times that the arena must be won.
         } win_arena;
 
         // ACHIEVEMENT_CRITERIA_TYPE_PLAY_ARENA             = 33
@@ -247,14 +247,14 @@ struct AchievementCriteriaEntry
         struct
         {
             uint32  itemID;                                 // 3
-            uint32  itemCount;                              // 4
+            uint64  itemCount;                              // 4
         } own_item;
 
         // ACHIEVEMENT_CRITERIA_TYPE_WIN_RATED_ARENA        = 37
         struct
         {
             uint32  unused;                                 // 3
-            uint32  count;                                  // 4
+            uint64  count;                                  // 4
         } win_rated_arena;
 
         // ACHIEVEMENT_CRITERIA_TYPE_HIGHEST_TEAM_RATING    = 38
@@ -267,35 +267,35 @@ struct AchievementCriteriaEntry
         struct
         {
             uint32  teamtype;                               // 3 {2, 3, 5}
-            uint32  teamrating;                             // 4
+            uint64  teamrating;                             // 4
         } reach_team_rating;
 
         // ACHIEVEMENT_CRITERIA_TYPE_HIGHEST_PERSONAL_RATING = 39
         struct
         {
             uint32 teamtype; // 3 {2, 3, 5}
-            uint32 PersonalRating; // 4
+            uint64 PersonalRating; // 4
         } highest_personal_rating;
 
         // ACHIEVEMENT_CRITERIA_TYPE_LEARN_SKILL_LEVEL      = 40
         struct
         {
             uint32  skillID;                                // 3
-            uint32  skillLevel;                             // 4 apprentice=1, journeyman=2, expert=3, artisan=4, master=5, grand master=6
+            uint64  skillLevel;                             // 4 apprentice=1, journeyman=2, expert=3, artisan=4, master=5, grand master=6
         } learn_skill_level;
 
         // ACHIEVEMENT_CRITERIA_TYPE_USE_ITEM               = 41
         struct
         {
             uint32  itemID;                                 // 3
-            uint32  itemCount;                              // 4
+            uint64  itemCount;                              // 4
         } use_item;
 
         // ACHIEVEMENT_CRITERIA_TYPE_LOOT_ITEM              = 42
         struct
         {
             uint32  itemID;                                 // 3
-            uint32  itemCount;                              // 4
+            uint64  itemCount;                              // 4
         } loot_item;
 
         // ACHIEVEMENT_CRITERIA_TYPE_EXPLORE_AREA           = 43
@@ -316,28 +316,28 @@ struct AchievementCriteriaEntry
         struct
         {
             uint32  unused;                                 // 3
-            uint32  numberOfSlots;                          // 4
+            uint64  numberOfSlots;                          // 4
         } buy_bank_slot;
 
         // ACHIEVEMENT_CRITERIA_TYPE_GAIN_REPUTATION        = 46
         struct
         {
             uint32  factionID;                              // 3
-            uint32  reputationAmount;                       // 4 Total reputation amount, so 42000 = exalted
+            uint64  reputationAmount;                       // 4 Total reputation amount, so 42000 = exalted
         } gain_reputation;
 
         // ACHIEVEMENT_CRITERIA_TYPE_GAIN_EXALTED_REPUTATION= 47
         struct
         {
             uint32  unused;                                 // 3
-            uint32  numberOfExaltedFactions;                // 4
+            uint64  numberOfExaltedFactions;                // 4
         } gain_exalted_reputation;
 
         // ACHIEVEMENT_CRITERIA_TYPE_VISIT_BARBER_SHOP      = 48
         struct
         {
             uint32 unused;                                  // 3
-            uint32 numberOfVisits;                          // 4
+            uint64 numberOfVisits;                          // 4
         } visit_barber;
 
         // ACHIEVEMENT_CRITERIA_TYPE_EQUIP_EPIC_ITEM        = 49
@@ -345,34 +345,34 @@ struct AchievementCriteriaEntry
         struct
         {
             uint32  itemSlot;                               // 3
-            uint32  count;                                  // 4
+            uint64  count;                                  // 4
         } equip_epic_item;
 
         // ACHIEVEMENT_CRITERIA_TYPE_ROLL_NEED_ON_LOOT      = 50
         struct
         {
             uint32  rollValue;                              // 3
-            uint32  count;                                  // 4
+            uint64  count;                                  // 4
         } roll_need_on_loot;
        // ACHIEVEMENT_CRITERIA_TYPE_ROLL_GREED_ON_LOOT      = 51
         struct
         {
             uint32  rollValue;                              // 3
-            uint32  count;                                  // 4
+            uint64  count;                                  // 4
         } roll_greed_on_loot;
 
         // ACHIEVEMENT_CRITERIA_TYPE_HK_CLASS               = 52
         struct
         {
             uint32  classID;                                // 3
-            uint32  count;                                  // 4
+            uint64  count;                                  // 4
         } hk_class;
 
         // ACHIEVEMENT_CRITERIA_TYPE_HK_RACE                = 53
         struct
         {
             uint32  raceID;                                 // 3
-            uint32  count;                                  // 4
+            uint64  count;                                  // 4
         } hk_race;
 
         // ACHIEVEMENT_CRITERIA_TYPE_DO_EMOTE               = 54
@@ -380,7 +380,7 @@ struct AchievementCriteriaEntry
         struct
         {
             uint32  emoteID;                                // 3 enum TextEmotes
-            uint32  count;                                  // 4 count of emotes, always required special target or requirements
+            uint64  count;                                  // 4 count of emotes, always required special target or requirements
         } do_emote;
         // ACHIEVEMENT_CRITERIA_TYPE_DAMAGE_DONE            = 13
         // ACHIEVEMENT_CRITERIA_TYPE_HEALING_DONE           = 55
@@ -388,42 +388,42 @@ struct AchievementCriteriaEntry
         struct
         {
             uint32  unused;                                 // 3
-            uint32  count;                                  // 4
+            uint64  count;                                  // 4
         } healing_done;
 
         // ACHIEVEMENT_CRITERIA_TYPE_GET_KILLING_BLOWS      = 56
         struct
         {
             uint32  unused;
-            uint32  killCount;
+            uint64  killCount;
         } get_killing_blow;
 
         // ACHIEVEMENT_CRITERIA_TYPE_EQUIP_ITEM             = 57
         struct
         {
             uint32  itemID;                                 // 3
-            uint32  count;                                  // 4
+            uint64  count;                                  // 4
         } equip_item;
 
         // ACHIEVEMENT_CRITERIA_TYPE_MONEY_FROM_QUEST_REWARD= 62
         struct
         {
             uint32  unused;                                 // 3
-            uint32  goldInCopper;                           // 4
+            uint64  goldInCopper;                           // 4
         } quest_reward_money;
 
         // ACHIEVEMENT_CRITERIA_TYPE_LOOT_MONEY             = 67
         struct
         {
             uint32  unused;                                 // 3
-            uint32  goldInCopper;                           // 4
+            uint64  goldInCopper;                           // 4
         } loot_money;
 
         // ACHIEVEMENT_CRITERIA_TYPE_USE_GAMEOBJECT         = 68
         struct
         {
             uint32  goEntry;                                // 3
-            uint32  useCount;                               // 4
+            uint64  useCount;                               // 4
         } use_gameobject;
 
         // ACHIEVEMENT_CRITERIA_TYPE_SPECIAL_PVP_KILL       = 70
@@ -431,28 +431,28 @@ struct AchievementCriteriaEntry
         struct
         {
             uint32  unused;                                 // 3
-            uint32  killCount;                              // 4
+            uint64  killCount;                              // 4
         } special_pvp_kill;
 
         // ACHIEVEMENT_CRITERIA_TYPE_FISH_IN_GAMEOBJECT     = 72
         struct
         {
             uint32  goEntry;                                // 3
-            uint32  lootCount;                              // 4
+            uint64  lootCount;                              // 4
         } fish_in_gameobject;
 
         // ACHIEVEMENT_CRITERIA_TYPE_LEARN_SKILLLINE_SPELLS = 75
         struct
         {
             uint32  skillLine;                              // 3
-            uint32  spellCount;                             // 4
+            uint64  spellCount;                             // 4
         } learn_skillline_spell;
 
         // ACHIEVEMENT_CRITERIA_TYPE_WIN_DUEL               = 76
         struct
         {
             uint32  unused;                                 // 3
-            uint32  duelCount;                              // 4
+            uint64  duelCount;                              // 4
         } win_duel;
 
         // ACHIEVEMENT_CRITERIA_TYPE_HIGHEST_POWER          = 96
@@ -483,37 +483,35 @@ struct AchievementCriteriaEntry
         struct
         {
             uint32  lootType;                               // 3 3=fishing, 2=pickpocket, 4=disentchant
-            uint32  lootTypeCount;                          // 4
+            uint64  lootTypeCount;                          // 4
         } loot_type;
 
         // ACHIEVEMENT_CRITERIA_TYPE_LEARN_SKILL_LINE       = 112
         struct
         {
             uint32  skillLine;                              // 3
-            uint32  spellCount;                             // 4
+            uint64  spellCount;                             // 4
         } learn_skill_line;
 
         // ACHIEVEMENT_CRITERIA_TYPE_EARN_HONORABLE_KILL    = 113
         struct
         {
             uint32  unused;                                 // 3
-            uint32  killCount;                              // 4
+            uint64  killCount;                              // 4
         } honorable_kill;
 
         struct
         {
             uint32  unused;
-            uint32  dungeonsComplete;
+            uint64  dungeonsComplete;
         } use_lfg;
 
         struct
         {
             uint32  field3;                                 // 3 main requirement
-            uint32  count;                                  // 4 main requirement count
+            uint64  count;                                  // 4 main requirement count
         } raw;
     };
-
-    //uint32 unk;                                             // 5
 
     struct
     {
@@ -1220,12 +1218,12 @@ struct CriteriaTreeEntry
 {
     uint32 ID;                                              // 0
     uint32 criteriaID;                                      // 1
-    uint32 criteriaCount;                                   // 2
-    //uint32 unk;                                           // 3
-    uint32 op;                                              // 4
-    uint32 parentID;                                        // 5
-    uint32 treeFlags;                                       // 6
-    char* name;                                             // 7
+    uint64 criteriaCount;                                   // 2
+    uint32 op;                                              // 3
+    uint32 parentID;                                        // 4
+    uint32 treeFlags;                                       // 5
+    char* name;                                             // 6
+    uint64 orderIndex;                                      // 7
 };
 
 struct ModifierTreeEntry

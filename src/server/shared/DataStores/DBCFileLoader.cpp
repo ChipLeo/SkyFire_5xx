@@ -39,12 +39,11 @@ bool DBCFileLoader::Load(const char* filename, const char* fmt)
     if (!f)
         return false;
 
-    if (fread(&header, 4, 1, f) != 1)                        // Number of records
+    if (fread(&header, 4, 1, f) != 1)                        // Header
     {
         fclose(f);
         return false;
     }
-
 
     EndianConvert(header);
 
@@ -93,6 +92,8 @@ bool DBCFileLoader::Load(const char* filename, const char* fmt)
         fieldsOffset[i] = fieldsOffset[i - 1];
         if (fmt[i - 1] == 'b' || fmt[i - 1] == 'X')         // byte fields
             fieldsOffset[i] += sizeof(uint8);
+        else if (fmt[i - 1] == 'e')                         // 8 byte field
+            fieldsOffset[i] += sizeof(uint64);
         else                                                // 4 byte fields (int32/float/strings)
             fieldsOffset[i] += sizeof(uint32);
     }
@@ -155,6 +156,9 @@ uint32 DBCFileLoader::GetFormatRecordSize(const char* format, int32* index_pos)
                 break;
             case FT_NA:
             case FT_NA_BYTE:
+                break;
+            case FT_LONG:
+                recordsize += sizeof(uint64);
                 break;
             default:
                 ASSERT(false && "Unknown field format character in DBCfmt.h");
@@ -251,6 +255,10 @@ char* DBCFileLoader::AutoProduceData(const char* format, uint32& records, char**
                 case FT_NA_BYTE:
                 case FT_SORT:
                     break;
+                case FT_LONG:
+                    *((uint64*)(&dataTable[offset])) = getRecord(y).getULong(x);
+                    offset += sizeof(uint64);
+                    break;
                 default:
                     ASSERT(false && "Unknown field format character in DBCfmt.h");
                     break;
@@ -304,6 +312,9 @@ char* DBCFileLoader::AutoProduceStrings(const char* format, char* dataTable)
                  case FT_NA:
                  case FT_NA_BYTE:
                  case FT_SORT:
+                     break;
+                 case FT_LONG:
+                     offset += sizeof(uint64);
                      break;
                  default:
                      ASSERT(false && "Unknown field format character in DBCfmt.h");

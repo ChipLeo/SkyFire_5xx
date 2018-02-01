@@ -41,6 +41,13 @@ class DBCFileLoader
                     EndianConvert(val);
                     return val;
                 }
+                uint64 getULong(size_t field) const
+                {
+                    assert(field < file.fieldCount);
+                    uint64 val = *reinterpret_cast<uint64*>(offset+file.GetOffset(field));
+                    EndianConvert(val);
+                    return val;
+                }
                 uint32 getUInt(size_t field) const
                 {
                     assert(field < file.fieldCount);
