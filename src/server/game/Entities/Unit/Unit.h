@@ -1214,7 +1214,7 @@ struct UnitActionBarEntry
     bool IsActionBarForSpell() const
     {
         ActiveStates Type = GetType();
-        return Type == ACT_DISABLED || Type == ACT_ENABLED || Type == ACT_PASSIVE;
+        return (Type == ACT_DISABLED) || (Type == ACT_ENABLED) || (Type == ACT_PASSIVE);
     }
 
     void SetActionAndType(uint32 action, ActiveStates type)
@@ -1504,7 +1504,7 @@ class Unit : public WorldObject
     }
     bool HasUnitState(const uint32 f) const
     {
-        return (m_state & f);
+        return (m_state & f) != 0;
     }
     void ClearUnitState(uint32 f)
     {
@@ -1522,27 +1522,27 @@ class Unit : public WorldObject
     }
     bool IsSummon() const
     {
-        return m_unitTypeMask & UNIT_MASK_SUMMON;
+        return (m_unitTypeMask & UNIT_MASK_SUMMON) != 0;
     }
     bool IsGuardian() const
     {
-        return m_unitTypeMask & UNIT_MASK_GUARDIAN;
+        return (m_unitTypeMask & UNIT_MASK_GUARDIAN) != 0;
     }
     bool IsPet() const
     {
-        return m_unitTypeMask & UNIT_MASK_PET;
+        return (m_unitTypeMask & UNIT_MASK_PET) != 0;
     }
     bool IsHunterPet() const
     {
-        return m_unitTypeMask & UNIT_MASK_HUNTER_PET;
+        return (m_unitTypeMask & UNIT_MASK_HUNTER_PET) != 0;
     }
     bool IsTotem() const
     {
-        return m_unitTypeMask & UNIT_MASK_TOTEM;
+        return (m_unitTypeMask & UNIT_MASK_TOTEM) != 0;
     }
     bool IsVehicle() const
     {
-        return m_unitTypeMask & UNIT_MASK_VEHICLE;
+        return (m_unitTypeMask & UNIT_MASK_VEHICLE) != 0;
     }
 
     uint8 getLevel() const
@@ -1632,7 +1632,7 @@ class Unit : public WorldObject
     }
     bool HealthBelowPctDamaged(int32 pct, uint32 damage) const
     {
-        return int64(GetHealth()) - int64(damage) < int64(CountPctFromMaxHealth(pct));
+        return (int64(GetHealth()) - int64(damage)) < int64(CountPctFromMaxHealth(pct));
     }
     bool HealthAbovePct(int32 pct) const
     {
@@ -1640,7 +1640,7 @@ class Unit : public WorldObject
     }
     bool HealthAbovePctHealed(int32 pct, uint32 heal) const
     {
-        return uint64(GetHealth()) + uint64(heal) > CountPctFromMaxHealth(pct);
+        return (uint64(GetHealth()) + uint64(heal)) > CountPctFromMaxHealth(pct);
     }
     float GetHealthPct() const
     {

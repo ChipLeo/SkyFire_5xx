@@ -3024,7 +3024,7 @@ class Player : public Unit, public GridObject<Player>
 
     bool HasAtLoginFlag(AtLoginFlags f) const
     {
-        return m_atLoginFlags & f;
+        return (m_atLoginFlags & f) != 0;
     }
     void SetAtLoginFlag(AtLoginFlags f)
     {
