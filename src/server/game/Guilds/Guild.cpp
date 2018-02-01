@@ -1964,9 +1964,9 @@ void Guild::HandleInviteMember(WorldSession* session, std::string const& name)
     data.WriteBit(newGuildGuid[1]);
     data.WriteBit(newGuildGuid[3]);
     data.WriteBit(oldGuildGuid[0]);
-    data.WriteBit(newGuildGuid[7]);
-    data.WriteBits(pInvitee->GetGuildName().length(), 7);
     data.WriteBit(newGuildGuid[2]);
+    data.WriteBits(pInvitee->GetGuildName().length(), 7);
+    data.WriteBit(newGuildGuid[7]);
 
     data.FlushBits();
 
