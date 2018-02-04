@@ -175,6 +175,7 @@ void WorldSession::HandleEnterPlayerVehicle(WorldPacket& recvData)
 
 void WorldSession::HandleEjectPassenger(WorldPacket& data)
 {
+    SF_LOG_DEBUG("network", "WORLD: Recvd CMSG_EJECT_PASSENGER");
     Vehicle* vehicle = _player->GetVehicleKit();
     if (!vehicle)
     {
@@ -183,8 +184,9 @@ void WorldSession::HandleEjectPassenger(WorldPacket& data)
         return;
     }
 
-    uint64 guid;
-    data >> guid;
+    ObjectGuid guid;
+    data.ReadGuidMask(guid, 4, 2, 1, 6, 5, 0, 7, 3);
+    data.ReadGuidBytes(guid, 2, 7, 0, 6, 4, 3, 5, 1);
 
     if (IS_PLAYER_GUID(guid))
     {
