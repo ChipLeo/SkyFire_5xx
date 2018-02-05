@@ -1999,7 +1999,7 @@ void Guild::HandleInviteMember(WorldSession* session, std::string const& name)
     data.WriteByteSeq(oldGuildGuid[3]);
     data.WriteByteSeq(oldGuildGuid[6]);
 
-    pInvitee->GetSession()->SendPacket(&data);
+    pInvitee->SendDirectMessage(&data);
     SF_LOG_DEBUG("guild", "SMSG_GUILD_INVITE [%s]", pInvitee->GetName().c_str());
 }
 
@@ -2768,7 +2768,7 @@ void Guild::BroadcastToGuild(WorldSession* session, bool officerOnly, std::strin
             if (Player* player = itr->second->FindPlayer())
                 if (player->GetSession() && _HasRankRight(player, officerOnly ? GR_RIGHT_OFFCHATLISTEN : GR_RIGHT_GCHATLISTEN) &&
                     !player->GetSocial()->HasIgnore(session->GetPlayer()->GetGUIDLow()))
-                    player->GetSession()->SendPacket(&data);
+                    player->SendDirectMessage(&data);
     }
 }
 
@@ -2783,7 +2783,7 @@ void Guild::BroadcastAddonToGuild(WorldSession* session, bool officerOnly, std::
                 if (player->GetSession() && _HasRankRight(player, officerOnly ? GR_RIGHT_OFFCHATLISTEN : GR_RIGHT_GCHATLISTEN) &&
                     !player->GetSocial()->HasIgnore(session->GetPlayer()->GetGUIDLow()) &&
                     player->GetSession()->IsAddonRegistered(prefix))
-                        player->GetSession()->SendPacket(&data);
+                        player->SendDirectMessage(&data);
     }
 }
 
@@ -2792,14 +2792,14 @@ void Guild::BroadcastPacketToRank(WorldPacket* packet, uint8 rankId) const
     for (Members::const_iterator itr = m_members.begin(); itr != m_members.end(); ++itr)
         if (itr->second->IsRank(rankId))
             if (Player* player = itr->second->FindPlayer())
-                player->GetSession()->SendPacket(packet);
+                player->SendDirectMessage(packet);
 }
 
 void Guild::BroadcastPacket(WorldPacket* packet) const
 {
     for (Members::const_iterator itr = m_members.begin(); itr != m_members.end(); ++itr)
         if (Player* player = itr->second->FindPlayer())
-            player->GetSession()->SendPacket(packet);
+            player->SendDirectMessage(packet);
 }
 
 void Guild::MassInviteToEvent(WorldSession* session, uint32 minLevel, uint32 maxLevel, uint32 minRank)
@@ -3541,7 +3541,7 @@ void Guild::_SendBankContentUpdate(uint8 tabId, SlotIds slots) const
                 if (Player* player = itr->second->FindPlayer())
                 {
                     data.put<uint32>(pos, uint32(_GetMemberRemainingSlots(itr->second, tabId)));
-                    player->GetSession()->SendPacket(&data);
+                    player->SendDirectMessage(&data);
                 }
 
         SF_LOG_DEBUG("guild", "WORLD: Sent (SMSG_GUILD_BANK_LIST)");
@@ -3732,7 +3732,7 @@ void Guild::GiveXP(uint32 xp, Player* source)
 
     WorldPacket data(SMSG_GUILD_XP_GAIN, 8);
     data << uint64(xp);
-    source->GetSession()->SendPacket(&data);
+    source->SendDirectMessage(&data);
 
     _experience += xp;
     _todayExperience += xp;
@@ -3805,7 +3805,7 @@ void Guild::ResetTimes(bool weekly)
         {
             //SendGuildXP(player->GetSession());
             WorldPacket data(SMSG_GUILD_MEMBER_DAILY_RESET, 0);  // tells the client to request bank withdrawal limit
-            player->GetSession()->SendPacket(&data);
+            player->SendDirectMessage(&data);
         }
     }
 }

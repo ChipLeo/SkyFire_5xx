@@ -411,7 +411,7 @@ public:
         data << uint8(op);
         data << uint16(val);
         data << uint16(mark);
-        target->GetSession()->SendPacket(&data);
+        target->SendDirectMessage(&data);
 
         return true;
     }

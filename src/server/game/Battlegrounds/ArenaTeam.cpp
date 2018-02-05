@@ -516,7 +516,7 @@ void ArenaTeam::BroadcastPacket(WorldPacket* packet)
 {
     for (MemberList::const_iterator itr = Members.begin(); itr != Members.end(); ++itr)
         if (Player* player = ObjectAccessor::FindPlayer(itr->Guid))
-            player->GetSession()->SendPacket(packet);
+            player->SendDirectMessage(packet);
 }
 
 void ArenaTeam::BroadcastEvent(ArenaTeamEvents event, uint64 guid, uint8 strCount, std::string const& str1, std::string const& str2, std::string const& str3)

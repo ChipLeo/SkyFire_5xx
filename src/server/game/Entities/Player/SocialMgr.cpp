@@ -176,7 +176,7 @@ void PlayerSocial::SendSocialList(Player* player)
         }
     }
 
-    player->GetSession()->SendPacket(&data);
+    player->SendDirectMessage(&data);
     SF_LOG_DEBUG("network", "WORLD: Sent SMSG_CONTACT_LIST");
 }
 
@@ -284,7 +284,7 @@ void SocialMgr::SendFriendStatus(Player* player, FriendsResult result, uint32 fr
     if (broadcast)
         BroadcastToFriendListers(player, &data);
     else
-        player->GetSession()->SendPacket(&data);
+        player->SendDirectMessage(&data);
 }
 
 void SocialMgr::BroadcastToFriendListers(Player* player, WorldPacket* packet)

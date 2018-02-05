@@ -271,7 +271,7 @@ void Object::SendUpdateToPlayer(Player* player)
 
     BuildCreateUpdateBlockForPlayer(&upd, player);
     upd.BuildPacket(&packet);
-    player->GetSession()->SendPacket(&packet);
+    player->SendDirectMessage(&packet);
 }
 
 void Object::BuildValuesUpdateBlockForPlayer(UpdateData* data, Player* target) const
@@ -303,7 +303,7 @@ void Object::DestroyForPlayer(Player* target, bool onDeath) const
             {
                 WorldPacket data(SMSG_ARENA_UNIT_DESTROYED, 8);
                 data << uint64(GetGUID());
-                target->GetSession()->SendPacket(&data);
+                target->SendDirectMessage(&data);
             }
         }
     }
@@ -335,7 +335,7 @@ void Object::DestroyForPlayer(Player* target, bool onDeath) const
     data.WriteByteSeq(guid[1]);
     data.WriteByteSeq(guid[5]);
 
-    target->GetSession()->SendPacket(&data);
+    target->SendDirectMessage(&data);
 }
 
 int32 Object::GetInt32Value(uint16 index) const
@@ -2193,7 +2193,7 @@ void WorldObject::SendPlaySound(uint32 Sound, bool OnlySelf)
     data.WriteByteSeq(guid[6]);
     data.WriteByteSeq(guid[1]);
     if (OnlySelf && GetTypeId() == TYPEID_PLAYER)
-        this->ToPlayer()->GetSession()->SendPacket(&data);
+        this->ToPlayer()->SendDirectMessage(&data);
     else
         SendMessageToSet(&data, true); // ToSelf ignored in this case
 }

@@ -227,7 +227,7 @@ void WorldSession::HandleLootMoneyOpcode(WorldPacket& /*recvData*/)
                 data.WriteBit(playersNear.size() <= 1); // Controls the text displayed in chat. 0 is "Your share is..." and 1 is "You loot..."
                 data.FlushBits();
                 data << uint32(goldPerPlayer);
-                (*i)->GetSession()->SendPacket(&data);
+                (*i)->SendDirectMessage(&data);
             }
         }
         else

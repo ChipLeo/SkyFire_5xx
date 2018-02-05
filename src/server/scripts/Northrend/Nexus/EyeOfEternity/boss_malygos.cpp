@@ -1052,7 +1052,7 @@ public:
                 for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
                     if (Player* player = itr->GetSource())
                         if (player->GetAreaId() == AREA_EYE_OF_ETERNITY)
-                            player->GetSession()->SendPacket(data);
+                            player->SendDirectMessage(data);
         }
 
         uint8 _phase; // Counter for phases used with a getter.

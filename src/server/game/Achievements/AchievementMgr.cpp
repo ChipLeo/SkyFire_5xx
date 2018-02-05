@@ -401,7 +401,7 @@ void AchievementMgr<Guild>::SendPacket(WorldPacket* data) const
 template<>
 void AchievementMgr<Player>::SendPacket(WorldPacket* data) const
 {
-    GetOwner()->GetSession()->SendPacket(data);
+    GetOwner()->SendDirectMessage(data);
 }
 
 template<class T>
@@ -2103,7 +2103,7 @@ void AchievementMgr<Guild>::SendAllAchievementData(Player* receiver) const
         data << uint32(itr->first);
     }
 
-    receiver->GetSession()->SendPacket(&data);
+    receiver->SendDirectMessage(&data);
 }
 
 template<>
@@ -2223,7 +2223,7 @@ void AchievementMgr<Player>::SendAchievementInfo(Player* receiver, uint32 /*achi
     data.WriteByteSeq(guid[4]);
     data.WriteByteSeq(guid[1]);
 
-    receiver->GetSession()->SendPacket(&data);
+    receiver->SendDirectMessage(&data);
 }
 
 template<>
@@ -2236,7 +2236,7 @@ void AchievementMgr<Guild>::SendAchievementInfo(Player* receiver, uint32 achieve
         // send empty packet
         WorldPacket data(SMSG_GUILD_CRITERIA_DATA, 3);
         data.WriteBits(0, 21);
-        receiver->GetSession()->SendPacket(&data);
+        receiver->SendDirectMessage(&data);
         return;
     }
 
@@ -2247,7 +2247,7 @@ void AchievementMgr<Guild>::SendAchievementInfo(Player* receiver, uint32 achieve
         // send empty packet
         WorldPacket data(SMSG_GUILD_CRITERIA_DATA, 3);
         data.WriteBits(0, 21);
-        receiver->GetSession()->SendPacket(&data);
+        receiver->SendDirectMessage(&data);
         return;
     }
 
@@ -2258,7 +2258,7 @@ void AchievementMgr<Guild>::SendAchievementInfo(Player* receiver, uint32 achieve
         // send empty packet
         WorldPacket data(SMSG_GUILD_CRITERIA_DATA, 3);
         data.WriteBits(0, 21);
-        receiver->GetSession()->SendPacket(&data);
+        receiver->SendDirectMessage(&data);
         return;
     }
 
@@ -2334,7 +2334,7 @@ void AchievementMgr<Guild>::SendAchievementInfo(Player* receiver, uint32 achieve
     if (numCriteria)
         data.append(criteriaData);
 
-    receiver->GetSession()->SendPacket(&data);*/
+    receiver->SendDirectMessage(&data);*/
 }
 
 template<class T>

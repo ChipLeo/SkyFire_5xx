@@ -732,7 +732,7 @@ void Channel::SendToAll(WorldPacket* data, uint64 guid)
     for (PlayerContainer::const_iterator i = playersStore.begin(); i != playersStore.end(); ++i)
         if (Player* player = ObjectAccessor::FindPlayer(i->first))
             if (!guid || !player->GetSocial()->HasIgnore(GUID_LOPART(guid)))
-                player->GetSession()->SendPacket(data);
+                player->SendDirectMessage(data);
 }
 
 void Channel::SendToAllButOne(WorldPacket* data, uint64 who)
@@ -740,13 +740,13 @@ void Channel::SendToAllButOne(WorldPacket* data, uint64 who)
     for (PlayerContainer::const_iterator i = playersStore.begin(); i != playersStore.end(); ++i)
         if (i->first != who)
             if (Player* player = ObjectAccessor::FindPlayer(i->first))
-                player->GetSession()->SendPacket(data);
+                player->SendDirectMessage(data);
 }
 
 void Channel::SendToOne(WorldPacket* data, uint64 who)
 {
     if (Player* player = ObjectAccessor::FindPlayer(who))
-        player->GetSession()->SendPacket(data);
+        player->SendDirectMessage(data);
 }
 
 void Channel::Voice(uint64 /*guid1*/, uint64 /*guid2*/)

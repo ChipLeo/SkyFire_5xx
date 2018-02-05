@@ -1673,11 +1673,11 @@ class Player : public Unit, public GridObject<Player>
 
     void ModifyCurrencyFlag(uint32 id, uint8 flag);
     /// send initialization of new currency for client
-    void SendNewCurrency(uint32 id) const;
+    void SendNewCurrency(uint32 id);
     /// send full data about all currencies to client
-    void SendCurrencies() const;
+    void SendCurrencies();
     /// send conquest currency points and their cap week/arena
-    void SendPvpRewards() const;
+    void SendPvpRewards();
     /// return count of currency witch has plr
     uint32 GetCurrency(uint32 id, bool usePrecision) const;
     /// return count of currency gaind on current week
@@ -1823,11 +1823,11 @@ class Player : public Unit, public GridObject<Player>
     void IncompleteQuest(uint32 quest_id);
     void RewardQuest(Quest const* quest, uint32 reward, Object* questGiver, bool announce = true);
     void FailQuest(uint32 quest_id);
-    bool SatisfyQuestSkill(Quest const* qInfo, bool msg) const;
+    bool SatisfyQuestSkill(Quest const* qInfo, bool msg);
     bool SatisfyQuestLevel(Quest const* qInfo, bool msg);
     bool SatisfyQuestLog(bool msg);
     bool SatisfyQuestPreviousQuest(Quest const* qInfo, bool msg);
-    bool SatisfyQuestClass(Quest const* qInfo, bool msg) const;
+    bool SatisfyQuestClass(Quest const* qInfo, bool msg);
     bool SatisfyQuestRace(Quest const* qInfo, bool msg);
     bool SatisfyQuestReputation(Quest const* qInfo, bool msg);
     bool SatisfyQuestStatus(Quest const* qInfo, bool msg);
@@ -1893,7 +1893,7 @@ class Player : public Unit, public GridObject<Player>
     void SendQuestReward(Quest const* quest, uint32 XP);
     void SendQuestFailed(uint32 questId, InventoryResult reason = EQUIP_ERR_OK);
     void SendQuestTimerFailed(uint32 questId);
-    void SendCanTakeQuestResponse(QuestFailedReason msg) const;
+    void SendCanTakeQuestResponse(QuestFailedReason msg);
     void SendQuestConfirmAccept(Quest const* quest, Player* pReceiver);
     void SendPushToPartyResponse(Player* player, uint8 msg);
     void SendQuestUpdateAddCredit(Quest const* quest, QuestObjective const* objective, ObjectGuid guid, uint16 oldCount, uint16 addCount);
@@ -2300,11 +2300,11 @@ class Player : public Unit, public GridObject<Player>
     ActionButton* addActionButton(uint8 button, uint32 action, uint8 type);
     void removeActionButton(uint8 button);
     ActionButton const* GetActionButton(uint8 button);
-    void SendInitialActionButtons() const
+    void SendInitialActionButtons()
     {
         SendActionButtons(0);
     }
-    void SendActionButtons(uint32 state) const;
+    void SendActionButtons(uint32 state);
     bool IsActionButtonDataValid(uint8 button, uint32 action, uint8 type);
 
     PvPInfo pvpInfo;
@@ -2777,7 +2777,7 @@ class Player : public Unit, public GridObject<Player>
 
     void SendInitWorldStates(uint32 zone, uint32 area);
     void SendUpdateWorldState(uint32 Field, uint32 Value);
-    void SendDirectMessage(WorldPacket* data);
+    void SendDirectMessage(WorldPacket const* data);
     void SendBGWeekendWorldStates();
     void SendBattlefieldWorldStates();
 
@@ -3508,7 +3508,7 @@ class Player : public Unit, public GridObject<Player>
 
     PlayerCurrenciesMap _currencyStorage;
 
-    uint32 _GetCurrencyWeekCap(const CurrencyTypesEntry* currency) const;
+    uint32 _GetCurrencyWeekCap(const CurrencyTypesEntry* currency);
 
     /// Updates weekly conquest point cap (dynamic cap)
     void SendCurrencyWeekCap(uint32 id) const;

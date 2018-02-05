@@ -2333,7 +2333,7 @@ void Map::SendInitSelf(Player* player)
 
     WorldPacket packet;
     data.BuildPacket(&packet);
-    player->GetSession()->SendPacket(&packet);
+    player->SendDirectMessage(&packet);
 }
 
 void Map::SendInitTransports(Player* player)
@@ -2346,7 +2346,7 @@ void Map::SendInitTransports(Player* player)
 
     WorldPacket packet;
     transData.BuildPacket(&packet);
-    player->GetSession()->SendPacket(&packet);
+    player->SendDirectMessage(&packet);
 }
 
 void Map::SendRemoveTransports(Player* player)
@@ -2359,7 +2359,7 @@ void Map::SendRemoveTransports(Player* player)
 
     WorldPacket packet;
     transData.BuildPacket(&packet);
-    player->GetSession()->SendPacket(&packet);
+    player->SendDirectMessage(&packet);
 }
 
 inline void Map::setNGrid(NGridType *grid, uint32 x, uint32 y)
@@ -2498,7 +2498,7 @@ uint32 Map::GetPlayersCountExceptGMs() const
 void Map::SendToPlayers(WorldPacket const* data) const
 {
     for (MapRefManager::const_iterator itr = m_mapRefManager.begin(); itr != m_mapRefManager.end(); ++itr)
-        itr->GetSource()->GetSession()->SendPacket(data);
+        itr->GetSource()->SendDirectMessage(data);
 }
 
 bool Map::ActiveObjectsNearGrid(NGridType const& ngrid) const
@@ -2789,7 +2789,7 @@ bool InstanceMap::AddPlayerToMap(Player* player)
                             data << uint32(i_data ? i_data->GetCompletedEncounterMask() : 0);
                             data << uint8(0);
                             data << uint8(0); // events it throws:  1 : INSTANCE_LOCK_WARNING   0 : INSTANCE_LOCK_STOP / INSTANCE_LOCK_START
-                            player->GetSession()->SendPacket(&data);
+                            player->SendDirectMessage(&data);
                             player->SetPendingBind(mapSave->GetInstanceId(), 60000);
                         }
                     }
@@ -2948,7 +2948,7 @@ void InstanceMap::PermBindAllPlayers(Player* source)
             player->BindToInstance(save, true);
             WorldPacket data(SMSG_INSTANCE_SAVE_CREATED, 4);
             data << uint32(0);
-            player->GetSession()->SendPacket(&data);
+            player->SendDirectMessage(&data);
 
             player->GetSession()->SendCalendarRaidLockout(save, true);
         }

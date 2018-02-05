@@ -398,7 +398,7 @@ void BattlegroundQueue::RemovePlayer(uint64 guid, bool decreaseInvitedCount)
                                                             // queue->removeplayer, it causes bugs
             WorldPacket data;
             sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, bg, plr2, queueSlot, STATUS_NONE, plr2->GetBattlegroundQueueJoinTime(group->BgTypeId), 0, 0);
-            plr2->GetSession()->SendPacket(&data);
+            plr2->SendDirectMessage(&data);
         }
         // then actually delete, this may delete the group as well!
         RemovePlayer(group->Players.begin()->first, decreaseInvitedCount);
@@ -483,7 +483,7 @@ bool BattlegroundQueue::InviteGroupToBG(GroupQueueInfo* ginfo, Battleground* bg,
 
             // send status packet
             sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, bg, player, queueSlot, STATUS_WAIT_JOIN, INVITE_ACCEPT_WAIT_TIME, player->GetBattlegroundQueueJoinTime(bgTypeId), ginfo->ArenaType);
-            player->GetSession()->SendPacket(&data);
+            player->SendDirectMessage(&data);
         }
         return true;
     }
@@ -1005,7 +1005,7 @@ bool BGQueueInviteEvent::Execute(uint64 /*e_time*/, uint32 /*p_time*/)
             WorldPacket data;
             //we must send remaining time in queue
             sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, bg, player, queueSlot, STATUS_WAIT_JOIN, INVITE_ACCEPT_WAIT_TIME - INVITATION_REMIND_TIME, player->GetBattlegroundQueueJoinTime(m_BgTypeId), m_ArenaType);
-            player->GetSession()->SendPacket(&data);
+            player->SendDirectMessage(&data);
         }
     }
     return true;                                            //event will be deleted
@@ -1053,7 +1053,7 @@ bool BGQueueRemoveEvent::Execute(uint64 /*e_time*/, uint32 /*p_time*/)
 
             WorldPacket data;
             sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, bg, player, queueSlot, STATUS_NONE, player->GetBattlegroundQueueJoinTime(m_BgTypeId), 0, 0);
-            player->GetSession()->SendPacket(&data);
+            player->SendDirectMessage(&data);
         }
     }
 

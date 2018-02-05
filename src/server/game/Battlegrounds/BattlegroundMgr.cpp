@@ -1193,7 +1193,7 @@ void BattlegroundMgr::SendAreaSpiritHealerQueryOpcode(Player* player, Battlegrou
     data.WriteByteSeq(Guid[0]);
     data.WriteByteSeq(Guid[1]);
 
-    player->GetSession()->SendPacket(&data);
+    player->SendDirectMessage(&data);
 }
 
 bool BattlegroundMgr::IsArenaType(BattlegroundTypeId bgTypeId)

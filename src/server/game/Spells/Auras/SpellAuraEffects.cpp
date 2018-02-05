@@ -6479,7 +6479,7 @@ void AuraEffect::HandleAuraForceWeather(AuraApplication const* aurApp, uint8 mod
         WorldPacket data(SMSG_WEATHER, (4 + 4 + 1));
 
         data << uint32(GetMiscValue()) << 1.0f << uint8(0);
-        target->GetSession()->SendPacket(&data);
+        target->SendDirectMessage(&data);
     }
     else
     {

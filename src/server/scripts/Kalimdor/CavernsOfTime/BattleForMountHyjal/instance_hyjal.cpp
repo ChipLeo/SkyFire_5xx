@@ -190,7 +190,7 @@ public:
                                          {
                                             WorldPacket packet(SMSG_MESSAGECHAT, 200);
                                             unit->MonsterYell(YELL_EFFORTS, LANG_UNIVERSAL, i->GetSource());
-                                            i->GetSource()->GetSession()->SendPacket(&packet);
+                                            i->GetSource()->SendDirectMessage(&packet);
 
                                             ObjectGuid guid = unit->GetGUID();
 
@@ -212,7 +212,7 @@ public:
                                             data2.WriteByteSeq(guid[0]);
                                             data2.WriteByteSeq(guid[6]);
                                             data2.WriteByteSeq(guid[1]);
-                                            i->GetSource()->GetSession()->SendPacket(&data2);
+                                            i->GetSource()->SendDirectMessage(&data2);
                                          }
                                     }
                                 }

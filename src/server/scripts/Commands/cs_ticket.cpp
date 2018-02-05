@@ -198,7 +198,7 @@ public:
             {
                 WorldPacket data(SMSG_GM_TICKET_UPDATE, 4);
                 data << uint32(GMTICKET_RESPONSE_TICKET_DELETED);
-                submitter->GetSession()->SendPacket(&data);
+                submitter->SendDirectMessage(&data);
             }
         }
         return true;
@@ -282,7 +282,7 @@ public:
                 // Force abandon ticket
                 WorldPacket data(SMSG_GM_TICKET_UPDATE, 4);
                 data << uint32(GMTICKET_RESPONSE_TICKET_DELETED);
-                player->GetSession()->SendPacket(&data);
+                player->SendDirectMessage(&data);
             }
         }
 

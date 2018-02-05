@@ -3903,7 +3903,7 @@ void Spell::SendCastResult(Player* caster, SpellInfo const* spellInfo, uint8 cas
         else
             data.PutBits(pos, 0, 2); // 1 and 1
     }
-    caster->GetSession()->SendPacket(&data);
+    caster->SendDirectMessage(&data);
 }
 
 void Spell::SendSpellStart()
@@ -5051,7 +5051,7 @@ void Spell::SendResurrectRequest(Player* target)
     data.WriteByteSeq(guid[6]);
     data.WriteByteSeq(guid[0]);
 
-    target->GetSession()->SendPacket(&data);
+    target->SendDirectMessage(&data);
 }
 
 void Spell::TakeCastItem()

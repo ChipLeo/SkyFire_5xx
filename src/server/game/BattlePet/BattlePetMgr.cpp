@@ -419,16 +419,16 @@ void BattlePetMgr::SendBattlePetDeleted(uint64 id)
     data.WriteByteSeq(petEntry[5]);
     data.WriteByteSeq(petEntry[2]);
 
-    m_owner->GetSession()->SendPacket(&data);
+    m_owner->SendDirectMessage(&data);
 }
 
 void BattlePetMgr::SendBattlePetJournalLock()
 {
     WorldPacket data(SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED, 0);
-    m_owner->GetSession()->SendPacket(&data);
+    m_owner->SendDirectMessage(&data);
 
     /*WorldPacket data(SMSG_BATTLE_PET_JOURNAL_LOCK_DENINED, 0);
-    m_owner->GetSession()->SendPacket(&data);*/
+    m_owner->SendDirectMessage(&data);*/
 }
 
 void BattlePetMgr::SendBattlePetJournal()
@@ -541,7 +541,7 @@ void BattlePetMgr::SendBattlePetJournal()
     data.append(journalData);
     data << uint16(0);                          // unknown
 
-    m_owner->GetSession()->SendPacket(&data);
+    m_owner->SendDirectMessage(&data);
 }
 
 void BattlePetMgr::SendBattlePetSlotUpdate(uint8 slot, bool notification, uint64 id)
@@ -582,7 +582,7 @@ void BattlePetMgr::SendBattlePetSlotUpdate(uint8 slot, bool notification, uint64
         data << uint8(slot);
     }
 
-    m_owner->GetSession()->SendPacket(&data);
+    m_owner->SendDirectMessage(&data);
 }
 
 void BattlePetMgr::SendBattlePetUpdate(BattlePet* battlePet, bool notification)
@@ -643,5 +643,5 @@ void BattlePetMgr::SendBattlePetUpdate(BattlePet* battlePet, bool notification)
     data << uint32(creatureTemplate->Modelid1);
     data << uint16(battlePet->GetLevel());
 
-    m_owner->GetSession()->SendPacket(&data);
+    m_owner->SendDirectMessage(&data);
 }

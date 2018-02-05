@@ -375,7 +375,7 @@ void BlackMarketMgr::SendAuctionOutbidded(BlackMarketAuction* auction, uint32 ne
             data << uint32(auction->GetTemplate()->ItemEntry);
             data << uint32(1);
             data << uint32(1);
-            bidder->GetSession()->SendPacket(&data);
+            bidder->SendDirectMessage(&data);
         }
 
         MailDraft(auction->BuildAuctionMailSubject(BM_AUCTION_OUTBIDDED), auction->BuildAuctionMailBody(auction->GetTemplate()->SellerNPCEntry))
@@ -399,7 +399,7 @@ void BlackMarketMgr::SendAuctionWon(BlackMarketAuction* auction, SQLTransaction&
             data << uint32(auction->GetTemplate()->ItemEntry);  // 4 - ItemEntry
             data << uint32(1);                                  // 5 - might be OK - 5 (win msg recvd)
 
-            bidder->GetSession()->SendPacket(&data);
+            bidder->SendDirectMessage(&data);
         }
 
         ItemTemplate const* itemTemplate = sObjectMgr->GetItemTemplate(auction->GetTemplate()->ItemEntry);

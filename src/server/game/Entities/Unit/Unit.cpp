@@ -6434,7 +6434,7 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffect* triggere
                             data << int32(-2000);                   // Cooldown mod in milliseconds
                             data.WriteByteSeq(playerGuid [2]);
 
-                            ToPlayer()->GetSession()->SendPacket(&data);
+                            ToPlayer()->SendDirectMessage(&data);
                             return true;
                         }
                     }
@@ -13415,7 +13415,7 @@ void Unit::SendPetActionFeedback(uint8 msg, uint32 spellId)
     if (hasSpellData)
         data << uint32(spellId);
 
-    owner->ToPlayer()->GetSession()->SendPacket(&data);
+    owner->ToPlayer()->SendDirectMessage(&data);
 }
 
 void Unit::SendPetTalk(uint32 pettalk)
@@ -13447,7 +13447,7 @@ void Unit::SendPetTalk(uint32 pettalk)
     data.WriteByteSeq(guid[5]);
     data.WriteByteSeq(guid[0]);
 
-    owner->ToPlayer()->GetSession()->SendPacket(&data);
+    owner->ToPlayer()->SendDirectMessage(&data);
 }
 
 void Unit::SendPetAIReaction(ObjectGuid UnitGUID)
@@ -13477,7 +13477,7 @@ void Unit::SendPetAIReaction(ObjectGuid UnitGUID)
     data.WriteByteSeq(UnitGUID [0]);
     data.WriteByteSeq(UnitGUID [3]);
 
-    owner->ToPlayer()->GetSession()->SendPacket(&data);
+    owner->ToPlayer()->SendDirectMessage(&data);
 }
 
 ///----------End of Pet responses methods----------
@@ -13518,7 +13518,7 @@ void Unit::SetStandState(uint8 state)
     {
         WorldPacket data(SMSG_STANDSTATE_UPDATE, 1);
         data << (uint8) state;
-        ToPlayer()->GetSession()->SendPacket(&data);
+        ToPlayer()->SendDirectMessage(&data);
     }
 }
 
@@ -14197,7 +14197,7 @@ void Unit::SendDurabilityLoss(Player* receiver, uint32 percent)
 {
     WorldPacket data(SMSG_DURABILITY_DAMAGE_DEATH, 4);
     data << uint32(percent);
-    receiver->GetSession()->SendPacket(&data);
+    receiver->SendDirectMessage(&data);
 }
 
 void Unit::PlayOneShotAnimKit(uint32 id)
@@ -15507,7 +15507,7 @@ void Unit::SendMoveKnockBack(Player* player, float speedXY, float speedZ, float 
     data.WriteByteSeq(guid [1]);
     data.WriteByteSeq(guid [2]);
 
-    player->GetSession()->SendPacket(&data);
+    player->SendDirectMessage(&data);
 }
 
 void Unit::KnockbackFrom(float x, float y, float speedXY, float speedZ)

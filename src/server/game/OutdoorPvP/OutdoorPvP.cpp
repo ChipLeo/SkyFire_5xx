@@ -565,7 +565,7 @@ void OutdoorPvP::BroadcastPacket(WorldPacket &data) const
     for (uint32 team = 0; team < 2; ++team)
         for (PlayerSet::const_iterator itr = m_players[team].begin(); itr != m_players[team].end(); ++itr)
             if (Player* const player = ObjectAccessor::FindPlayer(*itr))
-                player->GetSession()->SendPacket(&data);
+                player->SendDirectMessage(&data);
 }
 
 void OutdoorPvP::RegisterZone(uint32 zoneId)

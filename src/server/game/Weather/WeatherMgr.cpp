@@ -149,7 +149,7 @@ void SendFineWeatherUpdateToPlayer(Player* player)
     WorldPacket data(SMSG_WEATHER, (4+4+4));
 
     data << (uint32)WEATHER_STATE_FINE << (float)0.0f << uint8(0);
-    player->GetSession()->SendPacket(&data);
+    player->SendDirectMessage(&data);
 }
 
 void Update(uint32 diff)

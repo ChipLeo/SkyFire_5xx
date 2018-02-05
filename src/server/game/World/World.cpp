@@ -2754,7 +2754,7 @@ void World::SendServerMessage(ServerMessageType type, const char *text, Player* 
         data << text;
 
     if (player)
-        player->GetSession()->SendPacket(&data);
+        player->SendDirectMessage(&data);
     else
         SendGlobalMessage(&data);
 }

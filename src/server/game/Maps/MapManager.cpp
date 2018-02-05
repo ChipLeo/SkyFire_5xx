@@ -219,7 +219,7 @@ bool MapManager::CanPlayerEnter(uint32 mapid, Player* player, bool loginCheck)
             if (!corpseMap)
             {
                 WorldPacket data(SMSG_CORPSE_NOT_IN_INSTANCE);
-                player->GetSession()->SendPacket(&data);
+                player->SendDirectMessage(&data);
                 SF_LOG_DEBUG("maps", "MAP: Player '%s' does not have a corpse in instance '%s' and cannot enter.", player->GetName().c_str(), mapName);
                 return false;
             }

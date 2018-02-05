@@ -518,7 +518,7 @@ void WorldSession::SendPetNameQuery(ObjectGuid petGuid, uint64 petNumber)
         data.FlushBits();
         data << uint64(petNumber);
 
-        _player->GetSession()->SendPacket(&data);
+        _player->SendDirectMessage(&data);
         return;
     }
 
@@ -547,7 +547,7 @@ void WorldSession::SendPetNameQuery(ObjectGuid petGuid, uint64 petNumber)
     data << uint32(pet->GetUInt32Value(UNIT_FIELD_PET_NAME_TIMESTAMP));
     data << uint64(petNumber);
 
-    _player->GetSession()->SendPacket(&data);
+    _player->SendDirectMessage(&data);
 }
 
 bool WorldSession::CheckStableMaster(uint64 guid)

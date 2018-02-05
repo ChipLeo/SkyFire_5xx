@@ -477,7 +477,7 @@ inline void Battleground::_ProcessJoin(uint32 diff)
 
         for (BattlegroundPlayerMap::const_iterator itr = GetPlayers().begin(); itr != GetPlayers().end(); ++itr)
             if (Player* player = ObjectAccessor::FindPlayer(itr->first))
-                player->GetSession()->SendPacket(&data);
+                player->SendDirectMessage(&data);
 
         m_CountdownTimer = 0;
     }
@@ -541,7 +541,7 @@ inline void Battleground::_ProcessJoin(uint32 diff)
                     uint32 queueSlot = player->GetBattlegroundQueueIndex(bgQueueTypeId);
 
                     sBattlegroundMgr->BuildBattlegroundStatusPacket(&status, this, player, queueSlot, STATUS_IN_PROGRESS, player->GetBattlegroundQueueJoinTime(m_TypeID), GetElapsedTime(), GetArenaType());
-                    player->GetSession()->SendPacket(&status);
+                    player->SendDirectMessage(&status);
 
                     // Correctly display EnemyUnitFrame
                     player->SetByteValue(PLAYER_FIELD_PVP_INFO, 3, player->GetBGTeam());
@@ -1197,7 +1197,7 @@ void Battleground::AddPlayer(Player* player)
     uint32 queueSlot = player->GetBattlegroundQueueIndex(bgQueueTypeId);
 
     sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, this, player, queueSlot, STATUS_IN_PROGRESS, player->GetBattlegroundQueueJoinTime(m_TypeID), GetElapsedTime(), GetArenaType());
-    player->GetSession()->SendPacket(&data);
+    player->SendDirectMessage(&data);
 
     player->RemoveAurasByType(SPELL_AURA_MOUNTED);
 
@@ -1241,7 +1241,7 @@ void Battleground::AddPlayer(Player* player)
             data << uint32(countdownMaxForBGType);
             data << uint32(countdownMaxForBGType - (GetElapsedTime() / 1000));
             data << uint32(0); // unk
-            player->GetSession()->SendPacket(&data);
+            player->SendDirectMessage(&data);
         }
     }
 

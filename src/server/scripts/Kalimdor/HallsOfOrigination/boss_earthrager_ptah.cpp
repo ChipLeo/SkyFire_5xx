@@ -132,7 +132,7 @@ public:
                 for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
                     if (Player* player = itr->GetSource())
                         if (player->GetAreaId() == AREA_TOMB_OF_THE_EARTHRAGER)
-                            player->GetSession()->SendPacket(data);
+                            player->SendDirectMessage(data);
         }
 
         void Reset() OVERRIDE

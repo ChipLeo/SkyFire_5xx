@@ -98,7 +98,7 @@ void WorldSession::HandleGrantLevel(WorldPacket& recvData)
     data2.WriteByteSeq(guid[3]);
     data2.WriteByteSeq(guid[0]);
 
-    target->GetSession()->SendPacket(&data2);
+    target->SendDirectMessage(&data2);
 }
 
 void WorldSession::HandleAcceptGrantLevel(WorldPacket& recvData)

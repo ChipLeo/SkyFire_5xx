@@ -568,7 +568,7 @@ bool Group::RemoveMember(uint64 guid, const RemoveMethod& method /*= GROUP_REMOV
             if (method == GROUP_REMOVEMETHOD_KICK || method == GROUP_REMOVEMETHOD_KICK_LFG)
             {
                 data.Initialize(SMSG_GROUP_UNINVITE, 0);
-                player->GetSession()->SendPacket(&data);
+                player->SendDirectMessage(&data);
             }
 
             SendUpdateToPlayer(guid, NULL);
@@ -770,7 +770,7 @@ void Group::Disband(bool hideDestroy /* = false */)
         if (!hideDestroy)
         {
             data.Initialize(SMSG_GROUP_DESTROYED, 0);
-            player->GetSession()->SendPacket(&data);
+            player->SendDirectMessage(&data);
         }
 
         //we already removed player from group and in player->GetGroup() is his original group, send update
@@ -839,7 +839,7 @@ void Group::SendLootStartRoll(uint32 countDown, uint32 mapid, const Roll &r)
             continue;
 
         if (itr->second == NOT_EMITED_YET)
-            p->GetSession()->SendPacket(&data);
+            p->SendDirectMessage(&data);
     }
 }
 
@@ -863,7 +863,7 @@ void Group::SendLootStartRollToPlayer(uint32 countDown, uint32 mapId, Player* p,
     data << uint8(voteMask);                                // roll type mask
     data << uint8(r.totalPlayersRolling);                   // maybe the number of players rolling for it???
 
-    p->GetSession()->SendPacket(&data);
+    p->SendDirectMessage(&data);
 }
 
 void Group::SendLootRoll(uint64 sourceGuid, uint64 targetGuid, uint8 rollNumber, uint8 rollType, Roll const& roll)
@@ -886,7 +886,7 @@ void Group::SendLootRoll(uint64 sourceGuid, uint64 targetGuid, uint8 rollNumber,
             continue;
 
         if (itr->second != NOT_VALID)
-            p->GetSession()->SendPacket(&data);
+            p->SendDirectMessage(&data);
     }
 }
 
@@ -909,7 +909,7 @@ void Group::SendLootRollWon(uint64 sourceGuid, uint64 targetGuid, uint8 rollNumb
             continue;
 
         if (itr->second != NOT_VALID)
-            p->GetSession()->SendPacket(&data);
+            p->SendDirectMessage(&data);
     }
 }
 
@@ -929,7 +929,7 @@ void Group::SendLootAllPassed(Roll const& roll)
             continue;
 
         if (itr->second != NOT_VALID)
-            player->GetSession()->SendPacket(&data);
+            player->SendDirectMessage(&data);
     }
 }
 
@@ -1382,7 +1382,7 @@ void Group::MasterLoot(Loot* /*loot*/, WorldObject* pLootedObject)
     {
         Player* looter = itr->GetSource();
         if (looter->IsWithinDistInMap(pLootedObject, sWorld->getFloatConfig(CONFIG_GROUP_XP_DISTANCE), false))
-            looter->GetSession()->SendPacket(&data);
+            looter->SendDirectMessage(&data);
     }
 }
 
@@ -1823,7 +1823,7 @@ void Group::SendUpdateToPlayer(uint64 playerGUID, MemberSlot* slot)
         data.WriteByteSeq(leaderGuid[5]);
         data.WriteByteSeq(leaderGuid[6]);
 
-        player->GetSession()->SendPacket(&data);
+        player->SendDirectMessage(&data);
         return;
     }
 
@@ -1980,7 +1980,7 @@ void Group::SendUpdateToPlayer(uint64 playerGUID, MemberSlot* slot)
     data.WriteByteSeq(leaderGuid[5]);
     data.WriteByteSeq(leaderGuid[6]);
 
-    player->GetSession()->SendPacket(&data);
+    player->SendDirectMessage(&data);
 
     /*data << uint8(m_groupType);                         // group type (flags in 3.3)
     data << uint8(slot->group);
@@ -2053,7 +2053,7 @@ void Group::UpdatePlayerOutOfRange(Player* player)
     {
         member = itr->GetSource();
         if (member && !member->IsWithinDist(player, member->GetSightRange(), false))
-            member->GetSession()->SendPacket(&data);
+            member->SendDirectMessage(&data);
     }
 }
 
@@ -2081,7 +2081,7 @@ void Group::BroadcastPacket(WorldPacket* packet, bool ignorePlayersInBGRaid, int
             continue;
 
         if (player->GetSession() && (group == -1 || itr->getSubGroup() == group))
-            player->GetSession()->SendPacket(packet);
+            player->SendDirectMessage(packet);
     }
 }
 
@@ -2092,7 +2092,7 @@ void Group::BroadcastReadyCheck(WorldPacket* packet)
         Player* player = itr->GetSource();
         if (player && player->GetSession())
             if (IsLeader(player->GetGUID()) || IsAssistant(player->GetGUID()))
-                player->GetSession()->SendPacket(packet);
+                player->SendDirectMessage(packet);
     }
 }
 

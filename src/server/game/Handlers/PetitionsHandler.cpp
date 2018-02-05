@@ -844,7 +844,7 @@ void WorldSession::HandleOfferPetitionOpcode(WorldPacket& recvData)
     data.WriteByteSeq(playerGuid[2]);
 
     delete [] playerGuids;
-    player->GetSession()->SendPacket(&data);
+    player->SendDirectMessage(&data);
 }
 
 void WorldSession::HandleTurnInPetitionOpcode(WorldPacket& recvData)
@@ -913,7 +913,7 @@ void WorldSession::HandleTurnInPetitionOpcode(WorldPacket& recvData)
         data.Initialize(SMSG_TURN_IN_PETITION_RESULTS, 1);
         data.WriteBits(PETITION_TURN_ALREADY_IN_GUILD, 4);
         data.FlushBits();
-        _player->GetSession()->SendPacket(&data);
+        _player->SendDirectMessage(&data);
         return;
     }
 

@@ -1033,7 +1033,7 @@ void Item::SendUpdateSockets()
     for (uint32 i = SOCK_ENCHANTMENT_SLOT; i <= BONUS_ENCHANTMENT_SLOT; ++i)
         data << uint32(GetEnchantmentId(EnchantmentSlot(i)));
 
-    GetOwner()->GetSession()->SendPacket(&data);
+    GetOwner()->SendDirectMessage(&data);
 }
 
 // Though the client has the information in the item's data field,
@@ -1068,7 +1068,7 @@ void Item::SendTimeUpdate(Player* owner)
     data.WriteByteSeq(guid[1]);
     data << uint32(duration);
 
-    owner->GetSession()->SendPacket(&data);
+    owner->SendDirectMessage(&data);
 }
 
 Item* Item::CreateItem(uint32 itemEntry, uint32 count, Player const* player)

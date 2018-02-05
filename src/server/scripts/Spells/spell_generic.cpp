@@ -3126,7 +3126,7 @@ class spell_gen_spirit_healer_res : public SpellScriptLoader
                     data.WriteByteSeq(guid[5]);
                     data.WriteByteSeq(guid[1]);
 
-                    originalCaster->GetSession()->SendPacket(&data);
+                    originalCaster->SendDirectMessage(&data);
                 }
             }
 

@@ -4124,8 +4124,8 @@ void Spell::EffectDuel(SpellEffIndex effIndex)
     data.WriteByteSeq(arbiterGuid[1]);
     data.WriteByteSeq(casterGuid[5]);
 
-    caster->GetSession()->SendPacket(&data);
-    target->GetSession()->SendPacket(&data);
+    caster->SendDirectMessage(&data);
+    target->SendDirectMessage(&data);
 
     // create duel-info
     DuelInfo* duel   = new DuelInfo;
@@ -4220,7 +4220,7 @@ void Spell::EffectSummonPlayer(SpellEffIndex /*effIndex*/)
     data.WriteByteSeq(SummonerGUID[6]);
     data.WriteByteSeq(SummonerGUID[5]);
     data.WriteByteSeq(SummonerGUID[0]);
-    unitTarget->ToPlayer()->GetSession()->SendPacket(&data);
+    unitTarget->ToPlayer()->SendDirectMessage(&data);
 }
 
 void Spell::EffectActivateObject(SpellEffIndex /*effIndex*/)
@@ -5742,7 +5742,7 @@ void Spell::EffectPlayMusic(SpellEffIndex effIndex)
     WorldPacket data(SMSG_PLAY_MUSIC, 4);
     data << uint32(soundid);
     data << uint64(unitTarget->GetGUID());
-    unitTarget->ToPlayer()->GetSession()->SendPacket(&data);
+    unitTarget->ToPlayer()->SendDirectMessage(&data);
 }
 
 void Spell::EffectSpecCount(SpellEffIndex /*effIndex*/)
@@ -5812,7 +5812,7 @@ void Spell::EffectPlaySound(SpellEffIndex effIndex)
     data.WriteByteSeq(guid[0]);
     data.WriteByteSeq(guid[6]);
     data.WriteByteSeq(guid[1]);
-    unitTarget->ToPlayer()->GetSession()->SendPacket(&data);
+    unitTarget->ToPlayer()->SendDirectMessage(&data);
 }
 
 void Spell::EffectRemoveAura(SpellEffIndex effIndex)

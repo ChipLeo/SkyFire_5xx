@@ -332,7 +332,7 @@ void WorldSession::HandleGroupInviteResponseOpcode(WorldPacket& recvData)
         // report
         WorldPacket data(SMSG_GROUP_DECLINE, GetPlayer()->GetName().size());
         data << GetPlayer()->GetName();
-        leader->GetSession()->SendPacket(&data);
+        leader->SendDirectMessage(&data);
     }
 }
 

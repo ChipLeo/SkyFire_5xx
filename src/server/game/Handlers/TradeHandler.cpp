@@ -769,7 +769,7 @@ void WorldSession::HandleInitiateTradeOpcode(WorldPacket& recvPacket)
     data.WriteByteSeq(playerGuid[0]);
     data.WriteByteSeq(playerGuid[3]);
 
-    pOther->GetSession()->SendPacket(&data);
+    pOther->SendDirectMessage(&data);
 }
 
 void WorldSession::HandleSetTradeGoldOpcode(WorldPacket& recvPacket)

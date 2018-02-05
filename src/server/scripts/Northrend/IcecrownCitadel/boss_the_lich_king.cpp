@@ -1130,7 +1130,7 @@ class boss_the_lich_king : public CreatureScript
                     for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
                         if (Player* player = itr->GetSource())
                             if (player->GetAreaId() == AREA_THE_FROZEN_THRONE)
-                                player->GetSession()->SendPacket(data);
+                                player->SendDirectMessage(data);
             }
 
             uint32 _necroticPlagueStack;
