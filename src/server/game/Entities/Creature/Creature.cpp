@@ -2598,16 +2598,19 @@ void Creature::FocusTarget(Spell const* focusSpell, WorldObject const* target)
 
 void Creature::ReleaseFocus(Spell const* focusSpell)
 {
-    // focused to something else
-    if (focusSpell != _focusSpell)
+    if (!_focusSpell)
         return;
 
-    _focusSpell = NULL;
+    // focused to something else
+    if (focusSpell && (focusSpell != _focusSpell))
+        return;
+
     if (Unit* victim = GetVictim())
         SetUInt64Value(UNIT_FIELD_TARGET, victim->GetGUID());
     else
         SetUInt64Value(UNIT_FIELD_TARGET, 0);
 
-    if (focusSpell->GetSpellInfo()->AttributesEx5 & SPELL_ATTR5_DONT_TURN_DURING_CAST)
+    if (_focusSpell->GetSpellInfo()->AttributesEx5 & SPELL_ATTR5_DONT_TURN_DURING_CAST)
         ClearUnitState(UNIT_STATE_ROTATING);
+    _focusSpell = NULL;
 }
