@@ -1042,7 +1042,7 @@ void Creature::SaveToDB(uint32 mapid, uint8 spawnMask, uint32 phaseMask)
 
 void Creature::SelectLevel(const CreatureTemplate* cinfo)
 {
-    uint32 rank = IsPet()? 0 : cinfo->rank;
+    uint32 rank = IsPet() ? 0 : cinfo->rank;
 
     // level
     uint8 minlevel = std::min(cinfo->maxlevel, cinfo->minlevel);
@@ -1069,19 +1069,19 @@ void Creature::SelectLevel(const CreatureTemplate* cinfo)
 
     switch (getClass())
     {
-        case CLASS_WARRIOR:
-            setPowerType(POWER_RAGE);
-            break;
-        case CLASS_ROGUE:
-            setPowerType(POWER_ENERGY);
-            break;
-        case CLASS_MONK:
-            setPowerType(POWER_CHI);
-            break;
-        default:
-            SetMaxPower(POWER_MANA, mana);
-            SetPower(POWER_MANA, mana);
-            break;
+    case CLASS_WARRIOR:
+        setPowerType(POWER_RAGE);
+        break;
+    case CLASS_ROGUE:
+        setPowerType(POWER_ENERGY);
+        break;
+    case CLASS_MONK:
+        setPowerType(POWER_CHI);
+        break;
+    default:
+        SetMaxPower(POWER_MANA, mana);
+        SetPower(POWER_MANA, mana);
+        break;
     }
 
     SetModifierValue(UNIT_MOD_HEALTH, BASE_VALUE, (float)health);
@@ -1097,7 +1097,6 @@ void Creature::SelectLevel(const CreatureTemplate* cinfo)
     SetFloatValue(UNIT_FIELD_MAX_RANGED_DAMAGE, cinfo->maxrangedmg);
 
     SetModifierValue(UNIT_MOD_ATTACK_POWER, BASE_VALUE, cinfo->attackpower);
-
 }
 
 float Creature::_GetHealthMod(int32 Rank)

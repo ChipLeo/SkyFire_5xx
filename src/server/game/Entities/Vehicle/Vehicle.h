@@ -68,6 +68,7 @@ class Vehicle : public TransportBase
         void SetLastShootPos(Position const& pos) { _lastShootPos.Relocate(pos); }
         Position const& GetLastShootPos() const { return _lastShootPos; }
 
+        SeatMap::iterator GetSeatIteratorForPassenger(Unit* passenger);
         SeatMap Seats;                                      ///< The collection of all seats on the vehicle. Including vacant ones.
 
         VehicleSeatEntry const* GetSeatForPassenger(Unit const* passenger) const;
@@ -86,7 +87,6 @@ class Vehicle : public TransportBase
             STATUS_UNINSTALLING,
         };
 
-        SeatMap::iterator GetSeatIteratorForPassenger(Unit* passenger);
         void InitMovementInfoForBase();
 
         /// This method transforms supplied transport offsets into global coordinates
