@@ -249,7 +249,10 @@ void WorldSession::HandleCreatureQueryOpcode(WorldPacket& recvData)
         SF_LOG_DEBUG("network", "WORLD: CMSG_CREATURE_QUERY '%s' - Entry: %u.", info->Name.c_str(), entry);
 
         data.WriteBits(SubName.length() ? SubName.length() + 1 : 0, 11);
-        data.WriteBits(MAX_CREATURE_QUEST_ITEMS, 22);        // Quest items
+        int count = 0;
+        for (int i = 0; i < MAX_CREATURE_QUEST_ITEMS; ++i)
+            if (info->questItems[i] > 0) count++;
+        data.WriteBits(count, 22);        // Quest items
         data.WriteBits(0, 11);
 
         for (int i = 0; i < 8; i++)
@@ -267,7 +270,7 @@ void WorldSession::HandleCreatureQueryOpcode(WorldPacket& recvData)
         data << uint32(info->KillCredit[0]);                  // New in 3.1, kill credit
         data << uint32(info->Modelid4);                       // Modelid4
         data << uint32(info->Modelid2);                       // Modelid2
-        data << uint32(info->expansion);                      // Expansion Required
+        data << uint32(info->expansionUnknown);               // Expansion Required
         data << uint32(info->type);                           // CreatureType.dbc
         data << float(info->ModHealth);                       // Hp modifier
         data << uint32(info->type_flags);                     // Flags
@@ -286,7 +289,8 @@ void WorldSession::HandleCreatureQueryOpcode(WorldPacket& recvData)
             data << info->IconName;                           // "Directions" for guard, string for Icons 2.3.0
 
         for (uint32 i = 0; i < MAX_CREATURE_QUEST_ITEMS; ++i)
-            data << uint32(info->questItems[i]);              // ItemId[6], quest drop
+            if (info->questItems[i] > 0)
+                data << uint32(info->questItems[i]);              // ItemId[6], quest drop
 
         data << uint32(info->KillCredit[1]);                  // New in 3.1, kill credit
         data << float(info->ModMana);                         // Mana modifier
