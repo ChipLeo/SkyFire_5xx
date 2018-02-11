@@ -652,3 +652,30 @@ void WorldSession::HandleSetCollisionHeightAck(WorldPacket& recvPacket)
     MovementInfo movementInfo;
     GetPlayer()->ReadMovementInfo(recvPacket, &movementInfo, &extra);
 }
+
+bool WorldSession::HandleMovementAck(MovementInfo& movementInfo, Unit* mover, uint32 AckIndex, Opcodes dataOpcode /*= SMSG_PLAYER_MOVE*/, Movement::ExtraMovementStatusElement* extras /*= NULL*/)
+{
+ /*   if (mover->GetMovementAckIndexValue(AckIndex) != movementInfo.ackIndex)
+        return false;
+
+    if (mover->GetGUID() != movementInfo.guid)
+        return false;
+
+    movementInfo.SanitizeFlags(mover);
+
+    mover->SetMovementInfo(&movementInfo);
+
+    // Each ACK* message above MOVEMENT_ACK_DIFFERENT_BROADCAST index send SMSG_PLAYER_MOVE
+    // Send only ONE SMSG_PLAYER_MOVE for ALL ack messages of that type
+    int32 LastLastMovementAckIndex = mover->GetLastMovementAckIndex();
+    if (!LastLastMovementAckIndex || AckIndex <= MOVEMENT_ACK_DIFFERENT_BROADCAST || LastLastMovementAckIndex == AckIndex)
+    {
+        mover->ResetLastMovementAck();
+
+        WorldPacket data(dataOpcode);
+        mover->WriteMovementInfo(data, extras, true);
+        mover->SendMessageToSet(&data, _player);
+    }
+    */
+    return true;
+}

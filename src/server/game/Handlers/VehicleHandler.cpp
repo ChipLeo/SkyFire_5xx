@@ -28,7 +28,7 @@
 
 void WorldSession::HandleDismissControlledVehicle(WorldPacket &recvData)
 {
-    SF_LOG_DEBUG("network", "WORLD: Recvd CMSG_DISMISS_CONTROLLED_VEHICLE");
+    SF_LOG_DEBUG("network", "WORLD: Recvd CMSG_MOVE_DISMISS_VEHICLE");
 
     uint64 vehicleGUID = _player->GetCharmGUID();
 
@@ -141,6 +141,7 @@ void WorldSession::HandleChangeSeatsOnControlledVehicle(WorldPacket& recvData)
 
 void WorldSession::HandleEnterPlayerVehicle(WorldPacket& recvData)
 {
+    SF_LOG_DEBUG("network", "WORLD: Recvd CMSG_PLAYER_VEHICLE_ENTER");
     ObjectGuid Guid;
     Guid[5] = recvData.ReadBit();
     Guid[7] = recvData.ReadBit();
@@ -255,4 +256,47 @@ void WorldSession::HandleRequestVehicleExit(WorldPacket& /*recvData*/)
                 GetPlayer()->GetGUIDLow(), seat->m_ID, seat->m_flags);
         }
     }
+}
+
+void WorldSession::HandleMoveSetVehicleRecAck(WorldPacket& recvData)
+{
+    Unit* mover = GetPlayer()->GetCharmer();
+    if (!mover)
+    {
+        recvData.rfinish();
+        return;
+    }
+
+    static MovementStatusElements const setVehicleRecId = MSEExtraInt32;
+    Movement::ExtraMovementStatusElement extra(&setVehicleRecId);
+
+    MovementInfo mi;
+    _player->ReadMovementInfo(recvData, &mi, &extra);
+
+    uint32 RecId = extra.Data.extraInt32Data;
+
+    //HandleMovementAck(mi, mover, MOVEMENT_ACK_VEHICLE_REC, SMSG_SET_VEHICLE_REC_ID, &extra);
+    WorldPacket data(SMSG_SET_VEHICLE_REC_ID);
+    ObjectGuid vehicleGuid = mover->GetGUID();
+
+    data.WriteBit(vehicleGuid[5]);
+    data.WriteBit(vehicleGuid[7]);
+    data.WriteBit(vehicleGuid[2]);
+    data.WriteBit(vehicleGuid[1]);
+    data.WriteBit(vehicleGuid[4]);
+    data.WriteBit(vehicleGuid[0]);
+    data.WriteBit(vehicleGuid[3]);
+    data.WriteBit(vehicleGuid[6]);
+
+    data.WriteByteSeq(vehicleGuid[5]);
+    data.WriteByteSeq(vehicleGuid[7]);
+    data.WriteByteSeq(vehicleGuid[4]);
+    data.WriteByteSeq(vehicleGuid[6]);
+    data.WriteByteSeq(vehicleGuid[2]);
+    data.WriteByteSeq(vehicleGuid[1]);
+    data.WriteByteSeq(vehicleGuid[3]);
+    data.WriteByteSeq(vehicleGuid[0]);
+    data << uint32(RecId);
+
+    _player->SendMessageToSet(&data, true);
 }

@@ -25751,11 +25751,11 @@ void Player::ResurectUsingRequestData()
 
 void Player::SetClientControl(Unit* target, uint8 allowMove)
 {
-    SF_LOG_DEBUG("network", "Player: Send SMSG_CLIENT_CONTROL_UPDATE");
+    SF_LOG_DEBUG("network", "Player: Send SMSG_CONTROL_UPDATE");
 
     ObjectGuid guid = target->GetGUID();
 
-    WorldPacket data(SMSG_CLIENT_CONTROL_UPDATE, 9 + 1);
+    WorldPacket data(SMSG_CONTROL_UPDATE, 9 + 1);
 
     data.WriteBit(guid[2]);
     data.WriteBit(guid[7]);

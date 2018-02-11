@@ -2025,84 +2025,162 @@ MovementStatusElements const MoveNotActiveMover[] =
 
     MSEEnd,
 };
-
-MovementStatusElements const DismissControlledVehicle[] =
+MovementStatusElements const DismissControlledVehicle[] = // 5.4.8 18414
 {
-    MSEPositionY,
-    MSEPositionZ,
-    MSEPositionX,
-    MSEHasSplineElevation,
-    MSEHasFallData,
-    MSEHasTransportData,
-    MSEHasGuidByte4,
-    MSEHasGuidByte7,
-    MSEHasMovementFlags2,
-    MSEHasGuidByte2,
-    MSEHasOrientation,
-    MSEHasGuidByte0,
-    MSEHasGuidByte6,
-    MSEHasPitch,
-    MSEHasTimestamp,
-    MSEHasGuidByte1,
-    MSEZeroBit,
-    MSEHasSpline,
-    MSEHasGuidByte3,
-    MSEHasMovementFlags,
-    MSEHasGuidByte5,
+    MSEPositionZ,              // 44
+    MSEPositionY,              // 40
+    MSEPositionX,              // 36
+    MSEHasGuidByte7,           // 23
+    MSEHasFallData,            // 140
+    MSEHasGuidByte2,           // 18
+    MSEHasGuidByte5,           // 21
+    MSEHasSplineElevation,     // 144 90h
+    MSEHasOrientation,         // 48  30h
+    MSEHasMovementFlags,       // 24
+    MSEbit149,                 // 149
+    MSEHasGuidByte6,           // 22
+    MSEHasUnkTime,             // 168
+    MSEHasGuidByte1,           // 17
+    MSEHasTimestamp,           // 32
+    MSEHasGuidByte4,           // 20
+    MSEHasTransportData,       // 104
+    MSEbit172,                 // 172
+    MSEHasGuidByte3,           // 19
+    MSEbit148,                 // 148
+    MSEHasMovementFlags2,      // 28
+    MSEForcesCount,            // 152
+    MSEHasPitch,               // 112 70h
+    MSEHasGuidByte0,           // 16
+    MSEMovementFlags2,         // 28
+    MSEHasTransportGuidByte3,  // 59
+    MSEHasTransportTime2,      // 92
+    MSEHasTransportGuidByte5,  // 61
+    MSEHasTransportGuidByte6,  // 62
+    MSEHasTransportGuidByte7,  // 63
+    MSEHasTransportGuidByte1,  // 57
+    MSEHasTransportGuidByte2,  // 58
+    MSEHasTransportGuidByte4,  // 60
+    MSEHasTransportGuidByte0,  // 56
+    MSEHasTransportTime3,      // 100
+    MSEMovementFlags,          // 24
+    MSEHasFallDirection,       // 136
 
-    MSEHasTransportGuidByte5,
-    MSEHasTransportTime3,
-    MSEHasTransportGuidByte2,
-    MSEHasTransportGuidByte0,
-    MSEHasTransportGuidByte7,
-    MSEHasTransportGuidByte3,
-    MSEHasTransportGuidByte4,
-    MSEHasTransportGuidByte1,
-    MSEHasTransportGuidByte6,
-    MSEHasTransportTime2,
+    MSEGuidByte6,              // 22
+    MSEGuidByte3,              // 19
+    MSECounter,                // 156
+    MSEGuidByte1,              // 17
+    MSEGuidByte4,              // 20
+    MSEGuidByte0,              // 16
+    MSEGuidByte7,              // 23
+    MSEGuidByte5,              // 21
+    MSEGuidByte2,              // 18
+    MSEFallSinAngle,           // 128
+    MSEFallCosAngle,           // 124
+    MSEFallHorizontalSpeed,    // 132
+    MSEFallTime,               // 116
+    MSEFallVerticalSpeed,      // 120
+    MSETransportGuidByte0,     // 56
+    MSETransportGuidByte4,     // 60
+    MSETransportPositionX,     // 64
+    MSETransportGuidByte2,     // 58
+    MSETransportTime2,         // 88
+    MSETransportPositionZ,     // 72
+    MSETransportGuidByte1,     // 57
+    MSETransportOrientation,   // 76
+    MSETransportGuidByte3,     // 59
+    MSETransportGuidByte7,     // 63
+    MSETransportGuidByte6,     // 62
+    MSETransportGuidByte5,     // 61
+    MSETransportTime,          // 84
+    MSETransportSeat,          // 80
+    MSETransportTime3,         // 96
+    MSETransportPositionY,     // 68
+    MSEPitch,                  // 112 70h
+    MSETimestamp,              // 32
+    MSEOrientation,            // 48  30h
+    MSESplineElevation,        // 144 90h
+    MSEUnkTime,                // 168
+    MSEEnd
+};
 
-    MSEMovementFlags2,
-    MSEHasFallDirection,
-    MSEMovementFlags,
+MovementStatusElements const MoveSetVehicleRecIdAck[] = // 5.4.8 18414
+{
+    MSEPositionY,              // 48  30h
+    MSECounter,                // 184
+    MSEPositionX,              // 44  2ch
+    MSEPositionZ,              // 52  34h
+    MSEExtraElement,           // 16  10h
+    MSEHasGuidByte2,           // 26
+    MSEHasMovementFlags2,      // 36
+    MSEHasGuidByte3,           // 27
+    MSEForcesCount,            // 160
+    MSEHasMovementFlags,       // 32
+    MSEHasTimestamp,           // 40
+    MSEHasFallData,            // 148
+    MSEHasGuidByte5,           // 29
+    MSEHasTransportData,       // 112
+    MSEbit148,                 // 156
+    MSEHasGuidByte0,           // 24
+    MSEHasGuidByte7,           // 31
+    MSEHasGuidByte1,           // 25
+    MSEHasUnkTime,             // 176
+    MSEHasGuidByte4,           // 28
+    MSEbit172,                 // 180
+    MSEHasGuidByte6,           // 30
+    MSEHasSplineElevation,     // 152 98h
+    MSEHasOrientation,         // 56  38h
+    MSEbit149,                 // 157
+    MSEHasPitch,               // 120 78h
+    MSEHasTransportTime2,      // 100
+    MSEHasTransportGuidByte3,  // 67
+    MSEHasTransportGuidByte2,  // 66
+    MSEHasTransportGuidByte0,  // 64
+    MSEHasTransportGuidByte4,  // 68
+    MSEHasTransportGuidByte6,  // 70
+    MSEHasTransportGuidByte7,  // 71
+    MSEHasTransportGuidByte1,  // 65
+    MSEHasTransportTime3,      // 108
+    MSEHasTransportGuidByte5,  // 69
+    MSEMovementFlags,          // 32
+    MSEMovementFlags2,         // 36
+    MSEHasFallDirection,       // 144
 
-    MSEGuidByte6,
-    MSEGuidByte3,
-    MSEGuidByte1,
-    MSEGuidByte5,
-    MSEGuidByte2,
-    MSEGuidByte4,
-    MSEGuidByte7,
-    MSEGuidByte0,
-
-    MSETimestamp,
-
-    MSETransportTime3,
-    MSETransportGuidByte4,
-    MSETransportGuidByte7,
-    MSETransportTime2,
-    MSETransportGuidByte6,
-    MSETransportTime,
-    MSETransportPositionZ,
-    MSETransportGuidByte0,
-    MSETransportPositionX,
-    MSETransportGuidByte3,
-    MSETransportSeat,
-    MSETransportPositionY,
-    MSETransportOrientation,
-    MSETransportGuidByte1,
-    MSETransportGuidByte5,
-    MSETransportGuidByte2,
-
-    MSEFallTime,
-    MSEFallHorizontalSpeed,
-    MSEFallCosAngle,
-    MSEFallSinAngle,
-    MSEFallVerticalSpeed,
-
-    MSEOrientation,
-    MSESplineElevation,
-    MSEPitch,
-    MSEEnd,
+    MSEGuidByte6,              // 30
+    MSEGuidByte2,              // 26
+    MSEGuidByte0,              // 24
+    MSEGuidByte4,              // 28
+    MSEGuidByte7,              // 31
+    MSECounter,                // 164
+    MSEGuidByte1,              // 25
+    MSEGuidByte3,              // 27
+    MSEGuidByte5,              // 29
+    MSETransportSeat,          // 88
+    MSETransportTime2,         // 96
+    MSETransportTime3,         // 104
+    MSETransportGuidByte6,     // 70
+    MSETransportGuidByte3,     // 67
+    MSETransportPositionX,     // 72  48h
+    MSETransportTime,          // 92
+    MSETransportGuidByte4,     // 68
+    MSETransportPositionZ,     // 80  50h
+    MSETransportGuidByte1,     // 65
+    MSETransportGuidByte2,     // 66
+    MSETransportGuidByte0,     // 64
+    MSETransportGuidByte5,     // 69
+    MSETransportGuidByte7,     // 71
+    MSETransportOrientation,   // 84  54h
+    MSETransportPositionY,     // 76  4ch
+    MSEFallTime,               // 124
+    MSEFallSinAngle,           // 136 88h
+    MSEFallCosAngle,           // 132 84h
+    MSEFallHorizontalSpeed,    // 140 8ch
+    MSEFallVerticalSpeed,      // 128 80h
+    MSESplineElevation,        // 152 98h
+    MSEUnkTime,                // 176
+    MSEOrientation,            // 56  38h
+    MSETimestamp,              // 40
+    MSEPitch,                  // 120 78h
+    MSEEnd
 };
 
 MovementStatusElements const MoveTeleport[] =
@@ -5553,6 +5631,52 @@ MovementStatusElements const CastSpellEmbeddedMovement[] =
     MSEEnd,
 };
 
+
+MovementStatusElements const MoveSetVehicleRecID[] = // 5.4.8 18414
+{
+    MSEHasGuidByte0,
+    MSEHasGuidByte6,
+    MSEHasGuidByte1,
+    MSEHasGuidByte3,
+    MSEHasGuidByte7,
+    MSEHasGuidByte4,
+    MSEHasGuidByte5,
+    MSEHasGuidByte2,
+    MSEGuidByte6,
+    MSEGuidByte7,
+    MSEGuidByte0,
+    MSEGuidByte3,
+    MSEExtraElement,
+    MSECounter,
+    MSEGuidByte1,
+    MSEGuidByte5,
+    MSEGuidByte2,
+    MSEGuidByte4,
+    MSEEnd
+};
+
+MovementStatusElements const MoveUpdateVehicleRecID[] = // 5.4.8 18414
+{
+    MSEHasGuidByte5,
+    MSEHasGuidByte7,
+    MSEHasGuidByte2,
+    MSEHasGuidByte1,
+    MSEHasGuidByte4,
+    MSEHasGuidByte0,
+    MSEHasGuidByte3,
+    MSEHasGuidByte6,
+    MSEGuidByte5,
+    MSEGuidByte7,
+    MSEGuidByte4,
+    MSEGuidByte6,
+    MSEGuidByte2,
+    MSEGuidByte1,
+    MSEGuidByte3,
+    MSEGuidByte0,
+    MSEExtraElement,
+    MSEEnd
+};
+
 void Movement::ExtraMovementStatusElement::ReadNextElement(ByteBuffer& packet)
 {
     MovementStatusElements const element = _elements[_index++];
@@ -5746,8 +5870,10 @@ MovementStatusElements const* GetMovementStatusElementsSequence(Opcodes opcode)
             return MoveSplineDone;
         //case CMSG_MOVE_NOT_ACTIVE_MOVER:
         //    return MoveNotActiveMover;
-        //case CMSG_DISMISS_CONTROLLED_VEHICLE:
-        //    return DismissControlledVehicle;
+        case CMSG_MOVE_DISMISS_VEHICLE:
+            return DismissControlledVehicle;
+        case CMSG_MOVE_SET_VEHICLE_REC_ID_ACK:
+            return MoveSetVehicleRecIdAck;
         case SMSG_MOVE_TELEPORT:
             return MoveTeleport;
         //case SMSG_MOVE_UPDATE_TELEPORT:
@@ -5904,6 +6030,10 @@ MovementStatusElements const* GetMovementStatusElementsSequence(Opcodes opcode)
             return MoveGravityDisable;
         case SMSG_MOVE_GRAVITY_ENABLE:
             return MoveGravityEnable;
+        case SMSG_MOVE_SET_VEHICLE_REC_ID:
+            return MoveSetVehicleRecID;
+        case SMSG_SET_VEHICLE_REC_ID:
+            return MoveUpdateVehicleRecID;
         //case CMSG_CHANGE_SEATS_ON_CONTROLLED_VEHICLE:
         //    return ChangeSeatsOnControlledVehicle;
         //case CMSG_CAST_SPELL:

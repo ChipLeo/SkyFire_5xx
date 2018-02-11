@@ -57,6 +57,8 @@ class Vehicle : public TransportBase
         Unit* GetPassenger(int8 seatId) const;
         SeatMap::const_iterator GetNextEmptySeat(int8 seatId, bool next) const;
         uint8 GetAvailableSeatCount() const;
+        // Max number of seats on the vehicle, doesnt check if seat is currently in use
+        uint8 GetSeatCount() const { return Seats.size(); };
 
         bool AddPassenger(Unit* passenger, int8 seatId = -1);
         void EjectPassenger(Unit* passenger, Unit* controller);

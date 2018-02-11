@@ -498,6 +498,8 @@ class WorldSession
 
         z_stream_s* GetCompressionStream() { return _compressionStream; }
 
+        bool HandleMovementAck(MovementInfo& movementInfo, Unit* mover, uint32 AckIndex, Opcodes dataOpcode = SMSG_PLAYER_MOVE, Movement::ExtraMovementStatusElement* extras = NULL);
+
     public:                                                 // opcodes handlers
 
         void Handle_NULL(WorldPacket& recvPacket);          // not used
@@ -641,6 +643,7 @@ class WorldSession
         void HandleDismissControlledVehicle(WorldPacket& recvData);
         void HandleRequestVehicleExit(WorldPacket& recvData);
         void HandleChangeSeatsOnControlledVehicle(WorldPacket& recvData);
+        void HandleMoveSetVehicleRecAck(WorldPacket& recvData);
         void HandleMoveTimeSkippedOpcode(WorldPacket& recvData);
 
         void HandleRequestRaidInfoOpcode(WorldPacket& recvData);
