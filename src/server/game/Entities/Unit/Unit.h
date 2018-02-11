@@ -1740,6 +1740,7 @@ class Unit : public WorldObject
     }
     void SetPower(Powers power, int32 val);
     void SetMaxPower(Powers power, int32 val);
+    inline void SetFullPower(Powers power) { SetPower(power, GetMaxPower(power)); }
     // returns the change in power
     int32 ModifyPower(Powers power, int32 val);
     int32 ModifyPowerPct(Powers power, float pct, bool apply = true);
@@ -2483,6 +2484,7 @@ class Unit : public WorldObject
     virtual bool UpdateStats(Stats stat) = 0;
     virtual bool UpdateAllStats() = 0;
     virtual void UpdateResistances(uint32 school) = 0;
+    virtual void UpdateAllResistances();
     virtual void UpdateArmor() = 0;
     virtual void UpdateMaxHealth() = 0;
     virtual void UpdateMaxPower(Powers power) = 0;

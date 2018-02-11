@@ -49,6 +49,18 @@ inline bool _ModifyUInt32(bool apply, uint32& baseValue, int32& amount)
 
 /*#######################################
 ########                         ########
+########    UNIT STAT SYSTEM     ########
+########                         ########
+#######################################*/
+
+void Unit::UpdateAllResistances()
+{
+    for (uint8 i = SPELL_SCHOOL_NORMAL; i < MAX_SPELL_SCHOOL; ++i)
+        UpdateResistances(i);
+}
+
+/*#######################################
+########                         ########
 ########   PLAYERS STAT SYSTEM   ########
 ########                         ########
 #######################################*/
@@ -177,8 +189,7 @@ bool Player::UpdateAllStats()
     UpdateExpertise(BASE_ATTACK);
     UpdateExpertise(OFF_ATTACK);
     RecalculateRating(CR_ARMOR_PENETRATION);
-    for (int i = SPELL_SCHOOL_NORMAL; i < MAX_SPELL_SCHOOL; ++i)
-        UpdateResistances(i);
+    UpdateAllResistances();
 
     UpdateMastery();
     UpdatePvpPower();
@@ -562,8 +573,9 @@ const float m_diminishing_k[MAX_CLASSES] =
     0.9880f,  // Shaman
     0.9830f,  // Mage
     0.9830f,  // Warlock
-    0.9880f,  // Monk
-    0.9720f   // Druid
+    0.9830f,  // Monk
+    0.9720f,  // Druid
+    0.9830f   // Demon Hunter
 };
 
 void Player::UpdateParryPercentage()
@@ -579,8 +591,9 @@ void Player::UpdateParryPercentage()
         145.560408f,    // Shaman
         0.0f,           // Mage
         0.0f,           // Warlock
-        0.0f,           // Monk
-        0.0f            // Druid
+        90.6425f,       // Monk
+        0.0f,           // Druid
+        65.631440f      // Demon Hunter
     };
 
     // No parry
@@ -823,8 +836,7 @@ bool Creature::UpdateAllStats()
     for (uint8 i = POWER_MANA; i < MAX_POWERS; ++i)
         UpdateMaxPower(Powers(i));
 
-    for (int8 i = SPELL_SCHOOL_NORMAL; i < MAX_SPELL_SCHOOL; ++i)
-        UpdateResistances(i);
+    UpdateAllResistances();
 
     return true;
 }
@@ -1045,8 +1057,7 @@ bool Guardian::UpdateAllStats()
     for (uint8 i = POWER_MANA; i < MAX_POWERS; ++i)
         UpdateMaxPower(Powers(i));
 
-    for (uint8 i = SPELL_SCHOOL_NORMAL; i < MAX_SPELL_SCHOOL; ++i)
-        UpdateResistances(i);
+    UpdateAllResistances();
 
     return true;
 }
