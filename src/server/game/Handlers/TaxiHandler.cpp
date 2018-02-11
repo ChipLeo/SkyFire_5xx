@@ -36,23 +36,8 @@ void WorldSession::HandleTaxiNodeStatusQueryOpcode(WorldPacket& recvData)
         
     ObjectGuid guid;
 
-    guid[7] = recvData.ReadBit();
-    guid[4] = recvData.ReadBit();
-    guid[1] = recvData.ReadBit();
-    guid[3] = recvData.ReadBit();
-    guid[0] = recvData.ReadBit();
-    guid[5] = recvData.ReadBit();
-    guid[2] = recvData.ReadBit();
-    guid[6] = recvData.ReadBit();
-
-    recvData.ReadByteSeq(guid[7]);
-    recvData.ReadByteSeq(guid[1]);
-    recvData.ReadByteSeq(guid[5]);
-    recvData.ReadByteSeq(guid[2]);
-    recvData.ReadByteSeq(guid[4]);
-    recvData.ReadByteSeq(guid[0]);
-    recvData.ReadByteSeq(guid[6]);
-    recvData.ReadByteSeq(guid[3]);
+    recvData.ReadGuidMask(guid, 7, 4, 1, 3, 0, 5, 2, 6);
+    recvData.ReadGuidBytes(guid, 7, 1, 5, 2, 4, 0, 6, 3);
 
     SendTaxiStatus(guid);
 }
@@ -75,28 +60,20 @@ void WorldSession::SendTaxiStatus(uint64 guid)
 
     SF_LOG_DEBUG("network", "WORLD: current location %u ", curloc);
 
+    TaxiNodeStatus status = TAXISTATUS_NONE;
+    if (unit->GetReactionTo(GetPlayer()) >= REP_NEUTRAL)
+        status = GetPlayer()->m_taxi.IsTaximaskNodeKnown(curloc) ? TAXISTATUS_LEARNED : TAXISTATUS_UNLEARNED;
+    else
+        status = TAXISTATUS_NOT_ELIGIBLE;
+
     ObjectGuid Guid = guid;
-    WorldPacket data(SMSG_TAXI_NODE_STATUS, 9);
+    WorldPacket data(SMSG_TAXI_NODE_STATUS, 1 + 1 + 8);
 
-    data.WriteBit(Guid[6]);
-    data.WriteBit(Guid[2]);
-    data.WriteBit(Guid[7]);
-    data.WriteBit(Guid[5]);
-    data.WriteBit(Guid[4]);
-    data.WriteBit(Guid[1]);
-    data.WriteBits(!GetPlayer()->m_taxi.IsTaximaskNodeKnown(curloc), 2);
-    data.WriteBit(Guid[3]);
-    data.WriteBit(Guid[0]);
+    data.WriteGuidMask(Guid, 6, 2, 7, 5, 4, 1);
+    data.WriteBits(status, 2);
+    data.WriteGuidMask(Guid, 3, 0);
     data.FlushBits();
-
-    data.WriteByteSeq(Guid[0]);
-    data.WriteByteSeq(Guid[5]);
-    data.WriteByteSeq(Guid[2]);
-    data.WriteByteSeq(Guid[1]);
-    data.WriteByteSeq(Guid[4]);
-    data.WriteByteSeq(Guid[6]);
-    data.WriteByteSeq(Guid[7]);
-    data.WriteByteSeq(Guid[3]);
+    data.WriteGuidBytes(Guid, 0, 5, 2, 1, 4, 6, 7, 3);
 
     SendPacket(&data);
 
@@ -146,15 +123,20 @@ void WorldSession::SendTaxiMenu(Creature* unit)
     SF_LOG_DEBUG("network", "WORLD: CMSG_TAXI_NODE_STATUS_QUERY %u ", curloc);
     ObjectGuid Guid = unit->GetGUID();
 
+    bool ShowWindow = true;
+
     WorldPacket data(SMSG_SHOW_TAXI_NODES, (4 + 8 + 4 + 4 * 4));
-    data.WriteBit(1); //unk
-    data.WriteGuidMask(Guid, 3, 0, 4, 2, 1, 7, 6, 5);
+    data.WriteBit(ShowWindow);
+    if (ShowWindow)
+        data.WriteGuidMask(Guid, 3, 0, 4, 2, 1, 7, 6, 5);
     data.WriteBits(TaxiMaskSize, 24);
 
-    data.WriteGuidBytes(Guid, 0, 3);
-    data << uint32(curloc);
-    data.WriteGuidBytes(Guid, 5, 2, 6, 1, 7, 4);
-
+    if (ShowWindow)
+    {
+        data.WriteGuidBytes(Guid, 0, 3);
+        data << uint32(curloc);
+        data.WriteGuidBytes(Guid, 5, 2, 6, 1, 7, 4);
+    }
     GetPlayer()->m_taxi.AppendTaximaskTo(data, GetPlayer()->isTaxiCheater());
     SendPacket(&data);
 
@@ -230,7 +212,19 @@ void WorldSession::HandleActivateTaxiExpressOpcode(WorldPacket& recvData)
     {
         uint32 node;
         recvData >> node;
+        if (!GetPlayer()->m_taxi.IsTaximaskNodeKnown(node) && !GetPlayer()->isTaxiCheater())
+        {
+            SendActivateTaxiReply(ERR_TAXINOTVISITED);
+            recvData.rfinish();
+            return;
+        }
         nodes.push_back(node);
+    }
+
+    if (nodes.empty())
+    {
+        recvData.rfinish();
+        return;
     }
 
     recvData.ReadGuidBytes(guid, 0, 5, 3, 6, 4);
@@ -239,6 +233,7 @@ void WorldSession::HandleActivateTaxiExpressOpcode(WorldPacket& recvData)
     if (!npc)
     {
         SF_LOG_DEBUG("network", "WORLD: HandleActivateTaxiExpressOpcode - Unit (GUID: %u) not found or you can't interact with it.", uint32(GUID_LOPART(guid)));
+        SendActivateTaxiReply(ERR_TAXITOOFARAWAY);
         return;
     }
 
@@ -327,21 +322,42 @@ void WorldSession::HandleActivateTaxiOpcode(WorldPacket& recvData)
     SF_LOG_DEBUG("network", "WORLD: Received CMSG_ACTIVATE_TAXI");
 
     ObjectGuid guid;
-    std::vector<uint32> nodes;
-    nodes.resize(2);
 
-    recvData >> nodes[1] >> nodes[0];
+    uint32 FromNode = 0;
+    uint32 ToNode = 0;
+
+    recvData >> ToNode;
+    recvData >> FromNode;
     recvData.ReadGuidMask(guid, 4, 0, 1, 2, 5, 6, 7, 3);
     recvData.ReadGuidBytes(guid, 1, 0, 6, 5, 2, 4, 3, 7);
 
-    SF_LOG_DEBUG("network", "WORLD: Received CMSG_ACTIVATE_TAXI from %d to %d", nodes[0], nodes[1]);
+    SF_LOG_DEBUG("network", "WORLD: Received CMSG_ACTIVATE_TAXI from %d to %d", FromNode, ToNode);
     Creature* npc = GetPlayer()->GetNPCIfCanInteractWith(guid, UNIT_NPC_FLAG_FLIGHTMASTER);
     if (!npc)
     {
         SF_LOG_DEBUG("network", "WORLD: HandleActivateTaxiOpcode - Unit (GUID: %u) not found or you can't interact with it.", uint32(GUID_LOPART(guid)));
+        SendActivateTaxiReply(ERR_TAXITOOFARAWAY);
         return;
     }
 
+    TaxiNodesEntry const* from = sTaxiNodesStore.LookupEntry(FromNode);
+    TaxiNodesEntry const* to = sTaxiNodesStore.LookupEntry(ToNode);
+    if (!to)
+        return;
+
+    if (!GetPlayer()->isTaxiCheater())
+    {
+        if (!GetPlayer()->m_taxi.IsTaximaskNodeKnown(FromNode) || !GetPlayer()->m_taxi.IsTaximaskNodeKnown(ToNode))
+        {
+            SendActivateTaxiReply(ERR_TAXINOTVISITED);
+            return;
+        }
+    }
+
+    std::vector<uint32> nodes;
+    nodes.resize(2);
+    nodes[1] = ToNode;
+    nodes[0] = FromNode;
     GetPlayer()->ActivateTaxiPathTo(nodes, npc);
 }
 
@@ -355,4 +371,15 @@ void WorldSession::SendActivateTaxiReply(ActivateTaxiReply reply)
     SendPacket(&data);
 
     SF_LOG_DEBUG("network", "WORLD: Sent SMSG_ACTIVATE_TAXI_REPLY");
+}
+
+void WorldSession::HandleSetTaxiBenchmarkOpcode(WorldPacket& recvData)
+{
+    uint8 mode = 0;
+
+    recvData >> mode;
+
+    mode ? _player->SetFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_TAXI_BENCHMARK) : _player->RemoveFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_TAXI_BENCHMARK);
+
+    SF_LOG_DEBUG("network", "Client used \"/timetest %d\" command", mode);
 }

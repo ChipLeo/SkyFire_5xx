@@ -2011,18 +2011,6 @@ void WorldSession::HandleRequestPetInfoOpcode(WorldPacket& /*recvData */)
     */
 }
 
-void WorldSession::HandleSetTaxiBenchmarkOpcode(WorldPacket& recvData)
-{
-    SF_LOG_DEBUG("network", "WORLD: CMSG_SET_TAXI_BENCHMARK_MODE");
-
-    uint8 mode;
-    recvData >> mode;
-
-    mode ? _player->SetFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_TAXI_BENCHMARK) : _player->RemoveFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_TAXI_BENCHMARK);
-
-    SF_LOG_DEBUG("network", "Client used \"/timetest %d\" command", mode);
-}
-
 void WorldSession::HandleQueryInspectAchievements(WorldPacket& recvData)
 {
     ObjectGuid guid;
