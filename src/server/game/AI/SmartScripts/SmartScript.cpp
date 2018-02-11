@@ -2597,6 +2597,12 @@ ObjectList* SmartScript::GetTargets(SmartScriptHolder const& e, Unit* invoker /*
                 if (!charmerOrOwnerGuid)
                     charmerOrOwnerGuid = me->GetCreatorGUID();
 
+                if (!charmerOrOwnerGuid && me->IsSummon())
+                {
+                    if (Unit* summoner = me->ToTempSummon()->GetSummoner())
+                        charmerOrOwnerGuid = summoner->GetGUID();
+                }
+
                 if (Unit* owner = ObjectAccessor::GetUnit(*me, charmerOrOwnerGuid))
                     l->push_back(owner);
             }
