@@ -763,7 +763,7 @@ void Spell::SelectSpellTargets()
         // some spell effects use explicit target as a default target added to target map (like SPELL_EFFECT_LEARN_SPELL)
         // some spell effects add target to target map only when target type specified (like SPELL_EFFECT_WEAPON)
         // some spell effects don't add anything to target map (confirmed with sniffs) (like SPELL_EFFECT_DESTROY_ALL_TOTEMS)
-        SelectEffectTypeImplicitTargets(i);
+        SelectEffectTypeImplicitTargets(SpellEffIndex(i));
 
         if (m_targets.HasDst())
             AddDestTarget(*m_targets.GetDst(), i);
@@ -1775,7 +1775,7 @@ void Spell::SelectImplicitTrajTargets()
         veh->SetLastShootPos(*m_targets.GetDstPos());
 }
 
-void Spell::SelectEffectTypeImplicitTargets(uint8 effIndex)
+void Spell::SelectEffectTypeImplicitTargets(SpellEffIndex effIndex)
 {
     // special case for SPELL_EFFECT_SUMMON_RAF_FRIEND and SPELL_EFFECT_SUMMON_PLAYER
     /// @todo this is a workaround - target shouldn't be stored in target map for those spells
@@ -1787,7 +1787,7 @@ void Spell::SelectEffectTypeImplicitTargets(uint8 effIndex)
             {
                 WorldObject* target = ObjectAccessor::FindPlayer(m_caster->GetTarget());
 
-                CallScriptObjectTargetSelectHandlers(target, SpellEffIndex(effIndex));
+                CallScriptObjectTargetSelectHandlers(target, effIndex);
 
                 if (target && target->ToPlayer())
                     AddUnitTarget(target->ToUnit(), 1 << effIndex, false);
@@ -1847,7 +1847,7 @@ void Spell::SelectEffectTypeImplicitTargets(uint8 effIndex)
             break;
     }
 
-    CallScriptObjectTargetSelectHandlers(target, SpellEffIndex(effIndex));
+    CallScriptObjectTargetSelectHandlers(target, effIndex);
 
     if (target)
     {
@@ -5994,7 +5994,7 @@ SpellCastResult Spell::CheckCast(bool strict)
                 int32 skillValue = 0;
 
                 // check lock compatibility
-                SpellCastResult res = CanOpenLock(i, lockId, skillId, reqSkillValue, skillValue);
+                SpellCastResult res = CanOpenLock(SpellEffIndex(i), lockId, skillId, reqSkillValue, skillValue);
                 if (res != SPELL_CAST_OK)
                     return res;
 
@@ -7552,7 +7552,7 @@ void Spell::DoAllEffectOnLaunchTarget(TargetInfo& targetInfo, float* multiplier)
     targetInfo.crit = m_caster->isSpellCrit(unit, m_spellInfo, m_spellSchoolMask, m_attackType);
 }
 
-SpellCastResult Spell::CanOpenLock(uint32 effIndex, uint32 lockId, SkillType& skillId, int32& reqSkillValue, int32& skillValue)
+SpellCastResult Spell::CanOpenLock(SpellEffIndex effIndex, uint32 lockId, SkillType& skillId, int32& reqSkillValue, int32& skillValue)
 {
     if (!lockId)                                             // possible case for GO and maybe for items.
         return SPELL_CAST_OK;

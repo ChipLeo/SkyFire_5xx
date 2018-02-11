@@ -381,7 +381,7 @@ class Spell
         void SelectImplicitChainTargets(SpellEffIndex effIndex, SpellImplicitTargetInfo const& targetType, WorldObject* target, uint32 effMask);
         void SelectImplicitTrajTargets();
 
-        void SelectEffectTypeImplicitTargets(uint8 effIndex);
+        void SelectEffectTypeImplicitTargets(SpellEffIndex effIndex);
 
         uint32 GetSearcherTypeMask(SpellTargetObjectTypes objType, ConditionList* condList);
         template<class SEARCHER> void SearchTargets(SEARCHER& searcher, uint32 containerMask, Unit* referer, Position const* pos, float radius);
@@ -674,10 +674,10 @@ class Spell
         HitTriggerSpellList m_hitTriggerSpells;
 
         // effect helpers
-        void SummonGuardian(uint32 i, uint32 entry, SummonPropertiesEntry const* properties, uint32 numSummons);
-        void CalculateJumpSpeeds(uint8 i, float dist, float & speedxy, float & speedz);
+        void SummonGuardian(SpellEffIndex effIndex, uint32 entry, SummonPropertiesEntry const* properties, uint32 numSummons);
+        void CalculateJumpSpeeds(SpellEffIndex effIndex, float dist, float & speedxy, float & speedz);
 
-        SpellCastResult CanOpenLock(uint32 effIndex, uint32 lockid, SkillType& skillid, int32& reqSkillValue, int32& skillValue);
+        SpellCastResult CanOpenLock(SpellEffIndex effIndex, uint32 lockid, SkillType& skillid, int32& reqSkillValue, int32& skillValue);
         // -------------------------------------------
 
         uint32 m_spellState;

@@ -1047,12 +1047,12 @@ void Spell::EffectJumpDest(SpellEffIndex effIndex)
     m_caster->GetMotionMaster()->MoveJump(x, y, z, speedXY, speedZ);
 }
 
-void Spell::CalculateJumpSpeeds(uint8 i, float dist, float & speedXY, float & speedZ)
+void Spell::CalculateJumpSpeeds(SpellEffIndex effIndex, float dist, float & speedXY, float & speedZ)
 {
-    if (m_spellInfo->Effects[i].MiscValue)
-        speedZ = float(m_spellInfo->Effects[i].MiscValue)/10;
-    else if (m_spellInfo->Effects[i].MiscValueB)
-        speedZ = float(m_spellInfo->Effects[i].MiscValueB)/10;
+    if (m_spellInfo->Effects[effIndex].MiscValue)
+        speedZ = float(m_spellInfo->Effects[effIndex].MiscValue)/10;
+    else if (m_spellInfo->Effects[effIndex].MiscValueB)
+        speedZ = float(m_spellInfo->Effects[effIndex].MiscValueB)/10;
     else
         speedZ = 10.0f;
     speedXY = dist * 10.0f / speedZ;
@@ -5645,7 +5645,7 @@ void Spell::EffectGameObjectSetDestructionState(SpellEffIndex effIndex)
     gameObjTarget->SetDestructibleState(GameObjectDestructibleState(m_spellInfo->Effects[effIndex].MiscValue), player, true);
 }
 
-void Spell::SummonGuardian(uint32 i, uint32 entry, SummonPropertiesEntry const* properties, uint32 numGuardians)
+void Spell::SummonGuardian(SpellEffIndex effIndex, uint32 entry, SummonPropertiesEntry const* properties, uint32 numGuardians)
 {
     Unit* caster = m_originalCaster;
     if (!caster)
@@ -5707,7 +5707,7 @@ void Spell::SummonGuardian(uint32 i, uint32 entry, SummonPropertiesEntry const* 
 
         summon->AI()->EnterEvadeMode();
 
-        ExecuteLogEffectSummonObject(i, summon);
+        ExecuteLogEffectSummonObject(effIndex, summon);
     }
 }
 
