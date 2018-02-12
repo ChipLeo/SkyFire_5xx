@@ -180,16 +180,7 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
     if (!Create(guid, map, owner->GetPhaseMask(), petEntry, petId))
         return false;
 
-    float px, py, pz;
-    owner->GetClosePoint(px, py, pz, GetObjectSize(), PET_FOLLOW_DIST, GetFollowAngle());
-    Relocate(px, py, pz, owner->GetOrientation());
-
-    if (!IsPositionValid())
-    {
-        SF_LOG_ERROR("entities.pet", "Pet (guidlow %d, entry %d) not loaded. Suggested coordinates isn't valid (X: %f Y: %f)",
-            GetGUIDLow(), GetEntry(), GetPositionX(), GetPositionY());
-        return false;
-    }
+    //CopyPhaseFrom(owner);
 
     setPetType(petType);
     setFaction(owner->getFaction());
@@ -198,6 +189,17 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
     CreatureTemplate const* cinfo = GetCreatureTemplate();
     if (cinfo->type == CREATURE_TYPE_CRITTER)
     {
+        float px, py, pz;
+        owner->GetClosePoint(px, py, pz, GetObjectSize(), PET_FOLLOW_DIST, GetFollowAngle());
+        Relocate(px, py, pz, owner->GetOrientation());
+
+        if (!IsPositionValid())
+        {
+            SF_LOG_ERROR("entities.pet", "Pet (guidlow %d, entry %d) not loaded. Suggested coordinates isn't valid (X: %f Y: %f)",
+                GetGUIDLow(), GetEntry(), GetPositionX(), GetPositionY());
+            return false;
+        }
+
         map->AddToMap(this->ToCreature());
         return true;
     }
@@ -242,6 +244,16 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
 
     SynchronizeLevelWithOwner();
 
+    // Set pet's position after setting level, its size depends on it
+    float px, py, pz;
+    owner->GetClosePoint(px, py, pz, GetObjectSize(), PET_FOLLOW_DIST, GetFollowAngle());
+    Relocate(px, py, pz, owner->GetOrientation());
+    if (!IsPositionValid())
+    {
+        SF_LOG_ERROR("entities.pet", "Pet (%X, entry %d) not loaded. Suggested coordinates isn't valid (X: %f Y: %f)",
+            GetGUID(), GetEntry(), GetPositionX(), GetPositionY());
+        return false;
+    }
     SetReactState(ReactStates(fields[6].GetUInt8()));
     SetCanModifyStats(true);
 
@@ -288,7 +300,7 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
     // Example: 46584 - without this cooldown (which should be set always when pet is loaded) isn't set clientside
     /// @todo pets should be summoned from real cast instead of just faking it?
     // TODO FIX THIS GOD DAMN HACK
-    /*if (summonSpellId)
+    if (summonSpellId)
     {
         WorldPacket data(SMSG_SPELL_GO, (8+8+4+4+2));
         data.append(owner->GetPackGUID());
@@ -299,12 +311,10 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
         data << uint32(0);
         owner->SendMessageToSet(&data, true);
     }
-    */
+
 
     owner->SetMinion(this, true);
     map->AddToMap(this->ToCreature());
-
-    InitTalentForLevel();                                   // set original talents points before spell loading
 
     uint32 timediff = uint32(time(NULL) - fields[13].GetUInt32());
     _LoadAuras(timediff);
@@ -315,19 +325,32 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
         m_charmInfo->LoadPetActionBar(fields[12].GetString());
 
         _LoadSpells();
-        InitTalentForLevel();                               // re-init to check talent count
         _LoadSpellCooldowns();
         LearnPetPassives();
         InitLevelupSpellsForLevel();
+        if (map->IsBattleArena())
+            RemoveArenaAuras();
         CastPetAuras(current);
     }
 
-    CleanupActionBar();                                     // remove unknown spells from action bar after load
+    SF_LOG_DEBUG("entities.pet", "New Pet has %X", GetGUID());
 
-    SF_LOG_DEBUG("entities.pet", "New Pet has guid %u", GetGUIDLow());
+    uint16 specId = fields[16].GetUInt16();
+    //if (ChrSpecializationEntry const* petSpec = sChrSpecializationStore.LookupEntry(specId))
+    //    specId = sDB2Manager.GetChrSpecializationByIndex(owner->HasAuraType(SPELL_AURA_OVERRIDE_PET_SPECS) ? PET_SPEC_OVERRIDE_CLASS_INDEX : 0, petSpec->OrderIndex)->ID;
 
-    owner->PetSpellInitialize();
+    SetSpecializationId(specId);
 
+
+    // The SetSpecialization function will run these functions if the pet's spec is not 0
+    if (!GetSpecializationId())
+    {
+        CleanupActionBar();                                     // remove unknown spells from action bar after load
+
+        SF_LOG_DEBUG("entities.pet", "New Pet has guid %u", GetGUIDLow());
+
+        owner->PetSpellInitialize();
+    }
     if (owner->GetGroup())
         owner->SetGroupUpdateFlag(GROUP_UPDATE_PET);
 
@@ -731,7 +754,6 @@ void Pet::GivePetLevel(uint8 level)
 
     InitStatsForLevel(level);
     InitLevelupSpellsForLevel();
-    InitTalentForLevel();
 }
 
 bool Pet::CreateBaseAtCreature(Creature* creature)
