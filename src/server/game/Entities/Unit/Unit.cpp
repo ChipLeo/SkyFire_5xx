@@ -16238,7 +16238,7 @@ void Unit::_ExitVehicle(Position const* exitPosition)
     else
         pos = *exitPosition;
 
-    AddUnitState(UNIT_STATE_MOVE);
+    AddUnitState(UNIT_STATE_ONVEHICLE);
 
     if (player)
         player->SetFallInformation(0, GetPositionZ());
