@@ -442,9 +442,7 @@ bool Creature::UpdateEntry(uint32 Entry, uint32 team, const CreatureData* data)
 
     if (cInfo->InhabitType & INHABIT_ROOT)
         SetControlled(true, UNIT_STATE_ROOT);
-
     UpdateMovementFlags();
-    LoadCreaturesAddon();
     return true;
 }
 
@@ -1305,33 +1303,6 @@ void Creature::LoadEquipment(int8 id, bool force /*= true*/)
         SetUInt32Value(UNIT_FIELD_VIRTUAL_ITEM_ID + i, einfo->ItemEntry[i]);
 }
 
-void Creature::SetSpawnHealth()
-{
-    if (!m_creatureData)
-        return;
-
-    uint32 curhealth;
-
-    if (!m_regenHealth)
-    {
-        curhealth = m_creatureData->curhealth;
-        if (curhealth)
-        {
-            curhealth = uint32(curhealth*_GetHealthMod(GetCreatureTemplate()->rank));
-            if (curhealth < 1)
-                curhealth = 1;
-        }
-        SetPower(POWER_MANA, m_creatureData->curmana);
-    }
-    else
-    {
-        curhealth = GetMaxHealth();
-        SetFullPower(POWER_MANA);
-    }
-
-    SetHealth((m_deathState == ALIVE || m_deathState == JUST_RESPAWNED) ? curhealth : 0);
-}
-
 bool Creature::hasQuest(uint32 quest_id) const
 {
     QuestRelationBounds qr = sObjectMgr->GetCreatureQuestRelationBounds(GetEntry());
@@ -1494,11 +1465,8 @@ void Creature::setDeathState(DeathState s)
         if (sWorld->getBoolConfig(CONFIG_SAVE_RESPAWN_TIME_IMMEDIATELY) || isWorldBoss())
             SaveRespawnTime();
 
-        ReleaseFocus(NULL); // remove spellcast focus
-        SetTarget(0); // drop target - dead mobs shouldn't ever target things
+        SetTarget(0);                // remove target selection in any cases (can be set at aura remove in Unit::setDeathState)
         SetUInt64Value(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_NONE);
-
-        SetUInt32Value(UNIT_FIELD_MOUNT_DISPLAY_ID, 0); // if creature is mounted on a virtual mount, remove it at death
 
         setActive(false);
 
@@ -1524,43 +1492,23 @@ void Creature::setDeathState(DeathState s)
     }
     else if (s == JUST_RESPAWNED)
     {
-        if (IsPet())
-            SetFullHealth();
-        else
-            SetSpawnHealth();
+        //if (IsPet())
+        //    setActive(true);
+        SetFullHealth();
         SetLootRecipient(NULL);
         ResetPlayerDamageReq();
 
         UpdateMovementFlags();
 
-        if (!IsPet())
-        {
-            CreatureData const* creatureData = GetCreatureData();
-            CreatureTemplate const* cInfo = GetCreatureTemplate();
-
-            uint64 npcFlags;
-            uint32 unitFlags, unitFlags2, dynamicFlags;
-            ObjectMgr::ChooseCreatureFlags(cInfo, npcFlags, unitFlags, unitFlags2, dynamicFlags, creatureData);
-
-            if (cInfo->flags_extra & CREATURE_FLAG_EXTRA_WORLDEVENT)
-                SetUInt64Value(UNIT_FIELD_NPC_FLAGS, npcFlags | sGameEventMgr->GetNPCFlag(this));
-            else
-                SetUInt64Value(UNIT_FIELD_NPC_FLAGS, npcFlags);
-
-            SetUInt32Value(UNIT_FIELD_FLAGS, unitFlags);
-            SetUInt32Value(UNIT_FIELD_FLAGS2, unitFlags2);
-            SetUInt32Value(OBJECT_FIELD_DYNAMIC_FLAGS, dynamicFlags);
-
-            RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);
-
-            SetMeleeDamageSchool(SpellSchools(cInfo->dmgschool));
-        }
-
+        CreatureTemplate const* cinfo = GetCreatureTemplate();
+        SetUInt64Value(UNIT_FIELD_NPC_FLAGS, cinfo->npcflag);
+        ClearUnitState(uint32(UNIT_STATE_ALL_STATE));
+        SetMeleeDamageSchool(SpellSchools(cinfo->dmgschool));
+        LoadCreaturesAddon(true);
         Motion_Initialize();
         if (GetCreatureData() && GetPhaseMask() != GetCreatureData()->phaseMask)
             SetPhaseMask(GetCreatureData()->phaseMask, false);
         Unit::setDeathState(ALIVE);
-        LoadCreaturesAddon(true);
     }
 }
 

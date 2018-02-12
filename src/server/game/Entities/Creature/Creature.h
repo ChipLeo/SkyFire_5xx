@@ -436,7 +436,6 @@ class Creature : public Unit, public GridObject<Creature>, public MapObject
         bool LoadCreaturesAddon(bool reload = false);
         void SelectLevel(const CreatureTemplate* cinfo);
         void LoadEquipment(int8 id = 1, bool force = false);
-        void SetSpawnHealth();
 
         uint32 GetDBTableGUIDLow() const { return m_DBTableGuid; }
 
