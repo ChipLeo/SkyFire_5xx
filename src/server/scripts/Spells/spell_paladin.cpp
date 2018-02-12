@@ -949,7 +949,7 @@ class spell_pal_sacred_shield : public SpellScriptLoader
 };
 
 // 85256 - Templar's Verdict
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_pal_templar_s_verdict : public SpellScriptLoader
 {
     public:

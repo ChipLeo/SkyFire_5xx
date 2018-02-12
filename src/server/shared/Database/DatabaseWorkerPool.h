@@ -393,7 +393,7 @@ class DatabaseWorkerPool
             }
 
             //! Handle MySQL Errno 1213 without extending deadlock to the core itself
-            /// @todo More elegant way
+            // @todo More elegant way
             if (con->GetLastError() == 1213)
             {
                 uint8 loopBreaker = 5;

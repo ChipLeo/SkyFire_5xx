@@ -666,7 +666,7 @@ uint32 Unit::DealDamage(Unit* victim, uint32 damage, CleanDamage const* cleanDam
 
             uint32 share = CalculatePct(damage, (*i)->GetAmount());
 
-            /// @todo check packets if damage is done by victim, or by attacker of victim
+            // @todo check packets if damage is done by victim, or by attacker of victim
             DealDamageMods(shareDamageTarget, share, NULL);
             DealDamage(shareDamageTarget, share, NULL, NODAMAGE, spell->GetSchoolMask(), spell, false);
         }
@@ -871,7 +871,7 @@ void Unit::CastSpell(SpellCastTargets const& targets, SpellInfo const* spellInfo
         return;
     }
 
-    /// @todo this is a workaround - not needed anymore, but required for some scripts :(
+    // @todo this is a workaround - not needed anymore, but required for some scripts :(
     if (!originalCaster && triggeredByAura)
         originalCaster = triggeredByAura->GetCasterGUID();
 
@@ -1123,7 +1123,7 @@ void Unit::DealSpellDamage(SpellNonMeleeDamage* damageInfo, bool durabilityLoss)
     DealDamage(victim, damageInfo->damage, &cleanDamage, SPELL_DIRECT_DAMAGE, SpellSchoolMask(damageInfo->schoolMask), spellProto, durabilityLoss);
 }
 
-/// @todo for melee need create structure as in
+// @todo for melee need create structure as in
 void Unit::CalculateMeleeDamage(Unit* victim, uint32 damage, CalcDamageInfo* damageInfo, WeaponAttackType attackType)
 {
     damageInfo->attacker = this;
@@ -1429,7 +1429,7 @@ void Unit::DealMeleeDamage(CalcDamageInfo* damageInfo, bool durabilityLoss)
             // No Unit::CalcAbsorbResist here - opcode doesn't send that data - this damage is probably not affected by that
             victim->DealDamageMods(this, damage, NULL);
 
-            /// @todo Move this to a packet handler
+            // @todo Move this to a packet handler
             WorldPacket data(SMSG_SPELLDAMAGESHIELD, 8 + 8 + 4 + 4 + 4 + 4 + 4);
             data << uint64(victim->GetGUID());
             data << uint64(GetGUID());
@@ -2482,7 +2482,7 @@ SpellMissInfo Unit::MeleeSpellHitResult(Unit* victim, SpellInfo const* spellInfo
     return SPELL_MISS_NONE;
 }
 
-/// @todo need use unit spell resistances in calculations
+// @todo need use unit spell resistances in calculations
 SpellMissInfo Unit::MagicSpellHitResult(Unit* victim, SpellInfo const* spellInfo)
 {
     // Can`t miss on dead target (on skinning for example)
@@ -2563,7 +2563,7 @@ SpellMissInfo Unit::SpellHitResult(Unit* victim, SpellInfo const* spellInfo, boo
         return SPELL_MISS_IMMUNE;
 
     // All positive spells can`t miss
-    /// @todo client not show miss log for this spells - so need find info for this in dbc and use it!
+    // @todo client not show miss log for this spells - so need find info for this in dbc and use it!
     if (spellInfo->IsPositive() && !IsHostileTo(victim)) // prevent from affecting enemy by "positive" spell
         return SPELL_MISS_NONE;
 
@@ -5413,7 +5413,7 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffect* triggere
 
                     target = this;
                     if (roll_chance_i(10))
-                        ToPlayer()->Say("This is Madness!", LANG_UNIVERSAL); /// @todo It should be moved to database, shouldn't it?
+                        ToPlayer()->Say("This is Madness!", LANG_UNIVERSAL); // @todo It should be moved to database, shouldn't it?
                     break;
                 }
                 // Sunwell Exalted Caster Neck (??? neck)
@@ -6927,7 +6927,7 @@ bool Unit::HandleAuraProc(Unit* victim, uint32 /*damage*/, Aura* triggeredByAura
             // Blood of the North
             // Reaping
             // Death Rune Mastery
-            /// @todo move those to spell scripts
+            // @todo move those to spell scripts
             if (dummySpell->SpellIconID == 3041 || (dummySpell->SpellIconID == 22 && dummySpell->Id != 62459) || dummySpell->SpellIconID == 2622)
             {
                 *handled = true;
@@ -8539,7 +8539,7 @@ void Unit::SetCharm(Unit* charm, bool apply)
                 SF_LOG_FATAL("entities.unit", "Player %s is trying to charm unit %u, but it already has a charmed unit " UI64FMTD "", GetName().c_str(), charm->GetEntry(), GetCharmGUID());
 
             charm->m_ControlledByPlayer = true;
-            /// @todo maybe we can use this flag to check if controlled by player
+            // @todo maybe we can use this flag to check if controlled by player
             charm->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE);
         }
         else
@@ -8655,7 +8655,7 @@ Unit* Unit::GetMagicHitRedirectTarget(Unit* victim, SpellInfo const* spellInfo)
                 && spellInfo->CheckTarget(this, magnet, false) == SPELL_CAST_OK
                 && _IsValidAttackTarget(magnet, spellInfo))
             {
-                /// @todo handle this charge drop by proc in cast phase on explicit target
+                // @todo handle this charge drop by proc in cast phase on explicit target
                 (*itr)->GetBase()->DropCharge(AURA_REMOVE_BY_EXPIRE);
                 return magnet;
             }
@@ -9573,7 +9573,7 @@ bool Unit::isSpellCrit(Unit* victim, SpellInfo const* spellProto, SpellSchoolMas
                         break;
                 }
             }
-            /// Intentional fallback. Calculate critical strike chance for both Ranged and Melee spells
+            // Intentional fallback. Calculate critical strike chance for both Ranged and Melee spells
         case SPELL_DAMAGE_CLASS_RANGED:
         {
             if (victim)
@@ -9612,7 +9612,7 @@ uint32 Unit::SpellCriticalDamageBonus(SpellInfo const* spellProto, uint32 damage
     {
         case SPELL_DAMAGE_CLASS_MELEE:                      // for melee based spells is 100%
         case SPELL_DAMAGE_CLASS_RANGED:
-            /// @todo write here full calculation for melee/ranged spells
+            // @todo write here full calculation for melee/ranged spells
             crit_bonus += damage;
             break;
         default:
@@ -11229,7 +11229,7 @@ void Unit::UpdateSpeed(UnitMoveType mtype, bool forced)
             }
 
             // Normalize speed by 191 aura SPELL_AURA_USE_NORMAL_MOVEMENT_SPEED if need
-            /// @todo possible affect only on MOVE_RUN
+            // @todo possible affect only on MOVE_RUN
             if (int32 normalization = GetMaxPositiveAuraModifier(SPELL_AURA_USE_NORMAL_MOVEMENT_SPEED))
             {
                 // Use speed from aura
@@ -11594,7 +11594,7 @@ Unit* Creature::SelectVictim()
             return NULL;
     }
 
-    /// @todo a vehicle may eat some mob, so mob should not evade
+    // @todo a vehicle may eat some mob, so mob should not evade
     if (GetVehicle())
         return NULL;
 
@@ -12363,10 +12363,10 @@ void Unit::SetMaxPower(Powers power, int32 val)
 
 uint32 Unit::GetPowerIndex(uint32 powerType) const
 {
-    /// This is here because hunter pets are of the warrior class.
-    /// With the current implementation, the core only gives them
-    /// POWER_RAGE, so we enforce the class to hunter so that they
-    /// effectively get focus power.
+    // This is here because hunter pets are of the warrior class.
+    // With the current implementation, the core only gives them
+    // POWER_RAGE, so we enforce the class to hunter so that they
+    // effectively get focus power.
     uint32 classId = getClass();
     if (ToPet() && ToPet()->getPetType() == HUNTER_PET)
         classId = CLASS_HUNTER;
@@ -14459,7 +14459,7 @@ void Unit::Kill(Unit* victim, bool durabilityLoss)
         {
             Map* instanceMap = creature->GetMap();
             Player* creditedPlayer = GetCharmerOrOwnerPlayerOrPlayerItself();
-            /// @todo do instance binding anyway if the charmer/owner is offline
+            // @todo do instance binding anyway if the charmer/owner is offline
 
             if (instanceMap->IsDungeon() && creditedPlayer)
             {
@@ -14778,7 +14778,7 @@ bool Unit::SetCharmedBy(Unit* charmer, CharmType type, AuraApplication const* au
     }
 
     CastStop();
-    CombatStop(); /// @todo CombatStop(true) may cause crash (interrupt spells)
+    CombatStop(); // @todo CombatStop(true) may cause crash (interrupt spells)
     DeleteThreatList();
 
     // Charmer stop charming
@@ -14916,7 +14916,7 @@ void Unit::RemoveCharmedBy(Unit* charmer)
         type = CHARM_TYPE_CHARM;
 
     CastStop();
-    CombatStop(); /// @todo CombatStop(true) may cause crash (interrupt spells)
+    CombatStop(); // @todo CombatStop(true) may cause crash (interrupt spells)
     getHostileRefManager().deleteReferences();
     DeleteThreatList();
 
@@ -16214,9 +16214,9 @@ void Unit::ExitVehicle(Position const* /*exitPosition*/)
 void Unit::_ExitVehicle(Position const* exitPosition)
 {
     SF_LOG_DEBUG("entities.unit", "_ExitVehicle");
-    /// It's possible m_vehicle is NULL, when this function is called indirectly from @VehicleJoinEvent::Abort.
-    /// In that case it was not possible to add the passenger to the vehicle. The vehicle aura has already been removed
-    /// from the target in the aforementioned function and we don't need to do anything else at this point.
+    // It's possible m_vehicle is NULL, when this function is called indirectly from @VehicleJoinEvent::Abort.
+    // In that case it was not possible to add the passenger to the vehicle. The vehicle aura has already been removed
+    // from the target in the aforementioned function and we don't need to do anything else at this point.
     if (!m_vehicle)
         return;
 
@@ -17128,7 +17128,7 @@ void Unit::SetFacingToObject(WorldObject* object)
     if (!IsStopped())
         return;
 
-    /// @todo figure out under what conditions creature will move towards object instead of facing it where it currently is.
+    // @todo figure out under what conditions creature will move towards object instead of facing it where it currently is.
     Movement::MoveSplineInit init(this);
     init.MoveTo(GetPositionX(), GetPositionY(), GetPositionZMinusOffset());
     init.SetFacing(GetAngle(object));   // when on transport, GetAngle will still return global coordinates (and angle) that needs transforming

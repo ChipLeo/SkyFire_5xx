@@ -124,10 +124,10 @@ protected:
     virtual ~TransportBase() { }
 
 public:
-    /// This method transforms supplied transport offsets into global coordinates
+    // This method transforms supplied transport offsets into global coordinates
     virtual void CalculatePassengerPosition(float& x, float& y, float& z, float* o = NULL) const = 0;
 
-    /// This method transforms supplied global coordinates into local offsets
+    // This method transforms supplied global coordinates into local offsets
     virtual void CalculatePassengerOffset(float& x, float& y, float& z, float* o = NULL) const = 0;
 
     static void CalculatePassengerPosition(float& x, float& y, float& z, float* o, float transX, float transY, float transZ, float transO)

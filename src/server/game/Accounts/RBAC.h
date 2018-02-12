@@ -736,16 +736,16 @@ class RBACPermission
         RBACPermission(uint32 id = 0, std::string const& name = ""):
             _id(id), _name(name) { }
 
-        /// Gets the Name of the Object
+        // Gets the Name of the Object
         std::string const& GetName() const { return _name; }
-        /// Gets the Id of the Object
+        // Gets the Id of the Object
         uint32 GetId() const { return _id; }
 
-        /// Gets the Permissions linked to this permission
+        // Gets the Permissions linked to this permission
         RBACPermissionContainer const& GetLinkedPermissions() const { return _perms; }
-        /// Adds a new linked Permission
+        // Adds a new linked Permission
         void AddLinkedPermission(uint32 id) { _perms.insert(id); }
-        /// Removes a linked Permission
+        // Removes a linked Permission
         void RemoveLinkedPermission(uint32 id) { _perms.erase(id); }
 
     private:
@@ -771,9 +771,9 @@ class RBACData
         RBACData(uint32 id, std::string const& name, int32 realmId, uint8 secLevel = 255):
             _id(id), _name(name), _realmId(realmId), _secLevel(secLevel) { }
 
-        /// Gets the Name of the Object
+        // Gets the Name of the Object
         std::string const& GetName() const { return _name; }
-        /// Gets the Id of the Object
+        // Gets the Id of the Object
         uint32 GetId() const { return _id; }
 
         /**
@@ -795,11 +795,11 @@ class RBACData
         bool HasPermission(uint32 permission) const;
 
         // Functions enabled to be used by command system
-        /// Returns all the granted permissions (after computation)
+        // Returns all the granted permissions (after computation)
         RBACPermissionContainer const& GetPermissions() const { return _globalPerms; }
-        /// Returns all the granted permissions
+        // Returns all the granted permissions
         RBACPermissionContainer const& GetGrantedPermissions() const { return _grantedPerms; }
-        /// Returns all the denied permissions
+        // Returns all the denied permissions
         RBACPermissionContainer const& GetDeniedPermissions() const { return _deniedPerms; }
 
         /**
@@ -872,22 +872,22 @@ class RBACData
          */
         RBACCommandResult RevokePermission(uint32 permissionId, int32 realmId = 0);
 
-        /// Loads all permissions assigned to current account
+        // Loads all permissions assigned to current account
         void LoadFromDB();
 
-        /// Sets security level
+        // Sets security level
         void SetSecurityLevel(uint8 id)
         {
             _secLevel = id;
             LoadFromDB();
         }
 
-        /// Returns the security level assigned
+        // Returns the security level assigned
         uint8 GetSecurityLevel() const { return _secLevel; }
     private:
-        /// Saves a permission to DB, Granted or Denied
+        // Saves a permission to DB, Granted or Denied
         void SavePermission(uint32 role, bool granted, int32 realm);
-        /// Clears roles, groups and permissions - Used for reload
+        // Clears roles, groups and permissions - Used for reload
         void ClearData();
 
         /**
@@ -906,46 +906,46 @@ class RBACData
         // Auxiliar private functions - defined to allow to maintain same code even
         // if internal structure changes.
 
-        /// Checks if a permission is granted
+        // Checks if a permission is granted
         bool HasGrantedPermission(uint32 permissionId) const
         {
             return _grantedPerms.find(permissionId) != _grantedPerms.end();
         }
 
-        /// Checks if a permission is denied
+        // Checks if a permission is denied
         bool HasDeniedPermission(uint32 permissionId) const
         {
             return _deniedPerms.find(permissionId) != _deniedPerms.end();
         }
 
-        /// Adds a new granted permission
+        // Adds a new granted permission
         void AddGrantedPermission(uint32 permissionId)
         {
             _grantedPerms.insert(permissionId);
         }
 
-        /// Removes a granted permission
+        // Removes a granted permission
         void RemoveGrantedPermission(uint32 permissionId)
         {
             _grantedPerms.erase(permissionId);
         }
 
-        /// Adds a new denied permission
+        // Adds a new denied permission
         void AddDeniedPermission(uint32 permissionId)
         {
             _deniedPerms.insert(permissionId);
         }
 
-        /// Removes a denied permission
+        // Removes a denied permission
         void RemoveDeniedPermission(uint32 permissionId)
         {
             _deniedPerms.erase(permissionId);
         }
 
-        /// Adds a list of permissions to another list
+        // Adds a list of permissions to another list
         void AddPermissions(RBACPermissionContainer const& permsFrom, RBACPermissionContainer& permsTo);
 
-        /// Removes a list of permissions to another list
+        // Removes a list of permissions to another list
         void RemovePermissions(RBACPermissionContainer const& permsFrom, RBACPermissionContainer& permsTo);
 
         /**

@@ -149,8 +149,8 @@ class spell_warl_banish : public SpellScriptLoader
 
             void HandleBanish()
             {
-                /// Casting Banish on a banished target will cancel the effect
-                /// Check if the target already has Banish, if so, do nothing.
+                // Casting Banish on a banished target will cancel the effect
+                // Check if the target already has Banish, if so, do nothing.
                 if (Unit* target = GetHitUnit())
                 {
                     if (target->GetAuraEffect(SPELL_AURA_SCHOOL_IMMUNITY, SPELLFAMILY_WARLOCK, 0, 0x08000000, 0))
@@ -260,7 +260,7 @@ class spell_warl_create_healthstone : public SpellScriptLoader
 };
 
 // 603 - Bane of Doom
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_warl_bane_of_doom : public SpellScriptLoader
 {
     public:
@@ -308,7 +308,7 @@ class spell_warl_bane_of_doom : public SpellScriptLoader
 };
 
 // 48018 - Demonic Circle: Summon
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_warl_demonic_circle_summon : public SpellScriptLoader
 {
     public:
@@ -361,7 +361,7 @@ class spell_warl_demonic_circle_summon : public SpellScriptLoader
 };
 
 // 48020 - Demonic Circle: Teleport
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_warl_demonic_circle_teleport : public SpellScriptLoader
 {
     public:
@@ -463,7 +463,7 @@ class spell_warl_demon_soul : public SpellScriptLoader
 };
 
 // 47193 - Demonic Empowerment
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_warl_demonic_empowerment : public SpellScriptLoader
 {
     public:
@@ -526,7 +526,7 @@ class spell_warl_demonic_empowerment : public SpellScriptLoader
 };
 
 // 47422 - Everlasting Affliction
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_warl_everlasting_affliction : public SpellScriptLoader
 {
     public:
@@ -672,7 +672,7 @@ class spell_warl_glyph_of_shadowflame : public SpellScriptLoader
 };
 
 // 48181 - Haunt
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_warl_haunt : public SpellScriptLoader
 {
     public:
@@ -733,7 +733,7 @@ class spell_warl_haunt : public SpellScriptLoader
 };
 
 // 755 - Health Funnel
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_warl_health_funnel : public SpellScriptLoader
 {
     public:
@@ -860,7 +860,7 @@ class spell_warl_improved_soul_fire : public SpellScriptLoader
 };
 
 // 1454 - Life Tap
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_warl_life_tap : public SpellScriptLoader
 {
     public:
@@ -1015,7 +1015,7 @@ class spell_warl_seduction : public SpellScriptLoader
 };
 
 // 27285 - Seed of Corruption
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_warl_seed_of_corruption : public SpellScriptLoader
 {
     public:
@@ -1355,7 +1355,7 @@ public:
 };
 
 // 29858 - Soulshatter
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_warl_soulshatter : public SpellScriptLoader
 {
     public:
@@ -1393,7 +1393,7 @@ class spell_warl_soulshatter : public SpellScriptLoader
 };
 
 // 30108, 34438, 34439, 35183 - Unstable Affliction
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_warl_unstable_affliction : public SpellScriptLoader
 {
     public:

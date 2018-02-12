@@ -63,7 +63,7 @@ struct ScriptAction
     ScriptInfo const* script;                               ///> pointer to static script data
 };
 
-/// Represents a map magic value of 4 bytes (used in versions)
+// Represents a map magic value of 4 bytes (used in versions)
 union u_map_magic
 {
     char asChar[4]; ///> Non-null terminated string

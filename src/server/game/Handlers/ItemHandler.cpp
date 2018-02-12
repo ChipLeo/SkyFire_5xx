@@ -1748,14 +1748,14 @@ void WorldSession::HandleTransmogrifyItems(WorldPacket& recvData)
         }
 
         // uint16 tempDest;
-        //// has to be able to equip item transmogrified item
+        /// has to be able to equip item transmogrified item
         //if (!player->CanEquipItem(slots[i], tempDest, itemTransmogrified, true, true))
         //{
         //    SF_LOG_DEBUG("network", "WORLD: HandleTransmogrifyItems - Player (GUID: %u, name: %s) can't equip the item to be transmogrified (slot: %u, entry: %u).", player->GetGUIDLow(), player->GetName().c_str(), slots[i], itemTransmogrified->GetEntry());
         //    return;
         //}
         //
-        //// has to be able to equip item transmogrifier item
+        /// has to be able to equip item transmogrifier item
         //if (!player->CanEquipItem(slots[i], tempDest, itemTransmogrifier, true, true))
         //{
         //    SF_LOG_DEBUG("network", "WORLD: HandleTransmogrifyItems - Player (GUID: %u, name: %s) can't equip the transmogrifier item (slot: %u, entry: %u).", player->GetGUIDLow(), player->GetName().c_str(), slots[i], itemTransmogrifier->GetEntry());

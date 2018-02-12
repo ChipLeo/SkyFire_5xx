@@ -69,7 +69,7 @@ ACE_Service_Type_Dynamic_Guard::ACE_Service_Type_Dynamic_Guard
 }
 
 
-/// Destructor
+// Destructor
 ACE_Service_Type_Dynamic_Guard::~ACE_Service_Type_Dynamic_Guard (void)
 {
   const ACE_Service_Type *tmp = 0;
@@ -231,9 +231,9 @@ ACE_Service_Gestalt::ACE_Service_Gestalt (size_t size,
 #endif
 }
 
-/// Performs the common initialization tasks for a new or previously
-/// closed instance. Must not be virtual, as it is also called from
-/// the constructor.
+// Performs the common initialization tasks for a new or previously
+// closed instance. Must not be virtual, as it is also called from
+// the constructor.
 int
 ACE_Service_Gestalt::init_i (void)
 {
@@ -262,8 +262,8 @@ ACE_Service_Gestalt::init_i (void)
 }
 
 
-/// Add the default statically-linked services to the Service
-/// Repository.
+// Add the default statically-linked services to the Service
+// Repository.
 int
 ACE_Service_Gestalt::load_static_svcs (void)
 {
@@ -288,7 +288,7 @@ ACE_Service_Gestalt::load_static_svcs (void)
 
 
 
-/// Find a static service descriptor by name
+// Find a static service descriptor by name
 int
 ACE_Service_Gestalt::find_static_svc_descriptor (const ACE_TCHAR* name,
                                                  ACE_Static_Svc_Descriptor **ssd) const
@@ -315,7 +315,7 @@ ACE_Service_Gestalt::find_static_svc_descriptor (const ACE_TCHAR* name,
   return -1;
 }
 
-/// @brief
+// @brief
 const ACE_Static_Svc_Descriptor*
 ACE_Service_Gestalt::find_processed_static_svc (const ACE_TCHAR* name)
 {
@@ -335,31 +335,31 @@ ACE_Service_Gestalt::find_processed_static_svc (const ACE_TCHAR* name)
 
 
 
-/// @brief Captures a list of the direcives processed (explicitely) for this
-/// Gestalt so that services can be replicated in other repositories
-/// upon their first initialization.
+// @brief Captures a list of the direcives processed (explicitely) for this
+// Gestalt so that services can be replicated in other repositories
+// upon their first initialization.
 ///
-/// This is part of the mechanism ensuring distinct local instances
-/// for static service objects, loaded in another repository.
+// This is part of the mechanism ensuring distinct local instances
+// for static service objects, loaded in another repository.
 void
 ACE_Service_Gestalt::add_processed_static_svc
   (const ACE_Static_Svc_Descriptor *assd)
 {
 
-  /// When process_directive(Static_Svc_Descriptor&) is called, it
-  /// associates a service object with the Gestalt and makes the
-  /// resource (a Service Object) local to the repository. This is but
-  /// the first step in using such SO. The next is the
-  /// "initialization" step. It is typicaly done through a "static"
-  /// service configuration directive.
+  // When process_directive(Static_Svc_Descriptor&) is called, it
+  // associates a service object with the Gestalt and makes the
+  // resource (a Service Object) local to the repository. This is but
+  // the first step in using such SO. The next is the
+  // "initialization" step. It is typicaly done through a "static"
+  // service configuration directive.
   ///
-  /// In contrast a "dynamic" directive, when processed through the
-  /// overloaded process_directives(string) both creates the SO
-  /// locally and initializes it, where the statics directive must
-  /// first locate the SO and then calls the init() method. This means
-  /// that durig the "static" initialization there's no specific
-  /// information about the hosting repository and the gestalt must
-  /// employ some lookup strategy to find it elsewhere.
+  // In contrast a "dynamic" directive, when processed through the
+  // overloaded process_directives(string) both creates the SO
+  // locally and initializes it, where the statics directive must
+  // first locate the SO and then calls the init() method. This means
+  // that durig the "static" initialization there's no specific
+  // information about the hosting repository and the gestalt must
+  // employ some lookup strategy to find it elsewhere.
 
   if (this->processed_static_svcs_ == 0)
     ACE_NEW (this->processed_static_svcs_,
@@ -389,10 +389,10 @@ ACE_Service_Gestalt::add_processed_static_svc
 }
 
 
-/// Queues a static service object descriptor which, during open()
-/// will be given to process_directive() to create the Service
-/// Object. Normally, only called from static initializers, prior to
-/// calling open() but loading a service from a DLL can cause it too.
+// Queues a static service object descriptor which, during open()
+// will be given to process_directive() to create the Service
+// Object. Normally, only called from static initializers, prior to
+// calling open() but loading a service from a DLL can cause it too.
 
 int
 ACE_Service_Gestalt::insert (ACE_Static_Svc_Descriptor *stsd)
@@ -462,7 +462,7 @@ ACE_Service_Gestalt::initialize (const ACE_TCHAR *svc_name,
                        svc_name),
                       -1);
 
-  /// If initialization fails ...
+  // If initialization fails ...
   if (srp->type ()->init (args.argc (),
                           args.argv ()) == -1)
     {
@@ -566,16 +566,16 @@ ACE_Service_Gestalt::initialize (const ACE_Service_Type_Factory *stf,
 #endif /* (ACE_USES_CLASSIC_SVC_CONF == 1) */
 
 
-/// Dynamically link the shared object file and retrieve a pointer to
-/// the designated shared object in this file.
-/// @note This is obsolete (and error-prone) in the presense of dynamic
-/// services with their own static services. This method will allow those
-/// static services to register *before* the dynamic service that owns them.
-/// Upon finalization of the static services the process may crash, because
-/// the dynamic service's DLL may have been already released, together with
-/// the memory in which the static services reside.
-/// It may not crash, for instance, when the first static service to register
-/// is the same as the dynamic service being loaded. You should be so lucky! ..
+// Dynamically link the shared object file and retrieve a pointer to
+// the designated shared object in this file.
+// @note This is obsolete (and error-prone) in the presense of dynamic
+// services with their own static services. This method will allow those
+// static services to register *before* the dynamic service that owns them.
+// Upon finalization of the static services the process may crash, because
+// the dynamic service's DLL may have been already released, together with
+// the memory in which the static services reside.
+// It may not crash, for instance, when the first static service to register
+// is the same as the dynamic service being loaded. You should be so lucky! ..
 int
 ACE_Service_Gestalt::initialize (const ACE_Service_Type *sr,
                                  const ACE_TCHAR *parameters)
@@ -607,8 +607,8 @@ ACE_Service_Gestalt::initialize (const ACE_Service_Type *sr,
 
 }
 
-/// Dynamically link the shared object file and retrieve a pointer to
-/// the designated shared object in this file.
+// Dynamically link the shared object file and retrieve a pointer to
+// the designated shared object in this file.
 int
 ACE_Service_Gestalt::initialize_i (const ACE_Service_Type *sr,
                                    const ACE_TCHAR *parameters)
@@ -666,11 +666,11 @@ ACE_Service_Gestalt::remove (const ACE_TCHAR svc_name[])
   return this->repo_->remove (svc_name);
 }
 
-/// Suspend @a svc_name.  Note that this will not unlink the service
-/// from the daemon if it was dynamically linked, it will mark it as
-/// being suspended in the Service Repository and call the <suspend>
-/// member function on the appropriate <ACE_Service_Object>.  A service
-/// can be resumed later on by calling the <resume> method...
+// Suspend @a svc_name.  Note that this will not unlink the service
+// from the daemon if it was dynamically linked, it will mark it as
+// being suspended in the Service Repository and call the <suspend>
+// member function on the appropriate <ACE_Service_Object>.  A service
+// can be resumed later on by calling the <resume> method...
 int
 ACE_Service_Gestalt::suspend (const ACE_TCHAR svc_name[])
 {

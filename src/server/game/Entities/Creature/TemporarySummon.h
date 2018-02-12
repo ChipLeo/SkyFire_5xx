@@ -28,13 +28,13 @@ enum SummonerType
     SUMMONER_TYPE_MAP           = 2
 };
 
-/// Stores data for temp summons
+// Stores data for temp summons
 struct TempSummonData
 {
-    uint32 entry;        ///< Entry of summoned creature
-    Position pos;        ///< Position, where should be creature spawned
-    TempSummonType type; ///< Summon type, see TempSummonType for available types
-    uint32 time;         ///< Despawn time, usable only with certain temp summon types
+    uint32 entry;        //< Entry of summoned creature
+    Position pos;        //< Position, where should be creature spawned
+    TempSummonType type; //< Summon type, see TempSummonType for available types
+    uint32 time;         //< Despawn time, usable only with certain temp summon types
 };
 
 // Creature Pet entries

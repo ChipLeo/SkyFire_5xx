@@ -56,7 +56,7 @@ bool     obelisk_one, obelisk_two, obelisk_three, obelisk_four, obelisk_five;
 ## npc_bladespire_ogre
 ######*/
 
-/// @todo add support for quest 10512 + Creature abilities
+// @todo add support for quest 10512 + Creature abilities
 class npc_bladespire_ogre : public CreatureScript
 {
 public:
@@ -300,7 +300,7 @@ public:
                 if (who->HasAura(SPELL_LASHHAN_CHANNEL) && me->IsWithinDistInMap(who, 10.0f))
                 {
                     Talk(SAY_SPELL_INFLUENCE, who);
-                    /// @todo Move the below to updateAI and run if this statement == true
+                    // @todo Move the below to updateAI and run if this statement == true
                     DoCast(who, 37028, true);
                 }
             }

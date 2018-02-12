@@ -26,7 +26,7 @@ namespace Movement
     double gravity = 19.29110527038574;
     UInt32Counter splineIdGen;
 
-    /// Velocity bounds that makes fall speed limited
+    // Velocity bounds that makes fall speed limited
     float terminalVelocity = 60.148003f;
     float terminalSafefallVelocity = 7.0f;
 

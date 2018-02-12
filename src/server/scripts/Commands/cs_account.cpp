@@ -117,7 +117,7 @@ public:
         return true;
     }
 
-    /// Create an account
+    // Create an account
     static bool HandleAccountCreateCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
@@ -169,8 +169,8 @@ public:
         return true;
     }
 
-    /// Delete a user account and all associated characters in this realm
-    /// @todo This function has to be enhanced to respect the login/realm split (delete char, delete account chars in realm then delete account)
+    // Delete a user account and all associated characters in this realm
+    // @todo This function has to be enhanced to respect the login/realm split (delete char, delete account chars in realm then delete account)
     static bool HandleAccountDeleteCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
@@ -197,9 +197,9 @@ public:
             return false;
         }
 
-        /// Commands not recommended call from chat, but support anyway
-        /// can delete only for account with less security
-        /// This is also reject self apply in fact
+        // Commands not recommended call from chat, but support anyway
+        // can delete only for account with less security
+        // This is also reject self apply in fact
         if (handler->HasLowerSecurityAccount(NULL, accountId, true))
             return false;
 
@@ -226,7 +226,7 @@ public:
         return true;
     }
 
-    /// Display info on users currently in the realm
+    // Display info on users currently in the realm
     static bool HandleAccountOnlineListCommand(ChatHandler* handler, char const* /*args*/)
     {
         ///- Get the list of accounts ID logged to the realm
@@ -568,7 +568,7 @@ public:
         return true;
     }
 
-    /// Set/Unset the expansion level for an account
+    // Set/Unset the expansion level for an account
     static bool HandleAccountSetAddonCommand(ChatHandler* handler, char const* args)
     {
         ///- Get the command line arguments
@@ -734,7 +734,7 @@ public:
         return true;
     }
 
-    /// Set password for account
+    // Set password for account
     static bool HandleAccountSetPasswordCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
@@ -768,8 +768,8 @@ public:
             return false;
         }
 
-        /// can set password only for target with less security
-        /// This also restricts setting handler's own password
+        // can set password only for target with less security
+        // This also restricts setting handler's own password
         if (handler->HasLowerSecurityAccount(NULL, targetAccountId, true))
             return false;
 
@@ -803,7 +803,7 @@ public:
         return true;
     }
 
-    /// Set normal email for account
+    // Set normal email for account
     static bool HandleAccountSetEmailCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
@@ -837,8 +837,8 @@ public:
             return false;
         }
 
-        /// can set email only for target with less security
-        /// This also restricts setting handler's own email.
+        // can set email only for target with less security
+        // This also restricts setting handler's own email.
         if (handler->HasLowerSecurityAccount(NULL, targetAccountId, true))
             return false;
 
@@ -874,7 +874,7 @@ public:
         return true;
     }
 
-    /// Change registration email for account
+    // Change registration email for account
     static bool HandleAccountSetRegEmailCommand(ChatHandler* handler, char const* args)
     {
         if (!*args)
@@ -913,8 +913,8 @@ public:
             return false;
         }
 
-        /// can set email only for target with less security
-        /// This also restricts setting handler's own email.
+        // can set email only for target with less security
+        // This also restricts setting handler's own email.
         if (handler->HasLowerSecurityAccount(NULL, targetAccountId, true))
             return false;
 

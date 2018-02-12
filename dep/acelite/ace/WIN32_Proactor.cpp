@@ -25,17 +25,17 @@ class ACE_WIN32_Wakeup_Completion : public ACE_WIN32_Asynch_Result
 {
 
 public:
-  /// Constructor.
+  // Constructor.
   ACE_WIN32_Wakeup_Completion (ACE_Handler::Proxy_Ptr &handler_proxy,
                                const void *act = 0,
                                ACE_HANDLE event = ACE_INVALID_HANDLE,
                                int priority = 0,
                                int signal_number = ACE_SIGRTMIN);
 
-  /// Destructor.
+  // Destructor.
   virtual ~ACE_WIN32_Wakeup_Completion (void);
 
-  /// This method calls the <handler>'s <handle_wakeup> method.
+  // This method calls the <handler>'s <handle_wakeup> method.
   virtual void complete (size_t bytes_transferred = 0,
                          int success = 1,
                          const void *completion_key = 0,

@@ -71,7 +71,7 @@ class Vehicle : public TransportBase
         Position const& GetLastShootPos() const { return _lastShootPos; }
 
         SeatMap::iterator GetSeatIteratorForPassenger(Unit* passenger);
-        SeatMap Seats;                                      ///< The collection of all seats on the vehicle. Including vacant ones.
+        SeatMap Seats;                                      //< The collection of all seats on the vehicle. Including vacant ones.
 
         VehicleSeatEntry const* GetSeatForPassenger(Unit const* passenger) const;
 
@@ -79,7 +79,7 @@ class Vehicle : public TransportBase
 
     protected:
         friend class VehicleJoinEvent;
-        uint32 UsableSeatNum;                               ///< Number of seats that match VehicleSeatEntry::UsableByPlayer, used for proper display flags
+        uint32 UsableSeatNum;                               //< Number of seats that match VehicleSeatEntry::UsableByPlayer, used for proper display flags
 
     private:
         enum Status
@@ -91,7 +91,7 @@ class Vehicle : public TransportBase
 
         void InitMovementInfoForBase();
 
-        /// This method transforms supplied transport offsets into global coordinates
+        // This method transforms supplied transport offsets into global coordinates
         void CalculatePassengerPosition(float& x, float& y, float& z, float* o /*= NULL*/) const
         {
             TransportBase::CalculatePassengerPosition(x, y, z, o,
@@ -99,7 +99,7 @@ class Vehicle : public TransportBase
                 GetBase()->GetPositionZ(), GetBase()->GetOrientation());
         }
 
-        /// This method transforms supplied global coordinates into local offsets
+        // This method transforms supplied global coordinates into local offsets
         void CalculatePassengerOffset(float& x, float& y, float& z, float* o /*= NULL*/) const
         {
             TransportBase::CalculatePassengerOffset(x, y, z, o,
@@ -111,16 +111,16 @@ class Vehicle : public TransportBase
         void RemovePendingEventsForSeat(int8 seatId);
 
     private:
-        Unit* _me;                                          ///< The underlying unit with the vehicle kit. Can be player or creature.
-        VehicleEntry const* _vehicleInfo;                   ///< DBC data for vehicle
+        Unit* _me;                                          //< The underlying unit with the vehicle kit. Can be player or creature.
+        VehicleEntry const* _vehicleInfo;                   //< DBC data for vehicle
         GuidSet vehiclePlayers;
 
-        uint32 _creatureEntry;                              ///< Can be different than the entry of _me in case of players
-        Status _status;                                     ///< Internal variable for sanity checks
+        uint32 _creatureEntry;                              //< Can be different than the entry of _me in case of players
+        Status _status;                                     //< Internal variable for sanity checks
         Position _lastShootPos;
 
         typedef std::list<VehicleJoinEvent*> PendingJoinEventContainer;
-        PendingJoinEventContainer _pendingJoinEvents;       ///< Collection of delayed join events for prospective passengers
+        PendingJoinEventContainer _pendingJoinEvents;       //< Collection of delayed join events for prospective passengers
 };
 
 class VehicleJoinEvent : public BasicEvent

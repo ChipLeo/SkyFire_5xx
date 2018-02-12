@@ -139,7 +139,7 @@ class boss_gruul : public CreatureScript
                 //this part should be in the core
                 if (pSpell->Id == SPELL_SHATTER)
                 {
-                    /// @todo use eventmap to kill this stuff
+                    // @todo use eventmap to kill this stuff
                     //clear this, if we are still performing
                     if (m_bPerformingGroundSlam)
                     {
@@ -165,7 +165,7 @@ class boss_gruul : public CreatureScript
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 
-                /// @todo: convert this shit to eventmap
+                // @todo: convert this shit to eventmap
 
                 // Growth
                 // Gruul can cast this spell up to 30 times

@@ -340,7 +340,7 @@ void SmartAI::UpdateAI(uint32 diff)
     UpdatePath(diff);
     UpdateDespawn(diff);
 
-    /// @todo move to void
+    // @todo move to void
     if (mFollowGuid)
     {
         if (mFollowArrivedTimer < diff)
@@ -439,7 +439,7 @@ void SmartAI::MovementInform(uint32 MovementType, uint32 Data)
 
 void SmartAI::RemoveAuras()
 {
-    /// @fixme: duplicated logic in CreatureAI::_EnterEvadeMode (could use RemoveAllAurasExceptType)
+    // @fixme: duplicated logic in CreatureAI::_EnterEvadeMode (could use RemoveAllAurasExceptType)
     Unit::AuraApplicationMap& appliedAuras = me->GetAppliedAuras();
     for (Unit::AuraApplicationMap::iterator iter = appliedAuras.begin(); iter != appliedAuras.end();)
     {

@@ -17,9 +17,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/// \addtogroup Trinityd Skyfire Daemon
-/// @{
-/// \file
+// \addtogroup Trinityd Skyfire Daemon
+// @{
+// \file
 
 #include <openssl/opensslv.h>
 #include <openssl/crypto.h>
@@ -51,14 +51,14 @@ char serviceDescription[] = "SkyFire World of Warcraft emulator world service";
 int m_ServiceStatus = -1;
 #endif
 
-WorldDatabaseWorkerPool WorldDatabase;                      ///< Accessor to the world database
-CharacterDatabaseWorkerPool CharacterDatabase;              ///< Accessor to the character database
-LoginDatabaseWorkerPool LoginDatabase;                      ///< Accessor to the realm/login database
+WorldDatabaseWorkerPool WorldDatabase;                      //< Accessor to the world database
+CharacterDatabaseWorkerPool CharacterDatabase;              //< Accessor to the character database
+LoginDatabaseWorkerPool LoginDatabase;                      //< Accessor to the realm/login database
 
 RealmNameMap realmNameStore;
-uint32 realmID;                                             ///< Id of the realm
+uint32 realmID;                                             //< Id of the realm
 
-/// Print out the usage string for this program on the console.
+// Print out the usage string for this program on the console.
 void usage(const char* prog)
 {
     printf("Usage:\n");
@@ -72,7 +72,7 @@ void usage(const char* prog)
 #endif
 }
 
-/// Launch the Skyfire server
+// Launch the Skyfire server
 extern int main(int argc, char** argv)
 {
     ///- Command line parsing to get the configuration file name
@@ -141,7 +141,7 @@ extern int main(int argc, char** argv)
     SF_LOG_INFO("server.worldserver", "Using ACE version: %s", ACE_VERSION);
 
     ///- and run the 'Master'
-    /// @todo Why do we need this 'Master'? Can't all of this be in the Main as for Realmd?
+    // @todo Why do we need this 'Master'? Can't all of this be in the Main as for Realmd?
     int ret = sMaster->Run();
 
     // at sMaster return function exist with codes
@@ -152,4 +152,4 @@ extern int main(int argc, char** argv)
     return ret;
 }
 
-/// @}
+// @}

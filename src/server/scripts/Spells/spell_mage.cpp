@@ -263,7 +263,7 @@ class spell_mage_blazing_speed : public SpellScriptLoader
 };
 
 // 42208 - Blizzard
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_mage_blizzard : public SpellScriptLoader
 {
    public:
@@ -354,7 +354,7 @@ class spell_mage_cold_snap : public SpellScriptLoader
 };
 
 // 120 - Cone of Cold
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_mage_cone_of_cold : public SpellScriptLoader
 {
     public:
@@ -389,7 +389,7 @@ class spell_mage_cone_of_cold : public SpellScriptLoader
 };
 
 // 42955 Conjure Refreshment
-/// Updated 4.3.4
+// Updated 4.3.4
 struct ConjureRefreshmentData
 {
     uint32 minLevel;
@@ -576,7 +576,7 @@ class spell_mage_focus_magic : public SpellScriptLoader
 };
 
 // 116 - Frostbolt
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_mage_frostbolt : public SpellScriptLoader
 {
    public:
@@ -762,7 +762,7 @@ class spell_mage_living_bomb : public SpellScriptLoader
 };
 
 // 11426 - Ice Barrier
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_mage_ice_barrier : public SpellScriptLoader
 {
    public:
@@ -843,7 +843,7 @@ class spell_mage_ignite : public SpellScriptLoader
 };
 
 // 543 - Mage Ward
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_mage_mage_ward : public SpellScriptLoader
 {
    public:
@@ -875,7 +875,7 @@ class spell_mage_mage_ward : public SpellScriptLoader
 };
 
 // 1463 - Mana Shield
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_mage_mana_shield : public SpellScriptLoader
 {
     public:
@@ -1113,7 +1113,7 @@ enum SilvermoonPolymorph
     NPC_AUROSALIA       = 18744
 };
 
-/// @todo move out of here and rename - not a mage spell
+// @todo move out of here and rename - not a mage spell
 // 32826 - Polymorph (Visual)
 class spell_mage_polymorph_cast_visual : public SpellScriptLoader
 {
@@ -1166,7 +1166,7 @@ uint32 const spell_mage_polymorph_cast_visual::spell_mage_polymorph_cast_visual_
 };
 
 // 5405  - Replenish Mana (Mana Gem)
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_mage_replenish_mana : public SpellScriptLoader
 {
    public:
@@ -1205,7 +1205,7 @@ class spell_mage_replenish_mana : public SpellScriptLoader
 };
 
 // 82676 - Ring of Frost
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_mage_ring_of_frost : public SpellScriptLoader
 {
     public:
@@ -1280,7 +1280,7 @@ class spell_mage_ring_of_frost : public SpellScriptLoader
 };
 
 // 82691 - Ring of Frost (freeze efect)
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_mage_ring_of_frost_freeze : public SpellScriptLoader
 {
     public:
@@ -1352,7 +1352,7 @@ class spell_mage_ring_of_frost_freeze : public SpellScriptLoader
 };
 
 // 33395 Water Elemental's Freeze
-/// Updated 4.3.4
+// Updated 4.3.4
 class spell_mage_water_elemental_freeze : public SpellScriptLoader
 {
    public:

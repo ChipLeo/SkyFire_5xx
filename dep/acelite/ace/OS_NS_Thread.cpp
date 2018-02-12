@@ -477,58 +477,58 @@ ACE_TSS_Keys::is_set (const ACE_thread_key_t key) const
 class ACE_TSS_Cleanup
 {
 public:
-  /// Register a newly-allocated key
-  /// @param key the key to be monitored
-  /// @param destructor the function to call to delete objects stored via this key
+  // Register a newly-allocated key
+  // @param key the key to be monitored
+  // @param destructor the function to call to delete objects stored via this key
   int insert (ACE_thread_key_t key, void (*destructor)(void *));
 
-  /// Mark a key as being used by this thread.
+  // Mark a key as being used by this thread.
   void thread_use_key (ACE_thread_key_t key);
 
-  /// This thread is no longer using this key
-  /// call destructor if appropriate
+  // This thread is no longer using this key
+  // call destructor if appropriate
   int thread_detach_key (ACE_thread_key_t key);
 
-  /// This key is no longer used
-  ///   Release key if use count == 0
-  ///   fail if use_count != 0;
-  /// @param key the key to be released
+  // This key is no longer used
+  //   Release key if use count == 0
+  //   fail if use_count != 0;
+  // @param key the key to be released
   int free_key (ACE_thread_key_t key);
 
-  /// Cleanup the thread-specific objects.  Does _NOT_ exit the thread.
-  /// For each used key perform the same actions as free_key.
+  // Cleanup the thread-specific objects.  Does _NOT_ exit the thread.
+  // For each used key perform the same actions as free_key.
   void thread_exit (void);
 
 private:
   void dump (void);
 
-  /// Release a key used by this thread
-  /// @param info reference to the info for this key
-  /// @param destructor out arg to receive destructor function ptr
-  /// @param tss_obj out arg to receive pointer to deletable object
+  // Release a key used by this thread
+  // @param info reference to the info for this key
+  // @param destructor out arg to receive destructor function ptr
+  // @param tss_obj out arg to receive pointer to deletable object
   void thread_release (
           ACE_TSS_Info &info,
           ACE_TSS_Info::Destructor & destructor,
           void *& tss_obj);
 
-  /// remove key if it's unused (thread_count == 0)
-  /// @param info reference to the info for this key
+  // remove key if it's unused (thread_count == 0)
+  // @param info reference to the info for this key
   int remove_key (ACE_TSS_Info &info);
 
-  /// Find the TSS keys (if any) for this thread.
-  /// @param thread_keys reference to pointer to be filled in by this function.
-  /// @return false if keys don't exist.
+  // Find the TSS keys (if any) for this thread.
+  // @param thread_keys reference to pointer to be filled in by this function.
+  // @return false if keys don't exist.
   bool find_tss_keys (ACE_TSS_Keys *& thread_keys) const;
 
-  /// Accessor for this threads ACE_TSS_Keys instance.
-  /// Creates the keys if necessary.
+  // Accessor for this threads ACE_TSS_Keys instance.
+  // Creates the keys if necessary.
   ACE_TSS_Keys *tss_keys ();
 
-  /// Ensure singleton.
+  // Ensure singleton.
   ACE_TSS_Cleanup (void);
   ~ACE_TSS_Cleanup (void);
 
-  /// ACE_TSS_Cleanup access only via TSS_Cleanup_Instance
+  // ACE_TSS_Cleanup access only via TSS_Cleanup_Instance
   friend class TSS_Cleanup_Instance;
 
 private:
@@ -536,13 +536,13 @@ private:
   typedef ACE_TSS_Info ACE_TSS_TABLE[ACE_DEFAULT_THREAD_KEYS];
   typedef ACE_TSS_Info *ACE_TSS_TABLE_ITERATOR;
 
-  /// Table of <ACE_TSS_Info>'s.
+  // Table of <ACE_TSS_Info>'s.
   ACE_TSS_TABLE table_;
 
-  /// Key for the thread-specific ACE_TSS_Keys
-  /// Used by find_tss_keys() or tss_keys() to find the
-  /// bit array that records whether each TSS key is in
-  /// use by this thread.
+  // Key for the thread-specific ACE_TSS_Keys
+  // Used by find_tss_keys() or tss_keys() to find the
+  // bit array that records whether each TSS key is in
+  // use by this thread.
   ACE_thread_key_t in_use_;
 };
 

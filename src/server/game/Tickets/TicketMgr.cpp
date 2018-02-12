@@ -421,7 +421,7 @@ void TicketMgr::ShowGmEscalatedList(ChatHandler& handler) const
             handler.SendSysMessage(itr->second->FormatMessageString(handler).c_str());
 }
 
-/// @ response Packets
+// @ response Packets
 
 void TicketMgr::SendGmTicket(WorldSession* session, GmTicket* ticket) const
 {

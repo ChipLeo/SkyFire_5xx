@@ -207,10 +207,10 @@ typedef UNORDERED_MAP<uint32, PlayerCurrency> PlayerCurrenciesMap;
 
 typedef std::list<uint64> WhisperListContainer;
 
-/// Maximum number of CompactUnitFrames profiles
+// Maximum number of CompactUnitFrames profiles
 #define MAX_CUF_PROFILES 5
 
-/// Bit index used in the many bool options of CompactUnitFrames
+// Bit index used in the many bool options of CompactUnitFrames
 enum CUFBoolOptions
 {
     CUF_KEEP_GROUPS_TOGETHER,
@@ -246,7 +246,7 @@ enum CUFBoolOptions
     CUF_BOOL_OPTIONS_COUNT,
 };
 
-/// Represents a CompactUnitFrame profile
+// Represents a CompactUnitFrame profile
 struct CUFProfile
 {
     CUFProfile() : ProfileName(), BoolOptions() // might want to change default value for options
@@ -861,7 +861,7 @@ enum TeleportToOptions
     TELE_TO_SPELL               = 0x10
 };
 
-/// Type of environmental damages
+// Type of environmental damages
 enum EnviromentalDamage
 {
     DAMAGE_EXHAUSTED = 0,
@@ -941,9 +941,9 @@ enum PlayerDelayedOperations
     DELAYED_SAVE_PLAYER = 0x01,
     DELAYED_RESURRECT_PLAYER = 0x02,
     DELAYED_SPELL_CAST_DESERTER = 0x04,
-    DELAYED_BG_MOUNT_RESTORE = 0x08,                     ///< Flag to restore mount state after teleport from BG
-    DELAYED_BG_TAXI_RESTORE = 0x10,                     ///< Flag to restore taxi state after teleport from BG
-    DELAYED_BG_GROUP_RESTORE = 0x20,                     ///< Flag to restore group state after teleport from BG
+    DELAYED_BG_MOUNT_RESTORE = 0x08,                     //< Flag to restore mount state after teleport from BG
+    DELAYED_BG_TAXI_RESTORE = 0x10,                     //< Flag to restore taxi state after teleport from BG
+    DELAYED_BG_GROUP_RESTORE = 0x20,                     //< Flag to restore group state after teleport from BG
     DELAYED_END
 };
 
@@ -1087,7 +1087,7 @@ std::ostringstream& operator<< (std::ostringstream& ss, PlayerTaxi const& taxi);
 
 class Player;
 
-/// Holder for Battleground data
+// Holder for Battleground data
 struct BGData
 {
     BGData() : bgInstanceID(0), bgTypeID(BATTLEGROUND_TYPE_NONE), bgAfkReportedCount(0), bgAfkReportedTimer(0),
@@ -1096,8 +1096,8 @@ struct BGData
         bgQueuesJoinedTime.clear(); ClearTaxiPath();
     }
 
-    uint32 bgInstanceID;                    ///< This variable is set to bg->m_InstanceID,
-    ///  when player is teleported to BG - (it is battleground's GUID)
+    uint32 bgInstanceID;                    //< This variable is set to bg->m_InstanceID,
+    //  when player is teleported to BG - (it is battleground's GUID)
     BattlegroundTypeId bgTypeID;
 
     std::map<uint32, uint32> bgQueuesJoinedTime;
@@ -1106,12 +1106,12 @@ struct BGData
     uint8              bgAfkReportedCount;
     time_t             bgAfkReportedTimer;
 
-    uint32 bgTeam;                          ///< What side the player will be added to
+    uint32 bgTeam;                          //< What side the player will be added to
 
     uint32 mountSpell;
     uint32 taxiPath [2];
 
-    WorldLocation joinPos;                  ///< From where player entered BG
+    WorldLocation joinPos;                  //< From where player entered BG
 
     void ClearTaxiPath()
     {
@@ -1562,13 +1562,13 @@ class Player : public Unit, public GridObject<Player>
         return phaseMgr;
     }
 
-    /// Handles said message in regular chat based on declared language and in config pre-defined Range.
+    // Handles said message in regular chat based on declared language and in config pre-defined Range.
     void Say(std::string const& text, const uint32 language);
-    /// Handles yelled message in regular chat based on declared language and in config pre-defined Range.
+    // Handles yelled message in regular chat based on declared language and in config pre-defined Range.
     void Yell(std::string const& text, const uint32 language);
-    /// Outputs an universal text which is supposed to be an action.
+    // Outputs an universal text which is supposed to be an action.
     void TextEmote(std::string const& text);
-    /// Handles whispers from Addons and players based on sender, receiver's guid and language.
+    // Handles whispers from Addons and players based on sender, receiver's guid and language.
     void Whisper(std::string const& text, const uint32 language, uint64 receiver);
     void WhisperAddon(std::string const& text, std::string const& prefix, Player* receiver);
 
@@ -1672,21 +1672,21 @@ class Player : public Unit, public GridObject<Player>
     void DeleteRefundReference(uint32 it);
 
     void ModifyCurrencyFlag(uint32 id, uint8 flag);
-    /// send initialization of new currency for client
+    // send initialization of new currency for client
     void SendNewCurrency(uint32 id);
-    /// send full data about all currencies to client
+    // send full data about all currencies to client
     void SendCurrencies();
-    /// send conquest currency points and their cap week/arena
+    // send conquest currency points and their cap week/arena
     void SendPvpRewards();
-    /// return count of currency witch has plr
+    // return count of currency witch has plr
     uint32 GetCurrency(uint32 id, bool usePrecision) const;
-    /// return count of currency gaind on current week
+    // return count of currency gaind on current week
     uint32 GetCurrencyOnWeek(uint32 id, bool usePrecision) const;
-    /// return week cap by currency id
+    // return week cap by currency id
     uint32 GetCurrencyWeekCap(uint32 id, bool usePrecision) const;
-    /// return presence related currency
+    // return presence related currency
     bool HasCurrency(uint32 id, uint32 count) const;
-    /// initialize currency count for custom initialization at create character
+    // initialize currency count for custom initialization at create character
     void SetCurrency(uint32 id, uint32 count, bool printLog = true);
     void ResetCurrencyWeekCap();
 
@@ -2038,7 +2038,7 @@ class Player : public Unit, public GridObject<Player>
     Unit* GetSelectedUnit() const;
     Player* GetSelectedPlayer() const;
 
-    void SetTarget(uint64 /*guid*/) OVERRIDE { } /// Used for serverside target changes, does not apply to players
+    void SetTarget(uint64 /*guid*/) OVERRIDE { } // Used for serverside target changes, does not apply to players
         void SetSelection(uint64 guid)
     {
         SetUInt64Value(UNIT_FIELD_TARGET, guid);
@@ -2476,7 +2476,7 @@ class Player : public Unit, public GridObject<Player>
     float GetRatingMultiplier(CombatRating cr) const;
     float GetRatingBonusValue(CombatRating cr) const;
 
-    /// Returns base spellpower bonus from spellpower stat on items, without spellpower from intellect stat
+    // Returns base spellpower bonus from spellpower stat on items, without spellpower from intellect stat
     uint32 GetBaseSpellPowerBonus() const
     {
         return m_baseSpellPower;
@@ -3510,14 +3510,14 @@ class Player : public Unit, public GridObject<Player>
 
     uint32 _GetCurrencyWeekCap(const CurrencyTypesEntry* currency);
 
-    /// Updates weekly conquest point cap (dynamic cap)
+    // Updates weekly conquest point cap (dynamic cap)
     void SendCurrencyWeekCap(uint32 id) const;
     void SendCurrencyWeekCap(const CurrencyTypesEntry* currency) const;
 
     uint32 GetCurrencyWeekCap(CurrencyTypesEntry const* currency) const;
     uint32 GetCurrencyTotalCap(CurrencyTypesEntry const* currency) const;
 
-    /// Updates weekly conquest point cap (dynamic cap)
+    // Updates weekly conquest point cap (dynamic cap)
     void UpdateConquestCurrencyCap(uint32 currency);
 
     VoidStorageItem* _voidStorageItems [VOID_STORAGE_MAX_SLOT];

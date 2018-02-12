@@ -58,7 +58,7 @@ extern int m_ServiceStatus;
 #define PROCESS_HIGH_PRIORITY -15 // [-20, 19], default is 0
 #endif
 
-/// Handle worldservers's termination signals
+// Handle worldservers's termination signals
 class WorldServerSignalHandler : public Skyfire::SignalHandler
 {
     public:
@@ -121,7 +121,7 @@ public:
     }
 };
 
-/// Main function
+// Main function
 int Master::Run()
 {
     OpenSSLCrypto::threadsSetup();
@@ -150,7 +150,7 @@ int Master::Run()
          SF_LOG_INFO("server.worldserver", "*****************************************************************************");
     }
 
-    /// worldserver PID file creation
+    // worldserver PID file creation
     std::string pidFile = sConfigMgr->GetStringDefault("PidFile", "");
     if (!pidFile.empty())
     {
@@ -387,7 +387,7 @@ int Master::Run()
     return World::GetExitCode();
 }
 
-/// Initialize connection to the databases
+// Initialize connection to the databases
 bool Master::_StartDB()
 {
     MySQL::Library_Init();
@@ -511,7 +511,7 @@ void Master::_StopDB()
     MySQL::Library_End();
 }
 
-/// Clear 'online' status for all accounts with characters in this realm
+// Clear 'online' status for all accounts with characters in this realm
 void Master::ClearOnlineAccounts()
 {
     // Reset online status for all accounts with characters on the current realm

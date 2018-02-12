@@ -17,9 +17,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/// \addtogroup u2w
-/// @{
-/// \file
+// \addtogroup u2w
+// @{
+// \file
 
 #ifndef __WORLDSESSION_H
 #define __WORLDSESSION_H
@@ -249,7 +249,7 @@ class CharacterCreateInfo
         OutfitId(outfitId), Data(data), CharCount(0)
         { }
 
-        /// User specified variables
+        // User specified variables
         std::string Name;
         uint8 Race;
         uint8 Class;
@@ -262,7 +262,7 @@ class CharacterCreateInfo
         uint8 OutfitId;
         WorldPacket Data;
 
-        /// Server side data
+        // Server side data
         uint8 CharCount;
 };
 
@@ -299,7 +299,7 @@ struct PetSlots
 
 typedef std::unordered_map<uint8, PetSlots> PetSlotsList;
 
-/// Player session in the World
+// Player session in the World
 class WorldSession
 {
     public:
@@ -353,19 +353,19 @@ class WorldSession
 
         void InitWarden(BigNumber* k, std::string const& os);
 
-        /// Session in auth.queue currently
+        // Session in auth.queue currently
         void SetInQueue(bool state) { m_inQueue = state; }
 
-        /// Is the user engaged in a log out process?
+        // Is the user engaged in a log out process?
         bool isLogingOut() const { return _logoutTime || m_playerLogout; }
 
-        /// Engage the logout process for the user
+        // Engage the logout process for the user
         void LogoutRequest(time_t requestTime)
         {
             _logoutTime = requestTime;
         }
 
-        /// Is logout cooldown expired?
+        // Is logout cooldown expired?
         bool ShouldLogOut(time_t currTime) const
         {
             return (_logoutTime > 0 && currTime >= _logoutTime + 20);
@@ -377,7 +377,7 @@ class WorldSession
         void QueuePacket(WorldPacket* new_packet);
         bool Update(uint32 diff, PacketFilter& updater);
 
-        /// Handle the authentication waiting queue (to be completed)
+        // Handle the authentication waiting queue (to be completed)
         void SendAuthWaitQue(uint32 position);
 
         //void SendTestCreatureQueryOpcode(uint32 entry, uint64 guid, uint32 testvalue);
@@ -1263,4 +1263,4 @@ class WorldSession
         rbac::RBACData* _RBACData;
 };
 #endif
-/// @}
+// @}

@@ -1026,7 +1026,7 @@ void Guild::BankMoveItemData::LogBankEvent(SQLTransaction& trans, MoveItemData* 
 void Guild::BankMoveItemData::LogAction(MoveItemData* pFrom) const
 {
     MoveItemData::LogAction(pFrom);
-    if (!pFrom->IsBank() && m_pPlayer->GetSession()->HasPermission(rbac::RBAC_PERM_LOG_GM_TRADE)) /// @todo Move this to scripts
+    if (!pFrom->IsBank() && m_pPlayer->GetSession()->HasPermission(rbac::RBAC_PERM_LOG_GM_TRADE)) // @todo Move this to scripts
     {
         sLog->outCommand(m_pPlayer->GetSession()->GetAccountId(),
             "GM %s (Guid: %u) (Account: %u) deposit item: %s (Entry: %d Count: %u) to guild bank named: %s (Guild ID: %u)",
@@ -1884,7 +1884,7 @@ void Guild::HandleBuyBankTab(WorldSession* session, uint8 tabId)
     WorldPacket data(SMSG_GUILD_EVENT_BANK_TAB_ADDED, 0);
     BroadcastPacket(&data);
 
-    SendPermissions(session); /// Hack to force client to update permissions
+    SendPermissions(session); // Hack to force client to update permissions
 }
 
 void Guild::HandleInviteMember(WorldSession* session, std::string const& name)
@@ -3722,7 +3722,7 @@ void Guild::GiveXP(uint32 xp, Player* source)
     if (!sWorld->getBoolConfig(CONFIG_GUILD_LEVELING_ENABLED))
         return;
 
-    /// @todo: Award reputation and count activity for player
+    // @todo: Award reputation and count activity for player
 
     if (GetLevel() >= sWorld->getIntConfig(CONFIG_GUILD_MAX_LEVEL))
         xp = 0; // SMSG_GUILD_XP_GAIN is always sent, even for no gains

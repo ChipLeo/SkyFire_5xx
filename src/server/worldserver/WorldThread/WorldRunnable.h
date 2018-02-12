@@ -17,14 +17,14 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/// \addtogroup Trinityd
-/// @{
-/// \file
+// \addtogroup Trinityd
+// @{
+// \file
 
 #ifndef __WORLDRUNNABLE_H
 #define __WORLDRUNNABLE_H
 
-/// Heartbeat thread for the World
+// Heartbeat thread for the World
 class WorldRunnable : public ACE_Based::Runnable
 {
     public:
@@ -33,4 +33,4 @@ class WorldRunnable : public ACE_Based::Runnable
 
 #endif
 
-/// @}
+// @}

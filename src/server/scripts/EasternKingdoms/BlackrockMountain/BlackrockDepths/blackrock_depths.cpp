@@ -112,7 +112,7 @@ enum GrimstoneTexts
     SAY_TEXT6          = 5
 };
 
-/// @todo implement quest part of event (different end boss)
+// @todo implement quest part of event (different end boss)
 class npc_grimstone : public CreatureScript
 {
 public:
@@ -163,7 +163,7 @@ public:
             CanWalk = false;
         }
 
-        /// @todo move them to center
+        // @todo move them to center
         void SummonRingMob()
         {
             if (Creature* tmp = me->SummonCreature(RingMob[MobSpawnId], 608.960f, -235.322f, -53.907f, 1.857f, TEMPSUMMON_DEAD_DESPAWN, 0))
@@ -175,7 +175,7 @@ public:
                 MobDeath_Timer = 2500;
         }
 
-        /// @todo move them to center
+        // @todo move them to center
         void SummonRingBoss()
         {
             if (Creature* tmp = me->SummonCreature(RingBoss[rand()%6], 644.300f, -175.989f, -53.739f, 3.418f, TEMPSUMMON_DEAD_DESPAWN, 0))

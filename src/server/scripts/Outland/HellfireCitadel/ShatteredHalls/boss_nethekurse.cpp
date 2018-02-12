@@ -152,7 +152,7 @@ class boss_grand_warlock_nethekurse : public CreatureScript
             {
                 Talk(SAY_TAUNT);
 
-                /// @todo kill the peons first
+                // @todo kill the peons first
                 IsIntroEvent = false;
                 PeonEngagedCount = 4;
                 PeonKilledCount = 4;

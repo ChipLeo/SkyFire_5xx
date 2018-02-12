@@ -457,7 +457,7 @@ class Creature : public Unit, public GridObject<Creature>, public MapObject
         bool HasReactState(ReactStates state) const { return (m_reactState == state); }
         void InitializeReactState();
 
-        /// @todo Rename these properly
+        // @todo Rename these properly
         bool isCanInteractWithBattleMaster(Player* player, bool msg) const;
         bool isCanTrainingAndResetTalentsOf(Player* player) const;
         bool CanCreatureAttack(Unit const* victim, bool force = true) const;
@@ -674,7 +674,7 @@ class Creature : public Unit, public GridObject<Creature>, public MapObject
         uint64 m_lootRecipient;
         uint32 m_lootRecipientGroup;
 
-        /// Timers
+        // Timers
         time_t m_corpseRemoveTime;                          // (msecs)timer for death or corpse disappearance
         time_t m_respawnTime;                               // (secs) time of next respawn
         uint32 m_respawnDelay;                              // (secs) delay between corpse disappearance and respawning
@@ -686,7 +686,7 @@ class Creature : public Unit, public GridObject<Creature>, public MapObject
         void RegenerateHealth();
         void Regenerate(Powers power);
         MovementGeneratorType m_defaultMovementType;
-        uint32 m_DBTableGuid;                               ///< For new or temporary creatures is 0 for saved it is lowguid
+        uint32 m_DBTableGuid;                               //< For new or temporary creatures is 0 for saved it is lowguid
         uint8 m_equipmentId;
         int8 m_originalEquipmentId; // can be -1
 

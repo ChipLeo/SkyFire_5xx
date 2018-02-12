@@ -57,7 +57,7 @@ enum GuildFinderOptionsLevel
     ALL_GUILDFINDER_LEVELS = ANY_FINDER_LEVEL | MAX_FINDER_LEVEL
 };
 
-/// Holds all required informations about a membership request
+// Holds all required informations about a membership request
 struct MembershipRequest
 {
     public:
@@ -102,7 +102,7 @@ struct MembershipRequest
         time_t _time;
 };
 
-/// Holds all informations about a player's finder settings. _NOT_ stored in database.
+// Holds all informations about a player's finder settings. _NOT_ stored in database.
 struct LFGuildPlayer
 {
     public:
@@ -158,7 +158,7 @@ struct LFGuildPlayer
         uint8 _level;
 };
 
-/// Holds settings for a guild in the finder system. Saved to database.
+// Holds settings for a guild in the finder system. Saved to database.
 struct LFGuildSettings : public LFGuildPlayer
 {
     public:
@@ -239,7 +239,7 @@ class GuildFinderMgr
          */
         void RemoveMembershipRequest(uint32 playerId, uint32 guildId);
 
-        /// Wipes everything related to a guild. Used when that guild is disbanded
+        // Wipes everything related to a guild. Used when that guild is disbanded
         void DeleteGuild(uint32 guildId);
 
         /**
@@ -261,10 +261,10 @@ class GuildFinderMgr
          */
         LFGuildStore GetGuildsMatchingSetting(LFGuildPlayer& settings, TeamId faction);
 
-        /// Provided a player DB guid and a guild DB guid, determines if a pending request is filed with these keys.
+        // Provided a player DB guid and a guild DB guid, determines if a pending request is filed with these keys.
         bool HasRequest(uint32 playerId, uint32 guildId);
 
-        /// Counts the amount of pending membership requests, given the player's db guid.
+        // Counts the amount of pending membership requests, given the player's db guid.
         uint8 CountRequestsFromPlayer(uint32 playerId);
 
         void SendApplicantListUpdate(Guild& guild);

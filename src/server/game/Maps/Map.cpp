@@ -381,7 +381,7 @@ template<>
 void Map::DeleteFromWorld(Player* player)
 {
     sObjectAccessor->RemoveObject(player);
-    sObjectAccessor->RemoveUpdateObject(player); /// @todo I do not know why we need this, it should be removed in ~Object anyway
+    sObjectAccessor->RemoveUpdateObject(player); // @todo I do not know why we need this, it should be removed in ~Object anyway
     delete player;
 }
 
@@ -508,7 +508,7 @@ void Map::InitializeObject(GameObject* obj)
 template<class T>
 bool Map::AddToMap(T* obj)
 {
-    /// @todo Needs clean up. An object should not be added to map twice.
+    // @todo Needs clean up. An object should not be added to map twice.
     if (obj->IsInWorld())
     {
         ASSERT(obj->IsInGrid());
@@ -607,7 +607,7 @@ void Map::VisitNearbyCellsOf(WorldObject* obj, TypeContainerVisitor<Skyfire::Obj
 void Map::Update(const uint32 t_diff)
 {
     _dynamicTree.update(t_diff);
-    /// update worldsessions for existing players
+    // update worldsessions for existing players
     for (m_mapRefIter = m_mapRefManager.begin(); m_mapRefIter != m_mapRefManager.end(); ++m_mapRefIter)
     {
         Player* player = m_mapRefIter->GetSource();
@@ -619,7 +619,7 @@ void Map::Update(const uint32 t_diff)
             session->Update(t_diff, updater);
         }
     }
-    /// update active cells around players and active objects
+    // update active cells around players and active objects
     resetMarkedCells();
 
     Skyfire::ObjectUpdater updater(t_diff);
@@ -1020,7 +1020,7 @@ void Map::MoveAllCreaturesInMoveList()
                 //This may happen when a player just logs in and a pet moves to a nearby unloaded cell
                 //To avoid this, we can load nearby cells when player log in
                 //But this check is always needed to ensure safety
-                /// @todo pets will disappear if this is outside CreatureRespawnRelocation
+                // @todo pets will disappear if this is outside CreatureRespawnRelocation
                 //need to check why pet is frequently relocated to an unloaded cell
                 if (c->IsPet())
                     ((Pet*)c)->Remove(PET_SAVE_NOT_IN_SLOT, true);
@@ -2710,7 +2710,7 @@ bool InstanceMap::CanEnter(Player* player)
 */
 bool InstanceMap::AddPlayerToMap(Player* player)
 {
-    /// @todo Not sure about checking player level: already done in HandleAreaTriggerOpcode
+    // @todo Not sure about checking player level: already done in HandleAreaTriggerOpcode
     // GMs still can teleport player in instance.
     // Is it needed?
 
@@ -2864,7 +2864,7 @@ void InstanceMap::CreateInstanceData(bool load)
 
     if (load)
     {
-        /// @todo make a global storage for this
+        // @todo make a global storage for this
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_INSTANCE);
         stmt->setUInt16(0, uint16(GetId()));
         stmt->setUInt32(1, i_InstanceId);

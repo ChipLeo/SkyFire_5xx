@@ -170,25 +170,25 @@ public:
         return true;
     }
 
-    /// @sa HandleDeserterAdd()
+    // @sa HandleDeserterAdd()
     static bool HandleDeserterInstanceAdd(ChatHandler* handler, char const* args)
     {
         return HandleDeserterAdd(handler, args, true);
     }
 
-    /// @sa HandleDeserterAdd()
+    // @sa HandleDeserterAdd()
     static bool HandleDeserterBGAdd(ChatHandler* handler, char const* args)
     {
         return HandleDeserterAdd(handler, args, false);
     }
 
-    /// @sa HandleDeserterRemove()
+    // @sa HandleDeserterRemove()
     static bool HandleDeserterInstanceRemove(ChatHandler* handler, char const* args)
     {
         return HandleDeserterRemove(handler, args, true);
     }
 
-    /// @sa HandleDeserterRemove()
+    // @sa HandleDeserterRemove()
     static bool HandleDeserterBGRemove(ChatHandler* handler, char const* args)
     {
         return HandleDeserterRemove(handler, args, false);

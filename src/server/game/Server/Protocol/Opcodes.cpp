@@ -57,7 +57,7 @@ void OpcodeTable::ValidateAndSetOpcode<true, false>(uint16 /*opcode*/, uint16 /*
     SF_LOG_ERROR("network", "Opcode %s got value 0", name);
 }
 
-/// Correspondence between opcodes and their names
+// Correspondence between opcodes and their names
 void OpcodeTable::InitializeClientTable()
 {
 #define DEFINE_OPCODE_HANDLER(opcode, opcodeNumber, status, processing, handler)                                      \

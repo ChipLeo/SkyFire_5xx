@@ -148,9 +148,9 @@ enum Dummies
 
 struct DialogueEntry
 {
-    int32 TextEntry;    ///< To be said text entry
-    int32 SayerEntry;   ///< Entry of the mob who should say
-    uint32 SayTimer;    ///< Time delay until next text of array is said (0 stops)
+    int32 TextEntry;    //< To be said text entry
+    int32 SayerEntry;   //< Entry of the mob who should say
+    uint32 SayTimer;    //< Time delay until next text of array is said (0 stops)
 };
 
 class DialogueHelper
@@ -164,8 +164,8 @@ public:
       { }
       // The array MUST be terminated by {0, 0, 0, 0, 0}
 
-      /// Function to initialize the dialogue helper for instances. If not used with instances, GetSpeakerByEntry MUST be overwritten to obtain the speakers
-      /// Set if take first entries or second entries
+      // Function to initialize the dialogue helper for instances. If not used with instances, GetSpeakerByEntry MUST be overwritten to obtain the speakers
+      // Set if take first entries or second entries
 
       void StartNextDialogueText(int32 textEntry)
       {
@@ -200,9 +200,9 @@ public:
       }
 
 protected:
-    /// Will be called when a dialogue step was done
+    // Will be called when a dialogue step was done
     virtual void JustDidDialogueStep(int32 /*entry*/) { }
-    /// Will be called to get a speaker, MUST be implemented if not used in instances
+    // Will be called to get a speaker, MUST be implemented if not used in instances
     virtual Creature* GetSpeakerByEntry(int32 /*entry*/) { return NULL; }
 
 private:

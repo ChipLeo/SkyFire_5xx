@@ -17,9 +17,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/// \addtogroup world
-/// @{
-/// \file
+// \addtogroup world
+// @{
+// \file
 
 #ifndef SF_WEATHERMGR_H
 #define SF_WEATHERMGR_H

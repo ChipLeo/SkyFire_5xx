@@ -258,7 +258,7 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
     }
 
     // look for startPoly/endPoly in current path
-    /// @todo we can merge it with getPathPolyByPosition() loop
+    // @todo we can merge it with getPathPolyByPosition() loop
     bool startPolyFound = false;
     bool endPolyFound = false;
     uint32 pathStartIndex = 0;
@@ -312,7 +312,7 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
         // sub-path of optimal path is optimal
 
         // take ~80% of the original length
-        /// @todo play with the values here
+        // @todo play with the values here
         uint32 prefixPolyLength = uint32(_polyLength * 0.8f + 0.5f);
         memmove(_pathPolyRefs, _pathPolyRefs+pathStartIndex, prefixPolyLength * sizeof(dtPolyRef));
 
@@ -435,7 +435,7 @@ void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoin
     {
         // only happens if pass bad data to findStraightPath or navmesh is broken
         // single point paths can be generated here
-        /// @todo check the exact cases
+        // @todo check the exact cases
         SF_LOG_DEBUG("maps", "++ PathGenerator::BuildPointPath FAILED! path sized %d returned\n", pointCount);
         BuildShortcut();
         _type = PATHFIND_NOPATH;
@@ -574,9 +574,9 @@ bool PathGenerator::HaveTile(const G3D::Vector3& p) const
 
     _navMesh->calcTileLoc(point, &tx, &ty);
 
-    /// Workaround
-    /// For some reason, often the tx and ty variables wont get a valid value
-    /// Use this check to prevent getting negative tile coords and crashing on getTileAt
+    // Workaround
+    // For some reason, often the tx and ty variables wont get a valid value
+    // Use this check to prevent getting negative tile coords and crashing on getTileAt
     if (tx < 0 || ty < 0)
         return false;
 

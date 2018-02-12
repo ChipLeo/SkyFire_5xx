@@ -65,8 +65,8 @@ ACE_MMAP_Memory_Pool::sync (int flags)
   return this->mmap_.sync (len, flags);
 }
 
-/// Sync @a len bytes of the memory region to the backing store starting
-/// at <addr_>.
+// Sync @a len bytes of the memory region to the backing store starting
+// at <addr_>.
 int
 ACE_MMAP_Memory_Pool::sync (void *addr, size_t len, int flags)
 {

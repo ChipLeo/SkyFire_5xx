@@ -2032,7 +2032,7 @@ public:
                 // {
                 //    if (Unit* Illidan = Unit::GetUnit(*me, IllidanGUID)
                 //    {
-                //        /// @todo Find proper spells and properly apply 'caged' Illidan effect
+                //        // @todo Find proper spells and properly apply 'caged' Illidan effect
                 //    }
                 // }
         }

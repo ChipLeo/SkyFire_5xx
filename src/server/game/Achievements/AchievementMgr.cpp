@@ -1882,7 +1882,7 @@ void AchievementMgr<Player>::CompletedAchievement(AchievementEntry const* achiev
     ca.changed = true;
 
     // don't insert for ACHIEVEMENT_FLAG_REALM_FIRST_KILL since otherwise only the first group member would reach that achievement
-    /// @todo where do set this instead?
+    // @todo where do set this instead?
     if (!(achievement->flags & ACHIEVEMENT_FLAG_REALM_FIRST_KILL))
         sAchievementMgr->SetRealmCompleted(achievement);
 

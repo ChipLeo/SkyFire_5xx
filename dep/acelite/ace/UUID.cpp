@@ -44,8 +44,8 @@ namespace ACE_Utils
         // Copy the contents of the UUID.
         ACE_OS::memcpy (&this->uuid_, &rhs.uuid_, BINARY_SIZE);
 
-        /// @todo We should create an UUID_Ex class for UUIDs that
-        ///       contain the thread id and process id.
+        // @todo We should create an UUID_Ex class for UUIDs that
+        //       contain the thread id and process id.
         this->thr_id_ = rhs.thr_id_;
         this->pid_ = rhs.pid_;
       }
@@ -137,7 +137,7 @@ namespace ACE_Utils
         return;
       }
 
-    /// Special case for the nil UUID.
+    // Special case for the nil UUID.
     if (uuid_string == *NIL_UUID.to_string ())
       {
         *this = NIL_UUID;
@@ -254,7 +254,7 @@ namespace ACE_Utils
         return;
       }
 
-    /// Support versions 1, 3, and 4 only
+    // Support versions 1, 3, and 4 only
     ACE_UINT16 V1 = this->uuid_.time_hi_and_version_;
 
     if ((V1 & 0xF000) != 0x1000 &&
@@ -397,8 +397,8 @@ namespace ACE_Utils
     return uuid;
   }
 
-  /// Obtain a new timestamp. If UUID's are being generated too quickly
-  /// the clock sequence will be incremented
+  // Obtain a new timestamp. If UUID's are being generated too quickly
+  // the clock sequence will be incremented
   void
   UUID_Generator::get_timestamp (UUID_Time& timestamp)
   {
@@ -462,7 +462,7 @@ namespace ACE_Utils
     const UUID_Time timeOffset =
       ACE_UINT64_LITERAL (0x1B21DD213814000);
 
-    /// Get the time of day, convert to 100ns ticks then add the offset.
+    // Get the time of day, convert to 100ns ticks then add the offset.
     ACE_Time_Value now = ACE_OS::gettimeofday ();
     ACE_UINT64 time;
     now.to_usec (time);

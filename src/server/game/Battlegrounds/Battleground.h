@@ -391,7 +391,7 @@ class Battleground
         void AddPlayerToResurrectQueue(uint64 npc_guid, uint64 player_guid);
         void RemovePlayerFromResurrectQueue(uint64 player_guid);
 
-        /// Relocate all players in ReviveQueue to the closest graveyard
+        // Relocate all players in ReviveQueue to the closest graveyard
         void RelocateDeadPlayers(uint64 queueIndex);
 
         void StartBattleground();
@@ -513,7 +513,7 @@ class Battleground
         void HandleTriggerBuff(uint64 go_guid);
         void SetHoliday(bool is_holiday);
 
-        /// @todo make this protected:
+        // @todo make this protected:
         typedef std::vector<uint64> BGObjects;
         typedef std::vector<uint64> BGCreatures;
         BGObjects BgObjects;

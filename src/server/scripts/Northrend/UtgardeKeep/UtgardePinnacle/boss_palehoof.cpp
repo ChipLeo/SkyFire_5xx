@@ -115,11 +115,11 @@ public:
 
         void Reset() OVERRIDE
         {
-            /// There is a good reason to store them like this, we are going to shuffle the order.
+            // There is a good reason to store them like this, we are going to shuffle the order.
             for (uint32 i = PHASE_FRENZIED_WORGEN; i < PHASE_GORTOK_PALEHOOF; ++i)
                 Sequence[i] = Phase(i);
 
-            /// This ensures a random order and only executes each phase once.
+            // This ensures a random order and only executes each phase once.
             std::random_shuffle(Sequence, Sequence + PHASE_GORTOK_PALEHOOF);
 
             uiArcingSmashTimer = 15000;

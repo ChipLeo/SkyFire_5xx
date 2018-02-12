@@ -32,7 +32,7 @@
 #include "Opcodes.h"
 #include "WorldSession.h"
 
-/// Create the Weather object
+// Create the Weather object
 Weather::Weather(uint32 zone, WeatherData const* weatherChances)
     : m_zone(zone), m_weatherChances(weatherChances)
 {
@@ -43,7 +43,7 @@ Weather::Weather(uint32 zone, WeatherData const* weatherChances)
     SF_LOG_INFO("misc", "WORLD: Starting weather system for zone %u (change every %u minutes).", m_zone, (uint32)(m_timer.GetInterval() / (MINUTE*IN_MILLISECONDS)));
 }
 
-/// Launch a weather update
+// Launch a weather update
 bool Weather::Update(uint32 diff)
 {
     if (m_timer.GetCurrent() >= 0)
@@ -68,7 +68,7 @@ bool Weather::Update(uint32 diff)
     return true;
 }
 
-/// Calculate the new weather
+// Calculate the new weather
 bool Weather::ReGenerate()
 {
     if (!m_weatherChances)
@@ -78,7 +78,7 @@ bool Weather::ReGenerate()
         return false;
     }
 
-    /// Weather statistics:
+    // Weather statistics:
     ///- 30% - no change
     ///- 30% - weather gets better (if not fine) or change weather type
     ///- 30% - weather worsens (if not fine)
@@ -123,7 +123,7 @@ bool Weather::ReGenerate()
 
     if (m_type != WEATHER_TYPE_FINE)
     {
-        /// Radical change:
+        // Radical change:
         ///- if light -> heavy
         ///- if medium -> change weather type
         ///- if heavy -> 50% light, 50% change weather type
@@ -165,11 +165,11 @@ bool Weather::ReGenerate()
     else
         m_type = WEATHER_TYPE_FINE;
 
-    /// New weather statistics (if not fine):
+    // New weather statistics (if not fine):
     ///- 85% light
     ///- 7% medium
     ///- 7% heavy
-    /// If fine 100% sun (no fog)
+    // If fine 100% sun (no fog)
 
     if (m_type == WEATHER_TYPE_FINE)
     {
@@ -201,7 +201,7 @@ void Weather::SendWeatherUpdateToPlayer(Player* player)
     player->SendDirectMessage(&data);
 }
 
-/// Send the new weather to all players in the zone
+// Send the new weather to all players in the zone
 bool Weather::UpdateWeather()
 {
     Player* player = sWorld->FindPlayerInZone(m_zone);
@@ -271,7 +271,7 @@ bool Weather::UpdateWeather()
     return true;
 }
 
-/// Set the weather
+// Set the weather
 void Weather::SetWeather(WeatherType type, float grade)
 {
     if (m_type == type && m_grade == grade)
@@ -282,7 +282,7 @@ void Weather::SetWeather(WeatherType type, float grade)
     UpdateWeather();
 }
 
-/// Get the sound number associated with the current weather
+// Get the sound number associated with the current weather
 WeatherState Weather::GetWeatherState() const
 {
     if (m_grade<0.27f)

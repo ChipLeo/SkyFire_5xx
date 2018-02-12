@@ -3938,9 +3938,9 @@ enum EventId
     EVENT_CHARGE            = 1003,
     EVENT_JUMP              = 1004,
 
-    /// Special charge event which is used for charge spells that have explicit targets
-    /// and had a path already generated - using it in PointMovementGenerator will not
-    /// create a new spline and launch it
+    // Special charge event which is used for charge spells that have explicit targets
+    // and had a path already generated - using it in PointMovementGenerator will not
+    // create a new spline and launch it
     EVENT_CHARGE_PREPATH    = 1005
 };
 
@@ -4066,7 +4066,7 @@ enum ResponseCodes
     CHAR_NAME_DECLENSION_DOESNT_MATCH_BASE_NAME            = 108,
 };
 
-/// Ban function modes
+// Ban function modes
 enum BanMode
 {
     BAN_ACCOUNT,
@@ -4074,7 +4074,7 @@ enum BanMode
     BAN_IP
 };
 
-/// Ban function return codes
+// Ban function return codes
 enum BanReturn
 {
     BAN_SUCCESS,

@@ -258,7 +258,7 @@ void BattlegroundEY::UpdatePointStatuses()
                         this->EventTeamLostPoint(player, point);
                 }
 
-                /// @workaround The original AreaTrigger is covered by a bigger one and not triggered on client side.
+                // @workaround The original AreaTrigger is covered by a bigger one and not triggered on client side.
                 if (point == FEL_REAVER && m_PointOwnedByTeam[point] == player->GetTeam())
                     if (m_FlagState && GetFlagPickerGUID() == player->GetGUID())
                         if (player->GetDistance(2044.0f, 1729.729f, 1190.03f) < 3.0f)
@@ -271,7 +271,7 @@ void BattlegroundEY::UpdatePointStatuses()
 void BattlegroundEY::UpdateTeamScore(uint32 Team)
 {
     uint32 score = GetTeamScore(Team);
-    /// @todo there should be some sound played when one team is near victory!! - and define variables
+    // @todo there should be some sound played when one team is near victory!! - and define variables
     /*if (!m_IsInformedNearVictory && score >= BG_EY_WARNING_NEAR_VICTORY_SCORE)
     {
         if (Team == ALLIANCE)

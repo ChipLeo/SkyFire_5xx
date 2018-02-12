@@ -411,7 +411,7 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recvPacket)
             {
                 // NOTE: this is actually called many times while falling
                 // even after the player has been teleported away
-                /// @todo discard movement packets after the player is rooted
+                // @todo discard movement packets after the player is rooted
                 if (plrMover->IsAlive())
                 {
                     plrMover->EnvironmentalDamage(DAMAGE_FALL_TO_VOID, GetPlayer()->GetMaxHealth());

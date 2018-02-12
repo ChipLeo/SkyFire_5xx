@@ -54,7 +54,7 @@
 #define BG_AV_EVENT_START_BATTLE           9166 // Achievement: The Alterac Blitz
 
 enum BG_AV_Sounds
-{ /// @todo: get out if there comes a sound when neutral team captures mine
+{ // @todo: get out if there comes a sound when neutral team captures mine
 
 /*
 8212:
@@ -87,7 +87,7 @@ horde:
     horde wins
     */
 
-    AV_SOUND_NEAR_VICTORY                   = 8456, /// @todo: Not confirmed yet
+    AV_SOUND_NEAR_VICTORY                   = 8456, // @todo: Not confirmed yet
 
     AV_SOUND_ALLIANCE_ASSAULTS              = 8212, //tower, grave + enemy boss if someone tries to attack him
     AV_SOUND_HORDE_ASSAULTS                 = 8174,
@@ -105,7 +105,7 @@ enum BG_AV_OTHER_VALUES
     AV_NORTH_MINE              = 0,
     AV_SOUTH_MINE              = 1,
     AV_MINE_TICK_TIMER         = 45000,
-    AV_MINE_RECLAIM_TIMER      = 1200000, /// @todo: get the right value.. this is currently 20 minutes
+    AV_MINE_RECLAIM_TIMER      = 1200000, // @todo: get the right value.. this is currently 20 minutes
     AV_NEUTRAL_TEAM            = 0 //this is the neutral owner of snowfall
 };
 enum BG_AV_ObjectIds
@@ -681,7 +681,7 @@ const float BG_AV_CreaturePos[AV_CPLACE_MAX][4] =
     {575.411f, -83.597f, 52.3626f, 6.26573f},
     {571.352f, -75.6582f, 52.479f, 0.523599f},
     //dun north - OK
-    {668.60f, -122.53f, 64.12f, 2.34f}, /// @todo: To be confirm - Not completely okay
+    {668.60f, -122.53f, 64.12f, 2.34f}, // @todo: To be confirm - Not completely okay
     {662.253f, -129.105f, 64.1794f, 2.77507f},
     {661.209f, -138.877f, 64.2251f, 3.38594f},
     {665.481f, -146.857f, 64.1271f, 3.75246f},
@@ -721,7 +721,7 @@ const float BG_AV_CreaturePos[AV_CPLACE_MAX][4] =
     {723.058f, -14.1548f, 50.7046f, 3.40339f}, // north
     {715.691f, -4.72233f, 50.2187f, 3.47321f}, // icewing
     {720.046f, -19.9413f, 50.2187f, 3.36849f}, // stone
-/// horde @todo: Confirm positions
+// horde @todo: Confirm positions
     {-1363.99f, -221.99f, 98.4053f, 4.93012f},
     {-1370.96f, -223.532f, 98.4266f, 4.93012f},
     {-1378.37f, -228.614f, 99.3546f, 5.38565f},
@@ -1040,14 +1040,14 @@ enum BG_AV_CreatureIds
 };
 
 //entry, team, minlevel, maxlevel
-/// @todo: this array should be removed, the only needed things are the entrys (for spawning(?) and handlekillunit)
+// @todo: this array should be removed, the only needed things are the entrys (for spawning(?) and handlekillunit)
 const uint32 BG_AV_CreatureInfo[AV_NPC_INFO_MAX][4] =
 {
     { 12050, 1216, 58, 58 }, //Stormpike Defender
     { 13326, 1216, 59, 59 }, //Seasoned Defender
     { 13331, 1216, 60, 60 }, //Veteran Defender
     { 13422, 1216, 61, 61 }, //Champion Defender
-    { 13358, 1216, 59, 60 }, //Stormpike Bowman /// @todo: Confirm if this is correct. Author assumpted 60, 61 & 69, 70, but wouldn't work here
+    { 13358, 1216, 59, 60 }, //Stormpike Bowman // @todo: Confirm if this is correct. Author assumpted 60, 61 & 69, 70, but wouldn't work here
     { 11949, 469, 0, 0}, //not spawned with this data, but used for handlekillunit
     { 11948, 469, 0, 0}, //not spawned with this data, but used for handlekillunit
     { 12053, 1214, 58, 58 }, //Frostwolf Guardian
@@ -1072,7 +1072,7 @@ const uint32 BG_AV_CreatureInfo[AV_NPC_INFO_MAX][4] =
     { 11602, 59, 54, 55 }, //Irondeep Skullthumper
     { 11657, 59, 58, 58 }, //Morloch
 
-    {13396, 469, 52, 53}, // irondeep alliance /// @todo: Correct and give correct ids
+    {13396, 469, 52, 53}, // irondeep alliance // @todo: Correct and give correct ids
     {13080, 469, 53, 54},
     {13098, 469, 54, 55},
     {13078, 469, 58, 58},
@@ -1247,7 +1247,7 @@ const uint32 BG_AV_StaticCreatureInfo[51][4] =
     { 11675, 514, 53, 53 }, //Snowblind Windcaller
     { 11678, 14, 52, 53 }, //Snowblind Ambusher
     { 11839, 39, 56, 56 }, //Wildpaw Brute
-    { 11947, 1214, 61, 61 }, // Captain Galvangar /// @todo: Duplicate ? Check and confirm
+    { 11947, 1214, 61, 61 }, // Captain Galvangar // @todo: Duplicate ? Check and confirm
     { 11948, 1216, 63, 63 }, //Vanndar Stormpike
     { 11949, 1216, 61, 61 }, //Captain Balinda Stonehearth
     { 11997, 1334, 60, 60 }, //Stormpike Herald
@@ -1278,7 +1278,7 @@ const uint32 BG_AV_StaticCreatureInfo[51][4] =
     { 14282, 1214, 53, 54 }, //Frostwolf Bloodhound
     { 14283, 1216, 53, 54 }, //Stormpike Owl
     { 14284, 1216, 61, 61 }, //Stormpike Battleguard
-    { 11946, 1214, 63, 63 }, //Drek'Thar /// @todo: Correct the level (Level 80 for boss ?)
+    { 11946, 1214, 63, 63 }, //Drek'Thar // @todo: Correct the level (Level 80 for boss ?)
     { 11948, 1216, 63, 63 }, //Vanndar Stormpike
     { 11947, 1214, 61, 61 }, //Captain Galvangar
     { 11949, 1216, 61, 61 } //Captain Balinda Stonehearth
@@ -1311,7 +1311,7 @@ const uint32 BG_AV_GraveyardIds[9]=
 };
 
 enum BG_AV_BUFF
-{ /// @todo: Add all other buffs here
+{ // @todo: Add all other buffs here
     AV_BUFF_ARMOR = 21163,
     AV_BUFF_A_CAPTAIN = 23693, //the buff which the alliance captain does
     AV_BUFF_H_CAPTAIN = 22751 //the buff which the horde captain does
@@ -1608,7 +1608,7 @@ class BattlegroundAV : public Battleground
 
         /*general */
         Creature* AddAVCreature(uint16 cinfoid, uint16 type);
-        uint16 GetBonusHonor(uint8 kills); /// @todo: Remove this when the core handles this properly
+        uint16 GetBonusHonor(uint8 kills); // @todo: Remove this when the core handles this properly
 
         /*variables */
         int32 m_Team_Scores[2];
@@ -1623,7 +1623,7 @@ class BattlegroundAV : public Battleground
         uint32 m_CaptainBuffTimer[2];
         bool m_CaptainAlive[2];
 
-        uint8 m_MaxLevel; /// @todo: Remove this once battleground->getmaxlevel() returns something usefull/is reworked (?)
+        uint8 m_MaxLevel; // @todo: Remove this once battleground->getmaxlevel() returns something usefull/is reworked (?)
         bool m_IsInformedNearVictory[2];
 };
 

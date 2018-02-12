@@ -78,7 +78,7 @@ public:
             if (who->GetEntry() == NPC_ZOMBIE && me->IsWithinDistInMap(who, 7))
             {
                 SetGazeOn(who);
-                /// @todo use a script text
+                // @todo use a script text
                 me->MonsterTextEmote(EMOTE_NEARBY, 0, true);
             }
             else
@@ -118,12 +118,12 @@ public:
                         events.ScheduleEvent(EVENT_WOUND, 10000);
                         break;
                     case EVENT_ENRAGE:
-                        /// @todo Add missing text
+                        // @todo Add missing text
                         DoCast(me, SPELL_ENRAGE);
                         events.ScheduleEvent(EVENT_ENRAGE, 15000);
                         break;
                     case EVENT_DECIMATE:
-                        /// @todo Add missing text
+                        // @todo Add missing text
                         DoCastAOE(SPELL_DECIMATE);
                         events.ScheduleEvent(EVENT_DECIMATE, 105000);
                         break;

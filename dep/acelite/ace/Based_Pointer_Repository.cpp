@@ -26,11 +26,11 @@ public:
   typedef ACE_Map_Iterator <void *, size_t, ACE_Null_Mutex> MAP_ITERATOR;
   typedef ACE_Map_Entry <void *, size_t> MAP_ENTRY;
 
-  /// Keeps track of the mapping between addresses and their associated
-  /// values.
+  // Keeps track of the mapping between addresses and their associated
+  // values.
   MAP_MANAGER addr_map_;
 
-  /// Synchronize concurrent access to the map.
+  // Synchronize concurrent access to the map.
   ACE_SYNCH_MUTEX lock_;
 };
 

@@ -30,7 +30,7 @@ bool SQLQueryHolder::SetQuery(size_t index, const char *sql)
         return false;
     }
 
-    /// not executed yet, just stored (it's not called a holder for nothing)
+    // not executed yet, just stored (it's not called a holder for nothing)
     SQLElementData element;
     element.type = SQL_ELEMENT_RAW;
     element.element.query = strdup(sql);
@@ -73,7 +73,7 @@ bool SQLQueryHolder::SetPreparedQuery(size_t index, PreparedStatement* stmt)
         return false;
     }
 
-    /// not executed yet, just stored (it's not called a holder for nothing)
+    // not executed yet, just stored (it's not called a holder for nothing)
     SQLElementData element;
     element.type = SQL_ELEMENT_PREPARED;
     element.element.stmt = stmt;
@@ -124,7 +124,7 @@ void SQLQueryHolder::SetResult(size_t index, ResultSet* result)
         result = NULL;
     }
 
-    /// store the result in the holder
+    // store the result in the holder
     if (index < m_queries.size())
         m_queries[index].second.qresult = result;
 }
@@ -137,7 +137,7 @@ void SQLQueryHolder::SetPreparedResult(size_t index, PreparedResultSet* result)
         result = NULL;
     }
 
-    /// store the result in the holder
+    // store the result in the holder
     if (index < m_queries.size())
         m_queries[index].second.presult = result;
 }
@@ -146,8 +146,8 @@ SQLQueryHolder::~SQLQueryHolder()
 {
     for (size_t i = 0; i < m_queries.size(); i++)
     {
-        /// if the result was never used, free the resources
-        /// results used already (getresult called) are expected to be deleted
+        // if the result was never used, free the resources
+        // results used already (getresult called) are expected to be deleted
         if (SQLElementData* data = &m_queries[i].first)
         {
             switch (data->type)
@@ -165,7 +165,7 @@ SQLQueryHolder::~SQLQueryHolder()
 
 void SQLQueryHolder::SetSize(size_t size)
 {
-    /// to optimize push_back, reserve the number of queries about to be executed
+    // to optimize push_back, reserve the number of queries about to be executed
     m_queries.resize(size);
 }
 
@@ -177,12 +177,12 @@ bool SQLQueryHolderTask::Execute()
     if (!m_holder)
         return false;
 
-    /// we can do this, we are friends
+    // we can do this, we are friends
     std::vector<SQLQueryHolder::SQLResultPair> &queries = m_holder->m_queries;
 
     for (size_t i = 0; i < queries.size(); i++)
     {
-        /// execute all queries in the holder and pass the results
+        // execute all queries in the holder and pass the results
         if (SQLElementData* data = &queries[i].first)
         {
             switch (data->type)

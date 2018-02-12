@@ -246,7 +246,7 @@ class spell_intense_cold : public SpellScriptLoader
                 if (aurEff->GetBase()->GetStackAmount() < 2)
                     return;
                 Unit* caster = GetCaster();
-                /// @todo the caster should be boss but not the player
+                // @todo the caster should be boss but not the player
                 if (!caster || !caster->GetAI())
                     return;
                 caster->GetAI()->SetGUID(GetTarget()->GetGUID(), DATA_INTENSE_COLD);

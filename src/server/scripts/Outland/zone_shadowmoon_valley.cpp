@@ -1141,7 +1141,7 @@ public:
             if (!UpdateVictim())
                 return;
 
-            /// @todo add more abilities
+            // @todo add more abilities
             if (!HealthAbovePct(30))
             {
                 if (m_uiHealingTimer <= uiDiff)

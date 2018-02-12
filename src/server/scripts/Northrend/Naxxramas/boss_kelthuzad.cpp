@@ -476,7 +476,7 @@ public:
                 {
                     if (uiGuardiansOfIcecrownTimer <= diff)
                     {
-                        /// @todo Add missing text
+                        // @todo Add missing text
                         if (Creature* pGuardian = DoSummon(NPC_ICECROWN, Pos[RAND(2, 5, 8, 11)]))
                             pGuardian->SetFloatValue(UNIT_FIELD_COMBAT_REACH, 2);
                         ++nGuardiansOfIcecrownCount;

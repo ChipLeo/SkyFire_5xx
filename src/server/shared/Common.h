@@ -21,7 +21,7 @@
 #define SKYFIRESERVER_COMMON_H
 
 // config.h needs to be included 1st
-/// @todo this thingy looks like hack, but its not, need to
+// @todo this thingy looks like hack, but its not, need to
 // make separate header however, because It makes mess here.
 #ifdef HAVE_CONFIG_H
 // Remove Some things that we will define

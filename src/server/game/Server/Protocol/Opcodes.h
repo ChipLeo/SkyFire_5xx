@@ -17,9 +17,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/// \addtogroup u2w
-/// @{
-/// \file
+// \addtogroup u2w
+// @{
+// \file
 
 #ifndef SF_OPCODES_H
 #define SF_OPCODES_H
@@ -30,7 +30,7 @@
 #define NUM_OPCODE_HANDLERS    0x7FFF
 #define COMPRESSED_OPCODE_MASK 0x8000
 
-/// List of Opcodes
+// List of Opcodes
 enum Opcodes
 {
     NULL_OPCODE,
@@ -1607,7 +1607,7 @@ enum Opcodes
     UNKNOWN_OPCODE
 };
 
-/// Player state
+// Player state
 enum SessionStatus
 {
     STATUS_AUTHED = 0,                                      // Player authenticated (_player == NULL, m_playerRecentlyLogout = false or will be reset before handler call, m_GUID have garbage)
@@ -1689,7 +1689,7 @@ extern OpcodeTable clientOpcodeTable;
 void InitializeClientTable();
 void InitializeServerTable();
 
-/// Lookup opcode name for human understandable logging
+// Lookup opcode name for human understandable logging
 inline std::string GetOpcodeNameForLogging(Opcodes id, bool isServerOpcode, uint16 opcodeNumber = 0)
 {
     OpcodeTable& table = isServerOpcode ? serverOpcodeTable : clientOpcodeTable;
@@ -1718,4 +1718,4 @@ inline std::string GetOpcodeNameForLogging(Opcodes id, bool isServerOpcode, uint
 }
 
 #endif
-/// @}
+// @}

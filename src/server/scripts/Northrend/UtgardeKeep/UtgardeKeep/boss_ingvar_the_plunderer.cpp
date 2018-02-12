@@ -157,7 +157,7 @@ class boss_ingvar_the_plunderer : public CreatureScript
             {
                 _isUndead = true;
                 me->RemoveAura(SPELL_INGVAR_FEIGN_DEATH);
-                DoCast(me, SPELL_INGVAR_TRANSFORM, true); /// @todo: should be death persistent
+                DoCast(me, SPELL_INGVAR_TRANSFORM, true); // @todo: should be death persistent
                 events.ScheduleEvent(EVENT_JUST_TRANSFORMED, 2 * IN_MILLISECONDS, 0, PHASE_EVENT);
 
                 Talk(SAY_AGGRO_2);

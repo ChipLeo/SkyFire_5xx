@@ -238,8 +238,8 @@ Creature* Transport::CreateNPCPassenger(uint32 guid, CreatureData const* data)
     creature->SetHomePosition(creature->GetPositionX(), creature->GetPositionY(), creature->GetPositionZ(), creature->GetOrientation());
     creature->SetTransportHomePosition(creature->m_movementInfo.transport.pos);
 
-    /// @HACK - transport models are not added to map's dynamic LoS calculations
-    ///         because the current GameObjectModel cannot be moved without recreating
+    // @HACK - transport models are not added to map's dynamic LoS calculations
+    //         because the current GameObjectModel cannot be moved without recreating
     creature->AddUnitState(UNIT_STATE_IGNORE_PATHFINDING);
 
     if (!creature->IsPositionValid())

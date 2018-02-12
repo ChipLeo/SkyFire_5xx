@@ -897,7 +897,7 @@ public:
                         bird->Kill(bird);
                         crunchy->GetMotionMaster()->MovePoint(0, bird->GetPositionX(), bird->GetPositionY(),
                             bird->GetMap()->GetWaterOrGroundLevel(bird->GetPositionX(), bird->GetPositionY(), bird->GetPositionZ()));
-                        /// @todo Make crunchy perform emote eat when he reaches the bird
+                        // @todo Make crunchy perform emote eat when he reaches the bird
 
                         break;
                     }

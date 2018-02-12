@@ -918,7 +918,7 @@ void WorldSession::HandleMailCreateTextItem(WorldPacket& recvData)
     }
 }
 
-/// @todo Fix me! ... this void has probably bad condition, but good data are sent
+// @todo Fix me! ... this void has probably bad condition, but good data are sent
 void WorldSession::HandleQueryNextMailTime(WorldPacket& /*recvData*/)
 {
     WorldPacket data(SMSG_QUERY_NEXT_MAIL_TIME, 7);

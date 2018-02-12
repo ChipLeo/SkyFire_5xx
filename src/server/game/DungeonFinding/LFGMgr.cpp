@@ -101,7 +101,7 @@ void LFGMgr::_SaveToDB(uint64 guid, uint32 db_guid)
     CharacterDatabase.Execute(stmt);
 }
 
-/// Load rewards for completing dungeons
+// Load rewards for completing dungeons
 void LFGMgr::LoadRewards()
 {
     uint32 oldMSTime = getMSTime();

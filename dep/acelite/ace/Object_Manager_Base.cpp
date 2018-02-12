@@ -460,14 +460,14 @@ ACE_OS_Object_Manager::shutting_down (void)
 class ACE_OS_Object_Manager_Manager
 {
 public:
-  /// Constructor.
+  // Constructor.
   ACE_OS_Object_Manager_Manager (void);
 
-  /// Destructor.
+  // Destructor.
   ~ACE_OS_Object_Manager_Manager (void);
 
 private:
-  /// Save the main thread ID, so that destruction can be suppressed.
+  // Save the main thread ID, so that destruction can be suppressed.
   ACE_thread_t saved_main_thread_id_;
 };
 

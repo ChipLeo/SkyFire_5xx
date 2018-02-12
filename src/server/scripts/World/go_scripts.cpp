@@ -186,7 +186,7 @@ class go_tablet_of_the_seven : public GameObjectScript
 public:
     go_tablet_of_the_seven() : GameObjectScript("go_tablet_of_the_seven") { }
 
-    /// @todo use gossip option ("Transcript the Tablet") instead, if Skyfire adds support.
+    // @todo use gossip option ("Transcript the Tablet") instead, if Skyfire adds support.
     bool OnGossipHello(Player* player, GameObject* go) OVERRIDE
     {
         if (go->GetGoType() != GAMEOBJECT_TYPE_QUESTGIVER)
@@ -881,10 +881,10 @@ class go_soulwell : public GameObjectScript
             {
             }
 
-            /// Due to the fact that this GameObject triggers CMSG_GAMEOBJECT_USE
-            /// _and_ CMSG_GAMEOBJECT_REPORT_USE, this GossipHello hook is called
-            /// twice. The script's handling is fine as it won't remove two charges
-            /// on the well. We have to find how to segregate REPORT_USE and USE.
+            // Due to the fact that this GameObject triggers CMSG_GAMEOBJECT_USE
+            // _and_ CMSG_GAMEOBJECT_REPORT_USE, this GossipHello hook is called
+            // twice. The script's handling is fine as it won't remove two charges
+            // on the well. We have to find how to segregate REPORT_USE and USE.
             bool GossipHello(Player* player) OVERRIDE
             {
                 Unit* owner = go->GetOwner();
@@ -943,7 +943,7 @@ public:
         Quest const* qInfo = sObjectMgr->GetQuestTemplate(QUEST_PRISONERS_OF_WYRMSKULL);
         if (qInfo)
         {
-            /// @todo prisoner should help player for a short period of time
+            // @todo prisoner should help player for a short period of time
             player->KilledMonsterCredit(qInfo->GetQuestObjectiveXIndex(0)->ObjectId);
             pPrisoner->DisappearAndDie();
         }

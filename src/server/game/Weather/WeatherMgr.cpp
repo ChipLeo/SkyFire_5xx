@@ -49,14 +49,14 @@ namespace
     }
 }
 
-/// Find a Weather object by the given zoneid
+// Find a Weather object by the given zoneid
 Weather* FindWeather(uint32 id)
 {
     WeatherMap::const_iterator itr = m_weathers.find(id);
     return (itr != m_weathers.end()) ? itr->second.get() : 0;
 }
 
-/// Remove a Weather object for the given zoneid
+// Remove a Weather object for the given zoneid
 void RemoveWeather(uint32 id)
 {
     // not called at the moment. Kept for completeness
@@ -66,7 +66,7 @@ void RemoveWeather(uint32 id)
         m_weathers.erase(itr);
 }
 
-/// Add a Weather object to the list
+// Add a Weather object to the list
 Weather* AddWeather(uint32 zone_id)
 {
     WeatherData const* weatherChances = GetWeatherData(zone_id);

@@ -96,7 +96,7 @@ ACE_LD_Symbol_Registry::find_symbol (const ACE_TCHAR* symname)
   return (result == 0 ? symaddr : 0);
 }
 
-/// Declare a process wide singleton
+// Declare a process wide singleton
 ACE_SINGLETON_DECLARE (ACE_Singleton,
                        ACE_LD_Symbol_Registry,
                        ACE_Thread_Mutex)

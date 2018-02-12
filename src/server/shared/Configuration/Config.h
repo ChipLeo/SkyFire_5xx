@@ -38,7 +38,7 @@ class ConfigMgr
     ~ConfigMgr() { }
 
 public:
-    /// Method used only for loading main configuration files (authserver.conf and worldserver.conf)
+    // Method used only for loading main configuration files (authserver.conf and worldserver.conf)
     bool LoadInitial(char const* file);
 
     /**

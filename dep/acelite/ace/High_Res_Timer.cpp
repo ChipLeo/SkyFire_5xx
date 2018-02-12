@@ -41,9 +41,9 @@ ACE_END_VERSIONED_NAMESPACE_DECL
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
-/// Initialize the global_scale_factor_ to 1.  The first
-/// ACE_High_Res_Timer instance construction will override this
-/// value.
+// Initialize the global_scale_factor_ to 1.  The first
+// ACE_High_Res_Timer instance construction will override this
+// value.
 /* static */
 ACE_High_Res_Timer::global_scale_factor_type ACE_High_Res_Timer::global_scale_factor_ = 1u;
 
@@ -67,8 +67,8 @@ ACE_END_VERSIONED_NAMESPACE_DECL
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
-/// This is used to tell if the global_scale_factor_ has been
-/// set, and if high resolution timers are supported.
+// This is used to tell if the global_scale_factor_ has been
+// set, and if high resolution timers are supported.
 /* static */
 int ACE_High_Res_Timer::global_scale_factor_status_ = 0;
 

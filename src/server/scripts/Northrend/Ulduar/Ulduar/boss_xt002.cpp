@@ -677,7 +677,7 @@ class npc_boombot : public CreatureScript
                 me->SetFloatValue(UNIT_FIELD_MIN_DAMAGE, 15000.0f);
                 me->SetFloatValue(UNIT_FIELD_MAX_DAMAGE, 18000.0f);
 
-                /// @todo proper waypoints?
+                // @todo proper waypoints?
                 if (Creature* pXT002 = me->GetCreature(*me, _instance->GetData64(BOSS_XT002)))
                     me->GetMotionMaster()->MoveFollow(pXT002, 0.0f, 0.0f);
             }

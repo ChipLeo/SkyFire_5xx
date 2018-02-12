@@ -644,7 +644,7 @@ void InstanceSaveManager::_ResetOrWarnAll(uint32 mapid, Difficulty difficulty, b
             ((InstanceMap*)map2)->Reset(INSTANCE_RESET_GLOBAL);
     }
 
-    /// @todo delete creature/gameobject respawn times even if the maps are not loaded
+    // @todo delete creature/gameobject respawn times even if the maps are not loaded
 }
 
 uint32 InstanceSaveManager::GetNumBoundPlayersTotal()

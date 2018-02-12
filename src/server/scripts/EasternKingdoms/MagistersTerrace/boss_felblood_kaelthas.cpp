@@ -136,7 +136,7 @@ public:
 
         void Reset() OVERRIDE
         {
-            /// @todo Timers
+            // @todo Timers
             FireballTimer = 0;
             PhoenixTimer = 10000;
             FlameStrikeTimer = 25000;

@@ -36,15 +36,15 @@ namespace ACE
     {
       if (this->default_reactor_)
         {
-          /// Destroys the timers associated with our event handler
-          /// before its destructor is called.
+          // Destroys the timers associated with our event handler
+          // before its destructor is called.
           ACE_Reactor::instance ()->close_singleton ();
         }
 
-      /// We access the registry through ACE_Singleton, which
-      /// doesn't call the destructor, so we call this method to
-      /// do a remove_ref() on all monitor points left in the registry.
-      /// which needs to be done before the registry goes away.
+      // We access the registry through ACE_Singleton, which
+      // doesn't call the destructor, so we call this method to
+      // do a remove_ref() on all monitor points left in the registry.
+      // which needs to be done before the registry goes away.
       Monitor_Point_Registry::instance ()->cleanup ();
     }
 
@@ -52,7 +52,7 @@ namespace ACE
     Monitor_Admin::monitor_point (Monitor_Base* monitor_point,
                                   const ACE_Time_Value& time)
     {
-      /// This call checks for a null monitor_point.
+      // This call checks for a null monitor_point.
       bool good_reg_add =
         Monitor_Point_Registry::instance ()->add (monitor_point);
 

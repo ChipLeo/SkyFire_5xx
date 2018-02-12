@@ -25,7 +25,7 @@
 namespace Skyfire
 {
 
-/// Handle termination signals
+// Handle termination signals
 class SignalHandler : public ACE_Event_Handler
 {
     public:

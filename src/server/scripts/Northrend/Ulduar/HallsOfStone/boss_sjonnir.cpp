@@ -186,7 +186,7 @@ class boss_sjonnir : public CreatureScript
                             break;
                         }
                         case EVENT_FRENZY:
-                            /// @todo: add emote
+                            // @todo: add emote
                             DoCast(me, SPELL_FRENZY, true);
                             break;
                         default:

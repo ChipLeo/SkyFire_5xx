@@ -1325,7 +1325,7 @@ public:
             uint32 moveFlags = (uint32)atoi(mask1);
             target->SetUnitMovementFlags(moveFlags);
 
-            /// @fixme: port master's HandleDebugMoveflagsCommand; flags need different handling
+            // @fixme: port master's HandleDebugMoveflagsCommand; flags need different handling
 
             if (mask2)
             {

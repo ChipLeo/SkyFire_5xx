@@ -98,7 +98,7 @@ int32 World::m_visibility_notify_periodOnContinents = DEFAULT_VISIBILITY_NOTIFY_
 int32 World::m_visibility_notify_periodInInstances  = DEFAULT_VISIBILITY_NOTIFY_PERIOD;
 int32 World::m_visibility_notify_periodInBGArenas   = DEFAULT_VISIBILITY_NOTIFY_PERIOD;
 
-/// World constructor
+// World constructor
 World::World()
 {
     m_playerLimit = 0;
@@ -127,7 +127,7 @@ World::World()
     m_CleaningFlags = 0;
 }
 
-/// World destructor
+// World destructor
 World::~World()
 {
     ///- Empty the kicked session set
@@ -145,10 +145,10 @@ World::~World()
     VMAP::VMapFactory::clear();
     MMAP::MMapFactory::clear();
 
-    /// @todo free addSessQueue
+    // @todo free addSessQueue
 }
 
-/// Find a player in a specified zone
+// Find a player in a specified zone
 Player* World::FindPlayerInZone(uint32 zone)
 {
     ///- circle through active sessions and return the first player found in the zone
@@ -196,7 +196,7 @@ const char* World::GetMotd() const
     return m_motd.c_str();
 }
 
-/// Find a session by its id
+// Find a session by its id
 WorldSession* World::FindSession(uint32 id) const
 {
     SessionMap::const_iterator itr = m_sessions.find(id);
@@ -207,7 +207,7 @@ WorldSession* World::FindSession(uint32 id) const
         return NULL;
 }
 
-/// Remove a given session
+// Remove a given session
 bool World::RemoveSession(uint32 id)
 {
     ///- Find the session, kick the user, but we can't delete session at this moment to prevent iterator invalidation
@@ -409,7 +409,7 @@ bool World::RemoveQueuedPlayer(WorldSession* sess)
     return found;
 }
 
-/// Initialize config values
+// Initialize config values
 void World::LoadConfigSettings(bool reload)
 {
     if (reload)
@@ -663,7 +663,7 @@ void World::LoadConfigSettings(bool reload)
     m_float_configs[CONFIG_GROUP_XP_DISTANCE] = sConfigMgr->GetFloatDefault("MaxGroupXPDistance", 74.0f);
     m_float_configs[CONFIG_MAX_RECRUIT_A_FRIEND_DISTANCE] = sConfigMgr->GetFloatDefault("MaxRecruitAFriendBonusDistance", 100.0f);
 
-    /// @todo Add MonsterSight and GuarderSight (with meaning) in worldserver.conf or put them as define
+    // @todo Add MonsterSight and GuarderSight (with meaning) in worldserver.conf or put them as define
     m_float_configs[CONFIG_SIGHT_MONSTER] = sConfigMgr->GetFloatDefault("MonsterSight", 50);
     m_float_configs[CONFIG_SIGHT_GUARDER] = sConfigMgr->GetFloatDefault("GuarderSight", 50);
 
@@ -1357,7 +1357,7 @@ void World::LoadConfigSettings(bool reload)
 
 extern void LoadGameObjectModelList();
 
-/// Initialize the World
+// Initialize the World
 void World::SetInitialWorldSettings()
 {
     ///- Server startup begin
@@ -1889,7 +1889,7 @@ void World::SetInitialWorldSettings()
     //to set mailtimer to return mails every day between 4 and 5 am
     //mailtimer is increased when updating auctions
     //one second is 1000 -(tested on win system)
-    /// @todo Get rid of magic numbers
+    // @todo Get rid of magic numbers
     tm localTm;
     ACE_OS::localtime_r(&m_gameTime, &localTm);
     mail_timer = ((((localTm.tm_hour + 20) % 24)* HOUR * IN_MILLISECONDS) / m_timers[WUPDATE_AUCTIONS].GetInterval());
@@ -2044,7 +2044,7 @@ void World::LoadAutobroadcasts()
     SF_LOG_INFO("server.loading", ">> Loaded %u autobroadcast definitions in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
-/// Update the World !
+// Update the World !
 void World::Update(uint32 diff)
 {
     m_updateTime = diff;
@@ -2076,18 +2076,18 @@ void World::Update(uint32 diff)
     ///- Update the game time and check for shutdown time
     _UpdateGameTime();
 
-    /// Handle daily quests reset time
+    // Handle daily quests reset time
     if (m_gameTime > m_NextDailyQuestReset)
     {
         ResetDailyQuests();
         m_NextDailyQuestReset += DAY;
     }
 
-    /// Handle weekly quests reset time
+    // Handle weekly quests reset time
     if (m_gameTime > m_NextWeeklyQuestReset)
         ResetWeeklyQuests();
 
-    /// Handle monthly quests reset time
+    // Handle monthly quests reset time
     if (m_gameTime > m_NextMonthlyQuestReset)
         ResetMonthlyQuests();
 
@@ -2100,7 +2100,7 @@ void World::Update(uint32 diff)
     if (m_gameTime > m_NextCurrencyReset)
         ResetCurrencyWeekCap();
 
-    /// <ul><li> Handle auctions when the timer has passed
+    // <ul><li> Handle auctions when the timer has passed
     if (m_timers[WUPDATE_BLACK_MARKET].Passed())
     {
         m_timers[WUPDATE_BLACK_MARKET].Reset();
@@ -2117,7 +2117,7 @@ void World::Update(uint32 diff)
         sBlackMarketMgr->Update();
     }
 
-    /// <ul><li> Handle auctions when the timer has passed
+    // <ul><li> Handle auctions when the timer has passed
     if (m_timers[WUPDATE_AUCTIONS].Passed())
     {
         m_timers[WUPDATE_AUCTIONS].Reset();
@@ -2134,19 +2134,19 @@ void World::Update(uint32 diff)
         sAuctionMgr->Update();
     }
 
-    /// <li> Handle session updates when the timer has passed
+    // <li> Handle session updates when the timer has passed
     RecordTimeDiff(NULL);
     UpdateSessions(diff);
     RecordTimeDiff("UpdateSessions");
 
-    /// <li> Handle weather updates when the timer has passed
+    // <li> Handle weather updates when the timer has passed
     if (m_timers[WUPDATE_WEATHERS].Passed())
     {
         m_timers[WUPDATE_WEATHERS].Reset();
         WeatherMgr::Update(uint32(m_timers[WUPDATE_WEATHERS].GetInterval()));
     }
 
-    /// <li> Update uptime table
+    // <li> Update uptime table
     if (m_timers[WUPDATE_UPTIME].Passed())
     {
         uint32 tmpDiff = uint32(m_gameTime - m_startTime);
@@ -2164,7 +2164,7 @@ void World::Update(uint32 diff)
         LoginDatabase.Execute(stmt);
     }
 
-    /// <li> Clean logs table
+    // <li> Clean logs table
     if (sWorld->getIntConfig(CONFIG_LOGDB_CLEARTIME) > 0) // if not enabled, ignore the timer
     {
         if (m_timers[WUPDATE_CLEANDB].Passed())
@@ -2180,7 +2180,7 @@ void World::Update(uint32 diff)
         }
     }
 
-    /// <li> Handle all other objects
+    // <li> Handle all other objects
     ///- Update objects when the timer has passed (maps, transport, creatures, ...)
     RecordTimeDiff(NULL);
     sMapMgr->Update(diff);
@@ -2267,7 +2267,7 @@ void World::ForceGameEventUpdate()
     m_timers[WUPDATE_EVENTS].Reset();
 }
 
-/// Send a packet to all players (except self if mentioned)
+// Send a packet to all players (except self if mentioned)
 void World::SendGlobalMessage(WorldPacket* packet, WorldSession* self, uint32 team)
 {
     SessionMap::const_iterator itr;
@@ -2284,7 +2284,7 @@ void World::SendGlobalMessage(WorldPacket* packet, WorldSession* self, uint32 te
     }
 }
 
-/// Send a packet to all GMs (except self if mentioned)
+// Send a packet to all GMs (except self if mentioned)
 void World::SendGlobalGMMessage(WorldPacket* packet, WorldSession* self, uint32 team)
 {
     for (SessionMap::const_iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
@@ -2353,7 +2353,7 @@ namespace Skyfire
     };
 }                                                           // namespace Skyfire
 
-/// Send a System Message to all players (except self if mentioned)
+// Send a System Message to all players (except self if mentioned)
 void World::SendWorldText(int32 string_id, ...)
 {
     va_list ap;
@@ -2372,7 +2372,7 @@ void World::SendWorldText(int32 string_id, ...)
     va_end(ap);
 }
 
-/// Send a System Message to all GMs (except self if mentioned)
+// Send a System Message to all GMs (except self if mentioned)
 void World::SendGMText(int32 string_id, ...)
 {
     va_list ap;
@@ -2398,7 +2398,7 @@ void World::SendGMText(int32 string_id, ...)
     va_end(ap);
 }
 
-/// DEPRECATED, only for debug purpose. Send a System Message to all players (except self if mentioned)
+// DEPRECATED, only for debug purpose. Send a System Message to all players (except self if mentioned)
 void World::SendGlobalText(const char* text, WorldSession* self)
 {
     WorldPacket data;
@@ -2416,7 +2416,7 @@ void World::SendGlobalText(const char* text, WorldSession* self)
     free(buf);
 }
 
-/// Send a packet to all players (or players selected team) in the zone (except self if mentioned)
+// Send a packet to all players (or players selected team) in the zone (except self if mentioned)
 void World::SendZoneMessage(uint32 zone, WorldPacket* packet, WorldSession* self, uint32 team)
 {
     SessionMap::const_iterator itr;
@@ -2434,7 +2434,7 @@ void World::SendZoneMessage(uint32 zone, WorldPacket* packet, WorldSession* self
     }
 }
 
-/// Send a System Message to all players in the zone (except self if mentioned)
+// Send a System Message to all players in the zone (except self if mentioned)
 void World::SendZoneText(uint32 zone, const char* text, WorldSession* self, uint32 team)
 {
     WorldPacket data;
@@ -2442,7 +2442,7 @@ void World::SendZoneText(uint32 zone, const char* text, WorldSession* self, uint
     SendZoneMessage(zone, &data, self, team);
 }
 
-/// Kick (and save) all players
+// Kick (and save) all players
 void World::KickAll()
 {
     m_QueuedPlayer.clear();                                 // prevent send queue update packet and login queued sessions
@@ -2452,7 +2452,7 @@ void World::KickAll()
         itr->second->KickPlayer();
 }
 
-/// Kick (and save) all players with security level less `sec`
+// Kick (and save) all players with security level less `sec`
 void World::KickAllLess(AccountTypes sec)
 {
     // session not removed at kick and will removed in next update tick
@@ -2461,14 +2461,14 @@ void World::KickAllLess(AccountTypes sec)
             itr->second->KickPlayer();
 }
 
-/// Ban an account or ban an IP address, duration will be parsed using TimeStringToSecs if it is positive, otherwise permban
+// Ban an account or ban an IP address, duration will be parsed using TimeStringToSecs if it is positive, otherwise permban
 BanReturn World::BanAccount(BanMode mode, std::string const& nameOrIP, std::string const& duration, std::string const& reason, std::string const& author)
 {
     uint32 duration_secs = TimeStringToSecs(duration);
     return BanAccount(mode, nameOrIP, duration_secs, reason, author);
 }
 
-/// Ban an account or ban an IP address, duration is in seconds if positive, otherwise permban
+// Ban an account or ban an IP address, duration is in seconds if positive, otherwise permban
 BanReturn World::BanAccount(BanMode mode, std::string const& nameOrIP, uint32 duration_secs, std::string const& reason, std::string const& author)
 {
     PreparedQueryResult resultAccounts = PreparedQueryResult(NULL); //used for kicking
@@ -2545,7 +2545,7 @@ BanReturn World::BanAccount(BanMode mode, std::string const& nameOrIP, uint32 du
     return BAN_SUCCESS;
 }
 
-/// Remove a ban from an account or IP address
+// Remove a ban from an account or IP address
 bool World::RemoveBanAccount(BanMode mode, std::string const& nameOrIP)
 {
     PreparedStatement* stmt = NULL;
@@ -2574,7 +2574,7 @@ bool World::RemoveBanAccount(BanMode mode, std::string const& nameOrIP)
     return true;
 }
 
-/// Ban an account or ban an IP address, duration will be parsed using TimeStringToSecs if it is positive, otherwise permban
+// Ban an account or ban an IP address, duration will be parsed using TimeStringToSecs if it is positive, otherwise permban
 BanReturn World::BanCharacter(std::string const& name, std::string const& duration, std::string const& reason, std::string const& author)
 {
     Player* pBanned = sObjectAccessor->FindPlayerByName(name);
@@ -2582,7 +2582,7 @@ BanReturn World::BanCharacter(std::string const& name, std::string const& durati
 
     uint32 duration_secs = TimeStringToSecs(duration);
 
-    /// Pick a player to ban if not online
+    // Pick a player to ban if not online
     if (!pBanned)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUID_BY_NAME);
@@ -2615,13 +2615,13 @@ BanReturn World::BanCharacter(std::string const& name, std::string const& durati
     return BAN_SUCCESS;
 }
 
-/// Remove a ban from a character
+// Remove a ban from a character
 bool World::RemoveBanCharacter(std::string const& name)
 {
     Player* pBanned = sObjectAccessor->FindPlayerByName(name);
     uint32 guid = 0;
 
-    /// Pick a player to ban if not online
+    // Pick a player to ban if not online
     if (!pBanned)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUID_BY_NAME);
@@ -2645,7 +2645,7 @@ bool World::RemoveBanCharacter(std::string const& name)
     return true;
 }
 
-/// Update the game time
+// Update the game time
 void World::_UpdateGameTime()
 {
     ///- update the time
@@ -2674,7 +2674,7 @@ void World::_UpdateGameTime()
     }
 }
 
-/// Shutdown the server
+// Shutdown the server
 void World::ShutdownServ(uint32 time, uint32 options, uint8 exitcode)
 {
     // ignore if server shutdown at next tick
@@ -2702,7 +2702,7 @@ void World::ShutdownServ(uint32 time, uint32 options, uint8 exitcode)
     sScriptMgr->OnShutdownInitiate(ShutdownExitCode(exitcode), ShutdownMask(options));
 }
 
-/// Display a shutdown message to the user(s)
+// Display a shutdown message to the user(s)
 void World::ShutdownMsg(bool show, Player* player)
 {
     // not show messages for idle shutdown mode
@@ -2726,7 +2726,7 @@ void World::ShutdownMsg(bool show, Player* player)
     }
 }
 
-/// Cancel a planned server shutdown
+// Cancel a planned server shutdown
 void World::ShutdownCancel()
 {
     // nothing cancel or too later
@@ -2745,7 +2745,7 @@ void World::ShutdownCancel()
     sScriptMgr->OnShutdownCancel();
 }
 
-/// Send a server message to the user(s)
+// Send a server message to the user(s)
 void World::SendServerMessage(ServerMessageType type, const char *text, Player* player)
 {
     WorldPacket data(SMSG_SERVER_MESSAGE, 50);              // guess size

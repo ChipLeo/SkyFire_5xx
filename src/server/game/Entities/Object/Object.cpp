@@ -2220,7 +2220,7 @@ namespace Skyfire
             {
                 char const* text = sObjectMgr->GetSkyFireString(i_textId, loc_idx);
 
-                /// @todo i_object.GetName() also must be localized?
+                // @todo i_object.GetName() also must be localized?
                 ChatHandler::BuildChatPacket(data, i_msgtype, i_language, i_object, i_target, text, 0, "", loc_idx);
             }
 
@@ -2240,7 +2240,7 @@ namespace Skyfire
 
             void operator()(WorldPacket& data, LocaleConstant loc_idx)
             {
-                /// @todo i_object.GetName() also must be localized?
+                // @todo i_object.GetName() also must be localized?
                 ChatHandler::BuildChatPacket(data, i_msgtype, i_language, i_object, i_target, i_text, 0, "", loc_idx);
             }
 
@@ -3167,7 +3167,7 @@ void WorldObject::DestroyForNearbyPlayers()
         if (!player->HaveAtClient(this))
             continue;
 
-        if (isType(TYPEMASK_UNIT) && ((Unit*)this)->GetCharmerGUID() == player->GetGUID()) /// @todo this is for puppet
+        if (isType(TYPEMASK_UNIT) && ((Unit*)this)->GetCharmerGUID() == player->GetGUID()) // @todo this is for puppet
             continue;
 
         DestroyForPlayer(player);

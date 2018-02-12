@@ -25,7 +25,7 @@
 #include "ByteBuffer.h"
 #include <vector>
 
-/// Interface class for common access
+// Interface class for common access
 class DB2StorageBase
 {
 public:

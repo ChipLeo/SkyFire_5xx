@@ -3178,7 +3178,7 @@ class spell_gen_summon_elemental : public SpellScriptLoader
             {
                 if (GetCaster())
                     if (Unit* owner = GetCaster()->GetOwner())
-                        if (owner->GetTypeId() == TYPEID_PLAYER) /// @todo this check is maybe wrong
+                        if (owner->GetTypeId() == TYPEID_PLAYER) // @todo this check is maybe wrong
                             owner->ToPlayer()->RemovePet(NULL, PET_SAVE_NOT_IN_SLOT, true);
             }
 
@@ -3504,7 +3504,7 @@ class spell_gen_vehicle_scaling : public SpellScriptLoader
                 float factor;
                 uint16 baseItemLevel;
 
-                /// @todo Reserach coeffs for different vehicles
+                // @todo Reserach coeffs for different vehicles
                 switch (GetId())
                 {
                     case SPELL_GEAR_SCALING:
@@ -3519,7 +3519,7 @@ class spell_gen_vehicle_scaling : public SpellScriptLoader
 
                 float avgILvl = caster->ToPlayer()->GetAverageItemLevel();
                 if (avgILvl < baseItemLevel)
-                    return;                     /// @todo Research possibility of scaling down
+                    return;                     // @todo Research possibility of scaling down
 
                 amount = uint16((avgILvl - baseItemLevel) * factor);
             }

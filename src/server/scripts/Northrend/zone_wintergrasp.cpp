@@ -348,7 +348,7 @@ class npc_wg_quest_giver : public CreatureScript
                 player->PlayerTalkClass->GetGossipMenu().AddGossipMenuItemData(0, 0, 0);
             }
 
-            /// @todo: move this to conditions or something else
+            // @todo: move this to conditions or something else
 
             // Player::PrepareQuestMenu(guid)
             if (creature->IsQuestGiver())

@@ -32,7 +32,7 @@
 #include "WaypointManager.h"
 #include "World.h"
 
-/// Put scripts in the execution queue
+// Put scripts in the execution queue
 void Map::ScriptsStart(ScriptMapMap const& scripts, uint32 id, Object* source, Object* target)
 {
     ///- Find the script map
@@ -284,7 +284,7 @@ inline GameObject* Map::_FindGameObject(WorldObject* searchObject, uint32 guid) 
     return gameobject;
 }
 
-/// Process queued scripts
+// Process queued scripts
 void Map::ScriptsProcess()
 {
     if (m_scriptSchedule.empty())
@@ -703,7 +703,7 @@ void Map::ScriptsProcess()
 
             case SCRIPT_COMMAND_CAST_SPELL:
             {
-                /// @todo Allow gameobjects to be targets and casters
+                // @todo Allow gameobjects to be targets and casters
                 if (!source && !target)
                 {
                     SF_LOG_ERROR("scripts", "%s source and target objects are NULL.", step.script->GetDebugInfo().c_str());

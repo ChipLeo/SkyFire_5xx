@@ -1929,7 +1929,7 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
                     creature->GetMotionMaster()->MoveJump(e.target.x, e.target.y, e.target.z, (float)e.action.jump.speedxy, (float)e.action.jump.speedz);
                 }
             }
-            /// @todo Resume path when reached jump location
+            // @todo Resume path when reached jump location
 
             delete targets;
             break;

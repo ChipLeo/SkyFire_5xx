@@ -85,7 +85,7 @@ class ObjectAccessor
             return instance;
         }
 
-        /// @todo: Override these template functions for each holder type and add assertions
+        // @todo: Override these template functions for each holder type and add assertions
 
         template<class T> static T* GetObjectInOrOutOfWorld(uint64 guid, T* /*typeSpecifier*/)
         {

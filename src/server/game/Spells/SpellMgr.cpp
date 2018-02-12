@@ -358,7 +358,7 @@ SpellMgr::~SpellMgr()
     UnloadSpellInfoStore();
 }
 
-/// Some checks for spells, to prevent adding deprecated/broken spells for trainers, spell book, etc
+// Some checks for spells, to prevent adding deprecated/broken spells for trainers, spell book, etc
 bool SpellMgr::IsSpellValid(SpellInfo const* spellInfo, Player* player, bool msg)
 {
     // not exist
@@ -2211,7 +2211,7 @@ void SpellMgr::LoadEnchantCustomAttr()
         if (!spellInfo)
             continue;
 
-        /// @todo find a better check
+        // @todo find a better check
         if (!(spellInfo->AttributesEx2 & SPELL_ATTR2_PRESERVE_ENCHANT_IN_ARENA) || !(spellInfo->Attributes & SPELL_ATTR0_NOT_SHAPESHIFT))
             continue;
 

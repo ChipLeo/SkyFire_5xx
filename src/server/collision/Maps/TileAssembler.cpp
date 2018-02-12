@@ -89,7 +89,7 @@ namespace VMAP
                 }
                 else if (entry->second.flags & MOD_WORLDSPAWN) // WMO maps and terrain maps use different origin, so we need to adapt :/
                 {
-                    /// @todo remove extractor hack and uncomment below line:
+                    // @todo remove extractor hack and uncomment below line:
                     //entry->second.iPos += Vector3(533.33333f*32, 533.33333f*32, 0.f);
                     entry->second.iBound = entry->second.iBound + Vector3(533.33333f*32, 533.33333f*32, 0.f);
                 }
@@ -533,7 +533,7 @@ namespace VMAP
         for (uint32 g = 0; g < groups && succeed; ++g)
             succeed = groupsArray[g].Read(rf);
 
-        if (succeed) /// rf will be freed inside Read if the function had any errors.
+        if (succeed) // rf will be freed inside Read if the function had any errors.
             fclose(rf);
         return succeed;
     }

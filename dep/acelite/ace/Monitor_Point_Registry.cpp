@@ -43,7 +43,7 @@ namespace ACE
 
         status = this->map_.bind (type->name (), type);
 
-        /// Temporary debugging code.
+        // Temporary debugging code.
 //        ACE_DEBUG ((LM_DEBUG, "adding %s\n", type->name ()));
       }
 
@@ -76,7 +76,7 @@ namespace ACE
         ACE_CString name_str (name, 0, false);
         status = this->map_.unbind (name_str, mp);
 
-        /// Temporary debugging code.
+        // Temporary debugging code.
 //        ACE_DEBUG ((LM_DEBUG, "removing %s\n", name_str.c_str ()));
       }
 

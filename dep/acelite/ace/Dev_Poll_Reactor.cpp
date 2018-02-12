@@ -2323,7 +2323,7 @@ ACE_Dev_Poll_Reactor::mask_ops_i (ACE_HANDLE handle,
       return -1;
     }
 
-  /// Reset the mask for the given handle.
+  // Reset the mask for the given handle.
   info->mask = new_mask;
 
   // Only attempt to alter events for the handle from the

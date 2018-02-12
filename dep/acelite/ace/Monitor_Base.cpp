@@ -45,7 +45,7 @@ namespace ACE
     void
     Monitor_Base::update (void)
     {
-      /// Overridden in derived classes.
+      // Overridden in derived classes.
     }
 
     void
@@ -135,7 +135,7 @@ namespace ACE
     Monitor_Base::add_constraint (const char* expression,
                                   Control_Action* action)
     {
-      /// Thread-safe and guaranteed to be unique.
+      // Thread-safe and guaranteed to be unique.
       long id = Monitor_Point_Registry::instance ()->constraint_id ();
 
       CONSTRAINTS::value_type entry;
@@ -143,15 +143,15 @@ namespace ACE
       entry.second.expr = expression;
       entry.second.control_action = action;
 
-      /// This is thread-safe on its own so we don't have
-      /// to guard it here.
+      // This is thread-safe on its own so we don't have
+      // to guard it here.
       action->add_ref ();
 
       {
         ACE_GUARD_RETURN (ACE_SYNCH_MUTEX, guard, this->mutex_, -1);
 
-        /// Since we know external key is unique,
-        /// we don't check for failure.
+        // Since we know external key is unique,
+        // we don't check for failure.
         (void) this->constraints_.insert (entry);
       }
 

@@ -131,7 +131,7 @@ void WorldSession::HandlePetAction(WorldPacket& recvData) //  sub_68C8FD [5.4.8 
             return;
     }
 
-    /// @todo allow control charmed player?
+    // @todo allow control charmed player?
     if (pet->GetTypeId() == TYPEID_PLAYER && !(Flag == ACT_COMMAND && SpellID == COMMAND_ATTACK))
         return;
 
@@ -240,7 +240,7 @@ void WorldSession::HandlePetActionHelper(Unit* pet, uint64 guid1, uint32 spellid
                     if (_player->HasAuraType(SPELL_AURA_MOD_PACIFY))
                     {
                         //pet->SendPetCastFail(spellid, SPELL_FAILED_PACIFIED);
-                        /// @todo Send proper error message to client
+                        // @todo Send proper error message to client
                         return;
                     }
 
@@ -442,7 +442,7 @@ void WorldSession::HandlePetActionHelper(Unit* pet, uint64 guid1, uint32 spellid
             }
             else
             {
-                if (pet->isPossessed() || pet->IsVehicle()) /// @todo: confirm this check
+                if (pet->isPossessed() || pet->IsVehicle()) // @todo: confirm this check
                     Spell::SendCastResult(GetPlayer(), spellInfo, 0, result);
                 else
                     spell->SendPetCastResult(result);

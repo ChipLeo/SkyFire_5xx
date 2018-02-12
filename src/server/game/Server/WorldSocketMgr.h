@@ -34,20 +34,20 @@ class WorldSocket;
 class ReactorRunnable;
 class ACE_Event_Handler;
 
-/// Manages all sockets connected to peers and network threads
+// Manages all sockets connected to peers and network threads
 class WorldSocketMgr
 {
 public:
     friend class WorldSocket;
     friend class ACE_Singleton<WorldSocketMgr, ACE_Thread_Mutex>;
 
-    /// Start network, listen at address:port .
+    // Start network, listen at address:port .
     int StartNetwork(ACE_UINT16 port, const char* address);
 
-    /// Stops all network threads, It will wait for all running threads .
+    // Stops all network threads, It will wait for all running threads .
     void StopNetwork();
 
-    /// Wait untill all network threads have "joined" .
+    // Wait untill all network threads have "joined" .
     void Wait();
 
 private:
@@ -72,4 +72,4 @@ private:
 #define sWorldSocketMgr ACE_Singleton<WorldSocketMgr, ACE_Thread_Mutex>::instance()
 
 #endif
-/// @}
+// @}

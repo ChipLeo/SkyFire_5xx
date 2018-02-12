@@ -475,7 +475,7 @@ public:
         {
             stormforgedMonitorGUID = stormforgedMonitor->GetGUID();
             stormforgedMonitor->SetWalk(false);
-            /// The npc would search an alternative way to get to the last waypoint without this unit state.
+            // The npc would search an alternative way to get to the last waypoint without this unit state.
             stormforgedMonitor->AddUnitState(UNIT_STATE_IGNORE_PATHFINDING);
             stormforgedMonitor->GetMotionMaster()->MovePath(NPC_STORMFORGED_MONITOR * 100, false);
         }

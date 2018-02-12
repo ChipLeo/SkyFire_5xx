@@ -226,7 +226,7 @@ public:
 
             switch (m_uiOperaEvent)
             {
-                /// @todo Set Object visibilities for Opera based on performance
+                // @todo Set Object visibilities for Opera based on performance
                 case EVENT_OZ:
                     break;
 

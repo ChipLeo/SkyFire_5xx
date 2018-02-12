@@ -144,7 +144,7 @@ void MoveSpline::init_spline(const MoveSplineInitArgs& args)
         spline.initLengths(init);
     }
 
-    /// @todo what to do in such cases? problem is in input data (all points are at same coords)
+    // @todo what to do in such cases? problem is in input data (all points are at same coords)
     if (spline.length() < minimal_duration)
     {
         SF_LOG_ERROR("misc", "MoveSpline::init_spline: zero length spline, wrong input data?");
@@ -194,7 +194,7 @@ MoveSpline::MoveSpline() : m_Id(0), time_passed(0),
     splineflags.done = true;
 }
 
-/// ============================================================================================
+// ============================================================================================
 
 bool MoveSplineInitArgs::Validate(Unit* unit) const
 {
@@ -236,7 +236,7 @@ bool MoveSplineInitArgs::_checkPathBounds() const
     return true;
 }
 
-/// ============================================================================================
+// ============================================================================================
 
 MoveSpline::UpdateResult MoveSpline::_updateState(int32& ms_time_diff)
 {

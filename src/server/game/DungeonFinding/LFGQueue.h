@@ -50,7 +50,7 @@ struct LfgCompatibilityData
     LfgRolesMap roles;
 };
 
-/// Stores player or group queue info
+// Stores player or group queue info
 struct LfgQueueData
 {
     LfgQueueData(): joinTime(time_t(time(NULL))), tanks(LFG_TANKS_NEEDED),
@@ -62,20 +62,20 @@ struct LfgQueueData
         dps(LFG_DPS_NEEDED), dungeons(_dungeons), roles(_roles)
         { }
 
-    time_t joinTime;                                       ///< Player queue join time (to calculate wait times)
-    uint8 tanks;                                           ///< Tanks needed
-    uint8 healers;                                         ///< Healers needed
-    uint8 dps;                                             ///< Dps needed
-    LfgDungeonSet dungeons;                                ///< Selected Player/Group Dungeon/s
-    LfgRolesMap roles;                                     ///< Selected Player Role/s
-    std::string bestCompatible;                            ///< Best compatible combination of people queued
+    time_t joinTime;                                       //< Player queue join time (to calculate wait times)
+    uint8 tanks;                                           //< Tanks needed
+    uint8 healers;                                         //< Healers needed
+    uint8 dps;                                             //< Dps needed
+    LfgDungeonSet dungeons;                                //< Selected Player/Group Dungeon/s
+    LfgRolesMap roles;                                     //< Selected Player Role/s
+    std::string bestCompatible;                            //< Best compatible combination of people queued
 };
 
 struct LfgWaitTime
 {
     LfgWaitTime(): time(-1), number(0) { }
-    int32 time;                                            ///< Wait time
-    uint32 number;                                         ///< Number of people used to get that wait time
+    int32 time;                                            //< Wait time
+    uint32 number;                                         //< Number of people used to get that wait time
 };
 
 typedef std::map<uint32, LfgWaitTime> LfgWaitTimesContainer;
@@ -134,15 +134,15 @@ class LFGQueue
         LfgCompatibility CheckCompatibility(LfgGuidList check);
 
         // Queue
-        LfgQueueDataContainer QueueDataStore;              ///< Queued groups
-        LfgCompatibleContainer CompatibleMapStore;         ///< Compatible dungeons
+        LfgQueueDataContainer QueueDataStore;              //< Queued groups
+        LfgCompatibleContainer CompatibleMapStore;         //< Compatible dungeons
 
-        LfgWaitTimesContainer waitTimesAvgStore;           ///< Average wait time to find a group queuing as multiple roles
-        LfgWaitTimesContainer waitTimesTankStore;          ///< Average wait time to find a group queuing as tank
-        LfgWaitTimesContainer waitTimesHealerStore;        ///< Average wait time to find a group queuing as healer
-        LfgWaitTimesContainer waitTimesDpsStore;           ///< Average wait time to find a group queuing as dps
-        LfgGuidList currentQueueStore;                     ///< Ordered list. Used to find groups
-        LfgGuidList newToQueueStore;                       ///< New groups to add to queue
+        LfgWaitTimesContainer waitTimesAvgStore;           //< Average wait time to find a group queuing as multiple roles
+        LfgWaitTimesContainer waitTimesTankStore;          //< Average wait time to find a group queuing as tank
+        LfgWaitTimesContainer waitTimesHealerStore;        //< Average wait time to find a group queuing as healer
+        LfgWaitTimesContainer waitTimesDpsStore;           //< Average wait time to find a group queuing as dps
+        LfgGuidList currentQueueStore;                     //< Ordered list. Used to find groups
+        LfgGuidList newToQueueStore;                       //< New groups to add to queue
 };
 
 } // namespace lfg

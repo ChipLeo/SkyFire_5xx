@@ -39,18 +39,18 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 class ACE_POSIX_Wakeup_Completion : public ACE_POSIX_Asynch_Result
 {
 public:
-  /// Constructor.
+  // Constructor.
   ACE_POSIX_Wakeup_Completion (const ACE_Handler::Proxy_Ptr &handler_proxy,
                                const void *act = 0,
                                ACE_HANDLE event = ACE_INVALID_HANDLE,
                                int priority = 0,
                                int signal_number = ACE_SIGRTMIN);
 
-  /// Destructor.
+  // Destructor.
   virtual ~ACE_POSIX_Wakeup_Completion (void);
 
 
-  /// This method calls the <handler>'s <handle_wakeup> method.
+  // This method calls the <handler>'s <handle_wakeup> method.
   virtual void complete (size_t bytes_transferred = 0,
                          int success = 1,
                          const void *completion_key = 0,
@@ -592,35 +592,35 @@ ACE_POSIX_Proactor::get_impl_type (void)
 class ACE_AIOCB_Notify_Pipe_Manager : public ACE_Handler
 {
 public:
-  /// Constructor. You need the posix proactor because you need to call
-  /// <application_specific_code>
+  // Constructor. You need the posix proactor because you need to call
+  // <application_specific_code>
   ACE_AIOCB_Notify_Pipe_Manager (ACE_POSIX_AIOCB_Proactor *posix_aiocb_proactor);
 
-  /// Destructor.
+  // Destructor.
   virtual ~ACE_AIOCB_Notify_Pipe_Manager (void);
 
-  /// Send the result pointer through the notification pipe.
+  // Send the result pointer through the notification pipe.
   int notify ();
 
-  /// This is the call back method when <Asynch_Read> from the pipe is
-  /// complete.
+  // This is the call back method when <Asynch_Read> from the pipe is
+  // complete.
   virtual void handle_read_stream (const ACE_Asynch_Read_Stream::Result &result);
 
 private:
-  /// The implementation proactor class.
+  // The implementation proactor class.
   ACE_POSIX_AIOCB_Proactor  *posix_aiocb_proactor_;
 
-  /// Message block to get ACE_POSIX_Asynch_Result pointer from the pipe.
+  // Message block to get ACE_POSIX_Asynch_Result pointer from the pipe.
   ACE_Message_Block message_block_;
 
-  /// Pipe for the communication between Proactor and the
-  /// Asynch_Accept/Asynch_Connect and other post_completions
+  // Pipe for the communication between Proactor and the
+  // Asynch_Accept/Asynch_Connect and other post_completions
   ACE_Pipe pipe_;
 
-  /// To do asynch_read on the pipe.
+  // To do asynch_read on the pipe.
   ACE_POSIX_Asynch_Read_Stream read_stream_;
 
-  /// Default constructor. Shouldnt be called.
+  // Default constructor. Shouldnt be called.
   ACE_AIOCB_Notify_Pipe_Manager (void);
 };
 

@@ -935,8 +935,8 @@ void WorldSession::HandleRequestRatedBgInfo(WorldPacket & recvData)
 
     SF_LOG_DEBUG("bg.battleground", "WorldSession::HandleRequestRatedBgInfo: unk = %u", unk);
 
-    /// @Todo: perfome research in this case
-    /// The unk fields are related to arenas
+    // @Todo: perfome research in this case
+    // The unk fields are related to arenas
     WorldPacket data(SMSG_RATED_BG_STATS, 72);
     data << uint32(0);      // BgWeeklyWins20vs20
     data << uint32(0);      // BgWeeklyPlayed20vs20

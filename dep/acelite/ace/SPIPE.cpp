@@ -70,7 +70,7 @@ ACE_SPIPE::remove (void)
 }
 
 #if defined (ACE_HAS_STREAM_PIPES)
-/// Temporary store of duplex pipe handle.
+// Temporary store of duplex pipe handle.
 void
 ACE_SPIPE::set_duplex_handle (ACE_HANDLE handle)
 {

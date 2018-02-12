@@ -61,7 +61,7 @@ UsableSeatNum(0), _me(unit), _vehicleInfo(vehInfo), _creatureEntry(creatureEntry
 
 Vehicle::~Vehicle()
 {
-    /// @Uninstall must be called before this.
+    // @Uninstall must be called before this.
     ASSERT(_status == STATUS_UNINSTALLING);
     for (SeatMap::const_iterator itr = Seats.begin(); itr != Seats.end(); ++itr)
         ASSERT(itr->second.IsEmpty());
@@ -146,7 +146,7 @@ void Vehicle::InstallAllAccessories(bool evading)
 
 void Vehicle::Uninstall()
 {
-    /// @Prevent recursive uninstall call. (Bad script in OnUninstall/OnRemovePassenger/PassengerBoarded hook.)
+    // @Prevent recursive uninstall call. (Bad script in OnUninstall/OnRemovePassenger/PassengerBoarded hook.)
     if (_status == STATUS_UNINSTALLING && !GetBase()->HasUnitTypeMask(UNIT_MASK_MINION))
     {
         SF_LOG_ERROR("entities.vehicle", "Vehicle GuidLow: %u, Entry: %u attempts to uninstall, but already has STATUS_UNINSTALLING! "
@@ -256,10 +256,10 @@ void Vehicle::RemoveAllPassengers()
 {
     SF_LOG_DEBUG("entities.vehicle", "Vehicle::RemoveAllPassengers. Entry: %u, GuidLow: %u", _creatureEntry, _me->GetGUIDLow());
 
-    /// Setting to_Abort to true will cause @VehicleJoinEvent::Abort to be executed on next @Unit::UpdateEvents call
-    /// This will properly "reset" the pending join process for the passenger.
+    // Setting to_Abort to true will cause @VehicleJoinEvent::Abort to be executed on next @Unit::UpdateEvents call
+    // This will properly "reset" the pending join process for the passenger.
     {
-        /// Update vehicle pointer in every pending join event - Abort may be called after vehicle is deleted
+        // Update vehicle pointer in every pending join event - Abort may be called after vehicle is deleted
         Vehicle* eventVehicle = _status != STATUS_UNINSTALLING ? this : NULL;
 
         while (!_pendingJoinEvents.empty())
@@ -387,7 +387,7 @@ SeatMap::const_iterator Vehicle::GetNextEmptySeat(int8 seatId, bool next) const
 
 void Vehicle::InstallAccessory(uint32 entry, int8 seatId, bool minion, uint8 type, uint32 summonTime)
 {
-    /// @Prevent adding accessories when vehicle is uninstalling. (Bad script in OnUninstall/OnRemovePassenger/PassengerBoarded hook.)
+    // @Prevent adding accessories when vehicle is uninstalling. (Bad script in OnUninstall/OnRemovePassenger/PassengerBoarded hook.)
     if (_status == STATUS_UNINSTALLING)
     {
         SF_LOG_ERROR("entities.vehicle", "Vehicle (GuidLow: %u, DB GUID: %u, Entry: %u) attempts to install accessory (Entry: %u) on seat %d with STATUS_UNINSTALLING! "
@@ -408,8 +408,8 @@ void Vehicle::InstallAccessory(uint32 entry, int8 seatId, bool minion, uint8 typ
 
     (void)_me->HandleSpellClick(accessory, seatId);
 
-    /// If for some reason adding accessory to vehicle fails it will unsummon in
-    /// @VehicleJoinEvent::Abort
+    // If for some reason adding accessory to vehicle fails it will unsummon in
+    // @VehicleJoinEvent::Abort
 }
 
 /**
@@ -428,7 +428,7 @@ void Vehicle::InstallAccessory(uint32 entry, int8 seatId, bool minion, uint8 typ
 
 bool Vehicle::AddPassenger(Unit* unit, int8 seatId)
 {
-    /// @Prevent adding passengers when vehicle is uninstalling. (Bad script in OnUninstall/OnRemovePassenger/PassengerBoarded hook.)
+    // @Prevent adding passengers when vehicle is uninstalling. (Bad script in OnUninstall/OnRemovePassenger/PassengerBoarded hook.)
     if (_status == STATUS_UNINSTALLING)
     {
         SF_LOG_ERROR("entities.vehicle", "Passenger GuidLow: %u, Entry: %u, attempting to board vehicle GuidLow: %u, Entry: %u during uninstall! SeatId: %d",
@@ -887,17 +887,17 @@ bool VehicleJoinEvent::Execute(uint64, uint32)
 
 void VehicleJoinEvent::Abort(uint64)
 {
-    /// Check if the Vehicle was already uninstalled, in which case all auras were removed already
+    // Check if the Vehicle was already uninstalled, in which case all auras were removed already
     if (Target)
     {
         SF_LOG_DEBUG("entities.vehicle", "Passenger GuidLow: %u, Entry: %u, board on vehicle GuidLow: %u, Entry: %u SeatId: %d cancelled",
             Passenger->GetGUIDLow(), Passenger->GetEntry(), Target->GetBase()->GetGUIDLow(), Target->GetBase()->GetEntry(), (int32)Seat->first);
-        /// Remove the pending event when Abort was called on the event directly
+        // Remove the pending event when Abort was called on the event directly
         Target->RemovePendingEvent(this);
 
-        /// @SPELL_AURA_CONTROL_VEHICLE auras can be applied even when the passenger is not (yet) on the vehicle.
-        /// When this code is triggered it means that something went wrong in @Vehicle::AddPassenger, and we should remove
-        /// the aura manually.
+        // @SPELL_AURA_CONTROL_VEHICLE auras can be applied even when the passenger is not (yet) on the vehicle.
+        // When this code is triggered it means that something went wrong in @Vehicle::AddPassenger, and we should remove
+        // the aura manually.
         Target->GetBase()->RemoveAurasByType(SPELL_AURA_CONTROL_VEHICLE, Passenger->GetGUID());
     }
     else

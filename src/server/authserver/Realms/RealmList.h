@@ -54,7 +54,7 @@ struct Realm
     uint32 gamebuild;
 };
 
-/// Storage object for the list of realms on the server
+// Storage object for the list of realms on the server
 class RealmList
 {
 public:

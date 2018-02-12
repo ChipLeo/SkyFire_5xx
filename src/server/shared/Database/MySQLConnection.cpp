@@ -58,7 +58,7 @@ m_connectionFlags(CONNECTION_ASYNC)
 
 MySQLConnection::~MySQLConnection()
 {
-    ASSERT (m_Mysql); /// MySQL context must be present at this point
+    ASSERT (m_Mysql); // MySQL context must be present at this point
 
     for (size_t i = 0; i < m_stmts.size(); ++i)
         delete m_stmts[i];
@@ -68,7 +68,7 @@ MySQLConnection::~MySQLConnection()
 
 void MySQLConnection::Close()
 {
-    /// Only close us if we're not operating
+    // Only close us if we're not operating
     delete this;
 }
 
@@ -190,7 +190,7 @@ bool MySQLConnection::Execute(PreparedStatement* stmt)
         MySQLPreparedStatement* m_mStmt = GetPreparedStatement(index);
         ASSERT(m_mStmt);            // Can only be null if preparation failed, server side error or bad query
         m_mStmt->m_stmt = stmt;     // Cross reference them for debug output
-        stmt->m_stmt = m_mStmt;     /// @todo Cleaner way
+        stmt->m_stmt = m_mStmt;     // @todo Cleaner way
 
         stmt->BindParameters();
 
@@ -240,7 +240,7 @@ bool MySQLConnection::_Query(PreparedStatement* stmt, MYSQL_RES **pResult, uint6
         MySQLPreparedStatement* m_mStmt = GetPreparedStatement(index);
         ASSERT(m_mStmt);            // Can only be null if preparation failed, server side error or bad query
         m_mStmt->m_stmt = stmt;     // Cross reference them for debug output
-        stmt->m_stmt = m_mStmt;     /// @todo Cleaner way
+        stmt->m_stmt = m_mStmt;     // @todo Cleaner way
 
         stmt->BindParameters();
 

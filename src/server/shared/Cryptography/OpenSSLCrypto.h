@@ -26,9 +26,9 @@
 */
 namespace OpenSSLCrypto
 {
-    /// Needs to be called before threads using openssl are spawned
+    // Needs to be called before threads using openssl are spawned
     void threadsSetup();
-    /// Needs to be called after threads using openssl are despawned
+    // Needs to be called after threads using openssl are despawned
     void threadsCleanup();
 }
 

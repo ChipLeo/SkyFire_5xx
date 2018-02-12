@@ -160,7 +160,7 @@ public:
         return true;
     }
 
-    /// Display the list of GMs
+    // Display the list of GMs
     static bool HandleGMListFullCommand(ChatHandler* handler, char const* /*args*/)
     {
         ///- Get the accounts with GM Level >0

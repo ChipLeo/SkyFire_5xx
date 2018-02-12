@@ -1508,7 +1508,7 @@ public:
         return true;
     }
 
-    /// @todo NpcCommands that need to be fixed :
+    // @todo NpcCommands that need to be fixed :
     static bool HandleNpcAddWeaponCommand(ChatHandler* /*handler*/, char const* /*args*/)
     {
         /*if (!*args)

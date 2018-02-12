@@ -222,7 +222,7 @@ class spell_murmur_sonic_boom_effect : public SpellScriptLoader
             void CalcDamage()
             {
                 if (Unit* target = GetHitUnit())
-                    SetHitDamage(target->CountPctFromMaxHealth(80)); /// @todo: find correct value
+                    SetHitDamage(target->CountPctFromMaxHealth(80)); // @todo: find correct value
             }
 
             void Register() OVERRIDE

@@ -857,7 +857,7 @@ public:
   ~ACE_Object_Manager_Manager (void);
 
 private:
-  /// Save the main thread ID, so that destruction can be suppressed.
+  // Save the main thread ID, so that destruction can be suppressed.
   ACE_thread_t saved_main_thread_id_;
 };
 

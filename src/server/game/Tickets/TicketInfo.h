@@ -173,7 +173,7 @@ private:
     GMTicketOpenedByGMStatus _openedByGmStatus;
     bool _completed;
     bool _viewed;
-    bool _needResponse; /// @todo find out the use of this, and then store it in DB
+    bool _needResponse; // @todo find out the use of this, and then store it in DB
     bool _haveTicket;
     std::string _message;
     std::string _response;

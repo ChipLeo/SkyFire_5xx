@@ -196,18 +196,18 @@ class Battlefield : public ZoneScript
     friend class BattlefieldMgr;
 
     public:
-        /// Constructor
+        // Constructor
         Battlefield();
-        /// Destructor
+        // Destructor
         virtual ~Battlefield();
 
-        /// typedef of map witch store capturepoint and the associate gameobject entry
+        // typedef of map witch store capturepoint and the associate gameobject entry
         typedef std::map<uint32 /*lowguid */, BfCapturePoint*> BfCapturePointMap;
 
-        /// Call this to init the Battlefield
+        // Call this to init the Battlefield
         virtual bool SetupBattlefield() { return true; }
 
-        /// Update data of a worldstate to all players present in zone
+        // Update data of a worldstate to all players present in zone
         void SendUpdateWorldState(uint32 field, uint32 value);
 
         /**
@@ -219,14 +219,14 @@ class Battlefield : public ZoneScript
          */
         virtual bool Update(uint32 diff);
 
-        /// Invite all players in zone to join the queue, called x minutes before battle start in Update()
+        // Invite all players in zone to join the queue, called x minutes before battle start in Update()
         void InvitePlayersInZoneToQueue();
-        /// Invite all players in queue to join battle on battle start
+        // Invite all players in queue to join battle on battle start
         void InvitePlayersInQueueToWar();
-        /// Invite all players in zone to join battle on battle start
+        // Invite all players in zone to join battle on battle start
         void InvitePlayersInZoneToWar();
 
-        /// Called when a Unit is kill in battlefield zone
+        // Called when a Unit is kill in battlefield zone
         virtual void HandleKill(Player* /*killer*/, Unit* /*killed*/) { };
 
         uint32 GetTypeId() { return m_TypeId; }
@@ -235,12 +235,12 @@ class Battlefield : public ZoneScript
 
         void TeamApplyBuff(TeamId team, uint32 spellId, uint32 spellId2 = 0);
 
-        /// Return true if battle is start, false if battle is not started
+        // Return true if battle is start, false if battle is not started
         bool IsWarTime() { return m_isActive; }
 
-        /// Enable or Disable battlefield
+        // Enable or Disable battlefield
         void ToggleBattlefield(bool enable) { m_IsEnabled = enable; }
-        /// Return if battlefield is enable
+        // Return if battlefield is enable
         bool IsEnabled() { return m_IsEnabled; }
 
         /**
@@ -249,9 +249,9 @@ class Battlefield : public ZoneScript
          */
         void KickPlayerFromBattlefield(uint64 guid);
 
-        /// Called when player (player) enter in zone
+        // Called when player (player) enter in zone
         void HandlePlayerEnterZone(Player* player, uint32 zone);
-        /// Called when player (player) leave the zone
+        // Called when player (player) leave the zone
         void HandlePlayerLeaveZone(Player* player, uint32 zone);
 
         // All-purpose data storage 64 bit
@@ -275,9 +275,9 @@ class Battlefield : public ZoneScript
          * \param TeamId : Id of player team for who we search a group (player->GetTeamId())
          */
         Group* GetFreeBfRaid(TeamId TeamId);
-        /// Return battlefield group where player is.
+        // Return battlefield group where player is.
         Group* GetGroupPlayer(uint64 guid, TeamId TeamId);
-        /// Force player to join a battlefield group
+        // Force player to join a battlefield group
         bool AddOrSetPlayerToCorrectBfGroup(Player* player);
 
         // Graveyard methods
@@ -299,19 +299,19 @@ class Battlefield : public ZoneScript
 
         // Script-methods
 
-        /// Called on start
+        // Called on start
         virtual void OnBattleStart() { }
-        /// Called at the end of battle
+        // Called at the end of battle
         virtual void OnBattleEnd(bool /*endByTimer*/) { }
-        /// Called x minutes before battle start when player in zone are invite to join queue
+        // Called x minutes before battle start when player in zone are invite to join queue
         virtual void OnStartGrouping() { }
-        /// Called when a player accept to join the battle
+        // Called when a player accept to join the battle
         virtual void OnPlayerJoinWar(Player* /*player*/) { }
-        /// Called when a player leave the battle
+        // Called when a player leave the battle
         virtual void OnPlayerLeaveWar(Player* /*player*/) { }
-        /// Called when a player leave battlefield zone
+        // Called when a player leave battlefield zone
         virtual void OnPlayerLeaveZone(Player* /*player*/) { }
-        /// Called when a player enter in battlefield zone
+        // Called when a player enter in battlefield zone
         virtual void OnPlayerEnterZone(Player* /*player*/) { }
 
         WorldPacket BuildWarningAnnPacket(std::string const& msg);
@@ -326,11 +326,11 @@ class Battlefield : public ZoneScript
 
         virtual void DoCompleteOrIncrementAchievement(uint32 /*achievement*/, Player* /*player*/, uint8 /*incrementNumber = 1*/) { }
 
-        /// Send all worldstate data to all player in zone.
+        // Send all worldstate data to all player in zone.
         virtual void SendInitWorldStatesToAll() = 0;
         virtual void FillInitialWorldStates(WorldStateBuilder& /*builder*/) = 0;
 
-        /// Return if we can use mount in battlefield
+        // Return if we can use mount in battlefield
         bool CanFlyIn() { return !m_isActive; }
 
         void SendAreaSpiritHealerQueryOpcode(Player* player, uint64 guid);

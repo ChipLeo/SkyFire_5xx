@@ -80,7 +80,7 @@ void WorldSession::HandleClientCastFlags(WorldPacket& recvPacket, uint8 castFlag
 
 void WorldSession::HandleUseItemOpcode(WorldPacket& recvPacket)
 {
-    /// @todo add targets.read() check
+    // @todo add targets.read() check
     Player* pUser = _player;
     Unit* mover = _player->m_mover;
 
@@ -1394,7 +1394,7 @@ void WorldSession::HandleSpellClick(WorldPacket& recvData)
     if (!unit)
         return;
 
-    /// @todo Unit::SetCharmedBy: 28782 is not in world but 0 is trying to charm it! -> crash
+    // @todo Unit::SetCharmedBy: 28782 is not in world but 0 is trying to charm it! -> crash
     if (!unit->IsInWorld())
         return;
 

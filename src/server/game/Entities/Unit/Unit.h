@@ -725,7 +725,7 @@ enum UnitFlags2
     MAX_UNIT_FLAGS2 = 20
 };
 
-/// Non Player Character flags
+// Non Player Character flags
 enum NPCFlags : uint64
 {
     UNIT_NPC_FLAG_NONE                  = 0x0000000000,
@@ -798,7 +798,7 @@ enum MovementFlags
     MOVEMENTFLAG_HOVER                  = 0x10000000,               // hover, cannot jump
     MOVEMENTFLAG_DISABLE_COLLISION      = 0x20000000,
 
-    /// @todo Check if PITCH_UP and PITCH_DOWN really belong here..
+    // @todo Check if PITCH_UP and PITCH_DOWN really belong here..
     MOVEMENTFLAG_MASK_MOVING =
     MOVEMENTFLAG_FORWARD | MOVEMENTFLAG_BACKWARD | MOVEMENTFLAG_STRAFE_LEFT | MOVEMENTFLAG_STRAFE_RIGHT |
     MOVEMENTFLAG_PITCH_UP | MOVEMENTFLAG_PITCH_DOWN | MOVEMENTFLAG_FALLING | MOVEMENTFLAG_FALLING_FAR | MOVEMENTFLAG_ASCENDING | MOVEMENTFLAG_DESCENDING |
@@ -816,11 +816,11 @@ enum MovementFlags
     MOVEMENTFLAG_FORWARD | MOVEMENTFLAG_DISABLE_GRAVITY | MOVEMENTFLAG_ROOT | MOVEMENTFLAG_SWIMMING |
     MOVEMENTFLAG_CAN_FLY | MOVEMENTFLAG_WATERWALKING | MOVEMENTFLAG_FALLING_SLOW | MOVEMENTFLAG_HOVER,
 
-    /// @todo if needed: add more flags to this masks that are exclusive to players
+    // @todo if needed: add more flags to this masks that are exclusive to players
     MOVEMENTFLAG_MASK_PLAYER_ONLY =
     MOVEMENTFLAG_FLYING,
 
-    /// Movement flags that have change status opcodes associated for players
+    // Movement flags that have change status opcodes associated for players
     MOVEMENTFLAG_MASK_HAS_PLAYER_STATUS_OPCODE = MOVEMENTFLAG_DISABLE_GRAVITY | MOVEMENTFLAG_ROOT |
     MOVEMENTFLAG_CAN_FLY | MOVEMENTFLAG_WATERWALKING | MOVEMENTFLAG_FALLING_SLOW | MOVEMENTFLAG_HOVER
 };
@@ -1101,7 +1101,7 @@ struct CalcDamageInfo
     uint32 procVictim;
     uint32 procEx;
     uint32 cleanDamage;          // Used only for rage calculation
-    MeleeHitOutcome hitOutCome;  /// @todo remove this field (need use TargetState)
+    MeleeHitOutcome hitOutCome;  // @todo remove this field (need use TargetState)
 };
 
 // Spell damage info structure based on structure sending in SMSG_SPELL_NON_MELEE_DAMAGE_LOG opcode
@@ -2300,7 +2300,7 @@ class Unit : public WorldObject
     void RemoveAllAurasOnDeath();
     void RemoveAllAurasRequiringDeadTarget();
     void RemoveAllAurasExceptType(AuraType type);
-    void RemoveAllAurasExceptType(AuraType type1, AuraType type2); /// @todo: once we support variadic templates use them here
+    void RemoveAllAurasExceptType(AuraType type1, AuraType type2); // @todo: once we support variadic templates use them here
     void DelayOwnedAuras(uint32 spellId, uint64 caster, int32 delaytime);
 
     void _RemoveAllAuraStatMods();
@@ -2817,7 +2817,7 @@ class Unit : public WorldObject
     Unit* GetVehicleBase()  const;
     Creature* GetVehicleCreatureBase() const;
     uint64 GetTransGUID() const override;
-    /// Returns the transport this unit is on directly (if on vehicle and transport, return vehicle)
+    // Returns the transport this unit is on directly (if on vehicle and transport, return vehicle)
     TransportBase* GetDirectTransport() const;
 
     bool m_ControlledByPlayer;
@@ -3026,7 +3026,7 @@ class Unit : public WorldObject
     void SetStunned(bool apply);
     void SetRooted(bool apply, bool packetOnly = false);
 
-    uint32 m_movementCounter;       ///< Incrementing counter used in movement packets
+    uint32 m_movementCounter;       //< Incrementing counter used in movement packets
 
     private:
 
@@ -3051,7 +3051,7 @@ class Unit : public WorldObject
 
     time_t _lastDamagedTime; // Part of Evade mechanics
 
-    uint32 _oldFactionId;           ///< faction before charm
+    uint32 _oldFactionId;           //< faction before charm
 };
 
 namespace Skyfire

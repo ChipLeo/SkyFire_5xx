@@ -68,10 +68,10 @@ class boss_koralon : public CreatureScript
             {
                 DoCast(me, SPELL_BURNING_FURY);
 
-                events.ScheduleEvent(EVENT_BURNING_FURY, 20000);    /// @todo check timer
+                events.ScheduleEvent(EVENT_BURNING_FURY, 20000);    // @todo check timer
                 events.ScheduleEvent(EVENT_BURNING_BREATH, 15000);  // 1st after 15sec, then every 45sec
                 events.ScheduleEvent(EVENT_METEOR_FISTS, 75000);    // 1st after 75sec, then every 45sec
-                events.ScheduleEvent(EVENT_FLAME_CINDER, 30000);    /// @todo check timer
+                events.ScheduleEvent(EVENT_FLAME_CINDER, 30000);    // @todo check timer
 
                 _EnterCombat();
             }

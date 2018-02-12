@@ -1198,7 +1198,7 @@ void AuraEffect::CleanupTriggeredSpells(Unit* target)
         return;
 
     // needed for spell 43680, maybe others
-    /// @todo is there a spell flag, which can solve this in a more sophisticated way?
+    // @todo is there a spell flag, which can solve this in a more sophisticated way?
     if (m_spellInfo->Effects[GetEffIndex()].ApplyAuraName == SPELL_AURA_PERIODIC_TRIGGER_SPELL &&
         uint32(m_spellInfo->GetDuration()) == m_spellInfo->Effects[GetEffIndex()].ApplyAuraTickCount)
         return;
@@ -2448,7 +2448,7 @@ void AuraEffect::HandleAuraModPacifyAndSilence(AuraApplication const* aurApp, ui
     Unit* target = aurApp->GetTarget();
 
     // Vengeance of the Blue Flight (@todo REMOVE THIS!)
-    /// @workaround
+    // @workaround
     if (m_spellInfo->Id == 45839)
     {
         if (apply)
@@ -3512,7 +3512,7 @@ void AuraEffect::HandleAuraModSchoolImmunity(AuraApplication const* aurApp, uint
         && GetSpellInfo()->AttributesEx2 & SPELL_ATTR2_DAMAGE_REDUCED_SHIELD)
         target->RemoveAurasWithInterruptFlags(AURA_INTERRUPT_FLAG_IMMUNE_OR_LOST_SELECTION);
 
-    /// @todo optimalize this cycle - use RemoveAurasWithInterruptFlags call or something else
+    // @todo optimalize this cycle - use RemoveAurasWithInterruptFlags call or something else
     if ((apply)
         && GetSpellInfo()->AttributesEx & SPELL_ATTR1_DISPEL_AURAS_ON_IMMUNITY
         && GetSpellInfo()->IsPositive())                       //Only positive immunity removes auras
@@ -5413,7 +5413,7 @@ void AuraEffect::HandlePeriodicDummyAuraTick(Unit* target, Unit* caster) const
                 // Killing Spree
                 case 51690:
                 {
-                    /// @todo this should use effect[1] of 51690
+                    // @todo this should use effect[1] of 51690
                     UnitList targets;
                     {
                         // eff_radius == 0
@@ -5601,7 +5601,7 @@ void AuraEffect::HandlePeriodicTriggerSpellAuraTick(Unit* target, Unit* caster) 
                         triggerSpellId = 30571;
                         break;
                     // Doom
-                    /// @todo effect trigger spell may be independant on spell targets, and executed in spell finish phase
+                    // @todo effect trigger spell may be independant on spell targets, and executed in spell finish phase
                     // so instakill will be naturally done before trigger spell
                     case 31347:
                     {

@@ -372,7 +372,7 @@ public:
                     if (destroyingDoor)
                     {
                         instance->DoUseDoorOrButton(instance->GetData64(GO_END_DOOR));
-                        /// @todo leave the area...
+                        // @todo leave the area...
                         me->DespawnOrUnsummon();
                     };
             }

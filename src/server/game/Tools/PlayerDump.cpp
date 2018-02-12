@@ -357,8 +357,8 @@ bool PlayerDumpWriter::GetDump(uint32 guid, std::string &dump)
         if (!DumpTable(dump, guid, dumpTables[i].name, dumpTables[i].name, dumpTables[i].type))
             return false;
 
-    /// @todo Add instance/group..
-    /// @todo Add a dump level option to skip some non-important tables
+    // @todo Add instance/group..
+    // @todo Add a dump level option to skip some non-important tables
 
     return true;
 }

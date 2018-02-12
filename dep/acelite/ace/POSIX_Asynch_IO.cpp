@@ -1729,26 +1729,26 @@ ACE_POSIX_Asynch_Transmit_File_Result::~ACE_POSIX_Asynch_Transmit_File_Result (v
 class ACE_Export ACE_POSIX_Asynch_Transmit_Handler : public ACE_Handler
 {
 public:
-  /// Constructor. Result pointer will have all the information to do
-  /// the file transmission (socket, file, application handler, bytes
-  /// to write).
+  // Constructor. Result pointer will have all the information to do
+  // the file transmission (socket, file, application handler, bytes
+  // to write).
   ACE_POSIX_Asynch_Transmit_Handler (ACE_POSIX_Proactor *posix_proactor,
                                      ACE_POSIX_Asynch_Transmit_File_Result *result);
 
-  /// Destructor.
+  // Destructor.
   virtual ~ACE_POSIX_Asynch_Transmit_Handler (void);
 
-  /// Do the transmission. All the info to do the transmission is in
-  /// the <result> member.
+  // Do the transmission. All the info to do the transmission is in
+  // the <result> member.
   int transmit (void);
 
 protected:
 
-  /// The asynch result pointer made from the initial transmit file
-  /// request.
+  // The asynch result pointer made from the initial transmit file
+  // request.
   ACE_POSIX_Asynch_Transmit_File_Result *result_;
 
-  /// Message bloack used to do the transmission.
+  // Message bloack used to do the transmission.
   ACE_Message_Block *mb_;
 
   enum ACT
@@ -1758,37 +1758,37 @@ protected:
     TRAILER_ACT = 3
   };
 
-  /// ACT to transmit header.
+  // ACT to transmit header.
   ACT header_act_;
 
-  /// ACT to transmit data.
+  // ACT to transmit data.
   ACT data_act_;
 
-  /// ACT to transmit trailer.
+  // ACT to transmit trailer.
   ACT trailer_act_;
 
-  /// Current offset of the file being transmitted.
+  // Current offset of the file being transmitted.
   size_t file_offset_;
 
-  /// Total size of the file.
+  // Total size of the file.
   size_t file_size_;
 
-  /// Number of bytes transferred on the stream.
+  // Number of bytes transferred on the stream.
   size_t bytes_transferred_;
 
-  /// This is called when asynchronous writes from the socket complete.
+  // This is called when asynchronous writes from the socket complete.
   virtual void handle_write_stream (const ACE_Asynch_Write_Stream::Result &result);
 
-  /// This is called when asynchronous reads from the file complete.
+  // This is called when asynchronous reads from the file complete.
   virtual void handle_read_file (const ACE_Asynch_Read_File::Result &result);
 
-  /// Issue asynch read from  the file.
+  // Issue asynch read from  the file.
   int initiate_read_file (void);
 
-  /// To read from the file to be transmitted.
+  // To read from the file to be transmitted.
   ACE_POSIX_Asynch_Read_File rf_;
 
-  /// Write stream to write the header, trailer and the data.
+  // Write stream to write the header, trailer and the data.
   ACE_POSIX_Asynch_Write_Stream ws_;
 };
 

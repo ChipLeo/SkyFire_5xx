@@ -81,11 +81,11 @@ public:
     // Stores informations about a deleted character
     struct DeletedInfo
     {
-        uint32      lowGuid;                            ///< the low GUID from the character
-        std::string name;                               ///< the character name
-        uint32      accountId;                          ///< the account id
-        std::string accountName;                        ///< the account name
-        time_t      deleteDate;                         ///< the date at which the character has been deleted
+        uint32      lowGuid;                            //< the low GUID from the character
+        std::string name;                               //< the character name
+        uint32      accountId;                          //< the account id
+        std::string accountName;                        //< the account name
+        time_t      deleteDate;                         //< the date at which the character has been deleted
     };
 
     typedef std::list<DeletedInfo> DeletedInfoList;
@@ -538,7 +538,7 @@ public:
         stmt->setUInt16(0, uint16(AT_LOGIN_CHANGE_RACE));
         if (target)
         {
-            /// @todo add text into database
+            // @todo add text into database
             handler->PSendSysMessage(LANG_CUSTOMIZE_PLAYER, handler->GetNameLink(target).c_str());
             target->SetAtLoginFlag(AT_LOGIN_CHANGE_RACE);
             stmt->setUInt32(1, target->GetGUIDLow());
@@ -546,7 +546,7 @@ public:
         else
         {
             std::string oldNameLink = handler->playerLink(targetName);
-            /// @todo add text into database
+            // @todo add text into database
             handler->PSendSysMessage(LANG_CUSTOMIZE_PLAYER_GUID, oldNameLink.c_str(), GUID_LOPART(targetGuid));
             stmt->setUInt32(1, GUID_LOPART(targetGuid));
         }

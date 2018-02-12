@@ -299,7 +299,7 @@ void BattlegroundIC::HandleAreaTrigger(Player* player, uint32 trigger)
     if (GetStatus() != STATUS_IN_PROGRESS)
         return;
 
-    /// @hack: this spell should be cast by npc 22515 (World Trigger) and not by the player
+    // @hack: this spell should be cast by npc 22515 (World Trigger) and not by the player
     if (trigger == 5555 && player->GetTeamId() == TEAM_HORDE)
     {
         if (GateStatus[BG_IC_A_FRONT] != BG_IC_GATE_DESTROYED

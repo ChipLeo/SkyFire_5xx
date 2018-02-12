@@ -76,7 +76,7 @@ SF_SHARED_MUTEX* HashMapHolder<T>::GetLock()
     return &i_lock;
 }
 
-/// Global definitions for the hashmap storage
+// Global definitions for the hashmap storage
 
 template class HashMapHolder<Player>;
 template class HashMapHolder<Pet>;
@@ -316,7 +316,7 @@ void ObjectAccessor::RemoveCorpse(Corpse* corpse)
 {
     ASSERT(corpse && corpse->GetType() != CORPSE_BONES);
 
-    /// @todo more works need to be done for corpse and other world object
+    // @todo more works need to be done for corpse and other world object
     if (Map* map = corpse->FindMap())
     {
         corpse->DestroyForNearbyPlayers();
@@ -336,7 +336,7 @@ void ObjectAccessor::RemoveCorpse(Corpse* corpse)
     {
         SF_SHARED_GUARD writeGuard(i_corpseLock);
         Player2CorpsesMapType::iterator iter = i_player2corpse.find(corpse->GetOwnerGUID());
-        if (iter == i_player2corpse.end()) /// @todo Fix this
+        if (iter == i_player2corpse.end()) // @todo Fix this
             return;
 
         // build mapid*cellid -> guid_set map
@@ -498,7 +498,7 @@ void ObjectAccessor::UnloadAll()
     }
 }
 
-/// Define the static members of HashMapHolder
+// Define the static members of HashMapHolder
 
 template <class T> UNORDERED_MAP< uint64, T* > HashMapHolder<T>::m_objectMap;
 template <class T> typename SF_SHARED_MUTEX HashMapHolder<T>::i_lock;

@@ -100,14 +100,14 @@ class MySQLConnection
     protected:
         bool LockIfReady()
         {
-            /// Tries to acquire lock. If lock is acquired by another thread
-            /// the calling parent will just try another connection
+            // Tries to acquire lock. If lock is acquired by another thread
+            // the calling parent will just try another connection
             return m_Mutex.tryacquire() != -1;
         }
 
         void Unlock()
         {
-            /// Called by parent databasepool. Will let other threads access this connection
+            // Called by parent databasepool. Will let other threads access this connection
             m_Mutex.release();
         }
 

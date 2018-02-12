@@ -36,14 +36,14 @@ class ObjectRegistry
     public:
         typedef std::map<Key, T *> RegistryMapType;
 
-        /// Returns a registry item
+        // Returns a registry item
         const T* GetRegistryItem(Key key) const
         {
             typename RegistryMapType::const_iterator iter = i_registeredObjects.find(key);
             return( iter == i_registeredObjects.end() ? NULL : iter->second );
         }
 
-        /// Inserts a registry item
+        // Inserts a registry item
         bool InsertItem(T *obj, Key key, bool override = false)
         {
             typename RegistryMapType::iterator iter = i_registeredObjects.find(key);
@@ -59,7 +59,7 @@ class ObjectRegistry
             return true;
         }
 
-        /// Removes a registry item
+        // Removes a registry item
         void RemoveItem(Key key, bool delete_object = true)
         {
             typename RegistryMapType::iterator iter = i_registeredObjects.find(key);
@@ -71,13 +71,13 @@ class ObjectRegistry
             }
         }
 
-        /// Returns true if registry contains an item
+        // Returns true if registry contains an item
         bool HasItem(Key key) const
         {
             return (i_registeredObjects.find(key) != i_registeredObjects.end());
         }
 
-        /// Inefficiently return a vector of registered items
+        // Inefficiently return a vector of registered items
         unsigned int GetRegisteredItems(std::vector<Key> &l) const
         {
             unsigned int sz = l.size();
@@ -87,7 +87,7 @@ class ObjectRegistry
             return i_registeredObjects.size();
         }
 
-        /// Return the map of registered items
+        // Return the map of registered items
         RegistryMapType const &GetRegisteredItems() const
         {
             return i_registeredObjects;

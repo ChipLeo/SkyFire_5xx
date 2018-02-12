@@ -65,7 +65,7 @@ struct FriendInfo
 typedef std::map<uint32, FriendInfo> PlayerSocialMap;
 typedef std::map<uint32, PlayerSocial> SocialMap;
 
-/// Results of friend related commands
+// Results of friend related commands
 enum FriendsResult
 {
     FRIEND_DB_ERROR         = 0x00,

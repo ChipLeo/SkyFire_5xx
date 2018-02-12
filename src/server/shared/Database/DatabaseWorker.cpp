@@ -27,7 +27,7 @@ DatabaseWorker::DatabaseWorker(ACE_Activation_Queue* new_queue, MySQLConnection*
 m_queue(new_queue),
 m_conn(con)
 {
-    /// Assign thread to task
+    // Assign thread to task
     activate();
 }
 

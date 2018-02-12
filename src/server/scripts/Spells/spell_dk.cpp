@@ -327,7 +327,7 @@ class spell_dk_anti_magic_shell_raid : public SpellScriptLoader
 
             void CalculateAmount(AuraEffect const* /*aurEff*/, int32 & amount, bool & /*canBeRecalculated*/)
         {
-            /// @todo this should absorb limited amount of damage, but no info on calculation formula
+            // @todo this should absorb limited amount of damage, but no info on calculation formula
             amount = -1;
         }
 
@@ -1228,7 +1228,7 @@ class spell_dk_presence : public SpellScriptLoader
 
             void HandleImprovedBloodPresence(AuraEffect const* aurEff, AuraEffectHandleModes /*mode*/)
         {
-            /// @todo: rune regg (effect 2)
+            // @todo: rune regg (effect 2)
             Unit* target = GetTarget();
             if (Aura const* aura = target->GetAuraOfRankedSpell(SPELL_DK_IMPROVED_BLOOD_PRESENCE_R1))
             {

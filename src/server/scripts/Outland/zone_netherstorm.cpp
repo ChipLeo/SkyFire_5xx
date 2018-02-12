@@ -307,7 +307,7 @@ public:
 ## go_manaforge_control_console
 ######*/
 
-/// @todo clean up this workaround when Skyfire adds support to do it properly (with gossip selections instead of instant summon)
+// @todo clean up this workaround when Skyfire adds support to do it properly (with gossip selections instead of instant summon)
 class go_manaforge_control_console : public GameObjectScript
 {
 public:

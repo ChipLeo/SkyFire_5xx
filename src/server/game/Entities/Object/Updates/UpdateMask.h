@@ -27,7 +27,7 @@
 class UpdateMask
 {
     public:
-        /// Type representing how client reads update mask
+        // Type representing how client reads update mask
         typedef uint32 ClientUpdateMaskType;
 
         enum UpdateMaskCount

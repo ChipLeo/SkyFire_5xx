@@ -73,8 +73,8 @@ ACE_OS::ace_flock_t::dump (void) const
 #if defined (ACE_WIN32) && !defined (ACE_HAS_WINCE)
 namespace
 {
-  /// Translate fopen's mode char to open's mode.  This helper function
-  /// is here to avoid maintaining several pieces of identical code.
+  // Translate fopen's mode char to open's mode.  This helper function
+  // is here to avoid maintaining several pieces of identical code.
   void
   fopen_mode_to_open_mode_converter (ACE_TCHAR x, int & hmode)
   {

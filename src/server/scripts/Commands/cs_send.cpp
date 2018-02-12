@@ -81,7 +81,7 @@ public:
         // from console show not existed sender
         MailSender sender(MAIL_NORMAL, handler->GetSession() ? handler->GetSession()->GetPlayer()->GetGUIDLow() : 0, MAIL_STATIONERY_GM);
 
-        /// @todo Fix poor design
+        // @todo Fix poor design
         SQLTransaction trans = CharacterDatabase.BeginTransaction();
         MailDraft(subject, text)
             .SendMailTo(trans, MailReceiver(target, GUID_LOPART(targetGuid)), sender);
@@ -201,10 +201,10 @@ public:
         handler->PSendSysMessage(LANG_MAIL_SENT, nameLink.c_str());
         return true;
     }
-    /// Send money by mail
+    // Send money by mail
     static bool HandleSendMoneyCommand(ChatHandler* handler, char const* args)
     {
-        /// format: name "subject text" "mail text" money
+        // format: name "subject text" "mail text" money
 
         Player* receiver;
         uint64 receiverGuid;
@@ -252,10 +252,10 @@ public:
         handler->PSendSysMessage(LANG_MAIL_SENT, nameLink.c_str());
         return true;
     }
-    /// Send a message to a player in game
+    // Send a message to a player in game
     static bool HandleSendMessageCommand(ChatHandler* handler, char const* args)
     {
-        /// - Find the player
+        // - Find the player
         Player* player;
         if (!handler->extractPlayerTarget((char*)args, &player))
             return false;
@@ -272,7 +272,7 @@ public:
             return false;
         }
 
-        /// - Send the message
+        // - Send the message
         // Use SendAreaTriggerMessage for fastest delivery.
         player->GetSession()->SendAreaTriggerMessage("%s", msgStr);
         player->GetSession()->SendAreaTriggerMessage("|cffff0000[Message from administrator]:|r");

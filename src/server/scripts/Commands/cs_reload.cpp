@@ -624,7 +624,7 @@ public:
         HandleReloadQuestObjectivesCommand(handler, "a");
         HandleReloadQuestObjectiveEffectsCommand(handler, "a");
 
-        /// dependent also from `gameobject` but this table not reloaded anyway
+        // dependent also from `gameobject` but this table not reloaded anyway
         SF_LOG_INFO("misc", "Re-Loading GameObjects for quests...");
         sObjectMgr->LoadGameObjectForQuests();
         handler->SendGlobalGMSysMessage("Data GameObjects for quests reloaded.");

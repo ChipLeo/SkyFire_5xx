@@ -847,7 +847,7 @@ class GameObject : public WorldObject, public GridObject<GameObject>, public Map
         typedef std::map<uint32, uint64> ChairSlotAndUser;
         ChairSlotAndUser ChairListSlots;
 
-        uint32 m_DBTableGuid;                               ///< For new or temporary gameobjects is 0 for saved it is lowguid
+        uint32 m_DBTableGuid;                               //< For new or temporary gameobjects is 0 for saved it is lowguid
         GameObjectTemplate const* m_goInfo;
         GameObjectData const* m_goData;
         GameObjectValue m_goValue;

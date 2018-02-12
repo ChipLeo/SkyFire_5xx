@@ -75,7 +75,7 @@ enum LfgState
     LFG_STATE_RAIDBROWSER                                  // Using Raid finder
 };
 
-/// Instance lock types
+// Instance lock types
 enum LfgLockStatusType
 {
     LFG_LOCKSTATUS_INSUFFICIENT_EXPANSION        = 1,
@@ -92,7 +92,7 @@ enum LfgLockStatusType
     LFG_LOCKSTATUS_MISSING_ACHIEVEMENT           = 1034
 };
 
-/// Answer state (Also used to check compatibilites)
+// Answer state (Also used to check compatibilites)
 enum LfgAnswer
 {
     LFG_ANSWER_PENDING                           = -1,

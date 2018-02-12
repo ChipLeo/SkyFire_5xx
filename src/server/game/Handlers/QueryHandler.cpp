@@ -217,7 +217,7 @@ void WorldSession::SendQueryTimeResponse()
     SendPacket(&data);
 }
 
-/// Only _static_ data is sent in this packet !!!
+// Only _static_ data is sent in this packet !!!
 void WorldSession::HandleCreatureQueryOpcode(WorldPacket& recvData)
 {
     uint32 entry;
@@ -304,7 +304,7 @@ void WorldSession::HandleCreatureQueryOpcode(WorldPacket& recvData)
     SendPacket(&data);
 }
 
-/// Only _static_ data is sent in this packet !!!
+// Only _static_ data is sent in this packet !!!
 void WorldSession::HandleGameObjectQueryOpcode(WorldPacket& recvData)
 {
     uint32 entry;
@@ -514,7 +514,7 @@ void WorldSession::HandleNpcTextQueryOpcode(WorldPacket& recvData)
     SF_LOG_DEBUG("network", "WORLD: Sent SMSG_NPC_TEXT_UPDATE");
 }
 
-/// Only _static_ data is sent in this packet !!!
+// Only _static_ data is sent in this packet !!!
 void WorldSession::HandlePageTextQueryOpcode(WorldPacket& recvData)
 {
     SF_LOG_DEBUG("network", "WORLD: Received CMSG_PAGE_TEXT_QUERY");

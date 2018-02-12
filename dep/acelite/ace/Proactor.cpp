@@ -36,11 +36,11 @@
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
-/// Process-wide ACE_Proactor.
+// Process-wide ACE_Proactor.
 ACE_Proactor *ACE_Proactor::proactor_ = 0;
 
-/// Controls whether the Proactor is deleted when we shut down (we can
-/// only delete it safely if we created it!)
+// Controls whether the Proactor is deleted when we shut down (we can
+// only delete it safely if we created it!)
 bool ACE_Proactor::delete_proactor_ = false;
 
 /**
@@ -59,35 +59,35 @@ bool ACE_Proactor::delete_proactor_ = false;
 class ACE_Proactor_Timer_Handler : public ACE_Task<ACE_NULL_SYNCH>
 {
 public:
-  /// Constructor.
+  // Constructor.
   ACE_Proactor_Timer_Handler (ACE_Proactor &proactor);
 
-  /// Destructor.
+  // Destructor.
   virtual ~ACE_Proactor_Timer_Handler (void);
 
-  /// Proactor calls this to shut down the timer handler
-  /// gracefully. Just calling the destructor alone doesnt do what
-  /// <destroy> does. <destroy> make sure the thread exits properly.
+  // Proactor calls this to shut down the timer handler
+  // gracefully. Just calling the destructor alone doesnt do what
+  // <destroy> does. <destroy> make sure the thread exits properly.
   int destroy (void);
 
-  /// Proactor calls this to refresh the timer event thread, to wake
-  /// up the thread from a sleep.  This is needed to make the thread
-  /// recompute its sleep time after changes to the timer queue.
+  // Proactor calls this to refresh the timer event thread, to wake
+  // up the thread from a sleep.  This is needed to make the thread
+  // recompute its sleep time after changes to the timer queue.
   int signal (void);
 
 protected:
-  /// Run by a daemon thread to handle deferred processing. In other
-  /// words, this method will do the waiting on the earliest timer and
-  /// event.
+  // Run by a daemon thread to handle deferred processing. In other
+  // words, this method will do the waiting on the earliest timer and
+  // event.
   virtual int svc (void);
 
-  /// Event to wait on.
+  // Event to wait on.
   ACE_Auto_Event timer_event_;
 
-  /// Proactor.
+  // Proactor.
   ACE_Proactor &proactor_;
 
-  /// Flag used to indicate when we are shutting down.
+  // Flag used to indicate when we are shutting down.
   int shutting_down_;
 };
 

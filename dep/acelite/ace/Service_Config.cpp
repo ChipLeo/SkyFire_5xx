@@ -101,7 +101,7 @@ typedef ACE_Unmanaged_Singleton<ACE_Service_Config,
                                 ACE_SYNCH_RECURSIVE_MUTEX> ACE_SERVICE_CONFIG_SINGLETON;
 
 
-/// ctor
+// ctor
 ACE_Service_Config_Guard::ACE_Service_Config_Guard (ACE_Service_Gestalt * psg)
   : saved_ (ACE_Service_Config::current ())
 {
@@ -144,13 +144,13 @@ sig_atomic_t ACE_Service_Config::reconfig_occurred_ = 0;
 
 // = Set by command-line options.
 
-/// Pathname of file to write process id.
+// Pathname of file to write process id.
 ACE_TCHAR *ACE_Service_Config::pid_file_name_ = 0;
 
-/// Shall we become a daemon process?
+// Shall we become a daemon process?
 bool ACE_Service_Config::be_a_daemon_ = false;
 
-/// Number of the signal used to trigger reconfiguration.
+// Number of the signal used to trigger reconfiguration.
 int ACE_Service_Config::signum_ = SIGHUP;
 
 void
@@ -318,8 +318,8 @@ ACE_Service_Config::open_i (const ACE_TCHAR program_name[],
   return 0;
 }
 
-/// Return the global configuration instance. Always returns the same
-/// instance
+// Return the global configuration instance. Always returns the same
+// instance
 ACE_Service_Config *
 ACE_Service_Config::singleton (void)
 {
@@ -413,11 +413,11 @@ ACE_Service_Config::ACE_Service_Config (const ACE_TCHAR program_name[],
     }
 }
 
-/// Return the "global" configuration instance, for the current
-/// thread. This may be the same as instance(), but on some occasions,
-/// it may be a different one. For example, ACE_Service_Config_Guard
-/// provides a way of temporarily replacing the "current"
-/// configuration instance in the context of a thread.
+// Return the "global" configuration instance, for the current
+// thread. This may be the same as instance(), but on some occasions,
+// it may be a different one. For example, ACE_Service_Config_Guard
+// provides a way of temporarily replacing the "current"
+// configuration instance in the context of a thread.
 ACE_Service_Gestalt*
 ACE_Service_Config::current (void)
 {
@@ -440,7 +440,7 @@ ACE_Service_Config::current (void)
   return static_cast<ACE_Service_Gestalt*> (temp);
 }
 
-/// A mutator to set the "current" (TSS) gestalt instance.
+// A mutator to set the "current" (TSS) gestalt instance.
 void
 ACE_Service_Config::current (ACE_Service_Gestalt* newcurrent)
 {
@@ -581,7 +581,7 @@ ACE_Service_Config::fini_svcs (void)
   return result;
 }
 
-/// Perform user-specified close activities and remove dynamic memory.
+// Perform user-specified close activities and remove dynamic memory.
 ACE_Service_Config::~ACE_Service_Config (void)
 {
   ACE_TRACE ("ACE_Service_Config::~ACE_Service_Config");

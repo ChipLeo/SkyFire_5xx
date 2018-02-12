@@ -17,9 +17,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/// @todo Implement proper support for vehicle+player teleportation
-/// @todo Use spell victory/defeat in wg instead of RewardMarkOfHonor() && RewardHonor
-/// @todo Add proper implement of achievement
+// @todo Implement proper support for vehicle+player teleportation
+// @todo Use spell victory/defeat in wg instead of RewardMarkOfHonor() && RewardHonor
+// @todo Add proper implement of achievement
 
 #include "BattlefieldWG.h"
 #include "AchievementMgr.h"
@@ -660,7 +660,7 @@ void BattlefieldWG::HandleKill(Player* killer, Unit* victim)
             }
         }
     }
-    /// @todoRecent PvP activity worldstate
+    // @todoRecent PvP activity worldstate
 }
 
 bool BattlefieldWG::FindAndRemoveVehicleFromList(Unit* vehicle)
@@ -766,7 +766,7 @@ void BattlefieldWG::OnPlayerJoinWar(Player* player)
 
 void BattlefieldWG::OnPlayerLeaveWar(Player* player)
 {
-    // Remove all aura from WG /// @todo false we can go out of this zone on retail and keep Rank buff, remove on end of WG
+    // Remove all aura from WG // @todo false we can go out of this zone on retail and keep Rank buff, remove on end of WG
     if (!player->GetSession()->PlayerLogout())
     {
         if (Creature* vehicle = player->GetVehicleCreatureBase())   // Remove vehicle of player if he go out.

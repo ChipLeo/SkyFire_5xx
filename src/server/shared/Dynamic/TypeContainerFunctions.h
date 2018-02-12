@@ -85,7 +85,7 @@ namespace Skyfire
         return (t != NULL ? t : Insert(elements._TailElements, obj));
     }
 
-    //// non-const remove method
+    /// non-const remove method
     //template<class SPECIFIC_TYPE> SPECIFIC_TYPE* Remove(ContainerMapList<SPECIFIC_TYPE> & /*elements*/, SPECIFIC_TYPE *obj)
     //{
     //    obj->GetGridRef().unlink();
@@ -97,7 +97,7 @@ namespace Skyfire
     //    return NULL;
     //}
 
-    //// this is a missed
+    /// this is a missed
     //template<class SPECIFIC_TYPE, class T> SPECIFIC_TYPE* Remove(ContainerMapList<T> &/*elements*/, SPECIFIC_TYPE * /*obj*/)
     //{
     //    return NULL;                                        // a missed

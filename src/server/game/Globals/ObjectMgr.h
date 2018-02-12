@@ -66,7 +66,7 @@ struct PageText
     uint16 NextPage;
 };
 
-/// Key for storing temp summon data in TempSummonDataContainer
+// Key for storing temp summon data in TempSummonDataContainer
 struct TempSummonGroupKey
 {
     TempSummonGroupKey(uint32 summonerEntry, SummonerType summonerType, uint8 group)
@@ -81,9 +81,9 @@ struct TempSummonGroupKey
     }
 
 private:
-    uint32 _summonerEntry;      ///< Summoner's entry
-    SummonerType _summonerType; ///< Summoner's type, see SummonerType for available types
-    uint8 _summonGroup;         ///< Summon's group id
+    uint32 _summonerEntry;      //< Summoner's entry
+    SummonerType _summonerType; //< Summoner's type, see SummonerType for available types
+    uint8 _summonGroup;         //< Summon's group id
 };
 
 // GCC have alternative #pragma pack() syntax and old gcc version not support pack(pop), also any gcc version not support it at some platform
@@ -1502,7 +1502,7 @@ class ObjectMgr
         GameObjectDataContainer _gameObjectDataStore;
         GameObjectLocaleContainer _gameObjectLocaleStore;
         GameObjectTemplateContainer _gameObjectTemplateStore;
-        /// Stores temp summon data grouped by summoner's entry, summoner's type and group id
+        // Stores temp summon data grouped by summoner's entry, summoner's type and group id
         TempSummonDataContainer _tempSummonDataStore;
 
         ItemTemplateContainer _itemTemplateStore;

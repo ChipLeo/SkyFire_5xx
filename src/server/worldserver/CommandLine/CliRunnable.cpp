@@ -17,9 +17,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/// \addtogroup Skyfired
-/// @{
-/// \file
+// \addtogroup Skyfired
+// @{
+// \file
 
 #include "Common.h"
 #include "ObjectMgr.h"
@@ -131,7 +131,7 @@ int kb_hit_return()
 }
 #endif
 
-/// %Thread start
+// %Thread start
 void CliRunnable::run()
 {
     ///- Display the list of available CLI functions then beep

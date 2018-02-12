@@ -782,7 +782,7 @@ class npc_halion_controller : public CreatureScript
             }
 
         private:
-            //// @todo Find out a better scaling, if any.
+            /// @todo Find out a better scaling, if any.
             // [0   , 0.98[: Corporeality goes down
             // [0.98, 0.99]: Do nothing
             // ]0.99, 1.01[: Twilight Mending
@@ -912,16 +912,16 @@ class npc_orb_carrier : public CreatureScript
 
             void UpdateAI(uint32 /*diff*/) OVERRIDE
             {
-                /// According to sniffs this spell is cast every 1 or 2 seconds.
-                /// However, refreshing it looks bad, so just cast the spell if
-                /// we are not channeling it.
+                // According to sniffs this spell is cast every 1 or 2 seconds.
+                // However, refreshing it looks bad, so just cast the spell if
+                // we are not channeling it.
                 if (!me->HasUnitState(UNIT_STATE_CASTING))
                     me->CastSpell((Unit*)NULL, SPELL_TRACK_ROTATION, false);
 
-                /// Workaround: This is here because even though the above spell has SPELL_ATTR1_CHANNEL_TRACK_TARGET,
-                /// we are having two creatures involded here. This attribute is handled clientside, meaning the client
-                /// sends orientation update itself. Here, no packet is sent, and the creature does not rotate. By
-                /// forcing the carrier to always be facing the rotation focus, we ensure everything works as it should.
+                // Workaround: This is here because even though the above spell has SPELL_ATTR1_CHANNEL_TRACK_TARGET,
+                // we are having two creatures involded here. This attribute is handled clientside, meaning the client
+                // sends orientation update itself. Here, no packet is sent, and the creature does not rotate. By
+                // forcing the carrier to always be facing the rotation focus, we ensure everything works as it should.
                 if (Creature* rotationFocus = ObjectAccessor::GetCreature(*me, instance->GetData64(DATA_ORB_ROTATION_FOCUS)))
                     me->SetFacingToObject(rotationFocus); // setInFront
             }
@@ -1292,7 +1292,7 @@ class go_twilight_portal : public GameObjectScript
                     case GO_HALION_PORTAL_1:
                     case GO_HALION_PORTAL_2: // Not used, not seen in sniffs. Just in case.
                         gameobject->SetPhaseMask(0x1, true);
-                        /// Because WDB template has non-existent spell ID, not seen in sniffs either, meh
+                        // Because WDB template has non-existent spell ID, not seen in sniffs either, meh
                         _spellId = SPELL_TWILIGHT_REALM;
                         break;
                     default:
@@ -1441,7 +1441,7 @@ class spell_halion_marks : public SpellScriptLoader
                 return true;
             }
 
-            /// We were purged. Force removed stacks to zero and trigger the appropriated remove handler.
+            // We were purged. Force removed stacks to zero and trigger the appropriated remove handler.
             void BeforeDispel(DispelInfo* dispelData)
             {
                 // Prevent any stack from being removed at this point.

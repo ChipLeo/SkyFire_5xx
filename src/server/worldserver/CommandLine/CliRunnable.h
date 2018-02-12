@@ -17,14 +17,14 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/// \addtogroup Trinityd
-/// @{
-/// \file
+// \addtogroup Trinityd
+// @{
+// \file
 
 #ifndef __CLIRUNNABLE_H
 #define __CLIRUNNABLE_H
 
-/// Command Line Interface handling thread
+// Command Line Interface handling thread
 class CliRunnable : public ACE_Based::Runnable
 {
     public:
@@ -33,4 +33,4 @@ class CliRunnable : public ACE_Based::Runnable
 
 #endif
 
-/// @}
+// @}

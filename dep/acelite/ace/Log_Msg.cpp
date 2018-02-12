@@ -95,9 +95,9 @@ public:
      else COUNT -= static_cast<size_t> (LEN); \
    } while (0)
 
-/// Instance count for Log_Msg - used to know when dynamically
-/// allocated storage (program name and host name) can be safely
-/// deleted.
+// Instance count for Log_Msg - used to know when dynamically
+// allocated storage (program name and host name) can be safely
+// deleted.
 int ACE_Log_Msg::instance_count_ = 0;
 
 /**
@@ -428,27 +428,27 @@ ACE_Log_Msg::program_name (void)
   return ACE_Log_Msg::program_name_;
 }
 
-/// Name of the local host.
+// Name of the local host.
 const ACE_TCHAR *ACE_Log_Msg::local_host_ = 0;
 
-/// Records the program name.
+// Records the program name.
 const ACE_TCHAR *ACE_Log_Msg::program_name_ = 0;
 
-/// Default is to use stderr.
+// Default is to use stderr.
 u_long ACE_Log_Msg::flags_ = ACE_Log_Msg::STDERR;
 
-/// Process id of the current process.
+// Process id of the current process.
 pid_t ACE_Log_Msg::pid_ = -2;
 
-/// Current offset of msg_[].
+// Current offset of msg_[].
 ptrdiff_t ACE_Log_Msg::msg_off_ = 0;
 
-/// Default per-thread priority mask
-/// By default, no priorities are enabled.
+// Default per-thread priority mask
+// By default, no priorities are enabled.
 u_long ACE_Log_Msg::default_priority_mask_ = 0;
 
-/// Default per-process priority mask
-/// By default, all priorities are enabled.
+// Default per-process priority mask
+// By default, all priorities are enabled.
 u_long ACE_Log_Msg::process_priority_mask_ = LM_SHUTDOWN
                                              | LM_TRACE
                                              | LM_DEBUG
@@ -2160,7 +2160,7 @@ private:
   ACE_Log_Msg_Sig_Guard (void);
   ~ACE_Log_Msg_Sig_Guard (void);
 
-  /// Original signal mask.
+  // Original signal mask.
   sigset_t omask_;
 
   friend ssize_t ACE_Log_Msg::log (ACE_Log_Record &log_record,

@@ -653,7 +653,7 @@ class npc_jaina_or_sylvanas_hor : public CreatureScript
                     else
                         Talk(SAY_SYLVANAS_INTRO_END);
                     me->GetMotionMaster()->MovePoint(0, LichKingMoveAwayPos);
-                    /// @todo Loralen/Koreln shall run also
+                    // @todo Loralen/Koreln shall run also
                     _events.ScheduleEvent(EVENT_INTRO_LK_11, 5000);
                     break;
                 case EVENT_INTRO_LK_11:
@@ -680,7 +680,7 @@ class npc_jaina_or_sylvanas_hor : public CreatureScript
                     break;
                 case EVENT_SKIP_INTRO:
                     me->GetMotionMaster()->MovePoint(0, MoveThronePos);
-                    /// @todo Loralen/Koreln shall run also
+                    // @todo Loralen/Koreln shall run also
                     if (Creature* lichking = me->SummonCreature(NPC_LICH_KING_PART1, LichKingSpawnPos, TEMPSUMMON_MANUAL_DESPAWN))
                     {
                         lichking->SetWalk(true);
@@ -1235,7 +1235,7 @@ public:
 
         void EnterCombat(Unit* /*who*/) OVERRIDE
         {
-            _events.ScheduleEvent(EVENT_SHADOW_WORD_PAIN, 8000); /// @todo adjust timers
+            _events.ScheduleEvent(EVENT_SHADOW_WORD_PAIN, 8000); // @todo adjust timers
             _events.ScheduleEvent(EVENT_CIRCLE_OF_DESTRUCTION, 12000);
             _events.ScheduleEvent(EVENT_COWER_IN_FEAR, 10000);
             _events.ScheduleEvent(EVENT_DARK_MENDING, 20000);
@@ -1306,7 +1306,7 @@ public:
 
         void EnterCombat(Unit* /*who*/) OVERRIDE
         {
-            _events.ScheduleEvent(EVENT_FIREBALL, 3000); /// @todo adjust timers
+            _events.ScheduleEvent(EVENT_FIREBALL, 3000); // @todo adjust timers
             _events.ScheduleEvent(EVENT_FLAMESTRIKE, 6000);
             _events.ScheduleEvent(EVENT_FROSTBOLT, 9000);
             _events.ScheduleEvent(EVENT_CHAINS_OF_ICE, 12000);
@@ -1393,7 +1393,7 @@ public:
 
         void EnterCombat(Unit* /*who*/) OVERRIDE
         {
-            _events.ScheduleEvent(EVENT_SHADOW_STEP, 8000); /// @todo adjust timers
+            _events.ScheduleEvent(EVENT_SHADOW_STEP, 8000); // @todo adjust timers
             _events.ScheduleEvent(EVENT_DEADLY_POISON, 5000);
             _events.ScheduleEvent(EVENT_ENVENOMED_DAGGER_THROW, 10000);
             _events.ScheduleEvent(EVENT_KIDNEY_SHOT, 12000);
@@ -1453,7 +1453,7 @@ public:
 
         void EnterCombat(Unit* /*who*/) OVERRIDE
         {
-            _events.ScheduleEvent(EVENT_SPECTRAL_STRIKE, 5000); /// @todo adjust timers
+            _events.ScheduleEvent(EVENT_SPECTRAL_STRIKE, 5000); // @todo adjust timers
             _events.ScheduleEvent(EVENT_SHIELD_BASH, 10000);
             _events.ScheduleEvent(EVENT_TORTURED_ENRAGE, 15000);
         }
@@ -1507,7 +1507,7 @@ public:
 
         void EnterCombat(Unit* /*who*/) OVERRIDE
         {
-            _events.ScheduleEvent(EVENT_SHOOT, 1); /// @todo adjust timers
+            _events.ScheduleEvent(EVENT_SHOOT, 1); // @todo adjust timers
             _events.ScheduleEvent(EVENT_CURSED_ARROW, 7000);
             _events.ScheduleEvent(EVENT_FROST_TRAP, 10000);
             _events.ScheduleEvent(EVENT_ICE_SHOT, 15000);

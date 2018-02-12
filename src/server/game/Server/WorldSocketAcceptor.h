@@ -66,4 +66,4 @@ protected:
 };
 
 #endif /* __WORLDSOCKETACCEPTOR_H_ */
-/// @}
+// @}

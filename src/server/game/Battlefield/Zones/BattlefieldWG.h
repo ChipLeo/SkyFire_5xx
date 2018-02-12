@@ -104,21 +104,21 @@ enum WintergraspData
 enum WintergraspAchievements
 {
     ACHIEVEMENTS_WIN_WG                          = 1717,
-    ACHIEVEMENTS_WIN_WG_100                      = 1718, /// @todo: Has to be implemented
-    ACHIEVEMENTS_WG_GNOMESLAUGHTER               = 1723, /// @todo: Has to be implemented
+    ACHIEVEMENTS_WIN_WG_100                      = 1718, // @todo: Has to be implemented
+    ACHIEVEMENTS_WG_GNOMESLAUGHTER               = 1723, // @todo: Has to be implemented
     ACHIEVEMENTS_WG_TOWER_DESTROY                = 1727,
-    ACHIEVEMENTS_DESTRUCTION_DERBY_A             = 1737, /// @todo: Has to be implemented
-    ACHIEVEMENTS_WG_TOWER_CANNON_KILL            = 1751, /// @todo: Has to be implemented
-    ACHIEVEMENTS_WG_MASTER_A                     = 1752, /// @todo: Has to be implemented
+    ACHIEVEMENTS_DESTRUCTION_DERBY_A             = 1737, // @todo: Has to be implemented
+    ACHIEVEMENTS_WG_TOWER_CANNON_KILL            = 1751, // @todo: Has to be implemented
+    ACHIEVEMENTS_WG_MASTER_A                     = 1752, // @todo: Has to be implemented
     ACHIEVEMENTS_WIN_WG_TIMER_10                 = 1755,
-    ACHIEVEMENTS_STONE_KEEPER_50                 = 2085, /// @todo: Has to be implemented
-    ACHIEVEMENTS_STONE_KEEPER_100                = 2086, /// @todo: Has to be implemented
-    ACHIEVEMENTS_STONE_KEEPER_250                = 2087, /// @todo: Has to be implemented
-    ACHIEVEMENTS_STONE_KEEPER_500                = 2088, /// @todo: Has to be implemented
-    ACHIEVEMENTS_STONE_KEEPER_1000               = 2089, /// @todo: Has to be implemented
-    ACHIEVEMENTS_WG_RANGER                       = 2199, /// @todo: Has to be implemented
-    ACHIEVEMENTS_DESTRUCTION_DERBY_H             = 2476, /// @todo: Has to be implemented
-    ACHIEVEMENTS_WG_MASTER_H                     = 2776  /// @todo: Has to be implemented
+    ACHIEVEMENTS_STONE_KEEPER_50                 = 2085, // @todo: Has to be implemented
+    ACHIEVEMENTS_STONE_KEEPER_100                = 2086, // @todo: Has to be implemented
+    ACHIEVEMENTS_STONE_KEEPER_250                = 2087, // @todo: Has to be implemented
+    ACHIEVEMENTS_STONE_KEEPER_500                = 2088, // @todo: Has to be implemented
+    ACHIEVEMENTS_STONE_KEEPER_1000               = 2089, // @todo: Has to be implemented
+    ACHIEVEMENTS_WG_RANGER                       = 2199, // @todo: Has to be implemented
+    ACHIEVEMENTS_DESTRUCTION_DERBY_H             = 2476, // @todo: Has to be implemented
+    ACHIEVEMENTS_WG_MASTER_H                     = 2776  // @todo: Has to be implemented
 };
 
 enum WintergraspWorldStates
@@ -382,16 +382,16 @@ class BattlefieldWG : public Battlefield
          */
         bool SetupBattlefield();
 
-        /// Return pointer to relic object
+        // Return pointer to relic object
         GameObject* GetRelic() { return GetGameObject(m_titansRelicGUID); }
 
-        /// Define relic object
+        // Define relic object
         void SetRelic(uint64 relicGUID) { m_titansRelicGUID = relicGUID; }
 
-        /// Check if players can interact with the relic (Only if the last door has been broken)
+        // Check if players can interact with the relic (Only if the last door has been broken)
         bool CanInteractWithRelic() { return m_isRelicInteractible; }
 
-        /// Define if player can interact with the relic
+        // Define if player can interact with the relic
         void SetRelicInteractible(bool allow) { m_isRelicInteractible = allow; }
 
         void UpdateVehicleCountWG();
@@ -500,7 +500,7 @@ enum WintergraspTeamControl
     BATTLEFIELD_WG_TEAM_NEUTRAL
 };
 
-/// @todo: Can this be handled with creature_text or SmartAI ?
+// @todo: Can this be handled with creature_text or SmartAI ?
 enum WintergraspText
 {
     BATTLEFIELD_WG_TEXT_WORKSHOP_NAME_NE         = 12055,
@@ -765,7 +765,7 @@ struct WintergraspTowerData
     uint8 nbObject;                     // Number of gameobjects spawned on this point
     WintergraspObjectPositionData GameObject[6];   // Gameobject position and entry (Horde/Alliance)
 
-    // Creature: Turrets and Guard /// @todo: Killed on Tower destruction ? Tower damage ? Requires confirming
+    // Creature: Turrets and Guard // @todo: Killed on Tower destruction ? Tower damage ? Requires confirming
     uint8 nbCreatureBottom;
     WintergraspObjectPositionData CreatureBottom[9];
     uint8 nbCreatureTop;

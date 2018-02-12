@@ -229,7 +229,7 @@ std::string TimeToTimestampStr(time_t t)
     return std::string(buf);
 }
 
-/// Check if the string is a valid ip address representation
+// Check if the string is a valid ip address representation
 bool IsIPAddress(char const* ipaddress)
 {
     if (!ipaddress)
@@ -255,7 +255,7 @@ bool IsIPAddrInNetwork(ACE_INET_Addr const& net, ACE_INET_Addr const& addr, ACE_
     return false;
 }
 
-/// create PID file
+// create PID file
 uint32 CreatePIDFile(const std::string& filename)
 {
     FILE* pid_file = fopen (filename.c_str(), "w" );

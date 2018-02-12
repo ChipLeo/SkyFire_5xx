@@ -571,7 +571,7 @@ public:
         return _wpos;
     }
 
-    /// Returns position of last written bit
+    // Returns position of last written bit
     size_t bitwpos() const { return _wpos * 8 + 8 - _bitpos; }
 
     size_t bitwpos(size_t newPos)
@@ -877,7 +877,7 @@ inline ByteBuffer &operator>>(ByteBuffer &b, std::map<K, V> &m)
     return b;
 }
 
-/// @todo Make a ByteBuffer.cpp and move all this inlining to it.
+// @todo Make a ByteBuffer.cpp and move all this inlining to it.
 template<> inline std::string ByteBuffer::read<std::string>()
 {
     std::string tmp;

@@ -97,7 +97,7 @@ bool WorldSessionFilter::Process(WorldPacket* packet)
     return (player->IsInWorld() == false);
 }
 
-/// WorldSession constructor
+// WorldSession constructor
 WorldSession::WorldSession(uint32 id, WorldSocket* sock, AccountTypes sec, uint8 expansion, time_t mute_time, LocaleConstant locale, uint32 recruiter, bool isARecruiter, bool hasBoost):
     m_muteTime(mute_time),
     m_timeOutTime(0),
@@ -148,14 +148,14 @@ WorldSession::WorldSession(uint32 id, WorldSocket* sock, AccountTypes sec, uint8
         SF_LOG_ERROR("network", "Can't initialize packet compression (zlib: deflateInit) Error code: %i (%s)", z_res, zError(z_res));
 }
 
-/// WorldSession destructor
+// WorldSession destructor
 WorldSession::~WorldSession()
 {
     ///- unload player if not unloaded
     if (_player)
         LogoutPlayer (true);
 
-    /// - If have unclosed socket, close it
+    // - If have unclosed socket, close it
     if (m_Socket)
     {
         m_Socket->CloseSocket();
@@ -200,13 +200,13 @@ std::string WorldSession::GetPlayerInfo() const
     return ss.str();
 }
 
-/// Get player guid if available. Use for logging purposes only
+// Get player guid if available. Use for logging purposes only
 uint32 WorldSession::GetGuidLow() const
 {
     return GetPlayer() ? GetPlayer()->GetGUIDLow() : 0;
 }
 
-/// Send a packet to the client
+// Send a packet to the client
 void WorldSession::SendPacket(WorldPacket const* packet, bool forced /*= false*/)
 {
     if (!m_Socket)
@@ -279,20 +279,20 @@ void WorldSession::SendPacket(WorldPacket const* packet, bool forced /*= false*/
         m_Socket->CloseSocket();
 }
 
-/// Add an incoming packet to the queue
+// Add an incoming packet to the queue
 void WorldSession::QueuePacket(WorldPacket* new_packet)
 {
     _recvQueue.add(new_packet);
 }
 
-/// Logging helper for unexpected opcodes
+// Logging helper for unexpected opcodes
 void WorldSession::LogUnexpectedOpcode(WorldPacket* packet, const char* status, const char *reason)
 {
     SF_LOG_ERROR("network.opcode", "Received unexpected opcode %s Status: %s Reason: %s from %s",
         GetOpcodeNameForLogging(packet->GetOpcode(), false).c_str(), status, reason, GetPlayerInfo().c_str());
 }
 
-/// Logging helper for unexpected opcodes
+// Logging helper for unexpected opcodes
 void WorldSession::LogUnprocessedTail(WorldPacket* packet)
 {
     if (!sLog->ShouldLog("network.opcode", LOG_LEVEL_TRACE) || packet->rpos() >= packet->wpos())
@@ -303,20 +303,20 @@ void WorldSession::LogUnprocessedTail(WorldPacket* packet)
     packet->print_storage();
 }
 
-/// Update the WorldSession (triggered by World update)
+// Update the WorldSession (triggered by World update)
 bool WorldSession::Update(uint32 diff, PacketFilter& updater)
 {
-    /// Update Timeout timer.
+    // Update Timeout timer.
     UpdateTimeOutTime(diff);
     m_charBooster->Update(diff);
 
     ///- Before we process anything:
-    /// If necessary, kick the player from the character select screen
+    // If necessary, kick the player from the character select screen
     if (IsConnectionIdle())
         m_Socket->CloseSocket();
 
     ///- Retrieve packets from the receive queue and call the appropriate handlers
-    /// not process packets if socket already closed
+    // not process packets if socket already closed
     WorldPacket* packet = NULL;
     //! Delete packet after processing by default
     bool deletePacket = true;
@@ -471,7 +471,7 @@ bool WorldSession::Update(uint32 diff, PacketFilter& updater)
     return true;
 }
 
-/// %Log the player out
+// %Log the player out
 void WorldSession::LogoutPlayer(bool save)
 {
     // finish pending transfers before starting the logout
@@ -642,7 +642,7 @@ void WorldSession::LogoutPlayer(bool save)
     LogoutRequest(0);
 }
 
-/// Kick a player out of the World
+// Kick a player out of the World
 void WorldSession::KickPlayer()
 {
     if (m_Socket)
@@ -938,7 +938,7 @@ void WorldSession::ReadAddonsInfo(WorldPacket &data)
                 SF_LOG_INFO("misc", "ADDON: %s (0x%x) was not known, saving...", addon.Name.c_str(), addon.CRC);
             }
 
-            /// @todo Find out when to not use CRC/pubkey, and other possible states.
+            // @todo Find out when to not use CRC/pubkey, and other possible states.
             m_addonsList.push_back(addon);
         }
 

@@ -135,7 +135,7 @@ m_length(NULL)
     }
     m_rowPosition = 0;
 
-    /// All data is buffered, let go of mysql c api structures
+    // All data is buffered, let go of mysql c api structures
     CleanUp();
 }
 
@@ -172,8 +172,8 @@ bool ResultSet::NextRow()
 
 bool PreparedResultSet::NextRow()
 {
-    /// Only updates the m_rowPosition so upper level code knows in which element
-    /// of the rows vector to look
+    // Only updates the m_rowPosition so upper level code knows in which element
+    // of the rows vector to look
     if (++m_rowPosition >= m_rowCount)
         return false;
 
@@ -182,8 +182,8 @@ bool PreparedResultSet::NextRow()
 
 bool PreparedResultSet::_NextRow()
 {
-    /// Only called in low-level code, namely the constructor
-    /// Will iterate over every row of data and buffer it
+    // Only called in low-level code, namely the constructor
+    // Will iterate over every row of data and buffer it
     if (m_rowPosition >= m_rowCount)
         return false;
 
@@ -215,7 +215,7 @@ void ResultSet::CleanUp()
 
 void PreparedResultSet::CleanUp()
 {
-    /// More of the in our code allocated sources are deallocated by the poorly documented mysql c api
+    // More of the in our code allocated sources are deallocated by the poorly documented mysql c api
     if (m_res)
         mysql_free_result(m_res);
 

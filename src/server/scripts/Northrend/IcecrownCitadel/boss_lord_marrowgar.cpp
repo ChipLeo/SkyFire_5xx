@@ -464,9 +464,9 @@ class npc_bone_spike : public CreatureScript
                 if (!apply)
                     return;
 
-                /// @HACK - Change passenger offset to the one taken directly from sniffs
-                /// Remove this when proper calculations are implemented.
-                /// This fixes healing spiked people
+                // @HACK - Change passenger offset to the one taken directly from sniffs
+                // Remove this when proper calculations are implemented.
+                // This fixes healing spiked people
                 Movement::MoveSplineInit init(passenger);
                 init.DisableTransportPathTransformations();
                 init.MoveTo(-0.02206125f, -0.02132235f, 5.514783f, false);

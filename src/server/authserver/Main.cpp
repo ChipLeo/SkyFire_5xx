@@ -59,7 +59,7 @@ bool stopEvent = false;                                     // Setting it to tru
 
 LoginDatabaseWorkerPool LoginDatabase;                      // Accessor to the authserver database
 
-/// Handle authserver's termination signals
+// Handle authserver's termination signals
 class AuthServerSignalHandler : public Skyfire::SignalHandler
 {
 public:
@@ -75,7 +75,7 @@ public:
     }
 };
 
-/// Print out the usage string for this program on the console.
+// Print out the usage string for this program on the console.
 void usage(const char* prog)
 {
     SF_LOG_INFO("server.authserver", "Usage: \n %s [<options>]\n"
@@ -83,7 +83,7 @@ void usage(const char* prog)
         prog);
 }
 
-/// Launch the auth server
+// Launch the auth server
 extern int main(int argc, char** argv)
 {
     // Command line parsing to get the configuration file name
@@ -292,7 +292,7 @@ extern int main(int argc, char** argv)
     return 0;
 }
 
-/// Initialize connection to the database
+// Initialize connection to the database
 bool StartDB()
 {
     MySQL::Library_Init();
@@ -330,7 +330,7 @@ bool StartDB()
     return true;
 }
 
-/// Close the connection to the database
+// Close the connection to the database
 void StopDB()
 {
     LoginDatabase.Close();

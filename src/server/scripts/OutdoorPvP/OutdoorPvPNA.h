@@ -22,7 +22,7 @@
 
 #include "OutdoorPvP.h"
 
-/// @todo "sometimes" set to neutral
+// @todo "sometimes" set to neutral
 
 enum OutdoorPvPNASpells
 {

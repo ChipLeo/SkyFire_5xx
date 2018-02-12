@@ -782,7 +782,7 @@ Battleground* BattlegroundMgr::CreateNewBattleground(BattlegroundTypeId original
     {
         case BATTLEGROUND_RB:
             isRandom = true;
-            /// Intentional fallback, "All Arenas" is random too
+            // Intentional fallback, "All Arenas" is random too
         case BATTLEGROUND_AA:
             bgTypeId = GetRandomBG(originalBgTypeId);
             break;
