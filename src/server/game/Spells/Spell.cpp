@@ -4718,9 +4718,6 @@ void Spell::SendSpellGo()
 
 void Spell::SendLogExecute()
 {
-    if (m_spellInfo->Attributes & SPELL_ATTR0_HIDE_IN_COMBAT_LOG)
-         return;
-
     ObjectGuid CastergGuid = m_caster->GetGUID();
 
     WorldPacket data(SMSG_SPELL_EXECUTE_LOG, 8 + 4 + 4 + 4 + 4 + 8);
@@ -4747,7 +4744,8 @@ void Spell::SendLogExecute()
 
     data.WriteGuidBytes(CastergGuid, 5, 7, 1, 6, 2, 0, 4, 3);
 
-    m_caster->SendMessageToSet(&data, true);
+    if (!(m_spellInfo->Attributes & SPELL_ATTR0_HIDE_IN_COMBAT_LOG))
+        m_caster->SendMessageToSet(&data, true);
 }
 
 void Spell::ExecuteLogEffectTakeTargetPower(uint8 effIndex, Unit* target, uint32 powerType, uint32 powerTaken, float gainMultiplier)
