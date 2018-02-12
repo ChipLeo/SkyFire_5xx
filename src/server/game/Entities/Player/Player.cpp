@@ -21856,7 +21856,7 @@ void Player::VehicleSpellInitialize()
     dat.WriteBit(VehicleGuid[4]);
     dat.WriteBit(VehicleGuid[1]);
 
-    dat << uint8(1);
+    dat << uint8(vehicle->GetReactState());
     dat << uint8(1);
     dat << uint16(0x400);
 
@@ -21914,7 +21914,7 @@ void Player::VehicleSpellInitialize()
     }
 
     for (uint32 i = CREATURE_MAX_SPELLS; i < MAX_SPELL_CONTROL_BAR; ++i)
-        data << uint32(0);
+        data << uint32(MAKE_UNIT_ACTION_BUTTON(0, i + 8));
 
     time_t now = sWorld->GetGameTime();
 
@@ -21953,14 +21953,14 @@ void Player::VehicleSpellInitialize()
     data.WriteByteSeq(VehicleGuid[7]);
     data.WriteByteSeq(VehicleGuid[0]);
     data.WriteByteSeq(VehicleGuid[3]);
-    data << uint16(0);                                  // Pet Family (0 for all vehicles)
+    data << uint16(vehicle->GetCreatureTemplate()->family);                                  // Pet Family (0 for all vehicles)
     data << uint16(0);                                  // Creature Specialization need implementation
     data.WriteByteSeq(VehicleGuid[1]);
     data.WriteByteSeq(VehicleGuid[4]);
     data.WriteByteSeq(VehicleGuid[6]);
     data << uint32(vehicle->IsSummon() ? vehicle->ToTempSummon()->GetTimer() : 0); // Duration
     data.WriteByteSeq(VehicleGuid[5]);
-    data << uint8(1);// vehicle->GetReactState());                // React State
+    data << uint8(vehicle->GetReactState());                // React State
     data << uint8(1);                                       // Command State
     data << uint16(0x000);                                  // DisableActions (set for all vehicles)
 
