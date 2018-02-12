@@ -780,7 +780,7 @@ bool SmartAIMgr::IsEventValid(SmartScriptHolder& e)
                 if (!spellInfo)
                     continue;
 
-                for (uint32 j = 0; j < MAX_SPELL_EFFECTS; ++j)
+                for (uint8 j = 0; j < MAX_SPELL_EFFECTS; ++j)
                 {
                     if (spellInfo->Effects[j].Effect == SPELL_EFFECT_SUMMON)
                     {
@@ -809,7 +809,7 @@ bool SmartAIMgr::IsEventValid(SmartScriptHolder& e)
                 if (!spellInfo)
                     continue;
 
-                for (uint32 j = 0; j < MAX_SPELL_EFFECTS; ++j)
+                for (uint8 j = 0; j < MAX_SPELL_EFFECTS; ++j)
                 {
                     if (spellInfo->Effects[j].Effect == SPELL_EFFECT_KILL_CREDIT || spellInfo->Effects[j].Effect == SPELL_EFFECT_KILL_CREDIT2)
                     {
@@ -857,7 +857,7 @@ bool SmartAIMgr::IsEventValid(SmartScriptHolder& e)
                 if (!spellInfo)
                     continue;
 
-                for (uint32 j = 0; j < MAX_SPELL_EFFECTS; ++j)
+                for (uint8 j = 0; j < MAX_SPELL_EFFECTS; ++j)
                 {
                     if (spellInfo->Effects[j].Effect == SPELL_EFFECT_SUMMON_OBJECT_WILD)
                     {

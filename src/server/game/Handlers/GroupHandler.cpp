@@ -1254,7 +1254,7 @@ void WorldSession::BuildPartyMemberStatsChangedPacket(Player* player, WorldPacke
                 uint8 amount_count = 0;
                 dataBuffer << uint8(0);
 
-                for (uint32 j = 0; j < MAX_SPELL_EFFECTS; ++j)
+                for (uint8 j = 0; j < MAX_SPELL_EFFECTS; ++j)
                 {
                     if (!(auraEffectMask & (1 << j)))
                         continue;
@@ -1379,7 +1379,7 @@ void WorldSession::BuildPartyMemberStatsChangedPacket(Player* player, WorldPacke
                     size_t pos = dataBuffer.wpos();
                     uint8 count = 0;
                     dataBuffer << uint8(0);
-                    for (uint32 j = 0; j < MAX_SPELL_EFFECTS; ++j)
+                    for (uint8 j = 0; j < MAX_SPELL_EFFECTS; ++j)
                     {
                         if (!(auraEffectMask & (1 << j)))
                             continue;
@@ -1552,7 +1552,7 @@ void WorldSession::HandleRequestPartyMemberStatsOpcode(WorldPacket& recvData)
 
             if (aurApp->GetFlags() & AFLAG_ANY_EFFECT_AMOUNT_SENT)
             {
-                for (uint32 i = 0; i < MAX_SPELL_EFFECTS; ++i)
+                for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
                 {
                     if (AuraEffect const* eff = aurApp->GetBase()->GetEffect(i))
                         data << int32(eff->GetAmount());
@@ -1605,7 +1605,7 @@ void WorldSession::HandleRequestPartyMemberStatsOpcode(WorldPacket& recvData)
 
                 if (aurApp->GetFlags() & AFLAG_ANY_EFFECT_AMOUNT_SENT)
                 {
-                    for (uint32 i = 0; i < MAX_SPELL_EFFECTS; ++i)
+                    for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
                     {
                         if (AuraEffect const* eff = aurApp->GetBase()->GetEffect(i))
                             data << int32(eff->GetAmount());

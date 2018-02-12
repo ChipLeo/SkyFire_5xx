@@ -547,7 +547,7 @@ void Player::UpdateMastery()
 
         if (Aura* aura = GetAura(talentTab->MasterySpellId[i]))
         {
-            for (uint32 j = 0; j < MAX_SPELL_EFFECTS; ++j)
+            for (uint8 j = 0; j < MAX_SPELL_EFFECTS; ++j)
             {
                 if (!aura->HasEffect(j))
                     continue;

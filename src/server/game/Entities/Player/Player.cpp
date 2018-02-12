@@ -4394,7 +4394,7 @@ void Player::removeSpell(uint32 spell_id, bool disabled, bool learn_low_rank)
         SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spell_id);
         if (spellInfo->IsPassive())
         {
-            for (int i = 0; i < MAX_SPELL_EFFECTS; i++)
+            for (uint8 i = 0; i < MAX_SPELL_EFFECTS; i++)
                 if (spellInfo->Effects[i].Effect == SPELL_EFFECT_DUAL_WIELD)
                 {
                     SetCanDualWield(false);
@@ -24933,7 +24933,7 @@ void Player::SendAurasForTarget(Unit* target)
         if (flags & AFLAG_ANY_EFFECT_AMOUNT_SENT)
         {
             uint8 effCount = 0;
-            for (uint32 i = 0; i < MAX_SPELL_EFFECTS; ++i)
+            for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
                 if (auraApp->HasEffect(i))
                     effCount++;
 
@@ -24986,7 +24986,7 @@ void Player::SendAurasForTarget(Unit* target)
 
         if (flags & AFLAG_ANY_EFFECT_AMOUNT_SENT)
         {
-            for (uint32 i = 0; i < MAX_SPELL_EFFECTS; ++i)
+            for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
             {
                 if (auraApp->HasEffect(i))
                 {

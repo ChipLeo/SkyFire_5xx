@@ -58,7 +58,7 @@ enum SpellCastFlags
     CAST_FLAG_UNKNOWN_16         = 0x00008000,
     CAST_FLAG_UNKNOWN_17         = 0x00010000,
     CAST_FLAG_ADJUST_MISSILE     = 0x00020000,
-    CAST_FLAG_UNKNOWN_19         = 0x00040000,
+    CAST_FLAG_NO_GCD             = 0x00040000,              // no GCD for spell casts from charm/summon (vehicle spells is an example)
     CAST_FLAG_VISUAL_CHAIN       = 0x00080000,
     CAST_FLAG_UNKNOWN_21         = 0x00100000,
     CAST_FLAG_RUNE_LIST          = 0x00200000,
@@ -552,8 +552,8 @@ class Spell
         bool m_referencedFromCurrentSpell;                  // mark as references to prevent deleted and access by dead pointers
         bool m_executedCurrently;                           // mark as executed to prevent deleted and access by dead pointers
         bool m_needComboPoints;
-        uint8 m_applyMultiplierMask;
-        float m_damageMultipliers[3];
+        uint32 m_applyMultiplierMask;
+        float m_damageMultipliers[MAX_SPELL_EFFECTS];
 
         // Current targets, to be used in SpellEffects (MUST BE USED ONLY IN SPELL EFFECTS)
         Unit* unitTarget;
@@ -594,7 +594,7 @@ class Spell
             uint64 timeDelay;
             SpellMissInfo missCondition:8;
             SpellMissInfo reflectResult:8;
-            uint8  effectMask:8;
+            uint32  effectMask;
             bool   processed:1;
             bool   alive:1;
             bool   crit:1;
@@ -602,21 +602,21 @@ class Spell
             int32  damage;
         };
         std::list<TargetInfo> m_UniqueTargetInfo;
-        uint8 m_channelTargetEffectMask;                        // Mask req. alive targets
+        uint32 m_channelTargetEffectMask;                        // Mask req. alive targets
 
         struct GOTargetInfo
         {
             uint64 targetGUID;
             uint64 timeDelay;
-            uint8  effectMask:8;
-            bool   processed:1;
+            uint32  effectMask;
+            bool   processed;
         };
         std::list<GOTargetInfo> m_UniqueGOTargetInfo;
 
         struct ItemTargetInfo
         {
             Item  *item;
-            uint8 effectMask;
+            uint32 effectMask;
         };
         std::list<ItemTargetInfo> m_UniqueItemInfo;
 
@@ -691,7 +691,7 @@ class Spell
         SpellInfo const* m_triggeredByAuraSpell;
 
         bool m_skipCheck;
-        uint8 m_auraScaleMask;
+        uint32 m_auraScaleMask;
         PathGenerator m_preGeneratedPath;
 
         ByteBuffer * m_effectExecuteData[MAX_SPELL_EFFECTS];

@@ -3273,7 +3273,7 @@ void Unit::_ApplyAura(AuraApplication * aurApp, uint32 effMask)
     aura->HandleAuraSpecificMods(aurApp, caster, true, false);
 
     // apply effects of the aura
-    for (uint32 i = 0; i < MAX_SPELL_EFFECTS; ++i)
+    for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
     {
         if (effMask & 1 << i && (!aurApp->GetRemoveMode()))
             aurApp->_HandleEffect(i, true);
@@ -3332,7 +3332,7 @@ void Unit::_UnapplyAura(AuraApplicationMap::iterator &i, AuraRemoveMode removeMo
     aura->_UnapplyForTarget(this, caster, aurApp);
 
     // remove effects of the spell - needs to be done after removing aura from lists
-    for (uint32 itr = 0; itr < MAX_SPELL_EFFECTS; ++itr)
+    for (uint8 itr = 0; itr < MAX_SPELL_EFFECTS; ++itr)
     {
         if (aurApp->HasEffect(itr))
             aurApp->_HandleEffect(itr, false);
@@ -3526,7 +3526,7 @@ void Unit::RemoveAura(AuraApplication * aurApp, AuraRemoveMode mode)
     if (aurApp->GetRemoveMode())
     {
         // remove remaining effects of an aura
-        for (uint32 itr = 0; itr < MAX_SPELL_EFFECTS; ++itr)
+        for (uint8 itr = 0; itr < MAX_SPELL_EFFECTS; ++itr)
         {
             if (aurApp->HasEffect(itr))
                 aurApp->_HandleEffect(itr, false);
@@ -3634,7 +3634,7 @@ void Unit::RemoveAurasDueToSpellBySteal(uint32 spellId, uint64 casterGUID, Unit*
             uint32 effMask = 0;
             uint32 recalculateMask = 0;
             Unit* caster = aura->GetCaster();
-            for (uint32 i = 0; i < MAX_SPELL_EFFECTS; ++i)
+            for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
             {
                 if (aura->GetEffect(i))
                 {
@@ -6740,7 +6740,7 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffect* triggere
                 if ((ToPlayer()->GetComboPoints() + newCombo) < 5)
                     return false;
 
-                for (int i = 0; i < MAX_SPELL_EFFECTS; ++i)
+                for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
                     if (procSpell->Effects[i].Effect == SPELL_EFFECT_ADD_COMBO_POINTS)
                     {
                         basepoints0 = procSpell->Effects[i].BasePoints;
@@ -8445,7 +8445,7 @@ void Unit::SetMinion(Minion *minion, bool apply)
         {
             // All summoned by totem minions must disappear when it is removed.
             if (SpellInfo const* spInfo = sSpellMgr->GetSpellInfo(minion->ToTotem()->GetSpell()))
-                for (int i = 0; i < MAX_SPELL_EFFECTS; ++i)
+                for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
                 {
                     if (spInfo->Effects [i].Effect != SPELL_EFFECT_SUMMON)
                         continue;
@@ -13731,7 +13731,7 @@ uint32 Unit::GetCastingTimeForBonus(SpellInfo const* spellProto, DamageEffectTyp
     bool DirectDamage = false;
     bool AreaEffect = false;
 
-    for (uint32 i = 0; i < MAX_SPELL_EFFECTS; i++)
+    for (uint8 i = 0; i < MAX_SPELL_EFFECTS; i++)
     {
         switch (spellProto->Effects [i].Effect)
         {
@@ -15241,7 +15241,7 @@ Aura* Unit::AddAura(SpellInfo const* spellInfo, uint32 effMask, Unit* target)
     if (target->IsImmunedToSpell(spellInfo))
         return NULL;
 
-    for (uint32 i = 0; i < MAX_SPELL_EFFECTS; ++i)
+    for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
     {
         if (!(effMask & (1 << i)))
             continue;
@@ -16112,7 +16112,7 @@ bool Unit::HandleSpellClick(Unit* clicker, int8 seatId)
             else    // This can happen during Player::_LoadAuras
             {
                 int32 bp0 [MAX_SPELL_EFFECTS];
-                for (uint32 j = 0; j < MAX_SPELL_EFFECTS; ++j)
+                for (uint8 j = 0; j < MAX_SPELL_EFFECTS; ++j)
                     bp0 [j] = spellEntry->Effects [j].BasePoints;
 
                 bp0 [i] = seatId;

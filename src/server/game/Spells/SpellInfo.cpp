@@ -1934,7 +1934,7 @@ SpellCastResult SpellInfo::CheckVehicle(Unit const* caster) const
         // Can only summon uncontrolled minions/guardians when on controlled vehicle
         if (vehicleSeat->m_flags & (VEHICLE_SEAT_FLAG_CAN_CONTROL | VEHICLE_SEAT_FLAG_UNK2))
         {
-            for (uint32 i = EFFECT_0; i < MAX_SPELL_EFFECTS; ++i)
+            for (uint8 i = EFFECT_0; i < MAX_SPELL_EFFECTS; ++i)
             {
                 if (Effects[i].Effect != SPELL_EFFECT_SUMMON)
                     continue;
