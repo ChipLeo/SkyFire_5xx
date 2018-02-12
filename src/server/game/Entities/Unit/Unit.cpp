@@ -14765,6 +14765,7 @@ void Unit::SetConfused(bool apply)
 
 bool Unit::SetCharmedBy(Unit* charmer, CharmType type, AuraApplication const* aurApp)
 {
+    SF_LOG_DEBUG("entities.unit", "SetCharmedBy:");
     if (!charmer)
         return false;
 
@@ -14918,6 +14919,7 @@ bool Unit::SetCharmedBy(Unit* charmer, CharmType type, AuraApplication const* au
 
 void Unit::RemoveCharmedBy(Unit* charmer)
 {
+    SF_LOG_DEBUG("entities.unit", "RemoveCharmedBy:");
     if (!IsCharmed())
         return;
 
@@ -15030,6 +15032,7 @@ void Unit::RemoveCharmedBy(Unit* charmer)
 
 void Unit::RestoreFaction()
 {
+    SF_LOG_DEBUG("entities.unit", "RestoreFaction");
     if (GetTypeId() == TYPEID_PLAYER)
         ToPlayer()->setFactionForRace(getRace());
     else
@@ -15058,6 +15061,7 @@ Unit* Unit::GetRedirectThreatTarget()
 
 bool Unit::CreateVehicleKit(uint32 id, uint32 creatureEntry, bool loading /*= false*/)
 {
+    SF_LOG_DEBUG("entities.unit", "CreateVehicleKit");
     VehicleEntry const* vehInfo = sVehicleStore.LookupEntry(id);
     if (!vehInfo)
         return false;
@@ -15074,6 +15078,7 @@ bool Unit::CreateVehicleKit(uint32 id, uint32 creatureEntry, bool loading /*= fa
 
 void Unit::RemoveVehicleKit(bool remove /*= false*/)
 {
+    SF_LOG_DEBUG("entities.unit", "RemoveVehicleKit");
     if (!m_vehicleKit)
         return;
 
@@ -16139,11 +16144,13 @@ bool Unit::HandleSpellClick(Unit* clicker, int8 seatId)
 
 void Unit::EnterVehicle(Unit* base, int8 seatId)
 {
+    SF_LOG_DEBUG("entities.vehicle", "Unit::EnterVehicle: %u.", GetEntry());
     CastCustomSpell(VEHICLE_SPELL_RIDE_HARDCODED, SPELLVALUE_BASE_POINT0, seatId + 1, base, TRIGGERED_IGNORE_CASTER_MOUNTED_OR_ON_VEHICLE);
 }
 
 void Unit::_EnterVehicle(Vehicle* vehicle, int8 seatId, AuraApplication const* aurApp)
 {
+    SF_LOG_DEBUG("entities.unit", "_EnterVehicleKit");
     // Must be called only from aura handler
     ASSERT(aurApp);
 
@@ -16179,6 +16186,7 @@ void Unit::_EnterVehicle(Vehicle* vehicle, int8 seatId, AuraApplication const* a
 
 void Unit::ChangeSeat(int8 seatId, bool next)
 {
+    SF_LOG_DEBUG("entities.unit", "ChangeSeat");
     if (!m_vehicle)
         return;
 
@@ -16211,6 +16219,7 @@ void Unit::ChangeSeat(int8 seatId, bool next)
 
 void Unit::ExitVehicle(Position const* /*exitPosition*/)
 {
+    SF_LOG_DEBUG("entities.unit", "ExitVehicle");
     //! This function can be called at upper level code to initialize an exit from the passenger's side.
     if (!m_vehicle)
         return;
@@ -16230,6 +16239,7 @@ void Unit::ExitVehicle(Position const* /*exitPosition*/)
 
 void Unit::_ExitVehicle(Position const* exitPosition)
 {
+    SF_LOG_DEBUG("entities.unit", "_ExitVehicle");
     /// It's possible m_vehicle is NULL, when this function is called indirectly from @VehicleJoinEvent::Abort.
     /// In that case it was not possible to add the passenger to the vehicle. The vehicle aura has already been removed
     /// from the target in the aforementioned function and we don't need to do anything else at this point.

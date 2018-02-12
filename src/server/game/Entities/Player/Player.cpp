@@ -21843,7 +21843,7 @@ void Player::VehicleSpellInitialize()
     uint8 cooldownCount = vehicle->m_CreatureSpellCooldowns.size();
     ObjectGuid VehicleGuid = vehicle->GetGUID();
 
-    /*SF_LOG_DEBUG("network", "Player: Send SMSG_PET_MODE");
+    SF_LOG_DEBUG("network", "Player: Send SMSG_PET_MODE");
 
     WorldPacket dat(SMSG_PET_MODE, 8);
 
