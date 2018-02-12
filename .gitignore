@@ -18,5 +18,5 @@ CMakeLists.txt.user
 *.BACKUP.*
 *.BASE.*
 *.LOCAL.*
-win*/
-win_tools*/
+win/
+win_tools/
