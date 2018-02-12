@@ -865,6 +865,9 @@ bool VehicleJoinEvent::Execute(uint64, uint32)
             sScriptMgr->OnInstallAccessory(Target, Passenger->ToCreature());
     }
 
+    if (player)
+        player->SetGroupUpdateFlag(GROUP_UPDATE_FLAG_VEHICLE_SEAT);
+
     return true;
 }
 
