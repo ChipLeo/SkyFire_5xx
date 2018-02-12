@@ -2093,6 +2093,9 @@ bool Creature::LoadCreaturesAddon(bool reload)
         }
     }
 
+    if (cainfo->interact_spell != 0)
+        SetUInt32Value(UNIT_FIELD_INTERACT_SPELL_ID, cainfo->interact_spell);
+
     return true;
 }
 
