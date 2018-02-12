@@ -53,7 +53,8 @@ enum RollVote
     GREED             = 2,
     DISENCHANT        = 3,
     NOT_EMITED_YET    = 4,
-    NOT_VALID         = 5
+    AUTOMATIC_PASS    = 5,
+    NOT_VALID         = 6
 };
 
 enum GroupMemberOnlineStatus
@@ -88,10 +89,11 @@ enum GroupType
     GROUPTYPE_BG                    = 0x01,
     GROUPTYPE_RAID                  = 0x02,
     GROUPTYPE_BGRAID = GROUPTYPE_BG | GROUPTYPE_RAID,       // mask
-    GROUPTYPE_UNK1                  = 0x04,
+    GROUPTYPE_LFG_RESTRICTED        = 0x04, // Script_HasLFGRestrictions()
     GROUPTYPE_LFG                   = 0x08,
-    GROUPTYPE_EVERYONE_IS_ASSISTANT = 0x40
     // 0x10, leave/change group?, I saw this flag when leaving group and after leaving BG while in group
+    GROUPTYPE_ONE_PERSON_PARTY      = 0x20, // 4.x Script_IsOnePersonParty()
+    GROUPTYPE_EVERYONE_ASSISTANT    = 0x40  // 4.x Script_IsEveryoneAssistant()
 };
 
 enum GroupUpdateFlags
@@ -103,8 +105,8 @@ enum GroupUpdateFlags
     GROUP_UPDATE_FLAG_MAX_HP = 0x00000008,              // uint32 (HP)
     GROUP_UPDATE_FLAG_POWER_TYPE = 0x00000010,          // uint8 (PowerType)
     GROUP_UPDATE_FLAG_UNK_20 = 0x00000020,              // unk uint16
-    GROUP_UPDATE_FLAG_CUR_POWER = 0x00000040,           // int16 (power value)
-    GROUP_UPDATE_FLAG_MAX_POWER = 0x00000080,           // int16 (power value)
+    GROUP_UPDATE_FLAG_MAX_POWER         = 0x00000040,       // int16 (power value)
+    GROUP_UPDATE_FLAG_CUR_POWER         = 0x00000080,       // int16 (power value)
     GROUP_UPDATE_FLAG_LEVEL = 0x00000100,               // uint16 (level value)
     GROUP_UPDATE_FLAG_ZONE = 0x00000200,                // uint16 (zone id)
     GROUP_UPDATE_FLAG_UNK400 = 0x00000400,              // int16 (unk
