@@ -1190,6 +1190,17 @@ bool Creature::CreateFromProto(uint32 guidlow, uint32 Entry, uint32 vehId, uint3
     if (!UpdateEntry(Entry, team, data))
         return false;
 
+    if (!vehId)
+    {
+        if (GetCreatureTemplate()->VehicleId)
+        {
+            vehId = GetCreatureTemplate()->VehicleId;
+            Entry = GetCreatureTemplate()->Entry;
+        }
+        else
+            vehId = cinfo->VehicleId;
+    }
+
     if (vehId)
         CreateVehicleKit(vehId, Entry, true);
 
