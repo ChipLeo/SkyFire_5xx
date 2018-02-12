@@ -820,15 +820,6 @@ bool VehicleJoinEvent::Execute(uint64, uint32)
         player->SendOnCancelExpectedVehicleRideAura();
         if (!(veSeat->m_flagsB & VEHICLE_SEAT_FLAG_B_KEEP_PET))
             player->UnsummonPetTemporaryIfAny();
-
-        // player->UnsummonPetTemporaryIfAny();
-        //Target->GetBase()->SendClearTarget();                 // SMSG_BREAK_TARGET
-        //TC_LOG_DEBUG("entities.vehicle", "VehicleJoinEvent::Executed  SMSG_BREAK_TARGET");
-        //player->SetDisableGravity(true);                      // SMSG_MOVE_GRAVITY_DISABLE
-        //TC_LOG_DEBUG("entities.vehicle", "VehicleJoinEvent::Executed  SMSG_MOVE_GRAVITY_DISABLE");
-        //player->SetControlled(true, UNIT_STATE_ROOT);         // SMSG_FORCE_ROOT - In some cases we send SMSG_SPLINE_MOVE_ROOT here (for creatures)
-                                                                 // also adds MOVEMENTFLAG_ROOT
-        //TC_LOG_DEBUG("entities.vehicle", "VehicleJoinEvent::Executed  SMSG_FORCE_ROOT");
     }
 
     if (Seat->second.SeatInfo->m_flags & VEHICLE_SEAT_FLAG_PASSENGER_NOT_SELECTABLE)
