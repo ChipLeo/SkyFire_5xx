@@ -635,7 +635,7 @@ void ObjectMgr::CheckCreatureTemplate(CreatureTemplate const* cInfo)
         return;
 
     bool ok = true;                                     // bool to allow continue outside this loop
-    for (uint32 diff = 0; diff < MAX_DIFFICULTY - 1 && ok; ++diff)
+    for (uint32 diff = 0; diff < 3 && ok; ++diff)
     {
         if (!cInfo->DifficultyEntry[diff])
             continue;
@@ -650,7 +650,7 @@ void ObjectMgr::CheckCreatureTemplate(CreatureTemplate const* cInfo)
         }
 
         bool ok2 = true;
-        for (uint32 diff2 = 0; diff2 < MAX_DIFFICULTY - 1 && ok2; ++diff2)
+        for (uint32 diff2 = 0; diff2 < 3 && ok2; ++diff2)
         {
             ok2 = false;
             if (_difficultyEntries[diff2].find(cInfo->Entry) != _difficultyEntries[diff2].end())
@@ -834,6 +834,12 @@ void ObjectMgr::CheckCreatureTemplate(CreatureTemplate const* cInfo)
 
     if (cInfo->rangeattacktime == 0)
         const_cast<CreatureTemplate*>(cInfo)->rangeattacktime = BASE_ATTACK_TIME;
+
+    if (cInfo->GossipMenuId == 0 && (cInfo->npcflag & UNIT_NPC_FLAG_GOSSIP))
+        SF_LOG_ERROR("sql.sql", "Creature (Entry: %u) has [UNIT_NPC_FLAG_GOSSIP] set, but does have (gossip_menu_id: %u) set.", cInfo->Entry, cInfo->GossipMenuId);
+
+    if (cInfo->GossipMenuId > 0 && !(cInfo->npcflag & UNIT_NPC_FLAG_GOSSIP))
+        SF_LOG_ERROR("sql.sql", "Creature (Entry: %u) has (gossip_menu_id: %u) set, but does not have [UNIT_NPC_FLAG_GOSSIP] set.", cInfo->GossipMenuId, cInfo->Entry);
 
     if ((cInfo->npcflag & UNIT_NPC_FLAG_TRAINER) && cInfo->trainer_type >= MAX_TRAINER_TYPE)
         SF_LOG_ERROR("sql.sql", "Creature (Entry: %u) has wrong trainer type %u.", cInfo->Entry, cInfo->trainer_type);
@@ -1607,8 +1613,8 @@ void ObjectMgr::LoadCreatures()
     std::map<uint32, uint32> spawnMasks;
     for (uint32 i = 0; i < sMapStore.GetNumRows(); ++i)
         if (sMapStore.LookupEntry(i))
-            for (int k = 0; k < MAX_DIFFICULTY; ++k)
-                if (GetMapDifficultyData(i, Difficulty(k)))
+            for (int k = 0; k < 15; ++k)
+                if (GetMapDifficultyData(i, DifficultyID(k)))
                     spawnMasks[i] |= (1 << k);
 
     _creatureDataStore.rehash(result->GetRowCount());
@@ -1642,8 +1648,8 @@ void ObjectMgr::LoadCreatures()
         data.curhealth      = fields[12].GetUInt32();
         data.curmana        = fields[13].GetUInt32();
         data.movementType   = fields[14].GetUInt8();
-        data.spawnMask      = fields[15].GetUInt8();
-        data.phaseMask      = fields[16].GetUInt16();
+        data.spawnMask      = fields[15].GetUInt32();
+        data.phaseMask      = fields[16].GetUInt32();
         int16 gameEvent     = fields[17].GetInt8();
         uint32 PoolId       = fields[18].GetUInt32();
         data.npcflag        = fields[19].GetUInt32();
@@ -1661,7 +1667,7 @@ void ObjectMgr::LoadCreatures()
             SF_LOG_ERROR("sql.sql", "Table `creature` have creature (GUID: %u) that have wrong spawn mask %u including not supported difficulty modes for map (Id: %u) spawnMasks[data.mapid]: %u.", guid, data.spawnMask, data.mapid, spawnMasks[data.mapid]);
 
         bool ok = true;
-        for (uint32 diff = 0; diff < MAX_DIFFICULTY - 1 && ok; ++diff)
+        for (uint32 diff = 0; diff < 3 && ok; ++diff)
         {
             if (_difficultyEntries[diff].find(data.id) != _difficultyEntries[diff].end())
             {
@@ -1730,8 +1736,8 @@ void ObjectMgr::LoadCreatures()
 
 void ObjectMgr::AddCreatureToGrid(uint32 guid, CreatureData const* data)
 {
-    uint8 mask = data->spawnMask;
-    for (uint8 i = 0; mask != 0; i++, mask >>= 1)
+    uint32 mask = data->spawnMask;
+    for (uint32 i = 0; mask != 0; i++, mask >>= 1)
     {
         if (mask & 1)
         {
@@ -1744,8 +1750,8 @@ void ObjectMgr::AddCreatureToGrid(uint32 guid, CreatureData const* data)
 
 void ObjectMgr::RemoveCreatureFromGrid(uint32 guid, CreatureData const* data)
 {
-    uint8 mask = data->spawnMask;
-    for (uint8 i = 0; mask != 0; i++, mask >>= 1)
+    uint32 mask = data->spawnMask;
+    for (uint32 i = 0; mask != 0; i++, mask >>= 1)
     {
         if (mask & 1)
         {
@@ -1915,8 +1921,8 @@ void ObjectMgr::LoadGameobjects()
     std::map<uint32, uint32> spawnMasks;
     for (uint32 i = 0; i < sMapStore.GetNumRows(); ++i)
         if (sMapStore.LookupEntry(i))
-            for (int k = 0; k < MAX_DIFFICULTY; ++k)
-                if (GetMapDifficultyData(i, Difficulty(k)))
+            for (int k = 0; k < 15; ++k)
+                if (GetMapDifficultyData(i, DifficultyID(k)))
                     spawnMasks[i] |= (1 << k);
 
     _gameObjectDataStore.rehash(result->GetRowCount());
@@ -4970,9 +4976,9 @@ void ObjectMgr::LoadInstanceEncounters()
 
         if (dungeonEncounter->difficulty == -1)
         {
-            for (uint32 i = 0; i < MAX_DIFFICULTY; ++i)
+            for (uint32 i = 0; i < 14; ++i)
             {
-                if (GetMapDifficultyData(dungeonEncounter->mapId, Difficulty(i)))
+                if (GetMapDifficultyData(dungeonEncounter->mapId, DifficultyID(i)))
                 {
                     DungeonEncounterList& encounters = _dungeonEncounterStore[MAKE_PAIR32(dungeonEncounter->mapId, i)];
                     encounters.push_back(new DungeonEncounter(dungeonEncounter, EncounterCreditType(creditType), creditEntry, lastEncounterDungeon));
